@@ -22,7 +22,7 @@ class CustomPaymentMethodResponse(pydantic.BaseModel):
             "Payment method schema used for this payment method. Defines the fields that this payment method contains.\n"
         ),
     )
-    schema: PaymentMethodSchemaResponse
+    schema_: PaymentMethodSchemaResponse = pydantic.Field(alias="schema")
     data: typing.Dict[str, str] = pydantic.Field(
         description=("Object of key/value pairs that matches the keys in the linked payment method schema.\n")
     )

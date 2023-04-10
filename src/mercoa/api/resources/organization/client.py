@@ -10,6 +10,7 @@ import pydantic
 
 from ....environment import MercoaEnvironment
 from ...core.api_error import ApiError
+from ...core.datetime_utils import serialize_datetime
 from ...core.jsonable_encoder import jsonable_encoder
 from ...core.remove_none_from_headers import remove_none_from_headers
 from .types.email_log_response import EmailLogResponse
@@ -66,7 +67,10 @@ class OrganizationClient:
         _response = httpx.request(
             "GET",
             urllib.parse.urljoin(f"{self._environment.value}/", "organization/emailLog"),
-            params={"startDate": start_date, "endDate": end_date},
+            params={
+                "startDate": serialize_datetime(start_date) if start_date is not None else None,
+                "endDate": serialize_datetime(end_date) if end_date is not None else None,
+            },
             headers=remove_none_from_headers(
                 {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
             ),
@@ -132,7 +136,10 @@ class AsyncOrganizationClient:
             _response = await _client.request(
                 "GET",
                 urllib.parse.urljoin(f"{self._environment.value}/", "organization/emailLog"),
-                params={"startDate": start_date, "endDate": end_date},
+                params={
+                    "startDate": serialize_datetime(start_date) if start_date is not None else None,
+                    "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                },
                 headers=remove_none_from_headers(
                     {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
                 ),
