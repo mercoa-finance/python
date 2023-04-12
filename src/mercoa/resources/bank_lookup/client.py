@@ -7,9 +7,9 @@ from json.decoder import JSONDecodeError
 import httpx
 import pydantic
 
-from ....environment import MercoaEnvironment
 from ...core.api_error import ApiError
 from ...core.remove_none_from_headers import remove_none_from_headers
+from ...environment import MercoaEnvironment
 from .types.bank_lookup_response import BankLookupResponse
 
 

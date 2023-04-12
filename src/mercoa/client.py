@@ -4,7 +4,7 @@ import typing
 
 from backports.cached_property import cached_property
 
-from ..environment import MercoaEnvironment
+from .environment import MercoaEnvironment
 from .resources.bank_lookup.client import AsyncBankLookupClient, BankLookupClient
 from .resources.counterparty.client import AsyncCounterpartyClient, CounterpartyClient
 from .resources.entity.client import AsyncEntityClient, EntityClient

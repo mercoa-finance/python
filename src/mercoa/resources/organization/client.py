@@ -8,11 +8,11 @@ from json.decoder import JSONDecodeError
 import httpx
 import pydantic
 
-from ....environment import MercoaEnvironment
 from ...core.api_error import ApiError
 from ...core.datetime_utils import serialize_datetime
 from ...core.jsonable_encoder import jsonable_encoder
 from ...core.remove_none_from_headers import remove_none_from_headers
+from ...environment import MercoaEnvironment
 from .types.email_log_response import EmailLogResponse
 from .types.organization_request import OrganizationRequest
 from .types.organization_response import OrganizationResponse

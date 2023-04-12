@@ -7,25 +7,27 @@ from json.decoder import JSONDecodeError
 import httpx
 import pydantic
 
-from ....environment import MercoaEnvironment
 from ...core.api_error import ApiError
+from ...core.jsonable_encoder import jsonable_encoder
 from ...core.remove_none_from_headers import remove_none_from_headers
-from ..entity.types.entity_id import EntityId
-from ..entity.types.entity_response import EntityResponse
-from .types.counterparty_response import CounterpartyResponse
+from ...environment import MercoaEnvironment
+from ..organization.types.organization_id import OrganizationId
+from .types.email_ocr_request import EmailOcrRequest
+from .types.ocr_response import OCRResponse
 
 
-class CounterpartyClient:
+class OcrClient:
     def __init__(
         self, *, environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION, token: typing.Optional[str] = None
     ):
         self._environment = environment
         self._token = token
 
-    def get_all(self) -> typing.List[EntityResponse]:
+    def ocr(self, *, mime_type: str, image: str) -> OCRResponse:
         _response = httpx.request(
-            "GET",
-            urllib.parse.urljoin(f"{self._environment.value}/", "counterparties"),
+            "POST",
+            urllib.parse.urljoin(f"{self._environment.value}/", "ocr"),
+            json=jsonable_encoder({"mimeType": mime_type, "image": image}),
             headers=remove_none_from_headers(
                 {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
             ),
@@ -35,41 +37,41 @@ class CounterpartyClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(typing.List[EntityResponse], _response_json)  # type: ignore
+            return pydantic.parse_obj_as(OCRResponse, _response_json)  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def find(
-        self, entity_id: EntityId, *, payment_methods: typing.Optional[bool] = None
-    ) -> typing.List[CounterpartyResponse]:
+    def email_inbox(self, *, org: OrganizationId, items: typing.List[EmailOcrRequest]) -> None:
         _response = httpx.request(
-            "GET",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/counterparties"),
-            params={"paymentMethods": payment_methods},
+            "POST",
+            urllib.parse.urljoin(f"{self._environment.value}/", "emailOcr"),
+            params={"org": org},
+            json=jsonable_encoder({"items": items}),
             headers=remove_none_from_headers(
                 {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
             ),
         )
+        if 200 <= _response.status_code < 300:
+            return
         try:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
-        if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(typing.List[CounterpartyResponse], _response_json)  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
 
-class AsyncCounterpartyClient:
+class AsyncOcrClient:
     def __init__(
         self, *, environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION, token: typing.Optional[str] = None
     ):
         self._environment = environment
         self._token = token
 
-    async def get_all(self) -> typing.List[EntityResponse]:
+    async def ocr(self, *, mime_type: str, image: str) -> OCRResponse:
         async with httpx.AsyncClient() as _client:
             _response = await _client.request(
-                "GET",
-                urllib.parse.urljoin(f"{self._environment.value}/", "counterparties"),
+                "POST",
+                urllib.parse.urljoin(f"{self._environment.value}/", "ocr"),
+                json=jsonable_encoder({"mimeType": mime_type, "image": image}),
                 headers=remove_none_from_headers(
                     {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
                 ),
@@ -79,25 +81,24 @@ class AsyncCounterpartyClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(typing.List[EntityResponse], _response_json)  # type: ignore
+            return pydantic.parse_obj_as(OCRResponse, _response_json)  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def find(
-        self, entity_id: EntityId, *, payment_methods: typing.Optional[bool] = None
-    ) -> typing.List[CounterpartyResponse]:
+    async def email_inbox(self, *, org: OrganizationId, items: typing.List[EmailOcrRequest]) -> None:
         async with httpx.AsyncClient() as _client:
             _response = await _client.request(
-                "GET",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/counterparties"),
-                params={"paymentMethods": payment_methods},
+                "POST",
+                urllib.parse.urljoin(f"{self._environment.value}/", "emailOcr"),
+                params={"org": org},
+                json=jsonable_encoder({"items": items}),
                 headers=remove_none_from_headers(
                     {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
                 ),
             )
+        if 200 <= _response.status_code < 300:
+            return
         try:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
-        if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(typing.List[CounterpartyResponse], _response_json)  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)

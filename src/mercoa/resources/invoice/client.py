@@ -7,65 +7,27 @@ from json.decoder import JSONDecodeError
 import httpx
 import pydantic
 
-from ....environment import MercoaEnvironment
 from ...core.api_error import ApiError
 from ...core.jsonable_encoder import jsonable_encoder
 from ...core.remove_none_from_headers import remove_none_from_headers
-from ..invoice.types.invoice_response import InvoiceResponse
-from ..invoice.types.invoice_status import InvoiceStatus
-from .types.entity_id import EntityId
-from .types.entity_request import EntityRequest
-from .types.entity_response import EntityResponse
-from .types.entity_status import EntityStatus
-from .types.entity_update_request import EntityUpdateRequest
+from ...environment import MercoaEnvironment
+from .types.document_response import DocumentResponse
+from .types.invoice_id import InvoiceId
+from .types.invoice_request import InvoiceRequest
+from .types.invoice_response import InvoiceResponse
 
 
-class EntityClient:
+class InvoiceClient:
     def __init__(
         self, *, environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION, token: typing.Optional[str] = None
     ):
         self._environment = environment
         self._token = token
 
-    def get_all(self) -> typing.List[EntityResponse]:
-        _response = httpx.request(
-            "GET",
-            urllib.parse.urljoin(f"{self._environment.value}/", "entities"),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
-        )
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(typing.List[EntityResponse], _response_json)  # type: ignore
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    def find(
-        self, *, foreign_id: typing.Optional[str] = None, status: typing.Optional[EntityStatus] = None
-    ) -> typing.List[EntityResponse]:
-        _response = httpx.request(
-            "GET",
-            urllib.parse.urljoin(f"{self._environment.value}/", "entity"),
-            params={"foreignId": foreign_id, "status": status},
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
-        )
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(typing.List[EntityResponse], _response_json)  # type: ignore
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    def create(self, *, request: EntityRequest) -> EntityResponse:
+    def create(self, *, request: InvoiceRequest) -> InvoiceResponse:
         _response = httpx.request(
             "POST",
-            urllib.parse.urljoin(f"{self._environment.value}/", "entity"),
+            urllib.parse.urljoin(f"{self._environment.value}/", "invoice"),
             json=jsonable_encoder(request),
             headers=remove_none_from_headers(
                 {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
@@ -76,13 +38,13 @@ class EntityClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(EntityResponse, _response_json)  # type: ignore
+            return pydantic.parse_obj_as(InvoiceResponse, _response_json)  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def get(self, entity_id: EntityId) -> EntityResponse:
+    def get(self, invoice_id: InvoiceId) -> InvoiceResponse:
         _response = httpx.request(
             "GET",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}"),
+            urllib.parse.urljoin(f"{self._environment.value}/", f"invoice/{invoice_id}"),
             headers=remove_none_from_headers(
                 {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
             ),
@@ -92,13 +54,13 @@ class EntityClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(EntityResponse, _response_json)  # type: ignore
+            return pydantic.parse_obj_as(InvoiceResponse, _response_json)  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def update(self, entity_id: EntityId, *, request: EntityUpdateRequest) -> EntityResponse:
+    def update(self, invoice_id: InvoiceId, *, request: InvoiceRequest) -> InvoiceResponse:
         _response = httpx.request(
             "POST",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}"),
+            urllib.parse.urljoin(f"{self._environment.value}/", f"invoice/{invoice_id}"),
             json=jsonable_encoder(request),
             headers=remove_none_from_headers(
                 {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
@@ -109,13 +71,13 @@ class EntityClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(EntityResponse, _response_json)  # type: ignore
+            return pydantic.parse_obj_as(InvoiceResponse, _response_json)  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def delete(self, entity_id: EntityId) -> None:
+    def delete(self, invoice_id: InvoiceId) -> None:
         _response = httpx.request(
             "DELETE",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}"),
+            urllib.parse.urljoin(f"{self._environment.value}/", f"invoice/{invoice_id}"),
             headers=remove_none_from_headers(
                 {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
             ),
@@ -128,13 +90,10 @@ class EntityClient:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def get_invoices(
-        self, entity_id: EntityId, *, status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]]
-    ) -> typing.List[InvoiceResponse]:
+    def get_documents(self, invoice_id: InvoiceId) -> typing.List[DocumentResponse]:
         _response = httpx.request(
             "GET",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/invoices"),
-            params={"status": status},
+            urllib.parse.urljoin(f"{self._environment.value}/", f"invoice/{invoice_id}/documents"),
             headers=remove_none_from_headers(
                 {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
             ),
@@ -144,91 +103,54 @@ class EntityClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(typing.List[InvoiceResponse], _response_json)  # type: ignore
+            return pydantic.parse_obj_as(typing.List[DocumentResponse], _response_json)  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def accept_terms_of_service(self, entity_id: EntityId) -> str:
+    def get_vendor_link(self, invoice_id: InvoiceId) -> str:
+        _response = httpx.request(
+            "GET",
+            urllib.parse.urljoin(f"{self._environment.value}/", f"invoice/{invoice_id}/vendorlink"),
+            headers=remove_none_from_headers(
+                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
+            ),
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return pydantic.parse_obj_as(str, _response_json)  # type: ignore
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def send_vendor_email(self, invoice_id: InvoiceId) -> None:
         _response = httpx.request(
             "POST",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/accept-tos"),
+            urllib.parse.urljoin(f"{self._environment.value}/", f"invoice/{invoice_id}/sendVendorEmail"),
             headers=remove_none_from_headers(
                 {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
             ),
         )
+        if 200 <= _response.status_code < 300:
+            return
         try:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
-        if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(str, _response_json)  # type: ignore
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    def get_token(self, entity_id: EntityId) -> str:
-        _response = httpx.request(
-            "GET",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/token"),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
-        )
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(str, _response_json)  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
 
-class AsyncEntityClient:
+class AsyncInvoiceClient:
     def __init__(
         self, *, environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION, token: typing.Optional[str] = None
     ):
         self._environment = environment
         self._token = token
 
-    async def get_all(self) -> typing.List[EntityResponse]:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "GET",
-                urllib.parse.urljoin(f"{self._environment.value}/", "entities"),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-            )
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(typing.List[EntityResponse], _response_json)  # type: ignore
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    async def find(
-        self, *, foreign_id: typing.Optional[str] = None, status: typing.Optional[EntityStatus] = None
-    ) -> typing.List[EntityResponse]:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "GET",
-                urllib.parse.urljoin(f"{self._environment.value}/", "entity"),
-                params={"foreignId": foreign_id, "status": status},
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-            )
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(typing.List[EntityResponse], _response_json)  # type: ignore
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    async def create(self, *, request: EntityRequest) -> EntityResponse:
+    async def create(self, *, request: InvoiceRequest) -> InvoiceResponse:
         async with httpx.AsyncClient() as _client:
             _response = await _client.request(
                 "POST",
-                urllib.parse.urljoin(f"{self._environment.value}/", "entity"),
+                urllib.parse.urljoin(f"{self._environment.value}/", "invoice"),
                 json=jsonable_encoder(request),
                 headers=remove_none_from_headers(
                     {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
@@ -239,14 +161,14 @@ class AsyncEntityClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(EntityResponse, _response_json)  # type: ignore
+            return pydantic.parse_obj_as(InvoiceResponse, _response_json)  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def get(self, entity_id: EntityId) -> EntityResponse:
+    async def get(self, invoice_id: InvoiceId) -> InvoiceResponse:
         async with httpx.AsyncClient() as _client:
             _response = await _client.request(
                 "GET",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}"),
+                urllib.parse.urljoin(f"{self._environment.value}/", f"invoice/{invoice_id}"),
                 headers=remove_none_from_headers(
                     {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
                 ),
@@ -256,14 +178,14 @@ class AsyncEntityClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(EntityResponse, _response_json)  # type: ignore
+            return pydantic.parse_obj_as(InvoiceResponse, _response_json)  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def update(self, entity_id: EntityId, *, request: EntityUpdateRequest) -> EntityResponse:
+    async def update(self, invoice_id: InvoiceId, *, request: InvoiceRequest) -> InvoiceResponse:
         async with httpx.AsyncClient() as _client:
             _response = await _client.request(
                 "POST",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}"),
+                urllib.parse.urljoin(f"{self._environment.value}/", f"invoice/{invoice_id}"),
                 json=jsonable_encoder(request),
                 headers=remove_none_from_headers(
                     {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
@@ -274,14 +196,14 @@ class AsyncEntityClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(EntityResponse, _response_json)  # type: ignore
+            return pydantic.parse_obj_as(InvoiceResponse, _response_json)  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def delete(self, entity_id: EntityId) -> None:
+    async def delete(self, invoice_id: InvoiceId) -> None:
         async with httpx.AsyncClient() as _client:
             _response = await _client.request(
                 "DELETE",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}"),
+                urllib.parse.urljoin(f"{self._environment.value}/", f"invoice/{invoice_id}"),
                 headers=remove_none_from_headers(
                     {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
                 ),
@@ -294,14 +216,11 @@ class AsyncEntityClient:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def get_invoices(
-        self, entity_id: EntityId, *, status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]]
-    ) -> typing.List[InvoiceResponse]:
+    async def get_documents(self, invoice_id: InvoiceId) -> typing.List[DocumentResponse]:
         async with httpx.AsyncClient() as _client:
             _response = await _client.request(
                 "GET",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/invoices"),
-                params={"status": status},
+                urllib.parse.urljoin(f"{self._environment.value}/", f"invoice/{invoice_id}/documents"),
                 headers=remove_none_from_headers(
                     {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
                 ),
@@ -311,39 +230,39 @@ class AsyncEntityClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(typing.List[InvoiceResponse], _response_json)  # type: ignore
+            return pydantic.parse_obj_as(typing.List[DocumentResponse], _response_json)  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def accept_terms_of_service(self, entity_id: EntityId) -> str:
+    async def get_vendor_link(self, invoice_id: InvoiceId) -> str:
+        async with httpx.AsyncClient() as _client:
+            _response = await _client.request(
+                "GET",
+                urllib.parse.urljoin(f"{self._environment.value}/", f"invoice/{invoice_id}/vendorlink"),
+                headers=remove_none_from_headers(
+                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
+                ),
+            )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return pydantic.parse_obj_as(str, _response_json)  # type: ignore
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def send_vendor_email(self, invoice_id: InvoiceId) -> None:
         async with httpx.AsyncClient() as _client:
             _response = await _client.request(
                 "POST",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/accept-tos"),
+                urllib.parse.urljoin(f"{self._environment.value}/", f"invoice/{invoice_id}/sendVendorEmail"),
                 headers=remove_none_from_headers(
                     {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
                 ),
             )
+        if 200 <= _response.status_code < 300:
+            return
         try:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
-        if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(str, _response_json)  # type: ignore
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    async def get_token(self, entity_id: EntityId) -> str:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "GET",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/token"),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-            )
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(str, _response_json)  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)

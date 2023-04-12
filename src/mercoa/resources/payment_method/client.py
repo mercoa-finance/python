@@ -7,10 +7,10 @@ from json.decoder import JSONDecodeError
 import httpx
 import pydantic
 
-from ....environment import MercoaEnvironment
 from ...core.api_error import ApiError
 from ...core.jsonable_encoder import jsonable_encoder
 from ...core.remove_none_from_headers import remove_none_from_headers
+from ...environment import MercoaEnvironment
 from ..entity.types.entity_id import EntityId
 from .types.payment_method_id import PaymentMethodId
 from .types.payment_method_request import PaymentMethodRequest
