@@ -9,6 +9,7 @@ from ....core.datetime_utils import serialize_datetime
 from ...entity.types.entity_id import EntityId
 from ...payment_method.types.payment_method_id import PaymentMethodId
 from .create_vendor_request import CreateVendorRequest
+from .invoice_line_item_request import InvoiceLineItemRequest
 from .invoice_status import InvoiceStatus
 
 
@@ -21,6 +22,8 @@ class InvoiceRequest(pydantic.BaseModel):
     due_date: typing.Optional[dt.datetime] = pydantic.Field(alias="dueDate")
     invoice_number: typing.Optional[str] = pydantic.Field(alias="invoiceNumber")
     note_to_self: typing.Optional[str] = pydantic.Field(alias="noteToSelf")
+    service_start_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceStartDate")
+    service_end_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceEndDate")
     payer_id: typing.Optional[EntityId] = pydantic.Field(alias="payerId")
     payment_source_id: typing.Optional[PaymentMethodId] = pydantic.Field(alias="paymentSourceId")
     vendor_id: typing.Optional[EntityId] = pydantic.Field(alias="vendorId")
@@ -37,6 +40,7 @@ class InvoiceRequest(pydantic.BaseModel):
             "When paying to an existing vendor with an incomplete profile, use the updateVendor object. Mercoa will update the vendor entity tied to this invoice. This object is ignored if the vendor already has already been created with complete information and when creating a new invoice.\n"
         ),
     )
+    line_items: typing.Optional[typing.List[InvoiceLineItemRequest]] = pydantic.Field(alias="lineItems")
     uploaded_image: typing.Optional[str] = pydantic.Field(alias="uploadedImage")
 
     def json(self, **kwargs: typing.Any) -> str:

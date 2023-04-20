@@ -3,6 +3,8 @@
 from .create_vendor_request import CreateVendorRequest
 from .document_response import DocumentResponse
 from .invoice_id import InvoiceId
+from .invoice_line_item_request import InvoiceLineItemRequest
+from .invoice_line_item_response import InvoiceLineItemResponse
 from .invoice_request import InvoiceRequest
 from .invoice_response import InvoiceResponse
 from .invoice_status import InvoiceStatus
@@ -13,6 +15,8 @@ __all__ = [
     "CreateVendorRequest",
     "DocumentResponse",
     "InvoiceId",
+    "InvoiceLineItemRequest",
+    "InvoiceLineItemResponse",
     "InvoiceRequest",
     "InvoiceResponse",
     "InvoiceStatus",

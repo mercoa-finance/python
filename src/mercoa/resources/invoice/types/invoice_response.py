@@ -11,6 +11,7 @@ from ...entity.types.entity_response import EntityResponse
 from ...payment_method.types.payment_method_id import PaymentMethodId
 from ...payment_method.types.payment_method_response import PaymentMethodResponse
 from .invoice_id import InvoiceId
+from .invoice_line_item_response import InvoiceLineItemResponse
 from .invoice_status import InvoiceStatus
 from .transaction_response import TransactionResponse
 
@@ -25,6 +26,8 @@ class InvoiceResponse(pydantic.BaseModel):
     due_date: typing.Optional[dt.datetime] = pydantic.Field(alias="dueDate")
     invoice_number: typing.Optional[str] = pydantic.Field(alias="invoiceNumber")
     note_to_self: typing.Optional[str] = pydantic.Field(alias="noteToSelf")
+    service_start_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceStartDate")
+    service_end_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceEndDate")
     payer_id: typing.Optional[EntityId] = pydantic.Field(alias="payerId")
     payer: typing.Optional[EntityResponse]
     payment_source: typing.Optional[PaymentMethodResponse] = pydantic.Field(alias="paymentSource")
@@ -35,6 +38,7 @@ class InvoiceResponse(pydantic.BaseModel):
     payment_destination_id: typing.Optional[PaymentMethodId] = pydantic.Field(alias="paymentDestinationId")
     payment_destination_confirmed: bool = pydantic.Field(alias="paymentDestinationConfirmed")
     transactions: typing.Optional[typing.List[TransactionResponse]]
+    line_items: typing.Optional[typing.List[InvoiceLineItemResponse]] = pydantic.Field(alias="lineItems")
     processed_at: typing.Optional[dt.datetime] = pydantic.Field(alias="processedAt")
     created_at: dt.datetime = pydantic.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
