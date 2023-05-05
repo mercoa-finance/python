@@ -15,6 +15,9 @@ class BankAccountRequest(pydantic.BaseModel):
     bank_name: str = pydantic.Field(alias="bankName")
     routing_number: str = pydantic.Field(alias="routingNumber")
     account_number: str = pydantic.Field(alias="accountNumber")
+    plaid_public_token: typing.Optional[str] = pydantic.Field(
+        alias="plaidPublicToken", description=("Public token from Plaid Link\n")
+    )
     account_type: BankType = pydantic.Field(alias="accountType")
 
     def json(self, **kwargs: typing.Any) -> str:

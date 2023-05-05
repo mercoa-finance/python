@@ -8,16 +8,13 @@ import pydantic
 from ....core.datetime_utils import serialize_datetime
 
 
-class InvoiceLineItemResponse(pydantic.BaseModel):
-    id: str
-    amount: typing.Optional[float]
-    currency: typing.Optional[str]
-    description: typing.Optional[str]
+class EntityUserRequest(pydantic.BaseModel):
+    foreign_id: typing.Optional[str] = pydantic.Field(alias="foreignId")
+    email: typing.Optional[str]
     name: typing.Optional[str]
-    quantity: typing.Optional[int]
-    unit_price: typing.Optional[float] = pydantic.Field(alias="unitPrice")
-    created_at: dt.datetime = pydantic.Field(alias="createdAt")
-    updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
+    roles: typing.Optional[typing.List[str]] = pydantic.Field(
+        description=('List of roles. A role can be any string. For example: "payer", "approver", "viewer"\n')
+    )
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

@@ -5,6 +5,7 @@ from . import (
     commons,
     counterparty,
     entity,
+    entity_users,
     invoice,
     ocr,
     organization,
@@ -32,7 +33,11 @@ from .entity import (
     ProfileResponse,
     TaxID,
 )
+from .entity_users import EntityUserId, EntityUserRequest, EntityUserResponse
 from .invoice import (
+    CommentId,
+    CommentRequest,
+    CommentResponse,
     CreateVendorRequest,
     DocumentResponse,
     InvoiceId,
@@ -46,6 +51,8 @@ from .invoice import (
 )
 from .ocr import Attachments, EmailOcrRequest, OcrMailbox, OCRResponse
 from .organization import (
+    ColorSchemeRequest,
+    ColorSchemeResponse,
     EmailLogResponse,
     EmailProviderRequest,
     EmailProviderResponse,
@@ -116,6 +123,11 @@ __all__ = [
     "CheckId",
     "CheckRequest",
     "CheckResponse",
+    "ColorSchemeRequest",
+    "ColorSchemeResponse",
+    "CommentId",
+    "CommentRequest",
+    "CommentResponse",
     "CounterpartyResponse",
     "CreateVendorRequest",
     "CustomId",
@@ -135,6 +147,9 @@ __all__ = [
     "EntityResponse",
     "EntityStatus",
     "EntityUpdateRequest",
+    "EntityUserId",
+    "EntityUserRequest",
+    "EntityUserResponse",
     "FullName",
     "ITIN",
     "IndividualGovernmentID",
@@ -182,6 +197,7 @@ __all__ = [
     "commons",
     "counterparty",
     "entity",
+    "entity_users",
     "invoice",
     "ocr",
     "organization",

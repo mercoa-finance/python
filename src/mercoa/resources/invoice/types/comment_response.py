@@ -8,14 +8,9 @@ import pydantic
 from ....core.datetime_utils import serialize_datetime
 
 
-class InvoiceLineItemResponse(pydantic.BaseModel):
+class CommentResponse(pydantic.BaseModel):
     id: str
-    amount: typing.Optional[float]
-    currency: typing.Optional[str]
-    description: typing.Optional[str]
-    name: typing.Optional[str]
-    quantity: typing.Optional[int]
-    unit_price: typing.Optional[float] = pydantic.Field(alias="unitPrice")
+    text: str
     created_at: dt.datetime = pydantic.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
 

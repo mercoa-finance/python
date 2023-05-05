@@ -18,7 +18,7 @@ class InvoiceLineItemRequest(pydantic.BaseModel):
     currency: typing.Optional[str]
     description: typing.Optional[str]
     name: typing.Optional[str]
-    quantity: typing.Optional[float]
+    quantity: typing.Optional[int]
     unit_price: typing.Optional[float] = pydantic.Field(alias="unitPrice")
 
     def json(self, **kwargs: typing.Any) -> str:

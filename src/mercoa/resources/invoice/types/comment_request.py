@@ -8,16 +8,8 @@ import pydantic
 from ....core.datetime_utils import serialize_datetime
 
 
-class InvoiceLineItemResponse(pydantic.BaseModel):
-    id: str
-    amount: typing.Optional[float]
-    currency: typing.Optional[str]
-    description: typing.Optional[str]
-    name: typing.Optional[str]
-    quantity: typing.Optional[int]
-    unit_price: typing.Optional[float] = pydantic.Field(alias="unitPrice")
-    created_at: dt.datetime = pydantic.Field(alias="createdAt")
-    updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
+class CommentRequest(pydantic.BaseModel):
+    text: str
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
@@ -29,5 +21,4 @@ class InvoiceLineItemResponse(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
         json_encoders = {dt.datetime: serialize_datetime}

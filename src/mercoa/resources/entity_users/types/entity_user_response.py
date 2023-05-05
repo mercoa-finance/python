@@ -6,16 +6,17 @@ import typing
 import pydantic
 
 from ....core.datetime_utils import serialize_datetime
+from .entity_user_id import EntityUserId
 
 
-class InvoiceLineItemResponse(pydantic.BaseModel):
-    id: str
-    amount: typing.Optional[float]
-    currency: typing.Optional[str]
-    description: typing.Optional[str]
+class EntityUserResponse(pydantic.BaseModel):
+    id: EntityUserId
+    foreign_id: typing.Optional[str] = pydantic.Field(
+        alias="foreignId", description=("Id from external auth provider or your auth system\n")
+    )
+    email: typing.Optional[str]
     name: typing.Optional[str]
-    quantity: typing.Optional[int]
-    unit_price: typing.Optional[float] = pydantic.Field(alias="unitPrice")
+    roles: typing.List[str]
     created_at: dt.datetime = pydantic.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
 

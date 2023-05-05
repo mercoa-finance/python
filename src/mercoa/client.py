@@ -8,6 +8,7 @@ from .environment import MercoaEnvironment
 from .resources.bank_lookup.client import AsyncBankLookupClient, BankLookupClient
 from .resources.counterparty.client import AsyncCounterpartyClient, CounterpartyClient
 from .resources.entity.client import AsyncEntityClient, EntityClient
+from .resources.entity_users.client import AsyncEntityUsersClient, EntityUsersClient
 from .resources.invoice.client import AsyncInvoiceClient, InvoiceClient
 from .resources.ocr.client import AsyncOcrClient, OcrClient
 from .resources.organization.client import AsyncOrganizationClient, OrganizationClient
@@ -30,6 +31,10 @@ class Mercoa:
     @cached_property
     def counterparty(self) -> CounterpartyClient:
         return CounterpartyClient(environment=self._environment, token=self._token)
+
+    @cached_property
+    def entity_users(self) -> EntityUsersClient:
+        return EntityUsersClient(environment=self._environment, token=self._token)
 
     @cached_property
     def entity(self) -> EntityClient:
@@ -74,6 +79,10 @@ class AsyncMercoa:
     @cached_property
     def counterparty(self) -> AsyncCounterpartyClient:
         return AsyncCounterpartyClient(environment=self._environment, token=self._token)
+
+    @cached_property
+    def entity_users(self) -> AsyncEntityUsersClient:
+        return AsyncEntityUsersClient(environment=self._environment, token=self._token)
 
     @cached_property
     def entity(self) -> AsyncEntityClient:
