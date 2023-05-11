@@ -6,19 +6,14 @@ import typing
 import pydantic
 
 from ....core.datetime_utils import serialize_datetime
-from .currency_code import CurrencyCode
+from ...invoice.types.currency_code import CurrencyCode
 
 
-class InvoiceLineItemResponse(pydantic.BaseModel):
-    id: str
-    amount: typing.Optional[float]
-    currency: typing.Optional[CurrencyCode]
-    description: typing.Optional[str]
-    name: typing.Optional[str]
-    quantity: typing.Optional[int]
-    unit_price: typing.Optional[float] = pydantic.Field(alias="unitPrice")
-    created_at: dt.datetime = pydantic.Field(alias="createdAt")
-    updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
+class InvoiceMetricsResponse(pydantic.BaseModel):
+    total_amount: float = pydantic.Field(alias="totalAmount")
+    total_count: int = pydantic.Field(alias="totalCount")
+    average_amount: float = pydantic.Field(alias="averageAmount")
+    currency: CurrencyCode
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

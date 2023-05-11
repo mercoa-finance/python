@@ -12,7 +12,9 @@ from .payment_rail_markup import PaymentRailMarkup
 
 class PaymentRailRequest(pydantic.BaseModel):
     type: PaymentMethodType
-    name: str
+    name: str = pydantic.Field(
+        description=("Name of the payment method. For custom payment methods, this is the ID of the schema.\n")
+    )
     markup: typing.Optional[PaymentRailMarkup]
     description: typing.Optional[str]
     active: bool

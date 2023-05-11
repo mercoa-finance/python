@@ -15,6 +15,7 @@ from .resources.organization.client import AsyncOrganizationClient, Organization
 from .resources.payment_method.client import AsyncPaymentMethodClient, PaymentMethodClient
 from .resources.payment_method_schema.client import AsyncPaymentMethodSchemaClient, PaymentMethodSchemaClient
 from .resources.representative.client import AsyncRepresentativeClient, RepresentativeClient
+from .resources.transaction.client import AsyncTransactionClient, TransactionClient
 
 
 class Mercoa:
@@ -64,6 +65,10 @@ class Mercoa:
     def representative(self) -> RepresentativeClient:
         return RepresentativeClient(environment=self._environment, token=self._token)
 
+    @cached_property
+    def transaction(self) -> TransactionClient:
+        return TransactionClient(environment=self._environment, token=self._token)
+
 
 class AsyncMercoa:
     def __init__(
@@ -111,3 +116,7 @@ class AsyncMercoa:
     @cached_property
     def representative(self) -> AsyncRepresentativeClient:
         return AsyncRepresentativeClient(environment=self._environment, token=self._token)
+
+    @cached_property
+    def transaction(self) -> AsyncTransactionClient:
+        return AsyncTransactionClient(environment=self._environment, token=self._token)

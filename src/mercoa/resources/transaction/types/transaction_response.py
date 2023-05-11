@@ -6,6 +6,7 @@ import typing
 import pydantic
 
 from ....core.datetime_utils import serialize_datetime
+from ...invoice.types.currency_code import CurrencyCode
 from .transaction_status import TransactionStatus
 
 
@@ -13,7 +14,7 @@ class TransactionResponse(pydantic.BaseModel):
     id: str
     status: TransactionStatus
     amount: float
-    currency: typing.Optional[str]
+    currency: typing.Optional[CurrencyCode]
     created_at: dt.datetime = pydantic.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
 

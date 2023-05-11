@@ -5,6 +5,7 @@ from .types import (
     CommentRequest,
     CommentResponse,
     CreateVendorRequest,
+    CurrencyCode,
     DocumentResponse,
     InvoiceId,
     InvoiceLineItemRequest,
@@ -12,8 +13,6 @@ from .types import (
     InvoiceRequest,
     InvoiceResponse,
     InvoiceStatus,
-    TransactionResponse,
-    TransactionStatus,
 )
 
 __all__ = [
@@ -21,6 +20,7 @@ __all__ = [
     "CommentRequest",
     "CommentResponse",
     "CreateVendorRequest",
+    "CurrencyCode",
     "DocumentResponse",
     "InvoiceId",
     "InvoiceLineItemRequest",
@@ -28,6 +28,4 @@ __all__ = [
     "InvoiceRequest",
     "InvoiceResponse",
     "InvoiceStatus",
-    "TransactionResponse",
-    "TransactionStatus",
 ]

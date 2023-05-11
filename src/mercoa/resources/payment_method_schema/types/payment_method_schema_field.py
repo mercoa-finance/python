@@ -13,8 +13,20 @@ class PaymentMethodSchemaField(pydantic.BaseModel):
     name: str
     display_name: typing.Optional[str] = pydantic.Field(alias="displayName")
     type: PaymentMethodSchemaFieldType
-    optional: bool
-    options: typing.Optional[str] = pydantic.Field(
+    optional: bool = pydantic.Field(description=("Indicates whether this field is optional\n"))
+    use_as_account_name: typing.Optional[bool] = pydantic.Field(
+        alias="useAsAccountName",
+        description=(
+            "Indicates whether this field should be used as the name of the payment method. Only one field can be used as the name. Will set the accountName field of the payment method to the value of this field.\n"
+        ),
+    )
+    use_as_account_number: typing.Optional[bool] = pydantic.Field(
+        alias="useAsAccountNumber",
+        description=(
+            "Indicates whether this field should be used as the account number of the payment method. Only one field can be used as the account number. Will set the accountNumber field of the payment method to the value of this field.\n"
+        ),
+    )
+    options: typing.Optional[typing.List[str]] = pydantic.Field(
         description=("When type is 'select', provide options that can be selected\n")
     )
 

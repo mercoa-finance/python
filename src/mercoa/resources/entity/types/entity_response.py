@@ -16,6 +16,7 @@ class EntityResponse(pydantic.BaseModel):
     id: EntityId
     foreign_id: typing.Optional[str] = pydantic.Field(alias="foreignId")
     email_to: typing.Optional[str] = pydantic.Field(alias="emailTo")
+    email_to_alias: typing.Optional[typing.List[str]] = pydantic.Field(alias="emailToAlias")
     owned_by_org: bool = pydantic.Field(alias="ownedByOrg")
     account_type: AccountType = pydantic.Field(alias="accountType")
     name: str

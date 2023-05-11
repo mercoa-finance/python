@@ -23,6 +23,22 @@ class PaymentMethodSchemaClient:
         self._environment = environment
         self._token = token
 
+    def get_all(self) -> typing.List[PaymentMethodSchemaResponse]:
+        _response = httpx.request(
+            "GET",
+            urllib.parse.urljoin(f"{self._environment.value}/", "paymentMethod/schema"),
+            headers=remove_none_from_headers(
+                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
+            ),
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return pydantic.parse_obj_as(typing.List[PaymentMethodSchemaResponse], _response_json)  # type: ignore
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
     def create(self, *, request: PaymentMethodSchemaRequest) -> PaymentMethodSchemaResponse:
         _response = httpx.request(
             "POST",
@@ -79,6 +95,23 @@ class AsyncPaymentMethodSchemaClient:
     ):
         self._environment = environment
         self._token = token
+
+    async def get_all(self) -> typing.List[PaymentMethodSchemaResponse]:
+        async with httpx.AsyncClient() as _client:
+            _response = await _client.request(
+                "GET",
+                urllib.parse.urljoin(f"{self._environment.value}/", "paymentMethod/schema"),
+                headers=remove_none_from_headers(
+                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
+                ),
+            )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return pydantic.parse_obj_as(typing.List[PaymentMethodSchemaResponse], _response_json)  # type: ignore
+        raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def create(self, *, request: PaymentMethodSchemaRequest) -> PaymentMethodSchemaResponse:
         async with httpx.AsyncClient() as _client:

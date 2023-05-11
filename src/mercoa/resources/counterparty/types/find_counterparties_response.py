@@ -6,19 +6,19 @@ import typing
 import pydantic
 
 from ....core.datetime_utils import serialize_datetime
-from .currency_code import CurrencyCode
+from .counterparty_response import CounterpartyResponse
 
 
-class InvoiceLineItemResponse(pydantic.BaseModel):
-    id: str
-    amount: typing.Optional[float]
-    currency: typing.Optional[CurrencyCode]
-    description: typing.Optional[str]
-    name: typing.Optional[str]
-    quantity: typing.Optional[int]
-    unit_price: typing.Optional[float] = pydantic.Field(alias="unitPrice")
-    created_at: dt.datetime = pydantic.Field(alias="createdAt")
-    updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
+class FindCounterpartiesResponse(pydantic.BaseModel):
+    entity_counterparties: typing.List[CounterpartyResponse] = pydantic.Field(
+        alias="entityCounterparties", description=("Counterparties that have been paid by this entity\n")
+    )
+    platform_counterparties: typing.List[CounterpartyResponse] = pydantic.Field(
+        alias="platformCounterparties", description=("Counterparties that have paid by any entity on your platform\n")
+    )
+    mercoa_counterparties: typing.List[CounterpartyResponse] = pydantic.Field(
+        alias="mercoaCounterparties", description=("External counterparties that have been verified by Mercoa\n")
+    )
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

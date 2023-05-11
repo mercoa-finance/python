@@ -12,10 +12,11 @@ from . import (
     payment_method,
     payment_method_schema,
     representative,
+    transaction,
 )
 from .bank_lookup import BankAddress, BankLookupResponse
 from .commons import ITIN, SSN, Address, BirthDate, FullName, IndividualGovernmentID, PhoneNumber, UnauthorizedError
-from .counterparty import CounterpartyResponse
+from .counterparty import CounterpartyResponse, FindCounterpartiesResponse
 from .entity import (
     AccountType,
     BusinessProfileRequest,
@@ -29,6 +30,7 @@ from .entity import (
     EntityUpdateRequest,
     IndividualProfileRequest,
     IndividualProfileResponse,
+    InvoiceMetricsResponse,
     ProfileRequest,
     ProfileResponse,
     TaxID,
@@ -39,6 +41,7 @@ from .invoice import (
     CommentRequest,
     CommentResponse,
     CreateVendorRequest,
+    CurrencyCode,
     DocumentResponse,
     InvoiceId,
     InvoiceLineItemRequest,
@@ -46,8 +49,6 @@ from .invoice import (
     InvoiceRequest,
     InvoiceResponse,
     InvoiceStatus,
-    TransactionResponse,
-    TransactionStatus,
 )
 from .ocr import Attachments, EmailOcrRequest, OcrMailbox, OCRResponse
 from .organization import (
@@ -99,6 +100,7 @@ from .payment_method_schema import (
     PaymentMethodSchemaResponse,
 )
 from .representative import RepresentativeId, RepresentativeRequest, RepresentativeResponse, Responsibilities
+from .transaction import TransactionId, TransactionResponse, TransactionStatus
 
 __all__ = [
     "AccountType",
@@ -130,6 +132,7 @@ __all__ = [
     "CommentResponse",
     "CounterpartyResponse",
     "CreateVendorRequest",
+    "CurrencyCode",
     "CustomId",
     "CustomPaymentMethodRequest",
     "CustomPaymentMethodResponse",
@@ -150,6 +153,7 @@ __all__ = [
     "EntityUserId",
     "EntityUserRequest",
     "EntityUserResponse",
+    "FindCounterpartiesResponse",
     "FullName",
     "ITIN",
     "IndividualGovernmentID",
@@ -158,6 +162,7 @@ __all__ = [
     "InvoiceId",
     "InvoiceLineItemRequest",
     "InvoiceLineItemResponse",
+    "InvoiceMetricsResponse",
     "InvoiceRequest",
     "InvoiceResponse",
     "InvoiceStatus",
@@ -190,6 +195,7 @@ __all__ = [
     "Responsibilities",
     "SSN",
     "TaxID",
+    "TransactionId",
     "TransactionResponse",
     "TransactionStatus",
     "UnauthorizedError",
@@ -204,4 +210,5 @@ __all__ = [
     "payment_method",
     "payment_method_schema",
     "representative",
+    "transaction",
 ]

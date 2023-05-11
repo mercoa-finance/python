@@ -12,6 +12,7 @@ from .entity_status import EntityStatus
 from .entity_update_request import EntityUpdateRequest
 from .individual_profile_request import IndividualProfileRequest
 from .individual_profile_response import IndividualProfileResponse
+from .invoice_metrics_response import InvoiceMetricsResponse
 from .profile_request import ProfileRequest
 from .profile_response import ProfileResponse
 from .tax_id import TaxID
@@ -29,6 +30,7 @@ __all__ = [
     "EntityUpdateRequest",
     "IndividualProfileRequest",
     "IndividualProfileResponse",
+    "InvoiceMetricsResponse",
     "ProfileRequest",
     "ProfileResponse",
     "TaxID",

@@ -10,17 +10,18 @@ from ...entity.types.entity_id import EntityId
 from ...entity.types.entity_response import EntityResponse
 from ...payment_method.types.payment_method_id import PaymentMethodId
 from ...payment_method.types.payment_method_response import PaymentMethodResponse
+from ...transaction.types.transaction_response import TransactionResponse
+from .currency_code import CurrencyCode
 from .invoice_id import InvoiceId
 from .invoice_line_item_response import InvoiceLineItemResponse
 from .invoice_status import InvoiceStatus
-from .transaction_response import TransactionResponse
 
 
 class InvoiceResponse(pydantic.BaseModel):
     id: InvoiceId
     status: InvoiceStatus
     amount: typing.Optional[float]
-    currency: typing.Optional[str]
+    currency: typing.Optional[CurrencyCode]
     deduction_date: typing.Optional[dt.datetime] = pydantic.Field(alias="deductionDate")
     funded_date: typing.Optional[dt.datetime] = pydantic.Field(alias="fundedDate")
     due_date: typing.Optional[dt.datetime] = pydantic.Field(alias="dueDate")

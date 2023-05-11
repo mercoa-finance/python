@@ -9,6 +9,7 @@ from ....core.datetime_utils import serialize_datetime
 from ...entity.types.entity_id import EntityId
 from ...payment_method.types.payment_method_id import PaymentMethodId
 from .create_vendor_request import CreateVendorRequest
+from .currency_code import CurrencyCode
 from .invoice_line_item_request import InvoiceLineItemRequest
 from .invoice_status import InvoiceStatus
 
@@ -16,7 +17,7 @@ from .invoice_status import InvoiceStatus
 class InvoiceRequest(pydantic.BaseModel):
     status: typing.Optional[InvoiceStatus]
     amount: typing.Optional[float]
-    currency: typing.Optional[str]
+    currency: typing.Optional[CurrencyCode]
     deduction_date: typing.Optional[dt.datetime] = pydantic.Field(
         alias="deductionDate", description=("Date when funds will be deducted from payer's account.\n")
     )

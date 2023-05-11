@@ -6,6 +6,7 @@ import typing
 import pydantic
 
 from ....core.datetime_utils import serialize_datetime
+from .currency_code import CurrencyCode
 
 
 class InvoiceLineItemRequest(pydantic.BaseModel):
@@ -15,7 +16,7 @@ class InvoiceLineItemRequest(pydantic.BaseModel):
         )
     )
     amount: typing.Optional[float]
-    currency: typing.Optional[str]
+    currency: typing.Optional[CurrencyCode]
     description: typing.Optional[str]
     name: typing.Optional[str]
     quantity: typing.Optional[int]

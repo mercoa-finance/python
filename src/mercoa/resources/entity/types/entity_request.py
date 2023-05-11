@@ -15,6 +15,12 @@ class EntityRequest(pydantic.BaseModel):
     email_to: typing.Optional[str] = pydantic.Field(
         alias="emailTo", description=("Email inbox address. Do not inclue the @domain.com\n")
     )
+    email_to_alias: typing.Optional[typing.List[str]] = pydantic.Field(
+        alias="emailToAlias",
+        description=(
+            "Email inbox alias addresses. Used when forwarding emails to the emailTo address from an alias. Include the full email address.\n"
+        ),
+    )
     owned_by_org: typing.Optional[bool] = pydantic.Field(alias="ownedByOrg")
     account_type: AccountType = pydantic.Field(alias="accountType")
     profile: ProfileRequest
