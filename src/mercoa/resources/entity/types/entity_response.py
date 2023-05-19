@@ -24,6 +24,8 @@ class EntityResponse(pydantic.BaseModel):
     profile: ProfileResponse
     status: EntityStatus
     accepted_tos: bool = pydantic.Field(alias="acceptedTos")
+    is_payor: bool = pydantic.Field(alias="isPayor", description=("True if this entity can pay invoices.\n"))
+    is_payee: bool = pydantic.Field(alias="isPayee", description=("True if this entity can receive payments.\n"))
     created_at: dt.datetime = pydantic.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
 

@@ -11,6 +11,7 @@ from . import (
     organization,
     payment_method,
     payment_method_schema,
+    process_invoice,
     representative,
     transaction,
 )
@@ -99,8 +100,9 @@ from .payment_method_schema import (
     PaymentMethodSchemaRequest,
     PaymentMethodSchemaResponse,
 )
+from .process_invoice import ProcessInvoiceRequest
 from .representative import RepresentativeId, RepresentativeRequest, RepresentativeResponse, Responsibilities
-from .transaction import TransactionId, TransactionResponse, TransactionStatus
+from .transaction import TransactionId, TransactionResponse, TransactionResponseExpanded, TransactionStatus
 
 __all__ = [
     "AccountType",
@@ -187,6 +189,7 @@ __all__ = [
     "PaymentRailRequest",
     "PaymentRailResponse",
     "PhoneNumber",
+    "ProcessInvoiceRequest",
     "ProfileRequest",
     "ProfileResponse",
     "RepresentativeId",
@@ -197,6 +200,7 @@ __all__ = [
     "TaxID",
     "TransactionId",
     "TransactionResponse",
+    "TransactionResponseExpanded",
     "TransactionStatus",
     "UnauthorizedError",
     "bank_lookup",
@@ -209,6 +213,7 @@ __all__ = [
     "organization",
     "payment_method",
     "payment_method_schema",
+    "process_invoice",
     "representative",
     "transaction",
 ]

@@ -6,6 +6,7 @@ import typing
 import pydantic
 
 from ....core.datetime_utils import serialize_datetime
+from ...invoice.types.currency_code import CurrencyCode
 from .payment_method_schema_field import PaymentMethodSchemaField
 from .payment_method_schema_id import PaymentMethodSchemaId
 
@@ -18,6 +19,9 @@ class PaymentMethodSchemaResponse(pydantic.BaseModel):
     )
     is_destination: bool = pydantic.Field(
         alias="isDestination", description=("This payment method can be used as a payment destination for an invoice\n")
+    )
+    supported_currencies: typing.List[CurrencyCode] = pydantic.Field(
+        alias="supportedCurrencies", description=("List of currencies that this payment method supports.\n")
     )
     fields: typing.List[PaymentMethodSchemaField]
     created_at: dt.datetime = pydantic.Field(alias="createdAt")

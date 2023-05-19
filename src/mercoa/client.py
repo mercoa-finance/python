@@ -14,6 +14,7 @@ from .resources.ocr.client import AsyncOcrClient, OcrClient
 from .resources.organization.client import AsyncOrganizationClient, OrganizationClient
 from .resources.payment_method.client import AsyncPaymentMethodClient, PaymentMethodClient
 from .resources.payment_method_schema.client import AsyncPaymentMethodSchemaClient, PaymentMethodSchemaClient
+from .resources.process_invoice.client import AsyncProcessInvoiceClient, ProcessInvoiceClient
 from .resources.representative.client import AsyncRepresentativeClient, RepresentativeClient
 from .resources.transaction.client import AsyncTransactionClient, TransactionClient
 
@@ -60,6 +61,10 @@ class Mercoa:
     @cached_property
     def payment_method(self) -> PaymentMethodClient:
         return PaymentMethodClient(environment=self._environment, token=self._token)
+
+    @cached_property
+    def process_invoice(self) -> ProcessInvoiceClient:
+        return ProcessInvoiceClient(environment=self._environment, token=self._token)
 
     @cached_property
     def representative(self) -> RepresentativeClient:
@@ -112,6 +117,10 @@ class AsyncMercoa:
     @cached_property
     def payment_method(self) -> AsyncPaymentMethodClient:
         return AsyncPaymentMethodClient(environment=self._environment, token=self._token)
+
+    @cached_property
+    def process_invoice(self) -> AsyncProcessInvoiceClient:
+        return AsyncProcessInvoiceClient(environment=self._environment, token=self._token)
 
     @cached_property
     def representative(self) -> AsyncRepresentativeClient:

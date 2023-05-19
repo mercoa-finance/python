@@ -12,6 +12,7 @@ from ...core.remove_none_from_headers import remove_none_from_headers
 from ...environment import MercoaEnvironment
 from .types.transaction_id import TransactionId
 from .types.transaction_response import TransactionResponse
+from .types.transaction_response_expanded import TransactionResponseExpanded
 
 
 class TransactionClient:
@@ -37,7 +38,7 @@ class TransactionClient:
             return pydantic.parse_obj_as(TransactionResponse, _response_json)  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def get_all(self) -> typing.List[TransactionResponse]:
+    def get_all(self) -> typing.List[TransactionResponseExpanded]:
         _response = httpx.request(
             "GET",
             urllib.parse.urljoin(f"{self._environment.value}/", "transactions"),
@@ -50,7 +51,7 @@ class TransactionClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(typing.List[TransactionResponse], _response_json)  # type: ignore
+            return pydantic.parse_obj_as(typing.List[TransactionResponseExpanded], _response_json)  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
 
@@ -78,7 +79,7 @@ class AsyncTransactionClient:
             return pydantic.parse_obj_as(TransactionResponse, _response_json)  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def get_all(self) -> typing.List[TransactionResponse]:
+    async def get_all(self) -> typing.List[TransactionResponseExpanded]:
         async with httpx.AsyncClient() as _client:
             _response = await _client.request(
                 "GET",
@@ -92,5 +93,5 @@ class AsyncTransactionClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(typing.List[TransactionResponse], _response_json)  # type: ignore
+            return pydantic.parse_obj_as(typing.List[TransactionResponseExpanded], _response_json)  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)

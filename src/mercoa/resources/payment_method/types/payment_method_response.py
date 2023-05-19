@@ -6,6 +6,7 @@ import typing
 import pydantic
 
 from ....core.datetime_utils import serialize_datetime
+from ...invoice.types.currency_code import CurrencyCode
 from .bank_account_response import BankAccountResponse
 from .card_response import CardResponse
 from .check_response import CheckResponse
@@ -21,6 +22,7 @@ class PaymentMethodResponse(pydantic.BaseModel):
     check: typing.Optional[CheckResponse]
     card: typing.Optional[CardResponse]
     custom: typing.Optional[CustomPaymentMethodResponse]
+    supported_currencies: typing.List[CurrencyCode] = pydantic.Field(alias="supportedCurrencies")
     created_at: dt.datetime = pydantic.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
 
