@@ -6,11 +6,13 @@ import typing
 import pydantic
 
 from ....core.datetime_utils import serialize_datetime
+from ...entity_users.types.entity_user_response import EntityUserResponse
 
 
 class CommentResponse(pydantic.BaseModel):
     id: str
     text: str
+    user: typing.Optional[EntityUserResponse]
     created_at: dt.datetime = pydantic.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
 

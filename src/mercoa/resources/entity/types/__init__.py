@@ -5,6 +5,7 @@ from .business_profile_request import BusinessProfileRequest
 from .business_profile_response import BusinessProfileResponse
 from .business_type import BusinessType
 from .ein import Ein
+from .entity_add_payees_request import EntityAddPayeesRequest
 from .entity_id import EntityId
 from .entity_request import EntityRequest
 from .entity_response import EntityResponse
@@ -23,6 +24,7 @@ __all__ = [
     "BusinessProfileResponse",
     "BusinessType",
     "Ein",
+    "EntityAddPayeesRequest",
     "EntityId",
     "EntityRequest",
     "EntityResponse",

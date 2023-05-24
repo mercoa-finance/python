@@ -8,9 +8,11 @@ import pydantic
 from ....core.datetime_utils import serialize_datetime
 from ...entity.types.entity_id import EntityId
 from ...entity.types.entity_response import EntityResponse
+from ...entity_users.types.entity_user_response import EntityUserResponse
 from ...payment_method.types.payment_method_id import PaymentMethodId
 from ...payment_method.types.payment_method_response import PaymentMethodResponse
 from ...transaction.types.transaction_response import TransactionResponse
+from .comment_response import CommentResponse
 from .currency_code import CurrencyCode
 from .invoice_id import InvoiceId
 from .invoice_line_item_response import InvoiceLineItemResponse
@@ -22,9 +24,16 @@ class InvoiceResponse(pydantic.BaseModel):
     status: InvoiceStatus
     amount: typing.Optional[float]
     currency: typing.Optional[CurrencyCode]
-    deduction_date: typing.Optional[dt.datetime] = pydantic.Field(alias="deductionDate")
-    funded_date: typing.Optional[dt.datetime] = pydantic.Field(alias="fundedDate")
-    due_date: typing.Optional[dt.datetime] = pydantic.Field(alias="dueDate")
+    invoice_date: typing.Optional[dt.datetime] = pydantic.Field(
+        alias="invoiceDate", description=("Date the invoice was created.\n")
+    )
+    deduction_date: typing.Optional[dt.datetime] = pydantic.Field(
+        alias="deductionDate", description=("Date when funds will be deducted from payer's account.\n")
+    )
+    funded_date: typing.Optional[dt.datetime] = pydantic.Field(
+        alias="fundedDate", description=("Date of funds settlement.\n")
+    )
+    due_date: typing.Optional[dt.datetime] = pydantic.Field(alias="dueDate", description=("Due date of invoice.\n"))
     invoice_number: typing.Optional[str] = pydantic.Field(alias="invoiceNumber")
     note_to_self: typing.Optional[str] = pydantic.Field(alias="noteToSelf")
     service_start_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceStartDate")
@@ -38,8 +47,13 @@ class InvoiceResponse(pydantic.BaseModel):
     payment_destination: typing.Optional[PaymentMethodResponse] = pydantic.Field(alias="paymentDestination")
     payment_destination_id: typing.Optional[PaymentMethodId] = pydantic.Field(alias="paymentDestinationId")
     payment_destination_confirmed: bool = pydantic.Field(alias="paymentDestinationConfirmed")
+    has_documents: bool = pydantic.Field(alias="hasDocuments")
+    comments: typing.Optional[typing.List[CommentResponse]]
     transactions: typing.Optional[typing.List[TransactionResponse]]
     line_items: typing.Optional[typing.List[InvoiceLineItemResponse]] = pydantic.Field(alias="lineItems")
+    created_by: typing.Optional[EntityUserResponse] = pydantic.Field(
+        alias="createdBy", description=("Entity user who created this invoice.\n")
+    )
     processed_at: typing.Optional[dt.datetime] = pydantic.Field(alias="processedAt")
     created_at: dt.datetime = pydantic.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic.Field(alias="updatedAt")

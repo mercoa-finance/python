@@ -16,6 +16,7 @@ from ...environment import MercoaEnvironment
 from ..invoice.types.currency_code import CurrencyCode
 from ..invoice.types.invoice_response import InvoiceResponse
 from ..invoice.types.invoice_status import InvoiceStatus
+from .types.entity_add_payees_request import EntityAddPayeesRequest
 from .types.entity_id import EntityId
 from .types.entity_request import EntityRequest
 from .types.entity_response import EntityResponse
@@ -231,6 +232,23 @@ class EntityClient:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
             return pydantic.parse_obj_as(str, _response_json)  # type: ignore
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def add_payees(self, entity_id: EntityId, *, request: EntityAddPayeesRequest) -> None:
+        _response = httpx.request(
+            "POST",
+            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/addPayees"),
+            json=jsonable_encoder(request),
+            headers=remove_none_from_headers(
+                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
+            ),
+        )
+        if 200 <= _response.status_code < 300:
+            return
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
 
@@ -454,4 +472,22 @@ class AsyncEntityClient:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
             return pydantic.parse_obj_as(str, _response_json)  # type: ignore
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def add_payees(self, entity_id: EntityId, *, request: EntityAddPayeesRequest) -> None:
+        async with httpx.AsyncClient() as _client:
+            _response = await _client.request(
+                "POST",
+                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/addPayees"),
+                json=jsonable_encoder(request),
+                headers=remove_none_from_headers(
+                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
+                ),
+            )
+        if 200 <= _response.status_code < 300:
+            return
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
         raise ApiError(status_code=_response.status_code, body=_response_json)

@@ -6,12 +6,11 @@ import typing
 import pydantic
 
 from ....core.datetime_utils import serialize_datetime
-from ...entity_users.types.entity_user_id import EntityUserId
+from .entity_id import EntityId
 
 
-class CommentRequest(pydantic.BaseModel):
-    text: str
-    user_id: typing.Optional[EntityUserId] = pydantic.Field(alias="userId")
+class EntityAddPayeesRequest(pydantic.BaseModel):
+    payees: typing.List[EntityId]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
@@ -23,5 +22,4 @@ class CommentRequest(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
         json_encoders = {dt.datetime: serialize_datetime}

@@ -7,6 +7,7 @@ import pydantic
 
 from ....core.datetime_utils import serialize_datetime
 from ...entity.types.entity_id import EntityId
+from ...entity_users.types.entity_user_id import EntityUserId
 from ...payment_method.types.payment_method_id import PaymentMethodId
 from .create_vendor_request import CreateVendorRequest
 from .currency_code import CurrencyCode
@@ -18,6 +19,9 @@ class InvoiceRequest(pydantic.BaseModel):
     status: typing.Optional[InvoiceStatus]
     amount: typing.Optional[float]
     currency: typing.Optional[CurrencyCode]
+    invoice_date: typing.Optional[dt.datetime] = pydantic.Field(
+        alias="invoiceDate", description=("Date the invoice was created.\n")
+    )
     deduction_date: typing.Optional[dt.datetime] = pydantic.Field(
         alias="deductionDate", description=("Date when funds will be deducted from payer's account.\n")
     )
@@ -49,6 +53,9 @@ class InvoiceRequest(pydantic.BaseModel):
     uploaded_image: typing.Optional[str] = pydantic.Field(
         alias="uploadedImage",
         description=("Base64 encoded image or PDF of invoice. PNG, JPG, and PDF are supported. 10MB max.\n"),
+    )
+    created_by_id: typing.Optional[EntityUserId] = pydantic.Field(
+        alias="createdById", description=("ID of entity user who created this invoice.\n")
     )
 
     def json(self, **kwargs: typing.Any) -> str:

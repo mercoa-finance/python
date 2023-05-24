@@ -82,6 +82,27 @@ class PaymentMethodClient:
             return pydantic.parse_obj_as(PaymentMethodResponse, _response_json)  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
+    def update(
+        self, entity_id: EntityId, payment_method_id: PaymentMethodId, *, request: PaymentMethodRequest
+    ) -> PaymentMethodResponse:
+        _response = httpx.request(
+            "PUT",
+            urllib.parse.urljoin(
+                f"{self._environment.value}/", f"entity/{entity_id}/paymentMethod/{payment_method_id}"
+            ),
+            json=jsonable_encoder(request),
+            headers=remove_none_from_headers(
+                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
+            ),
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return pydantic.parse_obj_as(PaymentMethodResponse, _response_json)  # type: ignore
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
     def delete(self, entity_id: EntityId, payment_method_id: PaymentMethodId) -> None:
         _response = httpx.request(
             "DELETE",
@@ -195,6 +216,28 @@ class AsyncPaymentMethodClient:
                 urllib.parse.urljoin(
                     f"{self._environment.value}/", f"entity/{entity_id}/paymentMethod/{payment_method_id}"
                 ),
+                headers=remove_none_from_headers(
+                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
+                ),
+            )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return pydantic.parse_obj_as(PaymentMethodResponse, _response_json)  # type: ignore
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def update(
+        self, entity_id: EntityId, payment_method_id: PaymentMethodId, *, request: PaymentMethodRequest
+    ) -> PaymentMethodResponse:
+        async with httpx.AsyncClient() as _client:
+            _response = await _client.request(
+                "PUT",
+                urllib.parse.urljoin(
+                    f"{self._environment.value}/", f"entity/{entity_id}/paymentMethod/{payment_method_id}"
+                ),
+                json=jsonable_encoder(request),
                 headers=remove_none_from_headers(
                     {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
                 ),
