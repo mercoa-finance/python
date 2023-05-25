@@ -17,10 +17,12 @@ from .types import (
     CustomId,
     CustomPaymentMethodRequest,
     CustomPaymentMethodResponse,
+    CustomPaymentMethodUpdateRequest,
     PaymentMethodId,
     PaymentMethodRequest,
     PaymentMethodResponse,
     PaymentMethodType,
+    PaymentMethodUpdateRequest,
 )
 
 __all__ = [
@@ -40,8 +42,10 @@ __all__ = [
     "CustomId",
     "CustomPaymentMethodRequest",
     "CustomPaymentMethodResponse",
+    "CustomPaymentMethodUpdateRequest",
     "PaymentMethodId",
     "PaymentMethodRequest",
     "PaymentMethodResponse",
     "PaymentMethodType",
+    "PaymentMethodUpdateRequest",
 ]

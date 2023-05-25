@@ -16,6 +16,7 @@ from .types.payment_method_id import PaymentMethodId
 from .types.payment_method_request import PaymentMethodRequest
 from .types.payment_method_response import PaymentMethodResponse
 from .types.payment_method_type import PaymentMethodType
+from .types.payment_method_update_request import PaymentMethodUpdateRequest
 
 
 class PaymentMethodClient:
@@ -83,7 +84,7 @@ class PaymentMethodClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def update(
-        self, entity_id: EntityId, payment_method_id: PaymentMethodId, *, request: PaymentMethodRequest
+        self, entity_id: EntityId, payment_method_id: PaymentMethodId, *, request: PaymentMethodUpdateRequest
     ) -> PaymentMethodResponse:
         _response = httpx.request(
             "PUT",
@@ -229,7 +230,7 @@ class AsyncPaymentMethodClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def update(
-        self, entity_id: EntityId, payment_method_id: PaymentMethodId, *, request: PaymentMethodRequest
+        self, entity_id: EntityId, payment_method_id: PaymentMethodId, *, request: PaymentMethodUpdateRequest
     ) -> PaymentMethodResponse:
         async with httpx.AsyncClient() as _client:
             _response = await _client.request(

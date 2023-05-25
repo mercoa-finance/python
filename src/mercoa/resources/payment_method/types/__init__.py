@@ -16,10 +16,12 @@ from .check_response import CheckResponse
 from .custom_id import CustomId
 from .custom_payment_method_request import CustomPaymentMethodRequest
 from .custom_payment_method_response import CustomPaymentMethodResponse
+from .custom_payment_method_update_request import CustomPaymentMethodUpdateRequest
 from .payment_method_id import PaymentMethodId
 from .payment_method_request import PaymentMethodRequest
 from .payment_method_response import PaymentMethodResponse
 from .payment_method_type import PaymentMethodType
+from .payment_method_update_request import PaymentMethodUpdateRequest
 
 __all__ = [
     "BankAccountId",
@@ -38,8 +40,10 @@ __all__ = [
     "CustomId",
     "CustomPaymentMethodRequest",
     "CustomPaymentMethodResponse",
+    "CustomPaymentMethodUpdateRequest",
     "PaymentMethodId",
     "PaymentMethodRequest",
     "PaymentMethodResponse",
     "PaymentMethodType",
+    "PaymentMethodUpdateRequest",
 ]

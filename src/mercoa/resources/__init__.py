@@ -89,10 +89,12 @@ from .payment_method import (
     CustomId,
     CustomPaymentMethodRequest,
     CustomPaymentMethodResponse,
+    CustomPaymentMethodUpdateRequest,
     PaymentMethodId,
     PaymentMethodRequest,
     PaymentMethodResponse,
     PaymentMethodType,
+    PaymentMethodUpdateRequest,
 )
 from .payment_method_schema import (
     PaymentMethodSchemaField,
@@ -139,6 +141,7 @@ __all__ = [
     "CustomId",
     "CustomPaymentMethodRequest",
     "CustomPaymentMethodResponse",
+    "CustomPaymentMethodUpdateRequest",
     "DocumentResponse",
     "Ein",
     "EmailLogResponse",
@@ -184,6 +187,7 @@ __all__ = [
     "PaymentMethodSchemaRequest",
     "PaymentMethodSchemaResponse",
     "PaymentMethodType",
+    "PaymentMethodUpdateRequest",
     "PaymentMethodsRequest",
     "PaymentMethodsResponse",
     "PaymentRailMarkup",
