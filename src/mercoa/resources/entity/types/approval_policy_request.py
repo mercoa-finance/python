@@ -3,12 +3,20 @@
 import datetime as dt
 import typing
 
+import pydantic
+
 from ....core.datetime_utils import serialize_datetime
-from .payment_rail_request import PaymentRailRequest
+from .policy_id import PolicyId
+from .rule import Rule
+from .trigger import Trigger
 
 
-class PaymentRailResponse(PaymentRailRequest):
-    available: bool
+class ApprovalPolicyRequest(pydantic.BaseModel):
+    trigger: Trigger
+    rule: Rule
+    upstream_policy_id: PolicyId = pydantic.Field(
+        alias="upstreamPolicyId", description=("Use 'root' if no upstreamPolicyId is intended to be set.\n")
+    )
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
@@ -20,4 +28,5 @@ class PaymentRailResponse(PaymentRailRequest):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True
         json_encoders = {dt.datetime: serialize_datetime}

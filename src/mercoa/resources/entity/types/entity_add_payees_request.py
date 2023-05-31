@@ -10,7 +10,9 @@ from .entity_id import EntityId
 
 
 class EntityAddPayeesRequest(pydantic.BaseModel):
-    payees: typing.List[EntityId]
+    payees: typing.List[EntityId] = pydantic.Field(
+        description=("List of payee entity IDs to associate with the entity\n")
+    )
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

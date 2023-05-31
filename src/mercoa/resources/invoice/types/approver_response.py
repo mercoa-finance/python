@@ -4,11 +4,12 @@ import datetime as dt
 import typing
 
 from ....core.datetime_utils import serialize_datetime
-from .payment_rail_request import PaymentRailRequest
+from ...entity_users.types.entity_user_response import EntityUserResponse
+from .approver import Approver
 
 
-class PaymentRailResponse(PaymentRailRequest):
-    available: bool
+class ApproverResponse(Approver):
+    user: typing.Optional[EntityUserResponse]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

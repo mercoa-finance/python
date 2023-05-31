@@ -13,9 +13,15 @@ from ...core.datetime_utils import serialize_datetime
 from ...core.jsonable_encoder import jsonable_encoder
 from ...core.remove_none_from_headers import remove_none_from_headers
 from ...environment import MercoaEnvironment
+from ..commons.types.order_direction import OrderDirection
 from ..invoice.types.currency_code import CurrencyCode
+from ..invoice.types.invoice_id import InvoiceId
+from ..invoice.types.invoice_order_by_field import InvoiceOrderByField
 from ..invoice.types.invoice_response import InvoiceResponse
 from ..invoice.types.invoice_status import InvoiceStatus
+from .types.approval_policy_request import ApprovalPolicyRequest
+from .types.approval_policy_response import ApprovalPolicyResponse
+from .types.approval_policy_update_request import ApprovalPolicyUpdateRequest
 from .types.entity_add_payees_request import EntityAddPayeesRequest
 from .types.entity_id import EntityId
 from .types.entity_request import EntityRequest
@@ -23,6 +29,7 @@ from .types.entity_response import EntityResponse
 from .types.entity_status import EntityStatus
 from .types.entity_update_request import EntityUpdateRequest
 from .types.invoice_metrics_response import InvoiceMetricsResponse
+from .types.policy_id import PolicyId
 
 
 class EntityClient:
@@ -134,12 +141,31 @@ class EntityClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get_invoices(
-        self, entity_id: EntityId, *, status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]]
+        self,
+        entity_id: EntityId,
+        *,
+        start_date: typing.Optional[dt.datetime] = None,
+        end_date: typing.Optional[dt.datetime] = None,
+        order_by: typing.Optional[InvoiceOrderByField] = None,
+        order_direction: typing.Optional[OrderDirection] = None,
+        limit: typing.Optional[int] = None,
+        starting_after: typing.Optional[InvoiceId] = None,
+        search: typing.Optional[str] = None,
+        status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]],
     ) -> typing.List[InvoiceResponse]:
         _response = httpx.request(
             "GET",
             urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/invoices"),
-            params={"status": status},
+            params={
+                "startDate": serialize_datetime(start_date) if start_date is not None else None,
+                "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                "orderBy": order_by,
+                "orderDirection": order_direction,
+                "limit": limit,
+                "startingAfter": starting_after,
+                "search": search,
+                "status": status,
+            },
             headers=remove_none_from_headers(
                 {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
             ),
@@ -156,6 +182,7 @@ class EntityClient:
         self,
         entity_id: EntityId,
         *,
+        search: typing.Optional[str] = None,
         status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]],
         due_date_start: typing.Optional[dt.datetime] = None,
         due_date_end: typing.Optional[dt.datetime] = None,
@@ -167,6 +194,7 @@ class EntityClient:
             "GET",
             urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/invoice-metrics"),
             params={
+                "search": search,
                 "status": status,
                 "dueDateStart": serialize_datetime(due_date_start) if due_date_start is not None else None,
                 "dueDateEnd": serialize_datetime(due_date_end) if due_date_end is not None else None,
@@ -249,6 +277,90 @@ class EntityClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def create_approval_policy(self, entity_id: EntityId, *, request: ApprovalPolicyRequest) -> ApprovalPolicyResponse:
+        _response = httpx.request(
+            "POST",
+            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/approval-policy"),
+            json=jsonable_encoder(request),
+            headers=remove_none_from_headers(
+                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
+            ),
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return pydantic.parse_obj_as(ApprovalPolicyResponse, _response_json)  # type: ignore
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def get_approval_policy(self, entity_id: EntityId, policy_id: PolicyId) -> ApprovalPolicyResponse:
+        _response = httpx.request(
+            "GET",
+            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/approval-policy/{policy_id}"),
+            headers=remove_none_from_headers(
+                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
+            ),
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return pydantic.parse_obj_as(ApprovalPolicyResponse, _response_json)  # type: ignore
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def update_approval_policy(
+        self, entity_id: EntityId, policy_id: PolicyId, *, request: ApprovalPolicyUpdateRequest
+    ) -> ApprovalPolicyResponse:
+        _response = httpx.request(
+            "POST",
+            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/approval-policy/{policy_id}"),
+            json=jsonable_encoder(request),
+            headers=remove_none_from_headers(
+                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
+            ),
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return pydantic.parse_obj_as(ApprovalPolicyResponse, _response_json)  # type: ignore
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def delete_approval_policy(self, entity_id: EntityId, policy_id: PolicyId) -> None:
+        _response = httpx.request(
+            "DELETE",
+            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/approval-policy/{policy_id}"),
+            headers=remove_none_from_headers(
+                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
+            ),
+        )
+        if 200 <= _response.status_code < 300:
+            return
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def get_all_approval_policies(self, entity_id: EntityId) -> typing.List[ApprovalPolicyResponse]:
+        _response = httpx.request(
+            "GET",
+            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/approval-policies"),
+            headers=remove_none_from_headers(
+                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
+            ),
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return pydantic.parse_obj_as(typing.List[ApprovalPolicyResponse], _response_json)  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
 
@@ -367,13 +479,32 @@ class AsyncEntityClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get_invoices(
-        self, entity_id: EntityId, *, status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]]
+        self,
+        entity_id: EntityId,
+        *,
+        start_date: typing.Optional[dt.datetime] = None,
+        end_date: typing.Optional[dt.datetime] = None,
+        order_by: typing.Optional[InvoiceOrderByField] = None,
+        order_direction: typing.Optional[OrderDirection] = None,
+        limit: typing.Optional[int] = None,
+        starting_after: typing.Optional[InvoiceId] = None,
+        search: typing.Optional[str] = None,
+        status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]],
     ) -> typing.List[InvoiceResponse]:
         async with httpx.AsyncClient() as _client:
             _response = await _client.request(
                 "GET",
                 urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/invoices"),
-                params={"status": status},
+                params={
+                    "startDate": serialize_datetime(start_date) if start_date is not None else None,
+                    "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                    "orderBy": order_by,
+                    "orderDirection": order_direction,
+                    "limit": limit,
+                    "startingAfter": starting_after,
+                    "search": search,
+                    "status": status,
+                },
                 headers=remove_none_from_headers(
                     {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
                 ),
@@ -390,6 +521,7 @@ class AsyncEntityClient:
         self,
         entity_id: EntityId,
         *,
+        search: typing.Optional[str] = None,
         status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]],
         due_date_start: typing.Optional[dt.datetime] = None,
         due_date_end: typing.Optional[dt.datetime] = None,
@@ -402,6 +534,7 @@ class AsyncEntityClient:
                 "GET",
                 urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/invoice-metrics"),
                 params={
+                    "search": search,
                     "status": status,
                     "dueDateStart": serialize_datetime(due_date_start) if due_date_start is not None else None,
                     "dueDateEnd": serialize_datetime(due_date_end) if due_date_end is not None else None,
@@ -490,4 +623,95 @@ class AsyncEntityClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def create_approval_policy(
+        self, entity_id: EntityId, *, request: ApprovalPolicyRequest
+    ) -> ApprovalPolicyResponse:
+        async with httpx.AsyncClient() as _client:
+            _response = await _client.request(
+                "POST",
+                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/approval-policy"),
+                json=jsonable_encoder(request),
+                headers=remove_none_from_headers(
+                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
+                ),
+            )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return pydantic.parse_obj_as(ApprovalPolicyResponse, _response_json)  # type: ignore
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def get_approval_policy(self, entity_id: EntityId, policy_id: PolicyId) -> ApprovalPolicyResponse:
+        async with httpx.AsyncClient() as _client:
+            _response = await _client.request(
+                "GET",
+                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/approval-policy/{policy_id}"),
+                headers=remove_none_from_headers(
+                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
+                ),
+            )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return pydantic.parse_obj_as(ApprovalPolicyResponse, _response_json)  # type: ignore
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def update_approval_policy(
+        self, entity_id: EntityId, policy_id: PolicyId, *, request: ApprovalPolicyUpdateRequest
+    ) -> ApprovalPolicyResponse:
+        async with httpx.AsyncClient() as _client:
+            _response = await _client.request(
+                "POST",
+                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/approval-policy/{policy_id}"),
+                json=jsonable_encoder(request),
+                headers=remove_none_from_headers(
+                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
+                ),
+            )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return pydantic.parse_obj_as(ApprovalPolicyResponse, _response_json)  # type: ignore
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def delete_approval_policy(self, entity_id: EntityId, policy_id: PolicyId) -> None:
+        async with httpx.AsyncClient() as _client:
+            _response = await _client.request(
+                "DELETE",
+                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/approval-policy/{policy_id}"),
+                headers=remove_none_from_headers(
+                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
+                ),
+            )
+        if 200 <= _response.status_code < 300:
+            return
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def get_all_approval_policies(self, entity_id: EntityId) -> typing.List[ApprovalPolicyResponse]:
+        async with httpx.AsyncClient() as _client:
+            _response = await _client.request(
+                "GET",
+                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/approval-policies"),
+                headers=remove_none_from_headers(
+                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
+                ),
+            )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return pydantic.parse_obj_as(typing.List[ApprovalPolicyResponse], _response_json)  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)

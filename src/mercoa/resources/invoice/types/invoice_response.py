@@ -12,6 +12,7 @@ from ...entity_users.types.entity_user_response import EntityUserResponse
 from ...payment_method.types.payment_method_id import PaymentMethodId
 from ...payment_method.types.payment_method_response import PaymentMethodResponse
 from ...transaction.types.transaction_response import TransactionResponse
+from .approver import Approver
 from .comment_response import CommentResponse
 from .currency_code import CurrencyCode
 from .invoice_id import InvoiceId
@@ -51,6 +52,8 @@ class InvoiceResponse(pydantic.BaseModel):
     comments: typing.Optional[typing.List[CommentResponse]]
     transactions: typing.Optional[typing.List[TransactionResponse]]
     line_items: typing.Optional[typing.List[InvoiceLineItemResponse]] = pydantic.Field(alias="lineItems")
+    approvers: typing.List[Approver]
+    metadata: typing.Dict[str, str] = pydantic.Field(description=("Metadata associated with this invoice.\n"))
     created_by: typing.Optional[EntityUserResponse] = pydantic.Field(
         alias="createdBy", description=("Entity user who created this invoice.\n")
     )

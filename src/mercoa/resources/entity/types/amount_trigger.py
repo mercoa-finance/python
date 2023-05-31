@@ -3,12 +3,15 @@
 import datetime as dt
 import typing
 
+import pydantic
+
 from ....core.datetime_utils import serialize_datetime
-from .payment_rail_request import PaymentRailRequest
+from ...invoice.types.currency_code import CurrencyCode
 
 
-class PaymentRailResponse(PaymentRailRequest):
-    available: bool
+class AmountTrigger(pydantic.BaseModel):
+    amount: float
+    currency: CurrencyCode
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

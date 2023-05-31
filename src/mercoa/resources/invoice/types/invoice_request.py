@@ -50,6 +50,11 @@ class InvoiceRequest(pydantic.BaseModel):
         ),
     )
     line_items: typing.Optional[typing.List[InvoiceLineItemRequest]] = pydantic.Field(alias="lineItems")
+    metadata: typing.Optional[typing.Dict[str, str]] = pydantic.Field(
+        description=(
+            "Metadata associated with this invoice. You can specify up to 10 keys, with key names up to 40 characters long and values up to 200 characters long.\n"
+        )
+    )
     uploaded_image: typing.Optional[str] = pydantic.Field(
         alias="uploadedImage",
         description=("Base64 encoded image or PDF of invoice. PNG, JPG, and PDF are supported. 10MB max.\n"),

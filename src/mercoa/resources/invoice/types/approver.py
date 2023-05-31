@@ -3,12 +3,17 @@
 import datetime as dt
 import typing
 
+import pydantic
+
 from ....core.datetime_utils import serialize_datetime
-from .payment_rail_request import PaymentRailRequest
+from ...entity_users.types.entity_user_id import EntityUserId
+from .approver_action import ApproverAction
 
 
-class PaymentRailResponse(PaymentRailRequest):
-    available: bool
+class Approver(pydantic.BaseModel):
+    user_id: EntityUserId = pydantic.Field(alias="userId")
+    date: dt.datetime
+    action: ApproverAction
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
@@ -20,4 +25,5 @@ class PaymentRailResponse(PaymentRailRequest):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True
         json_encoders = {dt.datetime: serialize_datetime}
