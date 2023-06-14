@@ -70,7 +70,6 @@ from .invoice import (
     CommentId,
     CommentRequest,
     CommentResponse,
-    CreateVendorRequest,
     CurrencyCode,
     DocumentResponse,
     InvoiceId,
@@ -80,6 +79,7 @@ from .invoice import (
     InvoiceRequest,
     InvoiceResponse,
     InvoiceStatus,
+    SetApprover,
 )
 from .ocr import Attachments, EmailOcrRequest, OcrMailbox, OCRResponse
 from .organization import (
@@ -174,7 +174,6 @@ __all__ = [
     "CommentRequest",
     "CommentResponse",
     "CounterpartyResponse",
-    "CreateVendorRequest",
     "CurrencyCode",
     "CustomId",
     "CustomPaymentMethodRequest",
@@ -249,6 +248,7 @@ __all__ = [
     "Rule",
     "Rule_Approver",
     "SSN",
+    "SetApprover",
     "TaxID",
     "TransactionId",
     "TransactionResponse",

@@ -6,13 +6,12 @@ import typing
 import pydantic
 
 from ....core.datetime_utils import serialize_datetime
-from ...entity.types.entity_request import EntityRequest
-from ...payment_method.types.payment_method_request import PaymentMethodRequest
+from ...entity_users.types.entity_user_id import EntityUserId
 
 
-class CreateVendorRequest(pydantic.BaseModel):
-    vendor: EntityRequest
-    payment_method: typing.Optional[PaymentMethodRequest] = pydantic.Field(alias="paymentMethod")
+class SetApprover(pydantic.BaseModel):
+    user_id: EntityUserId = pydantic.Field(alias="userId")
+    date: dt.datetime
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

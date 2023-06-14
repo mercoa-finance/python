@@ -9,10 +9,10 @@ from ....core.datetime_utils import serialize_datetime
 from ...entity.types.entity_id import EntityId
 from ...entity_users.types.entity_user_id import EntityUserId
 from ...payment_method.types.payment_method_id import PaymentMethodId
-from .create_vendor_request import CreateVendorRequest
 from .currency_code import CurrencyCode
 from .invoice_line_item_request import InvoiceLineItemRequest
 from .invoice_status import InvoiceStatus
+from .set_approver import SetApprover
 
 
 class InvoiceRequest(pydantic.BaseModel):
@@ -35,20 +35,11 @@ class InvoiceRequest(pydantic.BaseModel):
     service_end_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceEndDate")
     payer_id: typing.Optional[EntityId] = pydantic.Field(alias="payerId")
     payment_source_id: typing.Optional[PaymentMethodId] = pydantic.Field(alias="paymentSourceId")
+    approvers: typing.Optional[typing.List[SetApprover]] = pydantic.Field(
+        description=("Set approvers for this invoice.\n")
+    )
     vendor_id: typing.Optional[EntityId] = pydantic.Field(alias="vendorId")
     payment_destination_id: typing.Optional[PaymentMethodId] = pydantic.Field(alias="paymentDestinationId")
-    create_vendor: typing.Optional[CreateVendorRequest] = pydantic.Field(
-        alias="createVendor",
-        description=(
-            "When paying to a new vendor, use the createVendor object. Mercoa will create the vendor entity and tie it to this invoice. This object is ignored when updating an invoice.\n"
-        ),
-    )
-    update_vendor: typing.Optional[CreateVendorRequest] = pydantic.Field(
-        alias="updateVendor",
-        description=(
-            "When paying to an existing vendor with an incomplete profile, use the updateVendor object. Mercoa will update the vendor entity tied to this invoice. This object is ignored if the vendor already has already been created with complete information and when creating a new invoice.\n"
-        ),
-    )
     line_items: typing.Optional[typing.List[InvoiceLineItemRequest]] = pydantic.Field(alias="lineItems")
     metadata: typing.Optional[typing.Dict[str, str]] = pydantic.Field(
         description=(

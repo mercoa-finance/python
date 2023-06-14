@@ -8,7 +8,6 @@ from .types import (
     CommentId,
     CommentRequest,
     CommentResponse,
-    CreateVendorRequest,
     CurrencyCode,
     DocumentResponse,
     InvoiceId,
@@ -18,6 +17,7 @@ from .types import (
     InvoiceRequest,
     InvoiceResponse,
     InvoiceStatus,
+    SetApprover,
 )
 
 __all__ = [
@@ -28,7 +28,6 @@ __all__ = [
     "CommentId",
     "CommentRequest",
     "CommentResponse",
-    "CreateVendorRequest",
     "CurrencyCode",
     "DocumentResponse",
     "InvoiceId",
@@ -38,4 +37,5 @@ __all__ = [
     "InvoiceRequest",
     "InvoiceResponse",
     "InvoiceStatus",
+    "SetApprover",
 ]

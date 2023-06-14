@@ -12,7 +12,6 @@ from ...core.jsonable_encoder import jsonable_encoder
 from ...core.remove_none_from_headers import remove_none_from_headers
 from ...environment import MercoaEnvironment
 from ..organization.types.organization_id import OrganizationId
-from .types.email_ocr_request import EmailOcrRequest
 from .types.ocr_response import OCRResponse
 
 
@@ -40,12 +39,12 @@ class OcrClient:
             return pydantic.parse_obj_as(OCRResponse, _response_json)  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def email_inbox(self, *, org: OrganizationId, items: typing.List[EmailOcrRequest]) -> None:
+    def email_inbox(self, *, org: OrganizationId, request: typing.Any) -> None:
         _response = httpx.request(
             "POST",
             urllib.parse.urljoin(f"{self._environment.value}/", "emailOcr"),
             params={"org": org},
-            json=jsonable_encoder({"items": items}),
+            json=jsonable_encoder(request),
             headers=remove_none_from_headers(
                 {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
             ),
@@ -84,13 +83,13 @@ class AsyncOcrClient:
             return pydantic.parse_obj_as(OCRResponse, _response_json)  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def email_inbox(self, *, org: OrganizationId, items: typing.List[EmailOcrRequest]) -> None:
+    async def email_inbox(self, *, org: OrganizationId, request: typing.Any) -> None:
         async with httpx.AsyncClient() as _client:
             _response = await _client.request(
                 "POST",
                 urllib.parse.urljoin(f"{self._environment.value}/", "emailOcr"),
                 params={"org": org},
-                json=jsonable_encoder({"items": items}),
+                json=jsonable_encoder(request),
                 headers=remove_none_from_headers(
                     {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
                 ),

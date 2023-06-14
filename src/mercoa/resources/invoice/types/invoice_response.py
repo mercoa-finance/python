@@ -6,6 +6,7 @@ import typing
 import pydantic
 
 from ....core.datetime_utils import serialize_datetime
+from ...entity.types.approval_policy_response import ApprovalPolicyResponse
 from ...entity.types.entity_id import EntityId
 from ...entity.types.entity_response import EntityResponse
 from ...entity_users.types.entity_user_response import EntityUserResponse
@@ -53,6 +54,7 @@ class InvoiceResponse(pydantic.BaseModel):
     transactions: typing.Optional[typing.List[TransactionResponse]]
     line_items: typing.Optional[typing.List[InvoiceLineItemResponse]] = pydantic.Field(alias="lineItems")
     approvers: typing.List[Approver]
+    approval_policy: typing.List[ApprovalPolicyResponse] = pydantic.Field(alias="approvalPolicy")
     metadata: typing.Dict[str, str] = pydantic.Field(description=("Metadata associated with this invoice.\n"))
     created_by: typing.Optional[EntityUserResponse] = pydantic.Field(
         alias="createdBy", description=("Entity user who created this invoice.\n")

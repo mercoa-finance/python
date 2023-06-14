@@ -3,16 +3,13 @@
 import datetime as dt
 import typing
 
-import pydantic
-
 from ....core.datetime_utils import serialize_datetime
-from ...entity_users.types.entity_user_id import EntityUserId
 from .approver_action import ApproverAction
+from .set_approver import SetApprover
 
 
-class Approver(pydantic.BaseModel):
-    user_id: EntityUserId = pydantic.Field(alias="userId")
-    date: dt.datetime
+class Approver(SetApprover):
+    roles: typing.List[str]
     action: ApproverAction
 
     def json(self, **kwargs: typing.Any) -> str:
@@ -25,5 +22,4 @@ class Approver(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
         json_encoders = {dt.datetime: serialize_datetime}

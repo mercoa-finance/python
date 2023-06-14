@@ -110,7 +110,7 @@ class InvoiceClient:
             return pydantic.parse_obj_as(typing.List[DocumentResponse], _response_json)  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def approve(self, invoice_id: InvoiceId, *, request: ApprovalRequest) -> InvoiceResponse:
+    def approve(self, invoice_id: InvoiceId, *, request: ApprovalRequest) -> CommentResponse:
         _response = httpx.request(
             "POST",
             urllib.parse.urljoin(f"{self._environment.value}/", f"invoice/{invoice_id}/approve"),
@@ -124,10 +124,10 @@ class InvoiceClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(InvoiceResponse, _response_json)  # type: ignore
+            return pydantic.parse_obj_as(CommentResponse, _response_json)  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def reject(self, invoice_id: InvoiceId, *, request: ApprovalRequest) -> InvoiceResponse:
+    def reject(self, invoice_id: InvoiceId, *, request: ApprovalRequest) -> CommentResponse:
         _response = httpx.request(
             "POST",
             urllib.parse.urljoin(f"{self._environment.value}/", f"invoice/{invoice_id}/reject"),
@@ -141,7 +141,7 @@ class InvoiceClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(InvoiceResponse, _response_json)  # type: ignore
+            return pydantic.parse_obj_as(CommentResponse, _response_json)  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get_comments(self, invoice_id: InvoiceId) -> typing.List[CommentResponse]:
@@ -337,7 +337,7 @@ class AsyncInvoiceClient:
             return pydantic.parse_obj_as(typing.List[DocumentResponse], _response_json)  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def approve(self, invoice_id: InvoiceId, *, request: ApprovalRequest) -> InvoiceResponse:
+    async def approve(self, invoice_id: InvoiceId, *, request: ApprovalRequest) -> CommentResponse:
         async with httpx.AsyncClient() as _client:
             _response = await _client.request(
                 "POST",
@@ -352,10 +352,10 @@ class AsyncInvoiceClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(InvoiceResponse, _response_json)  # type: ignore
+            return pydantic.parse_obj_as(CommentResponse, _response_json)  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def reject(self, invoice_id: InvoiceId, *, request: ApprovalRequest) -> InvoiceResponse:
+    async def reject(self, invoice_id: InvoiceId, *, request: ApprovalRequest) -> CommentResponse:
         async with httpx.AsyncClient() as _client:
             _response = await _client.request(
                 "POST",
@@ -370,7 +370,7 @@ class AsyncInvoiceClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(InvoiceResponse, _response_json)  # type: ignore
+            return pydantic.parse_obj_as(CommentResponse, _response_json)  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get_comments(self, invoice_id: InvoiceId) -> typing.List[CommentResponse]:
