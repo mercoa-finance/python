@@ -6,8 +6,8 @@ import typing
 import pydantic
 
 from ....core.datetime_utils import serialize_datetime
+from ...commons.types.entity_id import EntityId
 from .account_type import AccountType
-from .entity_id import EntityId
 from .entity_status import EntityStatus
 from .profile_response import ProfileResponse
 

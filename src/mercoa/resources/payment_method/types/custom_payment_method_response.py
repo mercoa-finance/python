@@ -6,13 +6,14 @@ import typing
 import pydantic
 
 from ....core.datetime_utils import serialize_datetime
-from ...payment_method_schema.types.payment_method_schema_id import PaymentMethodSchemaId
+from ...commons.types.payment_method_id import PaymentMethodId
+from ...commons.types.payment_method_schema_id import PaymentMethodSchemaId
 from ...payment_method_schema.types.payment_method_schema_response import PaymentMethodSchemaResponse
-from .custom_id import CustomId
+from .currency_code import CurrencyCode
 
 
 class CustomPaymentMethodResponse(pydantic.BaseModel):
-    id: CustomId
+    id: PaymentMethodId
     foreign_id: str = pydantic.Field(alias="foreignId", description=("ID for this payment method in your system\n"))
     account_name: typing.Optional[str] = pydantic.Field(alias="accountName")
     account_number: typing.Optional[str] = pydantic.Field(alias="accountNumber")
@@ -26,6 +27,7 @@ class CustomPaymentMethodResponse(pydantic.BaseModel):
     data: typing.Dict[str, str] = pydantic.Field(
         description=("Object of key/value pairs that matches the keys in the linked payment method schema.\n")
     )
+    supported_currencies: typing.List[CurrencyCode] = pydantic.Field(alias="supportedCurrencies")
     created_at: dt.datetime = pydantic.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
 

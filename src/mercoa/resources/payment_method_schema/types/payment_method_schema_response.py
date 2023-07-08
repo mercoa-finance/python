@@ -6,9 +6,9 @@ import typing
 import pydantic
 
 from ....core.datetime_utils import serialize_datetime
-from ...invoice.types.currency_code import CurrencyCode
+from ...commons.types.payment_method_schema_id import PaymentMethodSchemaId
+from ...payment_method.types.currency_code import CurrencyCode
 from .payment_method_schema_field import PaymentMethodSchemaField
-from .payment_method_schema_id import PaymentMethodSchemaId
 
 
 class PaymentMethodSchemaResponse(pydantic.BaseModel):

@@ -9,7 +9,7 @@ from ....core.datetime_utils import serialize_datetime
 from ...commons.types.address import Address
 from ...commons.types.birth_date import BirthDate
 from ...commons.types.full_name import FullName
-from ...commons.types.individual_government_id import IndividualGovernmentID
+from ...commons.types.individual_government_id import IndividualGovernmentId
 from ...commons.types.phone_number import PhoneNumber
 
 
@@ -19,7 +19,7 @@ class IndividualProfileRequest(pydantic.BaseModel):
     phone: typing.Optional[PhoneNumber]
     address: typing.Optional[Address]
     birth_date: typing.Optional[BirthDate] = pydantic.Field(alias="birthDate")
-    government_id: typing.Optional[IndividualGovernmentID] = pydantic.Field(alias="governmentID")
+    government_id: typing.Optional[IndividualGovernmentId] = pydantic.Field(alias="governmentID")
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

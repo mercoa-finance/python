@@ -6,18 +6,20 @@ import typing
 import pydantic
 
 from ....core.datetime_utils import serialize_datetime
-from .bank_account_id import BankAccountId
+from ...commons.types.payment_method_id import PaymentMethodId
 from .bank_status import BankStatus
 from .bank_type import BankType
+from .currency_code import CurrencyCode
 
 
 class BankAccountResponse(pydantic.BaseModel):
-    id: BankAccountId
+    id: PaymentMethodId
     bank_name: str = pydantic.Field(alias="bankName")
     routing_number: str = pydantic.Field(alias="routingNumber")
     account_number: str = pydantic.Field(alias="accountNumber")
     account_type: BankType = pydantic.Field(alias="accountType")
     status: BankStatus
+    supported_currencies: typing.List[CurrencyCode] = pydantic.Field(alias="supportedCurrencies")
     created_at: dt.datetime = pydantic.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
 

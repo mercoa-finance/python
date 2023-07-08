@@ -6,13 +6,13 @@ import typing
 import pydantic
 
 from ....core.datetime_utils import serialize_datetime
-from .itin import ITIN
-from .ssn import SSN
+from .itin import Itin
+from .ssn import Ssn
 
 
-class IndividualGovernmentID(pydantic.BaseModel):
-    ssn: typing.Optional[SSN]
-    itin: typing.Optional[ITIN]
+class IndividualGovernmentId(pydantic.BaseModel):
+    ssn: typing.Optional[Ssn]
+    itin: typing.Optional[Itin]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

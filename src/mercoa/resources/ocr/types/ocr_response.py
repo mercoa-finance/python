@@ -12,7 +12,7 @@ from ...payment_method.types.bank_account_response import BankAccountResponse
 from ...payment_method.types.check_response import CheckResponse
 
 
-class OCRResponse(pydantic.BaseModel):
+class OcrResponse(pydantic.BaseModel):
     invoice: InvoiceResponse
     vendor: EntityResponse
     check: typing.Optional[CheckResponse]

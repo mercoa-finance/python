@@ -6,11 +6,12 @@ import typing
 import pydantic
 
 from ....core.datetime_utils import serialize_datetime
-from .check_id import CheckId
+from ...commons.types.payment_method_id import PaymentMethodId
+from .currency_code import CurrencyCode
 
 
 class CheckResponse(pydantic.BaseModel):
-    id: CheckId
+    id: PaymentMethodId
     pay_to_the_order_of: str = pydantic.Field(alias="payToTheOrderOf")
     address_line_1: str = pydantic.Field(alias="addressLine1")
     address_line_2: typing.Optional[str] = pydantic.Field(alias="addressLine2")
@@ -18,6 +19,7 @@ class CheckResponse(pydantic.BaseModel):
     state_or_province: str = pydantic.Field(alias="stateOrProvince")
     postal_code: str = pydantic.Field(alias="postalCode")
     country: str
+    supported_currencies: typing.List[CurrencyCode] = pydantic.Field(alias="supportedCurrencies")
     created_at: dt.datetime = pydantic.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
 

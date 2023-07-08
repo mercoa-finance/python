@@ -9,7 +9,7 @@ from ....core.datetime_utils import serialize_datetime
 from .ein import Ein
 
 
-class TaxID(pydantic.BaseModel):
+class TaxId(pydantic.BaseModel):
     ein: Ein
 
     def json(self, **kwargs: typing.Any) -> str:

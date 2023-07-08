@@ -6,18 +6,20 @@ import typing
 import pydantic
 
 from ....core.datetime_utils import serialize_datetime
+from ...commons.types.payment_method_id import PaymentMethodId
 from .card_brand import CardBrand
-from .card_id import CardId
 from .card_type import CardType
+from .currency_code import CurrencyCode
 
 
 class CardResponse(pydantic.BaseModel):
-    id: CardId
-    type: CardType
-    brand: CardBrand
+    id: PaymentMethodId
+    card_type: CardType = pydantic.Field(alias="cardType")
+    card_brand: CardBrand = pydantic.Field(alias="cardBrand")
     last_four: str = pydantic.Field(alias="lastFour")
     exp_month: str = pydantic.Field(alias="expMonth")
     exp_year: str = pydantic.Field(alias="expYear")
+    supported_currencies: typing.List[CurrencyCode] = pydantic.Field(alias="supportedCurrencies")
     created_at: dt.datetime = pydantic.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
 

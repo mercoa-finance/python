@@ -9,7 +9,7 @@ from ....core.datetime_utils import serialize_datetime
 from ...commons.types.address import Address
 from ...commons.types.phone_number import PhoneNumber
 from .business_type import BusinessType
-from .tax_id import TaxID
+from .tax_id import TaxId
 
 
 class BusinessProfileRequest(pydantic.BaseModel):
@@ -22,7 +22,7 @@ class BusinessProfileRequest(pydantic.BaseModel):
     description: typing.Optional[str]
     address: typing.Optional[Address]
     owners_provided: typing.Optional[bool] = pydantic.Field(alias="ownersProvided")
-    tax_id: typing.Optional[TaxID] = pydantic.Field(alias="taxId")
+    tax_id: typing.Optional[TaxId] = pydantic.Field(alias="taxId")
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

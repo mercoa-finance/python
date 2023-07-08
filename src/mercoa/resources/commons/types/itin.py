@@ -8,7 +8,7 @@ import pydantic
 from ....core.datetime_utils import serialize_datetime
 
 
-class ITIN(pydantic.BaseModel):
+class Itin(pydantic.BaseModel):
     full: typing.Optional[str]
     last_four: str = pydantic.Field(alias="lastFour")
 

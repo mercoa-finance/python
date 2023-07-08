@@ -2,14 +2,12 @@
 
 from .payment_method_schema_field import PaymentMethodSchemaField
 from .payment_method_schema_field_type import PaymentMethodSchemaFieldType
-from .payment_method_schema_id import PaymentMethodSchemaId
 from .payment_method_schema_request import PaymentMethodSchemaRequest
 from .payment_method_schema_response import PaymentMethodSchemaResponse
 
 __all__ = [
     "PaymentMethodSchemaField",
     "PaymentMethodSchemaFieldType",
-    "PaymentMethodSchemaId",
     "PaymentMethodSchemaRequest",
     "PaymentMethodSchemaResponse",
 ]

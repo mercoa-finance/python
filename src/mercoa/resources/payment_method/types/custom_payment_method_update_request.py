@@ -6,7 +6,7 @@ import typing
 import pydantic
 
 from ....core.datetime_utils import serialize_datetime
-from ...payment_method_schema.types.payment_method_schema_id import PaymentMethodSchemaId
+from ...commons.types.payment_method_schema_id import PaymentMethodSchemaId
 
 
 class CustomPaymentMethodUpdateRequest(pydantic.BaseModel):

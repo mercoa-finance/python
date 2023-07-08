@@ -6,12 +6,10 @@ import typing
 import pydantic
 
 from ....core.datetime_utils import serialize_datetime
-from .bank_account_id import BankAccountId
 from .bank_type import BankType
 
 
 class BankAccountRequest(pydantic.BaseModel):
-    id: typing.Optional[BankAccountId]
     bank_name: str = pydantic.Field(alias="bankName")
     routing_number: str = pydantic.Field(alias="routingNumber")
     account_number: str = pydantic.Field(alias="accountNumber")

@@ -6,7 +6,7 @@ import typing
 import pydantic
 
 from ....core.datetime_utils import serialize_datetime
-from .entity_id import EntityId
+from ...commons.types.entity_id import EntityId
 
 
 class EntityAddPayeesRequest(pydantic.BaseModel):

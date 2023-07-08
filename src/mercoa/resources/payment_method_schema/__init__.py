@@ -3,7 +3,6 @@
 from .types import (
     PaymentMethodSchemaField,
     PaymentMethodSchemaFieldType,
-    PaymentMethodSchemaId,
     PaymentMethodSchemaRequest,
     PaymentMethodSchemaResponse,
 )
@@ -11,7 +10,6 @@ from .types import (
 __all__ = [
     "PaymentMethodSchemaField",
     "PaymentMethodSchemaFieldType",
-    "PaymentMethodSchemaId",
     "PaymentMethodSchemaRequest",
     "PaymentMethodSchemaResponse",
 ]

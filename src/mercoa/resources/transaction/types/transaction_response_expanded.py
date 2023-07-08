@@ -6,8 +6,8 @@ import typing
 import pydantic
 
 from ....core.datetime_utils import serialize_datetime
+from ...commons.types.invoice_id import InvoiceId
 from ...entity.types.entity_response import EntityResponse
-from ...invoice.types.invoice_id import InvoiceId
 from ...payment_method.types.payment_method_response import PaymentMethodResponse
 from .transaction_response import TransactionResponse
 
