@@ -14,13 +14,13 @@ from .....environment import MercoaEnvironment
 from ....commons.errors.auth_header_malformed_error import AuthHeaderMalformedError
 from ....commons.errors.auth_header_missing_error import AuthHeaderMissingError
 from ....commons.errors.unauthorized import Unauthorized
-from ....commons.types.approval_policy_id import ApprovalPolicyId
-from ....commons.types.entity_id import EntityId
+from ....entity_types.types.approval_policy_id import ApprovalPolicyId
+from ....entity_types.types.approval_policy_request import ApprovalPolicyRequest
+from ....entity_types.types.approval_policy_response import ApprovalPolicyResponse
+from ....entity_types.types.approval_policy_update_request import ApprovalPolicyUpdateRequest
+from ....entity_types.types.entity_id import EntityId
 from .errors.num_approver_less_than_one_error import NumApproverLessThanOneError
 from .errors.num_approvers_user_list_mismatch_error import NumApproversUserListMismatchError
-from .types.approval_policy_request import ApprovalPolicyRequest
-from .types.approval_policy_response import ApprovalPolicyResponse
-from .types.approval_policy_update_request import ApprovalPolicyUpdateRequest
 
 
 class ApprovalPolicyClient:

@@ -16,16 +16,16 @@ from ...environment import MercoaEnvironment
 from ..commons.errors.auth_header_malformed_error import AuthHeaderMalformedError
 from ..commons.errors.auth_header_missing_error import AuthHeaderMissingError
 from ..commons.errors.unauthorized import Unauthorized
-from ..commons.types.entity_id import EntityId
-from ..commons.types.invoice_id import InvoiceId
 from ..commons.types.order_direction import OrderDirection
+from ..entity_types.types.entity_id import EntityId
+from ..invoice_types.types.invoice_id import InvoiceId
+from ..invoice_types.types.invoice_order_by_field import InvoiceOrderByField
+from ..invoice_types.types.invoice_request import InvoiceRequest
+from ..invoice_types.types.invoice_response import InvoiceResponse
+from ..invoice_types.types.invoice_status import InvoiceStatus
 from .resources.approval.client import ApprovalClient, AsyncApprovalClient
 from .resources.comment.client import AsyncCommentClient, CommentClient
 from .resources.document.client import AsyncDocumentClient, DocumentClient
-from .types.invoice_order_by_field import InvoiceOrderByField
-from .types.invoice_request import InvoiceRequest
-from .types.invoice_response import InvoiceResponse
-from .types.invoice_status import InvoiceStatus
 
 
 class InvoiceClient:

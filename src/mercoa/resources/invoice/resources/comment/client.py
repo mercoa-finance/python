@@ -14,10 +14,10 @@ from .....environment import MercoaEnvironment
 from ....commons.errors.auth_header_malformed_error import AuthHeaderMalformedError
 from ....commons.errors.auth_header_missing_error import AuthHeaderMissingError
 from ....commons.errors.unauthorized import Unauthorized
-from ....commons.types.comment_id import CommentId
-from ....commons.types.invoice_id import InvoiceId
-from .types.comment_request import CommentRequest
-from .types.comment_response import CommentResponse
+from ....invoice_types.types.comment_id import CommentId
+from ....invoice_types.types.comment_request import CommentRequest
+from ....invoice_types.types.comment_response import CommentResponse
+from ....invoice_types.types.invoice_id import InvoiceId
 
 
 class CommentClient:

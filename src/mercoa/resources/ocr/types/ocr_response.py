@@ -6,10 +6,10 @@ import typing
 import pydantic
 
 from ....core.datetime_utils import serialize_datetime
-from ...entity.types.entity_response import EntityResponse
-from ...invoice.types.invoice_response import InvoiceResponse
-from ...payment_method.types.bank_account_response import BankAccountResponse
-from ...payment_method.types.check_response import CheckResponse
+from ...entity_types.types.entity_response import EntityResponse
+from ...invoice_types.types.invoice_response import InvoiceResponse
+from ...payment_method_types.types.bank_account_response import BankAccountResponse
+from ...payment_method_types.types.check_response import CheckResponse
 
 
 class OcrResponse(pydantic.BaseModel):

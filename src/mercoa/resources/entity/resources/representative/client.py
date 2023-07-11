@@ -14,10 +14,10 @@ from .....environment import MercoaEnvironment
 from ....commons.errors.auth_header_malformed_error import AuthHeaderMalformedError
 from ....commons.errors.auth_header_missing_error import AuthHeaderMissingError
 from ....commons.errors.unauthorized import Unauthorized
-from ....commons.types.entity_id import EntityId
-from .types.representative_id import RepresentativeId
-from .types.representative_request import RepresentativeRequest
-from .types.representative_response import RepresentativeResponse
+from ....entity_types.types.entity_id import EntityId
+from ....entity_types.types.representative_id import RepresentativeId
+from ....entity_types.types.representative_request import RepresentativeRequest
+from ....entity_types.types.representative_response import RepresentativeResponse
 
 
 class RepresentativeClient:

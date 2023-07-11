@@ -13,8 +13,8 @@ from .....environment import MercoaEnvironment
 from ....commons.errors.auth_header_malformed_error import AuthHeaderMalformedError
 from ....commons.errors.auth_header_missing_error import AuthHeaderMissingError
 from ....commons.errors.unauthorized import Unauthorized
-from ....commons.types.invoice_id import InvoiceId
-from .types.document_response import DocumentResponse
+from ....invoice_types.types.document_response import DocumentResponse
+from ....invoice_types.types.invoice_id import InvoiceId
 
 
 class DocumentClient:

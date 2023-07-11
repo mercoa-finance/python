@@ -15,14 +15,14 @@ from .....environment import MercoaEnvironment
 from ....commons.errors.auth_header_malformed_error import AuthHeaderMalformedError
 from ....commons.errors.auth_header_missing_error import AuthHeaderMissingError
 from ....commons.errors.unauthorized import Unauthorized
-from ....commons.types.entity_id import EntityId
-from ....commons.types.invoice_id import InvoiceId
 from ....commons.types.order_direction import OrderDirection
-from ....invoice.types.invoice_order_by_field import InvoiceOrderByField
-from ....invoice.types.invoice_response import InvoiceResponse
-from ....invoice.types.invoice_status import InvoiceStatus
-from ....payment_method.types.currency_code import CurrencyCode
-from .types.invoice_metrics_response import InvoiceMetricsResponse
+from ....entity_types.types.entity_id import EntityId
+from ....invoice_types.types.invoice_id import InvoiceId
+from ....invoice_types.types.invoice_metrics_response import InvoiceMetricsResponse
+from ....invoice_types.types.invoice_order_by_field import InvoiceOrderByField
+from ....invoice_types.types.invoice_response import InvoiceResponse
+from ....invoice_types.types.invoice_status import InvoiceStatus
+from ....payment_method_types.types.currency_code import CurrencyCode
 
 
 class InvoiceClient:

@@ -14,18 +14,18 @@ from ...environment import MercoaEnvironment
 from ..commons.errors.auth_header_malformed_error import AuthHeaderMalformedError
 from ..commons.errors.auth_header_missing_error import AuthHeaderMissingError
 from ..commons.errors.unauthorized import Unauthorized
-from ..commons.types.entity_id import EntityId
+from ..entity_types.types.entity_add_payees_request import EntityAddPayeesRequest
+from ..entity_types.types.entity_id import EntityId
+from ..entity_types.types.entity_request import EntityRequest
+from ..entity_types.types.entity_response import EntityResponse
+from ..entity_types.types.entity_status import EntityStatus
+from ..entity_types.types.entity_update_request import EntityUpdateRequest
 from .resources.approval_policy.client import ApprovalPolicyClient, AsyncApprovalPolicyClient
 from .resources.counterparty.client import AsyncCounterpartyClient, CounterpartyClient
 from .resources.invoice.client import AsyncInvoiceClient, InvoiceClient
 from .resources.payment_method.client import AsyncPaymentMethodClient, PaymentMethodClient
 from .resources.representative.client import AsyncRepresentativeClient, RepresentativeClient
 from .resources.user.client import AsyncUserClient, UserClient
-from .types.entity_add_payees_request import EntityAddPayeesRequest
-from .types.entity_request import EntityRequest
-from .types.entity_response import EntityResponse
-from .types.entity_status import EntityStatus
-from .types.entity_update_request import EntityUpdateRequest
 
 
 class EntityClient:

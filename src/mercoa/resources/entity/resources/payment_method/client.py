@@ -14,12 +14,12 @@ from .....environment import MercoaEnvironment
 from ....commons.errors.auth_header_malformed_error import AuthHeaderMalformedError
 from ....commons.errors.auth_header_missing_error import AuthHeaderMissingError
 from ....commons.errors.unauthorized import Unauthorized
-from ....commons.types.entity_id import EntityId
-from ....commons.types.payment_method_id import PaymentMethodId
-from ....payment_method.types.payment_method_request import PaymentMethodRequest
-from ....payment_method.types.payment_method_response import PaymentMethodResponse
-from ....payment_method.types.payment_method_type import PaymentMethodType
-from ....payment_method.types.payment_method_update_request import PaymentMethodUpdateRequest
+from ....entity_types.types.entity_id import EntityId
+from ....payment_method_types.types.payment_method_id import PaymentMethodId
+from ....payment_method_types.types.payment_method_request import PaymentMethodRequest
+from ....payment_method_types.types.payment_method_response import PaymentMethodResponse
+from ....payment_method_types.types.payment_method_type import PaymentMethodType
+from ....payment_method_types.types.payment_method_update_request import PaymentMethodUpdateRequest
 
 
 class PaymentMethodClient:

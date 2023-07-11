@@ -14,7 +14,7 @@ from ...environment import MercoaEnvironment
 from ..commons.errors.auth_header_malformed_error import AuthHeaderMalformedError
 from ..commons.errors.auth_header_missing_error import AuthHeaderMissingError
 from ..commons.errors.unauthorized import Unauthorized
-from ..commons.types.entity_id import EntityId
+from ..entity_types.types.entity_id import EntityId
 from .types.ocr_response import OcrResponse
 from .types.vendor_network import VendorNetwork
 

@@ -14,9 +14,9 @@ from ...environment import MercoaEnvironment
 from ..commons.errors.auth_header_malformed_error import AuthHeaderMalformedError
 from ..commons.errors.auth_header_missing_error import AuthHeaderMissingError
 from ..commons.errors.unauthorized import Unauthorized
-from ..commons.types.payment_method_schema_id import PaymentMethodSchemaId
-from .types.payment_method_schema_request import PaymentMethodSchemaRequest
-from .types.payment_method_schema_response import PaymentMethodSchemaResponse
+from ..payment_method_types.types.payment_method_schema_id import PaymentMethodSchemaId
+from ..payment_method_types.types.payment_method_schema_request import PaymentMethodSchemaRequest
+from ..payment_method_types.types.payment_method_schema_response import PaymentMethodSchemaResponse
 
 
 class PaymentMethodSchemaClient:
