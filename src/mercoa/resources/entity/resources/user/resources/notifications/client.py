@@ -8,24 +8,22 @@ from json.decoder import JSONDecodeError
 import httpx
 import pydantic
 
-from .....core.api_error import ApiError
-from .....core.datetime_utils import serialize_datetime
-from .....core.remove_none_from_headers import remove_none_from_headers
-from .....environment import MercoaEnvironment
-from ....commons.errors.auth_header_malformed_error import AuthHeaderMalformedError
-from ....commons.errors.auth_header_missing_error import AuthHeaderMissingError
-from ....commons.errors.unauthorized import Unauthorized
-from ....commons.types.order_direction import OrderDirection
-from ....entity_types.types.entity_id import EntityId
-from ....invoice_types.types.find_invoice_response import FindInvoiceResponse
-from ....invoice_types.types.invoice_id import InvoiceId
-from ....invoice_types.types.invoice_metrics_response import InvoiceMetricsResponse
-from ....invoice_types.types.invoice_order_by_field import InvoiceOrderByField
-from ....invoice_types.types.invoice_status import InvoiceStatus
-from ....payment_method_types.types.currency_code import CurrencyCode
+from .......core.api_error import ApiError
+from .......core.datetime_utils import serialize_datetime
+from .......core.remove_none_from_headers import remove_none_from_headers
+from .......environment import MercoaEnvironment
+from ......commons.errors.auth_header_malformed_error import AuthHeaderMalformedError
+from ......commons.errors.auth_header_missing_error import AuthHeaderMissingError
+from ......commons.errors.unauthorized import Unauthorized
+from ......commons.types.order_direction import OrderDirection
+from ......entity_types.types.entity_id import EntityId
+from ......entity_types.types.entity_user_id import EntityUserId
+from ......entity_types.types.find_notification_response import FindNotificationResponse
+from ......entity_types.types.notification_id import NotificationId
+from ......entity_types.types.notification_response import NotificationResponse
 
 
-class InvoiceClient:
+class NotificationsClient:
     def __init__(self, *, environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION, token: str):
         self._environment = environment
         self._token = token
@@ -33,28 +31,23 @@ class InvoiceClient:
     def find(
         self,
         entity_id: EntityId,
+        user_id: EntityUserId,
         *,
         start_date: typing.Optional[dt.datetime] = None,
         end_date: typing.Optional[dt.datetime] = None,
-        order_by: typing.Optional[InvoiceOrderByField] = None,
         order_direction: typing.Optional[OrderDirection] = None,
         limit: typing.Optional[int] = None,
-        starting_after: typing.Optional[InvoiceId] = None,
-        search: typing.Optional[str] = None,
-        status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]],
-    ) -> FindInvoiceResponse:
+        starting_after: typing.Optional[NotificationId] = None,
+    ) -> FindNotificationResponse:
         _response = httpx.request(
             "GET",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/invoices"),
+            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/user/{user_id}/notifications"),
             params={
                 "startDate": serialize_datetime(start_date) if start_date is not None else None,
                 "endDate": serialize_datetime(end_date) if end_date is not None else None,
-                "orderBy": order_by,
                 "orderDirection": order_direction,
                 "limit": limit,
                 "startingAfter": starting_after,
-                "search": search,
-                "status": status,
             },
             headers=remove_none_from_headers(
                 {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
@@ -66,7 +59,7 @@ class InvoiceClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(FindInvoiceResponse, _response_json)  # type: ignore
+            return pydantic.parse_obj_as(FindNotificationResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "AuthHeaderMissingError":
                 raise AuthHeaderMissingError()
@@ -76,30 +69,12 @@ class InvoiceClient:
                 raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def metrics(
-        self,
-        entity_id: EntityId,
-        *,
-        search: typing.Optional[str] = None,
-        status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]],
-        due_date_start: typing.Optional[dt.datetime] = None,
-        due_date_end: typing.Optional[dt.datetime] = None,
-        created_date_start: typing.Optional[dt.datetime] = None,
-        created_date_end: typing.Optional[dt.datetime] = None,
-        currency: CurrencyCode,
-    ) -> InvoiceMetricsResponse:
+    def get(self, entity_id: EntityId, user_id: EntityUserId, notification_id: NotificationId) -> NotificationResponse:
         _response = httpx.request(
             "GET",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/invoice-metrics"),
-            params={
-                "search": search,
-                "status": status,
-                "dueDateStart": serialize_datetime(due_date_start) if due_date_start is not None else None,
-                "dueDateEnd": serialize_datetime(due_date_end) if due_date_end is not None else None,
-                "createdDateStart": serialize_datetime(created_date_start) if created_date_start is not None else None,
-                "createdDateEnd": serialize_datetime(created_date_end) if created_date_end is not None else None,
-                "currency": currency,
-            },
+            urllib.parse.urljoin(
+                f"{self._environment.value}/", f"entity/{entity_id}/user/{user_id}/notification/{notification_id}"
+            ),
             headers=remove_none_from_headers(
                 {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
             ),
@@ -110,7 +85,7 @@ class InvoiceClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(InvoiceMetricsResponse, _response_json)  # type: ignore
+            return pydantic.parse_obj_as(NotificationResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "AuthHeaderMissingError":
                 raise AuthHeaderMissingError()
@@ -121,7 +96,7 @@ class InvoiceClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
 
-class AsyncInvoiceClient:
+class AsyncNotificationsClient:
     def __init__(self, *, environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION, token: str):
         self._environment = environment
         self._token = token
@@ -129,29 +104,24 @@ class AsyncInvoiceClient:
     async def find(
         self,
         entity_id: EntityId,
+        user_id: EntityUserId,
         *,
         start_date: typing.Optional[dt.datetime] = None,
         end_date: typing.Optional[dt.datetime] = None,
-        order_by: typing.Optional[InvoiceOrderByField] = None,
         order_direction: typing.Optional[OrderDirection] = None,
         limit: typing.Optional[int] = None,
-        starting_after: typing.Optional[InvoiceId] = None,
-        search: typing.Optional[str] = None,
-        status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]],
-    ) -> FindInvoiceResponse:
+        starting_after: typing.Optional[NotificationId] = None,
+    ) -> FindNotificationResponse:
         async with httpx.AsyncClient() as _client:
             _response = await _client.request(
                 "GET",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/invoices"),
+                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/user/{user_id}/notifications"),
                 params={
                     "startDate": serialize_datetime(start_date) if start_date is not None else None,
                     "endDate": serialize_datetime(end_date) if end_date is not None else None,
-                    "orderBy": order_by,
                     "orderDirection": order_direction,
                     "limit": limit,
                     "startingAfter": starting_after,
-                    "search": search,
-                    "status": status,
                 },
                 headers=remove_none_from_headers(
                     {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
@@ -163,7 +133,7 @@ class AsyncInvoiceClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(FindInvoiceResponse, _response_json)  # type: ignore
+            return pydantic.parse_obj_as(FindNotificationResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "AuthHeaderMissingError":
                 raise AuthHeaderMissingError()
@@ -173,33 +143,15 @@ class AsyncInvoiceClient:
                 raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def metrics(
-        self,
-        entity_id: EntityId,
-        *,
-        search: typing.Optional[str] = None,
-        status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]],
-        due_date_start: typing.Optional[dt.datetime] = None,
-        due_date_end: typing.Optional[dt.datetime] = None,
-        created_date_start: typing.Optional[dt.datetime] = None,
-        created_date_end: typing.Optional[dt.datetime] = None,
-        currency: CurrencyCode,
-    ) -> InvoiceMetricsResponse:
+    async def get(
+        self, entity_id: EntityId, user_id: EntityUserId, notification_id: NotificationId
+    ) -> NotificationResponse:
         async with httpx.AsyncClient() as _client:
             _response = await _client.request(
                 "GET",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/invoice-metrics"),
-                params={
-                    "search": search,
-                    "status": status,
-                    "dueDateStart": serialize_datetime(due_date_start) if due_date_start is not None else None,
-                    "dueDateEnd": serialize_datetime(due_date_end) if due_date_end is not None else None,
-                    "createdDateStart": serialize_datetime(created_date_start)
-                    if created_date_start is not None
-                    else None,
-                    "createdDateEnd": serialize_datetime(created_date_end) if created_date_end is not None else None,
-                    "currency": currency,
-                },
+                urllib.parse.urljoin(
+                    f"{self._environment.value}/", f"entity/{entity_id}/user/{user_id}/notification/{notification_id}"
+                ),
                 headers=remove_none_from_headers(
                     {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
                 ),
@@ -210,7 +162,7 @@ class AsyncInvoiceClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(InvoiceMetricsResponse, _response_json)  # type: ignore
+            return pydantic.parse_obj_as(NotificationResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "AuthHeaderMissingError":
                 raise AuthHeaderMissingError()

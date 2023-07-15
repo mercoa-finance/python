@@ -18,12 +18,14 @@ from ....entity_types.types.entity_id import EntityId
 from ....entity_types.types.entity_user_id import EntityUserId
 from ....entity_types.types.entity_user_request import EntityUserRequest
 from ....entity_types.types.entity_user_response import EntityUserResponse
+from .resources.notifications.client import AsyncNotificationsClient, NotificationsClient
 
 
 class UserClient:
     def __init__(self, *, environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION, token: str):
         self._environment = environment
         self._token = token
+        self.notifications = NotificationsClient(environment=self._environment, token=self._token)
 
     def get_all(self, entity_id: EntityId) -> typing.List[EntityUserResponse]:
         _response = httpx.request(
@@ -152,6 +154,7 @@ class AsyncUserClient:
     def __init__(self, *, environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION, token: str):
         self._environment = environment
         self._token = token
+        self.notifications = AsyncNotificationsClient(environment=self._environment, token=self._token)
 
     async def get_all(self, entity_id: EntityId) -> typing.List[EntityUserResponse]:
         async with httpx.AsyncClient() as _client:

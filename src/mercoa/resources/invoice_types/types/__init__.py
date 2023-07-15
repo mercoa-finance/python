@@ -8,6 +8,7 @@ from .comment_id import CommentId
 from .comment_request import CommentRequest
 from .comment_response import CommentResponse
 from .document_response import DocumentResponse
+from .find_invoice_response import FindInvoiceResponse
 from .invoice_approver_response import InvoiceApproverResponse
 from .invoice_id import InvoiceId
 from .invoice_line_item_request import InvoiceLineItemRequest
@@ -27,6 +28,7 @@ __all__ = [
     "CommentRequest",
     "CommentResponse",
     "DocumentResponse",
+    "FindInvoiceResponse",
     "InvoiceApproverResponse",
     "InvoiceId",
     "InvoiceLineItemRequest",

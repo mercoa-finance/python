@@ -22,9 +22,16 @@ from .entity_user_id import EntityUserId
 from .entity_user_request import EntityUserRequest
 from .entity_user_response import EntityUserResponse
 from .find_counterparties_response import FindCounterpartiesResponse
+from .find_entity_response import FindEntityResponse
+from .find_notification_response import FindNotificationResponse
 from .identifier_list import IdentifierList, IdentifierList_RolesList, IdentifierList_UserList
 from .individual_profile_request import IndividualProfileRequest
 from .individual_profile_response import IndividualProfileResponse
+from .notification_id import NotificationId
+from .notification_policy_request import NotificationPolicyRequest
+from .notification_policy_response import NotificationPolicyResponse
+from .notification_response import NotificationResponse
+from .notification_type import NotificationType
 from .profile_request import ProfileRequest
 from .profile_response import ProfileResponse
 from .representative_id import RepresentativeId
@@ -58,11 +65,18 @@ __all__ = [
     "EntityUserRequest",
     "EntityUserResponse",
     "FindCounterpartiesResponse",
+    "FindEntityResponse",
+    "FindNotificationResponse",
     "IdentifierList",
     "IdentifierList_RolesList",
     "IdentifierList_UserList",
     "IndividualProfileRequest",
     "IndividualProfileResponse",
+    "NotificationId",
+    "NotificationPolicyRequest",
+    "NotificationPolicyResponse",
+    "NotificationResponse",
+    "NotificationType",
     "ProfileRequest",
     "ProfileResponse",
     "RepresentativeId",

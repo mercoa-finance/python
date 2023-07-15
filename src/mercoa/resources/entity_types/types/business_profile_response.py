@@ -20,7 +20,7 @@ class BusinessProfileResponse(pydantic.BaseModel):
     website: typing.Optional[str]
     description: typing.Optional[str]
     address: typing.Optional[Address]
-    owners_provided: bool = pydantic.Field(alias="ownersProvided")
+    owners_provided: typing.Optional[bool] = pydantic.Field(alias="ownersProvided")
     tax_id_provided: bool = pydantic.Field(alias="taxIDProvided")
 
     def json(self, **kwargs: typing.Any) -> str:

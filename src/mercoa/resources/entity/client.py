@@ -20,9 +20,11 @@ from ..entity_types.types.entity_request import EntityRequest
 from ..entity_types.types.entity_response import EntityResponse
 from ..entity_types.types.entity_status import EntityStatus
 from ..entity_types.types.entity_update_request import EntityUpdateRequest
+from ..entity_types.types.find_entity_response import FindEntityResponse
 from .resources.approval_policy.client import ApprovalPolicyClient, AsyncApprovalPolicyClient
 from .resources.counterparty.client import AsyncCounterpartyClient, CounterpartyClient
 from .resources.invoice.client import AsyncInvoiceClient, InvoiceClient
+from .resources.notification_policy.client import AsyncNotificationPolicyClient, NotificationPolicyClient
 from .resources.payment_method.client import AsyncPaymentMethodClient, PaymentMethodClient
 from .resources.representative.client import AsyncRepresentativeClient, RepresentativeClient
 from .resources.user.client import AsyncUserClient, UserClient
@@ -32,12 +34,13 @@ class EntityClient:
     def __init__(self, *, environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION, token: str):
         self._environment = environment
         self._token = token
+        self.user = UserClient(environment=self._environment, token=self._token)
         self.approval_policy = ApprovalPolicyClient(environment=self._environment, token=self._token)
         self.counterparty = CounterpartyClient(environment=self._environment, token=self._token)
         self.invoice = InvoiceClient(environment=self._environment, token=self._token)
+        self.notification_policy = NotificationPolicyClient(environment=self._environment, token=self._token)
         self.payment_method = PaymentMethodClient(environment=self._environment, token=self._token)
         self.representative = RepresentativeClient(environment=self._environment, token=self._token)
-        self.user = UserClient(environment=self._environment, token=self._token)
 
     def get_all(
         self, *, is_payee: typing.Optional[bool] = None, is_payor: typing.Optional[bool] = None
@@ -67,12 +70,28 @@ class EntityClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def find(
-        self, *, foreign_id: typing.Optional[str] = None, status: typing.Optional[EntityStatus] = None
-    ) -> typing.List[EntityResponse]:
+        self,
+        *,
+        foreign_id: typing.Union[typing.Optional[str], typing.List[str]],
+        status: typing.Union[typing.Optional[EntityStatus], typing.List[EntityStatus]],
+        is_payee: typing.Optional[bool] = None,
+        is_payor: typing.Optional[bool] = None,
+        name: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        starting_after: typing.Optional[EntityId] = None,
+    ) -> FindEntityResponse:
         _response = httpx.request(
             "GET",
             urllib.parse.urljoin(f"{self._environment.value}/", "entity"),
-            params={"foreignId": foreign_id, "status": status},
+            params={
+                "foreignId": foreign_id,
+                "status": status,
+                "isPayee": is_payee,
+                "isPayor": is_payor,
+                "name": name,
+                "limit": limit,
+                "startingAfter": starting_after,
+            },
             headers=remove_none_from_headers(
                 {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
             ),
@@ -83,7 +102,7 @@ class EntityClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(typing.List[EntityResponse], _response_json)  # type: ignore
+            return pydantic.parse_obj_as(FindEntityResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "AuthHeaderMissingError":
                 raise AuthHeaderMissingError()
@@ -191,7 +210,7 @@ class EntityClient:
                 raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def accept_terms_of_service(self, entity_id: EntityId) -> str:
+    def accept_terms_of_service(self, entity_id: EntityId) -> None:
         _response = httpx.request(
             "POST",
             urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/accept-tos"),
@@ -200,12 +219,36 @@ class EntityClient:
             ),
             timeout=60,
         )
+        if 200 <= _response.status_code < 300:
+            return
         try:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "AuthHeaderMissingError":
+                raise AuthHeaderMissingError()
+            if _response_json["errorName"] == "AuthHeaderMalformedError":
+                raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def initiate_kyb(self, entity_id: EntityId) -> None:
+        _response = httpx.request(
+            "POST",
+            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/request-kyb"),
+            headers=remove_none_from_headers(
+                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
+            ),
+            timeout=60,
+        )
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(str, _response_json)  # type: ignore
+            return
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
         if "errorName" in _response_json:
             if _response_json["errorName"] == "AuthHeaderMissingError":
                 raise AuthHeaderMissingError()
@@ -317,12 +360,13 @@ class AsyncEntityClient:
     def __init__(self, *, environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION, token: str):
         self._environment = environment
         self._token = token
+        self.user = AsyncUserClient(environment=self._environment, token=self._token)
         self.approval_policy = AsyncApprovalPolicyClient(environment=self._environment, token=self._token)
         self.counterparty = AsyncCounterpartyClient(environment=self._environment, token=self._token)
         self.invoice = AsyncInvoiceClient(environment=self._environment, token=self._token)
+        self.notification_policy = AsyncNotificationPolicyClient(environment=self._environment, token=self._token)
         self.payment_method = AsyncPaymentMethodClient(environment=self._environment, token=self._token)
         self.representative = AsyncRepresentativeClient(environment=self._environment, token=self._token)
-        self.user = AsyncUserClient(environment=self._environment, token=self._token)
 
     async def get_all(
         self, *, is_payee: typing.Optional[bool] = None, is_payor: typing.Optional[bool] = None
@@ -353,13 +397,29 @@ class AsyncEntityClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def find(
-        self, *, foreign_id: typing.Optional[str] = None, status: typing.Optional[EntityStatus] = None
-    ) -> typing.List[EntityResponse]:
+        self,
+        *,
+        foreign_id: typing.Union[typing.Optional[str], typing.List[str]],
+        status: typing.Union[typing.Optional[EntityStatus], typing.List[EntityStatus]],
+        is_payee: typing.Optional[bool] = None,
+        is_payor: typing.Optional[bool] = None,
+        name: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        starting_after: typing.Optional[EntityId] = None,
+    ) -> FindEntityResponse:
         async with httpx.AsyncClient() as _client:
             _response = await _client.request(
                 "GET",
                 urllib.parse.urljoin(f"{self._environment.value}/", "entity"),
-                params={"foreignId": foreign_id, "status": status},
+                params={
+                    "foreignId": foreign_id,
+                    "status": status,
+                    "isPayee": is_payee,
+                    "isPayor": is_payor,
+                    "name": name,
+                    "limit": limit,
+                    "startingAfter": starting_after,
+                },
                 headers=remove_none_from_headers(
                     {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
                 ),
@@ -370,7 +430,7 @@ class AsyncEntityClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(typing.List[EntityResponse], _response_json)  # type: ignore
+            return pydantic.parse_obj_as(FindEntityResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "AuthHeaderMissingError":
                 raise AuthHeaderMissingError()
@@ -482,7 +542,7 @@ class AsyncEntityClient:
                 raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def accept_terms_of_service(self, entity_id: EntityId) -> str:
+    async def accept_terms_of_service(self, entity_id: EntityId) -> None:
         async with httpx.AsyncClient() as _client:
             _response = await _client.request(
                 "POST",
@@ -492,12 +552,37 @@ class AsyncEntityClient:
                 ),
                 timeout=60,
             )
+        if 200 <= _response.status_code < 300:
+            return
         try:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "AuthHeaderMissingError":
+                raise AuthHeaderMissingError()
+            if _response_json["errorName"] == "AuthHeaderMalformedError":
+                raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def initiate_kyb(self, entity_id: EntityId) -> None:
+        async with httpx.AsyncClient() as _client:
+            _response = await _client.request(
+                "POST",
+                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/request-kyb"),
+                headers=remove_none_from_headers(
+                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
+                ),
+                timeout=60,
+            )
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(str, _response_json)  # type: ignore
+            return
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
         if "errorName" in _response_json:
             if _response_json["errorName"] == "AuthHeaderMissingError":
                 raise AuthHeaderMissingError()

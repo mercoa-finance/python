@@ -18,6 +18,7 @@ from ..commons.errors.auth_header_missing_error import AuthHeaderMissingError
 from ..commons.errors.unauthorized import Unauthorized
 from ..commons.types.order_direction import OrderDirection
 from ..entity_types.types.entity_id import EntityId
+from ..invoice_types.types.find_invoice_response import FindInvoiceResponse
 from ..invoice_types.types.invoice_id import InvoiceId
 from ..invoice_types.types.invoice_order_by_field import InvoiceOrderByField
 from ..invoice_types.types.invoice_request import InvoiceRequest
@@ -48,7 +49,7 @@ class InvoiceClient:
         starting_after: typing.Optional[InvoiceId] = None,
         search: typing.Optional[str] = None,
         status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]],
-    ) -> typing.List[InvoiceResponse]:
+    ) -> FindInvoiceResponse:
         _response = httpx.request(
             "GET",
             urllib.parse.urljoin(f"{self._environment.value}/", "invoices"),
@@ -73,7 +74,7 @@ class InvoiceClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(typing.List[InvoiceResponse], _response_json)  # type: ignore
+            return pydantic.parse_obj_as(FindInvoiceResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "AuthHeaderMissingError":
                 raise AuthHeaderMissingError()
@@ -226,7 +227,7 @@ class AsyncInvoiceClient:
         starting_after: typing.Optional[InvoiceId] = None,
         search: typing.Optional[str] = None,
         status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]],
-    ) -> typing.List[InvoiceResponse]:
+    ) -> FindInvoiceResponse:
         async with httpx.AsyncClient() as _client:
             _response = await _client.request(
                 "GET",
@@ -252,7 +253,7 @@ class AsyncInvoiceClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(typing.List[InvoiceResponse], _response_json)  # type: ignore
+            return pydantic.parse_obj_as(FindInvoiceResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "AuthHeaderMissingError":
                 raise AuthHeaderMissingError()
