@@ -9,8 +9,8 @@ from ....core.datetime_utils import serialize_datetime
 from ...entity_types.types.entity_id import EntityId
 from ...entity_types.types.entity_user_id import EntityUserId
 from ...payment_method_types.types.currency_code import CurrencyCode
+from ...payment_method_types.types.payment_method_id import PaymentMethodId
 from .assigned_approver import AssignedApprover
-from .invoice_id import InvoiceId
 from .invoice_line_item_request import InvoiceLineItemRequest
 from .invoice_status import InvoiceStatus
 
@@ -34,12 +34,12 @@ class InvoiceRequest(pydantic.BaseModel):
     service_start_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceStartDate")
     service_end_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceEndDate")
     payer_id: typing.Optional[EntityId] = pydantic.Field(alias="payerId")
-    payment_source_id: typing.Optional[InvoiceId] = pydantic.Field(alias="paymentSourceId")
+    payment_source_id: typing.Optional[PaymentMethodId] = pydantic.Field(alias="paymentSourceId")
     approvers: typing.Optional[typing.List[AssignedApprover]] = pydantic.Field(
         description=("Set approvers for this invoice.\n")
     )
     vendor_id: typing.Optional[EntityId] = pydantic.Field(alias="vendorId")
-    payment_destination_id: typing.Optional[InvoiceId] = pydantic.Field(alias="paymentDestinationId")
+    payment_destination_id: typing.Optional[PaymentMethodId] = pydantic.Field(alias="paymentDestinationId")
     line_items: typing.Optional[typing.List[InvoiceLineItemRequest]] = pydantic.Field(alias="lineItems")
     metadata: typing.Optional[typing.Dict[str, str]] = pydantic.Field(
         description=(

@@ -43,6 +43,7 @@ from .types import (
     PaymentMethodType,
     PaymentMethodUpdateRequest,
     PaymentMethodUpdateRequest_Custom,
+    PlaidLinkRequest,
 )
 
 __all__ = [
@@ -88,4 +89,5 @@ __all__ = [
     "PaymentMethodType",
     "PaymentMethodUpdateRequest",
     "PaymentMethodUpdateRequest_Custom",
+    "PlaidLinkRequest",
 ]

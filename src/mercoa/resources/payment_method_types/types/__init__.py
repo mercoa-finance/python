@@ -45,6 +45,7 @@ from .payment_method_schema_request import PaymentMethodSchemaRequest
 from .payment_method_schema_response import PaymentMethodSchemaResponse
 from .payment_method_type import PaymentMethodType
 from .payment_method_update_request import PaymentMethodUpdateRequest, PaymentMethodUpdateRequest_Custom
+from .plaid_link_request import PlaidLinkRequest
 
 __all__ = [
     "BankAccountBaseRequest",
@@ -89,4 +90,5 @@ __all__ = [
     "PaymentMethodType",
     "PaymentMethodUpdateRequest",
     "PaymentMethodUpdateRequest_Custom",
+    "PlaidLinkRequest",
 ]

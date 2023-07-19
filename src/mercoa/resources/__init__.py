@@ -158,6 +158,7 @@ from .payment_method_types import (
     PaymentMethodType,
     PaymentMethodUpdateRequest,
     PaymentMethodUpdateRequest_Custom,
+    PlaidLinkRequest,
 )
 from .transaction import TransactionId, TransactionResponse, TransactionResponseExpanded, TransactionStatus
 
@@ -285,6 +286,7 @@ __all__ = [
     "PaymentRailRequest",
     "PaymentRailResponse",
     "PhoneNumber",
+    "PlaidLinkRequest",
     "ProfileRequest",
     "ProfileResponse",
     "RepresentativeId",

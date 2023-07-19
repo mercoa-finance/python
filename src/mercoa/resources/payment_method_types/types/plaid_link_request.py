@@ -6,17 +6,12 @@ import typing
 import pydantic
 
 from ....core.datetime_utils import serialize_datetime
-from .bank_type import BankType
-from .plaid_link_request import PlaidLinkRequest
 
 
-class BankAccountBaseRequest(pydantic.BaseModel):
-    bank_name: typing.Optional[str] = pydantic.Field(alias="bankName")
-    routing_number: typing.Optional[str] = pydantic.Field(alias="routingNumber")
-    account_number: typing.Optional[str] = pydantic.Field(alias="accountNumber")
-    account_type: typing.Optional[BankType] = pydantic.Field(alias="accountType")
-    plaid: typing.Optional[PlaidLinkRequest] = pydantic.Field(
-        description=("If provided, will link a bank account using Plaid Link\n")
+class PlaidLinkRequest(pydantic.BaseModel):
+    account_id: typing.Optional[str] = pydantic.Field(alias="accountId", description=("Account ID from Plaid Link\n"))
+    public_token: typing.Optional[str] = pydantic.Field(
+        alias="publicToken", description=("Public token from Plaid Link\n")
     )
 
     def json(self, **kwargs: typing.Any) -> str:
