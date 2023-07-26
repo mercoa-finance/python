@@ -41,6 +41,7 @@ from .responsibilities import Responsibilities
 from .rule import Rule, Rule_Approver
 from .tax_id import TaxId
 from .trigger import Trigger, Trigger_All, Trigger_Amount
+from .user_notification_policy_response import UserNotificationPolicyResponse
 
 __all__ = [
     "AccountType",
@@ -89,4 +90,5 @@ __all__ = [
     "Trigger",
     "Trigger_All",
     "Trigger_Amount",
+    "UserNotificationPolicyResponse",
 ]

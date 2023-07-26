@@ -18,6 +18,7 @@ from ....entity_types.types.entity_id import EntityId
 from ....entity_types.types.entity_user_id import EntityUserId
 from ....entity_types.types.entity_user_request import EntityUserRequest
 from ....entity_types.types.entity_user_response import EntityUserResponse
+from .resources.notification_policy.client import AsyncNotificationPolicyClient, NotificationPolicyClient
 from .resources.notifications.client import AsyncNotificationsClient, NotificationsClient
 
 
@@ -25,6 +26,7 @@ class UserClient:
     def __init__(self, *, environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION, token: str):
         self._environment = environment
         self._token = token
+        self.notification_policy = NotificationPolicyClient(environment=self._environment, token=self._token)
         self.notifications = NotificationsClient(environment=self._environment, token=self._token)
 
     def get_all(self, entity_id: EntityId) -> typing.List[EntityUserResponse]:
@@ -178,6 +180,7 @@ class AsyncUserClient:
     def __init__(self, *, environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION, token: str):
         self._environment = environment
         self._token = token
+        self.notification_policy = AsyncNotificationPolicyClient(environment=self._environment, token=self._token)
         self.notifications = AsyncNotificationsClient(environment=self._environment, token=self._token)
 
     async def get_all(self, entity_id: EntityId) -> typing.List[EntityUserResponse]:

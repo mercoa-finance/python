@@ -74,6 +74,7 @@ from .entity_types import (
     Trigger,
     Trigger_All,
     Trigger_Amount,
+    UserNotificationPolicyResponse,
 )
 from .invoice_types import (
     ApprovalRequest,
@@ -305,6 +306,7 @@ __all__ = [
     "Trigger_All",
     "Trigger_Amount",
     "Unauthorized",
+    "UserNotificationPolicyResponse",
     "VendorNetwork",
     "bank_lookup",
     "commons",

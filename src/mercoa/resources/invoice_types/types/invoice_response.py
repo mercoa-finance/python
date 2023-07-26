@@ -11,6 +11,7 @@ from ...entity_types.types.entity_id import EntityId
 from ...entity_types.types.entity_response import EntityResponse
 from ...entity_types.types.entity_user_response import EntityUserResponse
 from ...payment_method_types.types.currency_code import CurrencyCode
+from ...payment_method_types.types.payment_method_id import PaymentMethodId
 from ...payment_method_types.types.payment_method_response import PaymentMethodResponse
 from ...transaction.types.transaction_response import TransactionResponse
 from .comment_response import CommentResponse
@@ -42,11 +43,11 @@ class InvoiceResponse(pydantic.BaseModel):
     payer_id: typing.Optional[EntityId] = pydantic.Field(alias="payerId")
     payer: typing.Optional[EntityResponse]
     payment_source: typing.Optional[PaymentMethodResponse] = pydantic.Field(alias="paymentSource")
-    payment_source_id: typing.Optional[InvoiceId] = pydantic.Field(alias="paymentSourceId")
+    payment_source_id: typing.Optional[PaymentMethodId] = pydantic.Field(alias="paymentSourceId")
     vendor_id: typing.Optional[EntityId] = pydantic.Field(alias="vendorId")
     vendor: typing.Optional[EntityResponse]
     payment_destination: typing.Optional[PaymentMethodResponse] = pydantic.Field(alias="paymentDestination")
-    payment_destination_id: typing.Optional[InvoiceId] = pydantic.Field(alias="paymentDestinationId")
+    payment_destination_id: typing.Optional[PaymentMethodId] = pydantic.Field(alias="paymentDestinationId")
     payment_destination_confirmed: bool = pydantic.Field(alias="paymentDestinationConfirmed")
     has_documents: bool = pydantic.Field(alias="hasDocuments")
     comments: typing.Optional[typing.List[CommentResponse]]

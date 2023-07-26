@@ -47,6 +47,7 @@ from .types import (
     Trigger,
     Trigger_All,
     Trigger_Amount,
+    UserNotificationPolicyResponse,
 )
 
 __all__ = [
@@ -96,4 +97,5 @@ __all__ = [
     "Trigger",
     "Trigger_All",
     "Trigger_Amount",
+    "UserNotificationPolicyResponse",
 ]
