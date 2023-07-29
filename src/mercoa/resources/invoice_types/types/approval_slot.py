@@ -7,10 +7,14 @@ import pydantic
 
 from ....core.datetime_utils import serialize_datetime
 from ...entity_types.types.entity_user_id import EntityUserId
+from .approval_slot_id import ApprovalSlotId
 from .approver_action import ApproverAction
 
 
-class InvoiceApproverResponse(pydantic.BaseModel):
+class ApprovalSlot(pydantic.BaseModel):
+    approval_slot_id: ApprovalSlotId = pydantic.Field(
+        alias="approvalSlotId", description=("The identifier for this approval slot\n")
+    )
     assigned_user_id: typing.Optional[EntityUserId] = pydantic.Field(alias="assignedUserId")
     action: ApproverAction
     eligible_roles: typing.List[str] = pydantic.Field(alias="eligibleRoles")

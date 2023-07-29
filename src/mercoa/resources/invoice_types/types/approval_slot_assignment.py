@@ -7,10 +7,14 @@ import pydantic
 
 from ....core.datetime_utils import serialize_datetime
 from ...entity_types.types.entity_user_id import EntityUserId
+from .approval_slot_id import ApprovalSlotId
 
 
-class AssignedApprover(pydantic.BaseModel):
-    user_id: EntityUserId = pydantic.Field(alias="userId")
+class ApprovalSlotAssignment(pydantic.BaseModel):
+    approval_slot_id: ApprovalSlotId = pydantic.Field(
+        alias="approvalSlotId", description=("The identifier for the approval slot this user is assigned to.\n")
+    )
+    assigned_user_id: EntityUserId = pydantic.Field(alias="assignedUserId")
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

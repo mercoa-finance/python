@@ -10,7 +10,7 @@ from ...entity_types.types.entity_id import EntityId
 from ...entity_types.types.entity_user_id import EntityUserId
 from ...payment_method_types.types.currency_code import CurrencyCode
 from ...payment_method_types.types.payment_method_id import PaymentMethodId
-from .assigned_approver import AssignedApprover
+from .approval_slot_assignment import ApprovalSlotAssignment
 from .invoice_line_item_request import InvoiceLineItemRequest
 from .invoice_status import InvoiceStatus
 
@@ -30,12 +30,14 @@ class InvoiceRequest(pydantic.BaseModel):
     )
     due_date: typing.Optional[dt.datetime] = pydantic.Field(alias="dueDate", description=("Due date of invoice.\n"))
     invoice_number: typing.Optional[str] = pydantic.Field(alias="invoiceNumber")
-    note_to_self: typing.Optional[str] = pydantic.Field(alias="noteToSelf")
+    note_to_self: typing.Optional[str] = pydantic.Field(
+        alias="noteToSelf", description=("Note to self or memo on invoice.\n")
+    )
     service_start_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceStartDate")
     service_end_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceEndDate")
     payer_id: typing.Optional[EntityId] = pydantic.Field(alias="payerId")
     payment_source_id: typing.Optional[PaymentMethodId] = pydantic.Field(alias="paymentSourceId")
-    approvers: typing.Optional[typing.List[AssignedApprover]] = pydantic.Field(
+    approvers: typing.Optional[typing.List[ApprovalSlotAssignment]] = pydantic.Field(
         description=("Set approvers for this invoice.\n")
     )
     vendor_id: typing.Optional[EntityId] = pydantic.Field(alias="vendorId")
