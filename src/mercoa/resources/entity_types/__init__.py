@@ -44,10 +44,16 @@ from .types import (
     Rule,
     Rule_Approver,
     TaxId,
+    TokenGenerationInvoiceOptions,
+    TokenGenerationOptions,
+    TokenGenerationPagesOptions,
+    TokenGenerationStyleOptions,
+    TokenGenerationVendorOptions,
     Trigger,
     Trigger_All,
     Trigger_Amount,
     UserNotificationPolicyResponse,
+    VendorNetwork,
 )
 
 __all__ = [
@@ -94,8 +100,14 @@ __all__ = [
     "Rule",
     "Rule_Approver",
     "TaxId",
+    "TokenGenerationInvoiceOptions",
+    "TokenGenerationOptions",
+    "TokenGenerationPagesOptions",
+    "TokenGenerationStyleOptions",
+    "TokenGenerationVendorOptions",
     "Trigger",
     "Trigger_All",
     "Trigger_Amount",
     "UserNotificationPolicyResponse",
+    "VendorNetwork",
 ]

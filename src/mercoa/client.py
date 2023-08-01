@@ -16,9 +16,9 @@ class Mercoa:
         self._token = token
         self.entity = EntityClient(environment=self._environment, token=self._token)
         self.invoice = InvoiceClient(environment=self._environment, token=self._token)
+        self.organization = OrganizationClient(environment=self._environment, token=self._token)
         self.bank_lookup = BankLookupClient(environment=self._environment, token=self._token)
         self.ocr = OcrClient(environment=self._environment, token=self._token)
-        self.organization = OrganizationClient(environment=self._environment, token=self._token)
         self.payment_method_schema = PaymentMethodSchemaClient(environment=self._environment, token=self._token)
         self.transaction = TransactionClient(environment=self._environment, token=self._token)
 
@@ -29,8 +29,8 @@ class AsyncMercoa:
         self._token = token
         self.entity = AsyncEntityClient(environment=self._environment, token=self._token)
         self.invoice = AsyncInvoiceClient(environment=self._environment, token=self._token)
+        self.organization = AsyncOrganizationClient(environment=self._environment, token=self._token)
         self.bank_lookup = AsyncBankLookupClient(environment=self._environment, token=self._token)
         self.ocr = AsyncOcrClient(environment=self._environment, token=self._token)
-        self.organization = AsyncOrganizationClient(environment=self._environment, token=self._token)
         self.payment_method_schema = AsyncPaymentMethodSchemaClient(environment=self._environment, token=self._token)
         self.transaction = AsyncTransactionClient(environment=self._environment, token=self._token)

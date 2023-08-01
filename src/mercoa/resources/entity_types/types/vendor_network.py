@@ -7,19 +7,19 @@ T_Result = typing.TypeVar("T_Result")
 
 
 class VendorNetwork(str, enum.Enum):
-    ENTITY = "ENTITY"
-    PLATFORM = "PLATFORM"
-    MERCOA = "MERCOA"
+    ALL = "all"
+    PLATFORM = "platform"
+    ENTITY = "entity"
 
     def visit(
         self,
-        entity: typing.Callable[[], T_Result],
+        all: typing.Callable[[], T_Result],
         platform: typing.Callable[[], T_Result],
-        mercoa: typing.Callable[[], T_Result],
+        entity: typing.Callable[[], T_Result],
     ) -> T_Result:
-        if self is VendorNetwork.ENTITY:
-            return entity()
+        if self is VendorNetwork.ALL:
+            return all()
         if self is VendorNetwork.PLATFORM:
             return platform()
-        if self is VendorNetwork.MERCOA:
-            return mercoa()
+        if self is VendorNetwork.ENTITY:
+            return entity()
