@@ -17,6 +17,7 @@ from ....commons.errors.auth_header_missing_error import AuthHeaderMissingError
 from ....commons.errors.unauthorized import Unauthorized
 from ....commons.types.order_direction import OrderDirection
 from ....entity_types.types.entity_id import EntityId
+from ....entity_types.types.entity_user_id import EntityUserId
 from ....invoice_types.types.find_invoice_response import FindInvoiceResponse
 from ....invoice_types.types.invoice_id import InvoiceId
 from ....invoice_types.types.invoice_metrics_response import InvoiceMetricsResponse
@@ -41,6 +42,8 @@ class InvoiceClient:
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[InvoiceId] = None,
         search: typing.Optional[str] = None,
+        vendor_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
+        approver_id: typing.Union[typing.Optional[EntityUserId], typing.List[EntityUserId]],
         status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]],
     ) -> FindInvoiceResponse:
         _response = httpx.request(
@@ -54,6 +57,8 @@ class InvoiceClient:
                 "limit": limit,
                 "startingAfter": starting_after,
                 "search": search,
+                "vendorId": vendor_id,
+                "approverId": approver_id,
                 "status": status,
             },
             headers=remove_none_from_headers(
@@ -81,6 +86,8 @@ class InvoiceClient:
         entity_id: EntityId,
         *,
         search: typing.Optional[str] = None,
+        vendor_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
+        approver_id: typing.Union[typing.Optional[EntityUserId], typing.List[EntityUserId]],
         status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]],
         due_date_start: typing.Optional[dt.datetime] = None,
         due_date_end: typing.Optional[dt.datetime] = None,
@@ -93,6 +100,8 @@ class InvoiceClient:
             urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/invoice-metrics"),
             params={
                 "search": search,
+                "vendorId": vendor_id,
+                "approverId": approver_id,
                 "status": status,
                 "dueDateStart": serialize_datetime(due_date_start) if due_date_start is not None else None,
                 "dueDateEnd": serialize_datetime(due_date_end) if due_date_end is not None else None,
@@ -137,6 +146,8 @@ class AsyncInvoiceClient:
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[InvoiceId] = None,
         search: typing.Optional[str] = None,
+        vendor_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
+        approver_id: typing.Union[typing.Optional[EntityUserId], typing.List[EntityUserId]],
         status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]],
     ) -> FindInvoiceResponse:
         async with httpx.AsyncClient() as _client:
@@ -151,6 +162,8 @@ class AsyncInvoiceClient:
                     "limit": limit,
                     "startingAfter": starting_after,
                     "search": search,
+                    "vendorId": vendor_id,
+                    "approverId": approver_id,
                     "status": status,
                 },
                 headers=remove_none_from_headers(
@@ -178,6 +191,8 @@ class AsyncInvoiceClient:
         entity_id: EntityId,
         *,
         search: typing.Optional[str] = None,
+        vendor_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
+        approver_id: typing.Union[typing.Optional[EntityUserId], typing.List[EntityUserId]],
         status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]],
         due_date_start: typing.Optional[dt.datetime] = None,
         due_date_end: typing.Optional[dt.datetime] = None,
@@ -191,6 +206,8 @@ class AsyncInvoiceClient:
                 urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/invoice-metrics"),
                 params={
                     "search": search,
+                    "vendorId": vendor_id,
+                    "approverId": approver_id,
                     "status": status,
                     "dueDateStart": serialize_datetime(due_date_start) if due_date_start is not None else None,
                     "dueDateEnd": serialize_datetime(due_date_end) if due_date_end is not None else None,

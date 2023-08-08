@@ -39,17 +39,11 @@ class OrganizationClient:
         payment_methods: typing.Optional[bool] = None,
         email_provider: typing.Optional[bool] = None,
         color_scheme: typing.Optional[bool] = None,
-        notification_configuration: typing.Optional[bool] = None,
     ) -> OrganizationResponse:
         _response = httpx.request(
             "GET",
             urllib.parse.urljoin(f"{self._environment.value}/", "organization"),
-            params={
-                "paymentMethods": payment_methods,
-                "emailProvider": email_provider,
-                "colorScheme": color_scheme,
-                "notificationConfiguration": notification_configuration,
-            },
+            params={"paymentMethods": payment_methods, "emailProvider": email_provider, "colorScheme": color_scheme},
             headers=remove_none_from_headers(
                 {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
             ),
@@ -140,7 +134,6 @@ class AsyncOrganizationClient:
         payment_methods: typing.Optional[bool] = None,
         email_provider: typing.Optional[bool] = None,
         color_scheme: typing.Optional[bool] = None,
-        notification_configuration: typing.Optional[bool] = None,
     ) -> OrganizationResponse:
         async with httpx.AsyncClient() as _client:
             _response = await _client.request(
@@ -150,7 +143,6 @@ class AsyncOrganizationClient:
                     "paymentMethods": payment_methods,
                     "emailProvider": email_provider,
                     "colorScheme": color_scheme,
-                    "notificationConfiguration": notification_configuration,
                 },
                 headers=remove_none_from_headers(
                     {"Authorization": f"Bearer {self._token}" if self._token is not None else None}

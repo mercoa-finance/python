@@ -16,6 +16,7 @@ from ...payment_method_types.types.payment_method_response import PaymentMethodR
 from ...transaction.types.transaction_response import TransactionResponse
 from .approval_slot import ApprovalSlot
 from .comment_response import CommentResponse
+from .invoice_failure_type import InvoiceFailureType
 from .invoice_id import InvoiceId
 from .invoice_line_item_response import InvoiceLineItemResponse
 from .invoice_status import InvoiceStatus
@@ -58,6 +59,10 @@ class InvoiceResponse(pydantic.BaseModel):
     metadata: typing.Dict[str, str] = pydantic.Field(description=("Metadata associated with this invoice.\n"))
     created_by: typing.Optional[EntityUserResponse] = pydantic.Field(
         alias="createdBy", description=("Entity user who created this invoice.\n")
+    )
+    failure_type: typing.Optional[InvoiceFailureType] = pydantic.Field(
+        alias="failureType",
+        description=("If the invoice failed to be paid, this field will be populated with the type of failure.\n"),
     )
     processed_at: typing.Optional[dt.datetime] = pydantic.Field(alias="processedAt")
     created_at: dt.datetime = pydantic.Field(alias="createdAt")

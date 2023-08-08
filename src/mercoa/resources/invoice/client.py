@@ -18,6 +18,7 @@ from ..commons.errors.auth_header_missing_error import AuthHeaderMissingError
 from ..commons.errors.unauthorized import Unauthorized
 from ..commons.types.order_direction import OrderDirection
 from ..entity_types.types.entity_id import EntityId
+from ..entity_types.types.entity_user_id import EntityUserId
 from ..invoice_types.types.find_invoice_response import FindInvoiceResponse
 from ..invoice_types.types.invoice_id import InvoiceId
 from ..invoice_types.types.invoice_order_by_field import InvoiceOrderByField
@@ -40,7 +41,7 @@ class InvoiceClient:
     def find(
         self,
         *,
-        entity_ids: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
+        entity_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
         start_date: typing.Optional[dt.datetime] = None,
         end_date: typing.Optional[dt.datetime] = None,
         order_by: typing.Optional[InvoiceOrderByField] = None,
@@ -48,13 +49,15 @@ class InvoiceClient:
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[InvoiceId] = None,
         search: typing.Optional[str] = None,
+        vendor_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
+        approver_id: typing.Union[typing.Optional[EntityUserId], typing.List[EntityUserId]],
         status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]],
     ) -> FindInvoiceResponse:
         _response = httpx.request(
             "GET",
             urllib.parse.urljoin(f"{self._environment.value}/", "invoices"),
             params={
-                "entityIds": entity_ids,
+                "entityId": entity_id,
                 "startDate": serialize_datetime(start_date) if start_date is not None else None,
                 "endDate": serialize_datetime(end_date) if end_date is not None else None,
                 "orderBy": order_by,
@@ -62,6 +65,8 @@ class InvoiceClient:
                 "limit": limit,
                 "startingAfter": starting_after,
                 "search": search,
+                "vendorId": vendor_id,
+                "approverId": approver_id,
                 "status": status,
             },
             headers=remove_none_from_headers(
@@ -218,7 +223,7 @@ class AsyncInvoiceClient:
     async def find(
         self,
         *,
-        entity_ids: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
+        entity_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
         start_date: typing.Optional[dt.datetime] = None,
         end_date: typing.Optional[dt.datetime] = None,
         order_by: typing.Optional[InvoiceOrderByField] = None,
@@ -226,6 +231,8 @@ class AsyncInvoiceClient:
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[InvoiceId] = None,
         search: typing.Optional[str] = None,
+        vendor_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
+        approver_id: typing.Union[typing.Optional[EntityUserId], typing.List[EntityUserId]],
         status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]],
     ) -> FindInvoiceResponse:
         async with httpx.AsyncClient() as _client:
@@ -233,7 +240,7 @@ class AsyncInvoiceClient:
                 "GET",
                 urllib.parse.urljoin(f"{self._environment.value}/", "invoices"),
                 params={
-                    "entityIds": entity_ids,
+                    "entityId": entity_id,
                     "startDate": serialize_datetime(start_date) if start_date is not None else None,
                     "endDate": serialize_datetime(end_date) if end_date is not None else None,
                     "orderBy": order_by,
@@ -241,6 +248,8 @@ class AsyncInvoiceClient:
                     "limit": limit,
                     "startingAfter": starting_after,
                     "search": search,
+                    "vendorId": vendor_id,
+                    "approverId": approver_id,
                     "status": status,
                 },
                 headers=remove_none_from_headers(

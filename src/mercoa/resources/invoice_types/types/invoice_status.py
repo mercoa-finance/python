@@ -16,6 +16,7 @@ class InvoiceStatus(str, enum.Enum):
     ARCHIVED = "ARCHIVED"
     REFUSED = "REFUSED"
     CANCELED = "CANCELED"
+    FAILED = "FAILED"
 
     def visit(
         self,
@@ -28,6 +29,7 @@ class InvoiceStatus(str, enum.Enum):
         archived: typing.Callable[[], T_Result],
         refused: typing.Callable[[], T_Result],
         canceled: typing.Callable[[], T_Result],
+        failed: typing.Callable[[], T_Result],
     ) -> T_Result:
         if self is InvoiceStatus.DRAFT:
             return draft()
@@ -47,3 +49,5 @@ class InvoiceStatus(str, enum.Enum):
             return refused()
         if self is InvoiceStatus.CANCELED:
             return canceled()
+        if self is InvoiceStatus.FAILED:
+            return failed()

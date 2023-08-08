@@ -8,7 +8,6 @@ import pydantic
 from ....core.datetime_utils import serialize_datetime
 from .color_scheme_request import ColorSchemeRequest
 from .email_provider_request import EmailProviderRequest
-from .global_notification_configuration_request import GlobalNotificationConfigurationRequest
 from .payment_methods_request import PaymentMethodsRequest
 
 
@@ -20,9 +19,6 @@ class OrganizationRequest(pydantic.BaseModel):
     payment_methods: typing.Optional[PaymentMethodsRequest] = pydantic.Field(alias="paymentMethods")
     email_provider: typing.Optional[EmailProviderRequest] = pydantic.Field(alias="emailProvider")
     color_scheme: typing.Optional[ColorSchemeRequest] = pydantic.Field(alias="colorScheme")
-    notification_configuration: typing.Optional[GlobalNotificationConfigurationRequest] = pydantic.Field(
-        alias="notificationConfiguration"
-    )
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
