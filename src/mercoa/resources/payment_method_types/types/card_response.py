@@ -6,11 +6,17 @@ import typing
 import pydantic
 
 from ....core.datetime_utils import serialize_datetime
-from .card_base_response import CardBaseResponse
+from .card_brand import CardBrand
+from .card_type import CardType
+from .payment_method_base_response import PaymentMethodBaseResponse
 
 
-class CardResponse(CardBaseResponse):
-    card: CardBaseResponse = pydantic.Field(description=("DEPRECATED DO NOT USE. WILL BE REMOVED SOON.\n"))
+class CardResponse(PaymentMethodBaseResponse):
+    card_type: CardType = pydantic.Field(alias="cardType")
+    card_brand: CardBrand = pydantic.Field(alias="cardBrand")
+    last_four: str = pydantic.Field(alias="lastFour")
+    exp_month: str = pydantic.Field(alias="expMonth")
+    exp_year: str = pydantic.Field(alias="expYear")
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

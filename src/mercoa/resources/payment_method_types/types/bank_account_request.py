@@ -6,12 +6,18 @@ import typing
 import pydantic
 
 from ....core.datetime_utils import serialize_datetime
-from .bank_account_base_request import BankAccountBaseRequest
+from .bank_type import BankType
+from .payment_method_base_request import PaymentMethodBaseRequest
+from .plaid_link_request import PlaidLinkRequest
 
 
-class BankAccountRequest(BankAccountBaseRequest):
-    bank_account: typing.Optional[BankAccountBaseRequest] = pydantic.Field(
-        alias="bankAccount", description=("DEPRECATED DO NOT USE. WILL BE REMOVED SOON.\n")
+class BankAccountRequest(PaymentMethodBaseRequest):
+    bank_name: str = pydantic.Field(alias="bankName")
+    routing_number: str = pydantic.Field(alias="routingNumber")
+    account_number: str = pydantic.Field(alias="accountNumber")
+    account_type: BankType = pydantic.Field(alias="accountType")
+    plaid: typing.Optional[PlaidLinkRequest] = pydantic.Field(
+        description=("If provided, will link a bank account using Plaid Link\n")
     )
 
     def json(self, **kwargs: typing.Any) -> str:

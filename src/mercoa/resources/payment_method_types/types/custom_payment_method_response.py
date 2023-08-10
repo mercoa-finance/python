@@ -6,12 +6,24 @@ import typing
 import pydantic
 
 from ....core.datetime_utils import serialize_datetime
-from .custom_payment_method_base_response import CustomPaymentMethodBaseResponse
+from .payment_method_base_response import PaymentMethodBaseResponse
+from .payment_method_schema_id import PaymentMethodSchemaId
+from .payment_method_schema_response import PaymentMethodSchemaResponse
 
 
-class CustomPaymentMethodResponse(CustomPaymentMethodBaseResponse):
-    custom: CustomPaymentMethodBaseResponse = pydantic.Field(
-        description=("DEPRECATED DO NOT USE. WILL BE REMOVED SOON.\n")
+class CustomPaymentMethodResponse(PaymentMethodBaseResponse):
+    foreign_id: str = pydantic.Field(alias="foreignId", description=("ID for this payment method in your system\n"))
+    account_name: typing.Optional[str] = pydantic.Field(alias="accountName")
+    account_number: typing.Optional[str] = pydantic.Field(alias="accountNumber")
+    schema_id: PaymentMethodSchemaId = pydantic.Field(
+        alias="schemaId",
+        description=(
+            "Payment method schema used for this payment method. Defines the fields that this payment method contains.\n"
+        ),
+    )
+    schema_: PaymentMethodSchemaResponse = pydantic.Field(alias="schema")
+    data: typing.Dict[str, str] = pydantic.Field(
+        description=("Object of key/value pairs that matches the keys in the linked payment method schema.\n")
     )
 
     def json(self, **kwargs: typing.Any) -> str:

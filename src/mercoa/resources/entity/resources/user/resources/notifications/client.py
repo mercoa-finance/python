@@ -14,6 +14,8 @@ from .......core.remove_none_from_headers import remove_none_from_headers
 from .......environment import MercoaEnvironment
 from ......commons.errors.auth_header_malformed_error import AuthHeaderMalformedError
 from ......commons.errors.auth_header_missing_error import AuthHeaderMissingError
+from ......commons.errors.invalid_postal_code import InvalidPostalCode
+from ......commons.errors.invalid_state_or_province import InvalidStateOrProvince
 from ......commons.errors.unauthorized import Unauthorized
 from ......commons.types.order_direction import OrderDirection
 from ......entity_types.types.entity_id import EntityId
@@ -21,6 +23,7 @@ from ......entity_types.types.entity_user_id import EntityUserId
 from ......entity_types.types.find_notification_response import FindNotificationResponse
 from ......entity_types.types.notification_id import NotificationId
 from ......entity_types.types.notification_response import NotificationResponse
+from .....errors.invalid_tax_id import InvalidTaxId
 
 
 class NotificationsClient:
@@ -67,6 +70,12 @@ class NotificationsClient:
                 raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unauthorized":
                 raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "InvalidPostalCode":
+                raise InvalidPostalCode(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "InvalidStateOrProvince":
+                raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "InvalidTaxId":
+                raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get(self, entity_id: EntityId, user_id: EntityUserId, notification_id: NotificationId) -> NotificationResponse:
@@ -93,6 +102,12 @@ class NotificationsClient:
                 raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unauthorized":
                 raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "InvalidPostalCode":
+                raise InvalidPostalCode(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "InvalidStateOrProvince":
+                raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "InvalidTaxId":
+                raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
 
@@ -141,6 +156,12 @@ class AsyncNotificationsClient:
                 raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unauthorized":
                 raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "InvalidPostalCode":
+                raise InvalidPostalCode(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "InvalidStateOrProvince":
+                raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "InvalidTaxId":
+                raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get(
@@ -170,4 +191,10 @@ class AsyncNotificationsClient:
                 raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unauthorized":
                 raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "InvalidPostalCode":
+                raise InvalidPostalCode(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "InvalidStateOrProvince":
+                raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "InvalidTaxId":
+                raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)

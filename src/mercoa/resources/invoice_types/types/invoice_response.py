@@ -33,8 +33,8 @@ class InvoiceResponse(pydantic.BaseModel):
     deduction_date: typing.Optional[dt.datetime] = pydantic.Field(
         alias="deductionDate", description=("Date when funds will be deducted from payer's account.\n")
     )
-    funded_date: typing.Optional[dt.datetime] = pydantic.Field(
-        alias="fundedDate", description=("Date of funds settlement.\n")
+    settlement_date: typing.Optional[dt.datetime] = pydantic.Field(
+        alias="settlementDate", description=("Date of funds settlement.\n")
     )
     due_date: typing.Optional[dt.datetime] = pydantic.Field(alias="dueDate", description=("Due date of invoice.\n"))
     invoice_number: typing.Optional[str] = pydantic.Field(alias="invoiceNumber")

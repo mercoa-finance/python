@@ -7,6 +7,7 @@ import typing
 import typing_extensions
 
 from .custom_payment_method_update_request import CustomPaymentMethodUpdateRequest
+from .payment_method_base_request import PaymentMethodBaseRequest
 
 
 class PaymentMethodUpdateRequest_Custom(CustomPaymentMethodUpdateRequest):
@@ -17,4 +18,33 @@ class PaymentMethodUpdateRequest_Custom(CustomPaymentMethodUpdateRequest):
         allow_population_by_field_name = True
 
 
-PaymentMethodUpdateRequest = typing.Union[PaymentMethodUpdateRequest_Custom]
+class PaymentMethodUpdateRequest_BankAccount(PaymentMethodBaseRequest):
+    type: typing_extensions.Literal["bankAccount"]
+
+    class Config:
+        frozen = True
+        allow_population_by_field_name = True
+
+
+class PaymentMethodUpdateRequest_Card(PaymentMethodBaseRequest):
+    type: typing_extensions.Literal["card"]
+
+    class Config:
+        frozen = True
+        allow_population_by_field_name = True
+
+
+class PaymentMethodUpdateRequest_Check(PaymentMethodBaseRequest):
+    type: typing_extensions.Literal["check"]
+
+    class Config:
+        frozen = True
+        allow_population_by_field_name = True
+
+
+PaymentMethodUpdateRequest = typing.Union[
+    PaymentMethodUpdateRequest_Custom,
+    PaymentMethodUpdateRequest_BankAccount,
+    PaymentMethodUpdateRequest_Card,
+    PaymentMethodUpdateRequest_Check,
+]

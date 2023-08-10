@@ -6,13 +6,17 @@ import typing
 import pydantic
 
 from ....core.datetime_utils import serialize_datetime
-from .bank_account_base_response import BankAccountBaseResponse
+from .bank_status import BankStatus
+from .bank_type import BankType
+from .payment_method_base_response import PaymentMethodBaseResponse
 
 
-class BankAccountResponse(BankAccountBaseResponse):
-    bank_account: BankAccountBaseResponse = pydantic.Field(
-        alias="bankAccount", description=("DEPRECATED DO NOT USE. WILL BE REMOVED SOON.\n")
-    )
+class BankAccountResponse(PaymentMethodBaseResponse):
+    bank_name: str = pydantic.Field(alias="bankName")
+    routing_number: str = pydantic.Field(alias="routingNumber")
+    account_number: str = pydantic.Field(alias="accountNumber")
+    account_type: BankType = pydantic.Field(alias="accountType")
+    status: BankStatus
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
