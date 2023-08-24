@@ -18,7 +18,8 @@ from ..commons.errors.auth_header_missing_error import AuthHeaderMissingError
 from ..commons.errors.invalid_postal_code import InvalidPostalCode
 from ..commons.errors.invalid_state_or_province import InvalidStateOrProvince
 from ..commons.errors.unauthorized import Unauthorized
-from ..entity.errors.invalid_tax_id import InvalidTaxId
+from ..entity_types.errors.entity_foreign_id_already_exists import EntityForeignIdAlreadyExists
+from ..entity_types.errors.invalid_tax_id import InvalidTaxId
 from ..organization_types.types.email_log_response import EmailLogResponse
 from ..organization_types.types.organization_request import OrganizationRequest
 from ..organization_types.types.organization_response import OrganizationResponse
@@ -42,11 +43,19 @@ class OrganizationClient:
         payment_methods: typing.Optional[bool] = None,
         email_provider: typing.Optional[bool] = None,
         color_scheme: typing.Optional[bool] = None,
+        payee_onboarding_options: typing.Optional[bool] = None,
+        payor_onboarding_options: typing.Optional[bool] = None,
     ) -> OrganizationResponse:
         _response = httpx.request(
             "GET",
             urllib.parse.urljoin(f"{self._environment.value}/", "organization"),
-            params={"paymentMethods": payment_methods, "emailProvider": email_provider, "colorScheme": color_scheme},
+            params={
+                "paymentMethods": payment_methods,
+                "emailProvider": email_provider,
+                "colorScheme": color_scheme,
+                "payeeOnboardingOptions": payee_onboarding_options,
+                "payorOnboardingOptions": payor_onboarding_options,
+            },
             headers=remove_none_from_headers(
                 {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
             ),
@@ -71,6 +80,10 @@ class OrganizationClient:
                 raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "InvalidTaxId":
                 raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
+                raise EntityForeignIdAlreadyExists(
+                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
+                )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def update(self, *, request: OrganizationRequest) -> OrganizationResponse:
@@ -102,6 +115,10 @@ class OrganizationClient:
                 raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "InvalidTaxId":
                 raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
+                raise EntityForeignIdAlreadyExists(
+                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
+                )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def email_log(
@@ -138,6 +155,10 @@ class OrganizationClient:
                 raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "InvalidTaxId":
                 raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
+                raise EntityForeignIdAlreadyExists(
+                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
+                )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
 
@@ -155,6 +176,8 @@ class AsyncOrganizationClient:
         payment_methods: typing.Optional[bool] = None,
         email_provider: typing.Optional[bool] = None,
         color_scheme: typing.Optional[bool] = None,
+        payee_onboarding_options: typing.Optional[bool] = None,
+        payor_onboarding_options: typing.Optional[bool] = None,
     ) -> OrganizationResponse:
         async with httpx.AsyncClient() as _client:
             _response = await _client.request(
@@ -164,6 +187,8 @@ class AsyncOrganizationClient:
                     "paymentMethods": payment_methods,
                     "emailProvider": email_provider,
                     "colorScheme": color_scheme,
+                    "payeeOnboardingOptions": payee_onboarding_options,
+                    "payorOnboardingOptions": payor_onboarding_options,
                 },
                 headers=remove_none_from_headers(
                     {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
@@ -189,6 +214,10 @@ class AsyncOrganizationClient:
                 raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "InvalidTaxId":
                 raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
+                raise EntityForeignIdAlreadyExists(
+                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
+                )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def update(self, *, request: OrganizationRequest) -> OrganizationResponse:
@@ -221,6 +250,10 @@ class AsyncOrganizationClient:
                 raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "InvalidTaxId":
                 raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
+                raise EntityForeignIdAlreadyExists(
+                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
+                )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def email_log(
@@ -258,4 +291,8 @@ class AsyncOrganizationClient:
                 raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "InvalidTaxId":
                 raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
+                raise EntityForeignIdAlreadyExists(
+                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
+                )
         raise ApiError(status_code=_response.status_code, body=_response_json)

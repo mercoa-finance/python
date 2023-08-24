@@ -16,7 +16,8 @@ from ..commons.errors.auth_header_missing_error import AuthHeaderMissingError
 from ..commons.errors.invalid_postal_code import InvalidPostalCode
 from ..commons.errors.invalid_state_or_province import InvalidStateOrProvince
 from ..commons.errors.unauthorized import Unauthorized
-from ..entity.errors.invalid_tax_id import InvalidTaxId
+from ..entity_types.errors.entity_foreign_id_already_exists import EntityForeignIdAlreadyExists
+from ..entity_types.errors.invalid_tax_id import InvalidTaxId
 from ..payment_method_types.types.payment_method_schema_id import PaymentMethodSchemaId
 from ..payment_method_types.types.payment_method_schema_request import PaymentMethodSchemaRequest
 from ..payment_method_types.types.payment_method_schema_response import PaymentMethodSchemaResponse
@@ -55,6 +56,10 @@ class PaymentMethodSchemaClient:
                 raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "InvalidTaxId":
                 raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
+                raise EntityForeignIdAlreadyExists(
+                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
+                )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def create(self, *, request: PaymentMethodSchemaRequest) -> PaymentMethodSchemaResponse:
@@ -86,6 +91,10 @@ class PaymentMethodSchemaClient:
                 raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "InvalidTaxId":
                 raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
+                raise EntityForeignIdAlreadyExists(
+                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
+                )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def update(
@@ -119,6 +128,10 @@ class PaymentMethodSchemaClient:
                 raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "InvalidTaxId":
                 raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
+                raise EntityForeignIdAlreadyExists(
+                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
+                )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get(self, schema_id: PaymentMethodSchemaId) -> PaymentMethodSchemaResponse:
@@ -149,6 +162,10 @@ class PaymentMethodSchemaClient:
                 raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "InvalidTaxId":
                 raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
+                raise EntityForeignIdAlreadyExists(
+                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
+                )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def delete(self, schema_id: PaymentMethodSchemaId) -> None:
@@ -179,6 +196,10 @@ class PaymentMethodSchemaClient:
                 raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "InvalidTaxId":
                 raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
+                raise EntityForeignIdAlreadyExists(
+                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
+                )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
 
@@ -216,6 +237,10 @@ class AsyncPaymentMethodSchemaClient:
                 raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "InvalidTaxId":
                 raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
+                raise EntityForeignIdAlreadyExists(
+                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
+                )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def create(self, *, request: PaymentMethodSchemaRequest) -> PaymentMethodSchemaResponse:
@@ -248,6 +273,10 @@ class AsyncPaymentMethodSchemaClient:
                 raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "InvalidTaxId":
                 raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
+                raise EntityForeignIdAlreadyExists(
+                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
+                )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def update(
@@ -282,6 +311,10 @@ class AsyncPaymentMethodSchemaClient:
                 raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "InvalidTaxId":
                 raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
+                raise EntityForeignIdAlreadyExists(
+                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
+                )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get(self, schema_id: PaymentMethodSchemaId) -> PaymentMethodSchemaResponse:
@@ -313,6 +346,10 @@ class AsyncPaymentMethodSchemaClient:
                 raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "InvalidTaxId":
                 raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
+                raise EntityForeignIdAlreadyExists(
+                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
+                )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def delete(self, schema_id: PaymentMethodSchemaId) -> None:
@@ -344,4 +381,8 @@ class AsyncPaymentMethodSchemaClient:
                 raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "InvalidTaxId":
                 raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
+                raise EntityForeignIdAlreadyExists(
+                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
+                )
         raise ApiError(status_code=_response.status_code, body=_response_json)

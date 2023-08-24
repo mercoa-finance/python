@@ -6,21 +6,11 @@ import typing
 import pydantic
 
 from ....core.datetime_utils import serialize_datetime
-from ...invoice_types.types.invoice_id import InvoiceId
-from .notification_id import NotificationId
-from .notification_type import NotificationType
+from .entity_id import EntityId
 
 
-class NotificationResponse(pydantic.BaseModel):
-    id: NotificationId
-    invoice_id: typing.Optional[InvoiceId] = pydantic.Field(
-        alias="invoiceId",
-        description=(
-            "The invoice ID that this notification is related to. This field is only present for notifications related to invoices.\n"
-        ),
-    )
-    type: NotificationType
-    created_at: dt.datetime = pydantic.Field(alias="createdAt")
+class EntityArchivePayeesRequest(pydantic.BaseModel):
+    payees: typing.List[EntityId] = pydantic.Field(description=("List of payee entity IDs to archive\n"))
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
@@ -32,5 +22,4 @@ class NotificationResponse(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
         json_encoders = {dt.datetime: serialize_datetime}

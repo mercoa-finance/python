@@ -16,12 +16,13 @@ from ....commons.errors.auth_header_missing_error import AuthHeaderMissingError
 from ....commons.errors.invalid_postal_code import InvalidPostalCode
 from ....commons.errors.invalid_state_or_province import InvalidStateOrProvince
 from ....commons.errors.unauthorized import Unauthorized
+from ....entity_types.errors.entity_foreign_id_already_exists import EntityForeignIdAlreadyExists
+from ....entity_types.errors.invalid_tax_id import InvalidTaxId
 from ....entity_types.types.entity_id import EntityId
 from ....entity_types.types.entity_user_id import EntityUserId
 from ....entity_types.types.entity_user_request import EntityUserRequest
 from ....entity_types.types.entity_user_response import EntityUserResponse
 from ....entity_types.types.token_generation_options import TokenGenerationOptions
-from ...errors.invalid_tax_id import InvalidTaxId
 from .resources.notification_policy.client import AsyncNotificationPolicyClient, NotificationPolicyClient
 from .resources.notifications.client import AsyncNotificationsClient, NotificationsClient
 
@@ -61,6 +62,10 @@ class UserClient:
                 raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "InvalidTaxId":
                 raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
+                raise EntityForeignIdAlreadyExists(
+                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
+                )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def create(self, entity_id: EntityId, *, request: EntityUserRequest) -> EntityUserResponse:
@@ -92,6 +97,10 @@ class UserClient:
                 raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "InvalidTaxId":
                 raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
+                raise EntityForeignIdAlreadyExists(
+                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
+                )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get(self, entity_id: EntityId, user_id: EntityUserId) -> EntityUserResponse:
@@ -122,6 +131,10 @@ class UserClient:
                 raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "InvalidTaxId":
                 raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
+                raise EntityForeignIdAlreadyExists(
+                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
+                )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def update(self, entity_id: EntityId, user_id: EntityUserId, *, request: EntityUserRequest) -> EntityUserResponse:
@@ -153,6 +166,10 @@ class UserClient:
                 raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "InvalidTaxId":
                 raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
+                raise EntityForeignIdAlreadyExists(
+                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
+                )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def delete(self, entity_id: EntityId, user_id: EntityUserId) -> None:
@@ -183,6 +200,10 @@ class UserClient:
                 raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "InvalidTaxId":
                 raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
+                raise EntityForeignIdAlreadyExists(
+                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
+                )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get_raw_token(self, entity_id: EntityId, user_id: EntityUserId) -> str:
@@ -213,6 +234,10 @@ class UserClient:
                 raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "InvalidTaxId":
                 raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
+                raise EntityForeignIdAlreadyExists(
+                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
+                )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get_token(self, entity_id: EntityId, user_id: EntityUserId, *, request: TokenGenerationOptions) -> str:
@@ -244,6 +269,10 @@ class UserClient:
                 raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "InvalidTaxId":
                 raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
+                raise EntityForeignIdAlreadyExists(
+                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
+                )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
 
@@ -283,6 +312,10 @@ class AsyncUserClient:
                 raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "InvalidTaxId":
                 raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
+                raise EntityForeignIdAlreadyExists(
+                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
+                )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def create(self, entity_id: EntityId, *, request: EntityUserRequest) -> EntityUserResponse:
@@ -315,6 +348,10 @@ class AsyncUserClient:
                 raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "InvalidTaxId":
                 raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
+                raise EntityForeignIdAlreadyExists(
+                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
+                )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get(self, entity_id: EntityId, user_id: EntityUserId) -> EntityUserResponse:
@@ -346,6 +383,10 @@ class AsyncUserClient:
                 raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "InvalidTaxId":
                 raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
+                raise EntityForeignIdAlreadyExists(
+                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
+                )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def update(
@@ -380,6 +421,10 @@ class AsyncUserClient:
                 raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "InvalidTaxId":
                 raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
+                raise EntityForeignIdAlreadyExists(
+                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
+                )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def delete(self, entity_id: EntityId, user_id: EntityUserId) -> None:
@@ -411,6 +456,10 @@ class AsyncUserClient:
                 raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "InvalidTaxId":
                 raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
+                raise EntityForeignIdAlreadyExists(
+                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
+                )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get_raw_token(self, entity_id: EntityId, user_id: EntityUserId) -> str:
@@ -442,6 +491,10 @@ class AsyncUserClient:
                 raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "InvalidTaxId":
                 raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
+                raise EntityForeignIdAlreadyExists(
+                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
+                )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get_token(self, entity_id: EntityId, user_id: EntityUserId, *, request: TokenGenerationOptions) -> str:
@@ -474,4 +527,8 @@ class AsyncUserClient:
                 raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "InvalidTaxId":
                 raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
+                raise EntityForeignIdAlreadyExists(
+                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
+                )
         raise ApiError(status_code=_response.status_code, body=_response_json)

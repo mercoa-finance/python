@@ -18,12 +18,14 @@ from ......commons.errors.invalid_postal_code import InvalidPostalCode
 from ......commons.errors.invalid_state_or_province import InvalidStateOrProvince
 from ......commons.errors.unauthorized import Unauthorized
 from ......commons.types.order_direction import OrderDirection
+from ......entity_types.errors.entity_foreign_id_already_exists import EntityForeignIdAlreadyExists
+from ......entity_types.errors.invalid_tax_id import InvalidTaxId
 from ......entity_types.types.entity_id import EntityId
 from ......entity_types.types.entity_user_id import EntityUserId
 from ......entity_types.types.find_notification_response import FindNotificationResponse
 from ......entity_types.types.notification_id import NotificationId
 from ......entity_types.types.notification_response import NotificationResponse
-from .....errors.invalid_tax_id import InvalidTaxId
+from ......entity_types.types.notification_type import NotificationType
 
 
 class NotificationsClient:
@@ -41,6 +43,7 @@ class NotificationsClient:
         order_direction: typing.Optional[OrderDirection] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[NotificationId] = None,
+        notification_type: typing.Union[typing.Optional[NotificationType], typing.List[NotificationType]],
     ) -> FindNotificationResponse:
         _response = httpx.request(
             "GET",
@@ -51,6 +54,7 @@ class NotificationsClient:
                 "orderDirection": order_direction,
                 "limit": limit,
                 "startingAfter": starting_after,
+                "notificationType": notification_type,
             },
             headers=remove_none_from_headers(
                 {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
@@ -76,6 +80,10 @@ class NotificationsClient:
                 raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "InvalidTaxId":
                 raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
+                raise EntityForeignIdAlreadyExists(
+                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
+                )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get(self, entity_id: EntityId, user_id: EntityUserId, notification_id: NotificationId) -> NotificationResponse:
@@ -108,6 +116,10 @@ class NotificationsClient:
                 raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "InvalidTaxId":
                 raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
+                raise EntityForeignIdAlreadyExists(
+                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
+                )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
 
@@ -126,6 +138,7 @@ class AsyncNotificationsClient:
         order_direction: typing.Optional[OrderDirection] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[NotificationId] = None,
+        notification_type: typing.Union[typing.Optional[NotificationType], typing.List[NotificationType]],
     ) -> FindNotificationResponse:
         async with httpx.AsyncClient() as _client:
             _response = await _client.request(
@@ -137,6 +150,7 @@ class AsyncNotificationsClient:
                     "orderDirection": order_direction,
                     "limit": limit,
                     "startingAfter": starting_after,
+                    "notificationType": notification_type,
                 },
                 headers=remove_none_from_headers(
                     {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
@@ -162,6 +176,10 @@ class AsyncNotificationsClient:
                 raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "InvalidTaxId":
                 raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
+                raise EntityForeignIdAlreadyExists(
+                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
+                )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get(
@@ -197,4 +215,8 @@ class AsyncNotificationsClient:
                 raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "InvalidTaxId":
                 raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
+                raise EntityForeignIdAlreadyExists(
+                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
+                )
         raise ApiError(status_code=_response.status_code, body=_response_json)

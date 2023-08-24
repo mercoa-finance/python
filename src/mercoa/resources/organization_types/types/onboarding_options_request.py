@@ -6,21 +6,15 @@ import typing
 import pydantic
 
 from ....core.datetime_utils import serialize_datetime
-from ...payment_method_types.types.currency_code import CurrencyCode
+from .business_onboarding_options import BusinessOnboardingOptions
+from .individual_onboarding_options import IndividualOnboardingOptions
 
 
-class InvoiceLineItemResponse(pydantic.BaseModel):
-    id: str
-    amount: typing.Optional[float] = pydantic.Field(description=("Total amount of line item in major units.\n"))
-    currency: typing.Optional[CurrencyCode]
-    description: typing.Optional[str]
-    name: typing.Optional[str]
-    quantity: typing.Optional[int]
-    unit_price: typing.Optional[float] = pydantic.Field(
-        alias="unitPrice", description=("Unit price of line item in major units.\n")
-    )
-    created_at: dt.datetime = pydantic.Field(alias="createdAt")
-    updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
+class OnboardingOptionsRequest(pydantic.BaseModel):
+    enable_business: typing.Optional[bool] = pydantic.Field(alias="enableBusiness")
+    enable_individual: typing.Optional[bool] = pydantic.Field(alias="enableIndividual")
+    business: typing.Optional[BusinessOnboardingOptions]
+    individual: typing.Optional[IndividualOnboardingOptions]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

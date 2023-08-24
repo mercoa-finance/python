@@ -25,7 +25,7 @@ from .invoice_status import InvoiceStatus
 class InvoiceResponse(pydantic.BaseModel):
     id: InvoiceId
     status: InvoiceStatus
-    amount: typing.Optional[float]
+    amount: typing.Optional[float] = pydantic.Field(description=("Total amount of invoice in major units\n"))
     currency: typing.Optional[CurrencyCode]
     invoice_date: typing.Optional[dt.datetime] = pydantic.Field(
         alias="invoiceDate", description=("Date the invoice was created.\n")

@@ -17,7 +17,11 @@ from .invoice_status import InvoiceStatus
 
 class InvoiceRequest(pydantic.BaseModel):
     status: typing.Optional[InvoiceStatus]
-    amount: typing.Optional[float]
+    amount: typing.Optional[float] = pydantic.Field(
+        description=(
+            "Total amount of invoice in major units. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.\n"
+        )
+    )
     currency: typing.Optional[CurrencyCode]
     invoice_date: typing.Optional[dt.datetime] = pydantic.Field(
         alias="invoiceDate", description=("Date the invoice was created.\n")

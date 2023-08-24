@@ -18,6 +18,8 @@ from ....commons.errors.invalid_postal_code import InvalidPostalCode
 from ....commons.errors.invalid_state_or_province import InvalidStateOrProvince
 from ....commons.errors.unauthorized import Unauthorized
 from ....commons.types.order_direction import OrderDirection
+from ....entity_types.errors.entity_foreign_id_already_exists import EntityForeignIdAlreadyExists
+from ....entity_types.errors.invalid_tax_id import InvalidTaxId
 from ....entity_types.types.entity_id import EntityId
 from ....entity_types.types.entity_user_id import EntityUserId
 from ....invoice_types.types.find_invoice_response import FindInvoiceResponse
@@ -26,7 +28,6 @@ from ....invoice_types.types.invoice_metrics_response import InvoiceMetricsRespo
 from ....invoice_types.types.invoice_order_by_field import InvoiceOrderByField
 from ....invoice_types.types.invoice_status import InvoiceStatus
 from ....payment_method_types.types.currency_code import CurrencyCode
-from ...errors.invalid_tax_id import InvalidTaxId
 
 
 class InvoiceClient:
@@ -47,6 +48,7 @@ class InvoiceClient:
         search: typing.Optional[str] = None,
         vendor_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
         approver_id: typing.Union[typing.Optional[EntityUserId], typing.List[EntityUserId]],
+        invoice_id: typing.Union[typing.Optional[InvoiceId], typing.List[InvoiceId]],
         status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]],
     ) -> FindInvoiceResponse:
         _response = httpx.request(
@@ -62,6 +64,7 @@ class InvoiceClient:
                 "search": search,
                 "vendorId": vendor_id,
                 "approverId": approver_id,
+                "invoiceId": invoice_id,
                 "status": status,
             },
             headers=remove_none_from_headers(
@@ -88,6 +91,10 @@ class InvoiceClient:
                 raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "InvalidTaxId":
                 raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
+                raise EntityForeignIdAlreadyExists(
+                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
+                )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def metrics(
@@ -97,6 +104,7 @@ class InvoiceClient:
         search: typing.Optional[str] = None,
         vendor_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
         approver_id: typing.Union[typing.Optional[EntityUserId], typing.List[EntityUserId]],
+        invoice_id: typing.Union[typing.Optional[InvoiceId], typing.List[InvoiceId]],
         status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]],
         due_date_start: typing.Optional[dt.datetime] = None,
         due_date_end: typing.Optional[dt.datetime] = None,
@@ -111,6 +119,7 @@ class InvoiceClient:
                 "search": search,
                 "vendorId": vendor_id,
                 "approverId": approver_id,
+                "invoiceId": invoice_id,
                 "status": status,
                 "dueDateStart": serialize_datetime(due_date_start) if due_date_start is not None else None,
                 "dueDateEnd": serialize_datetime(due_date_end) if due_date_end is not None else None,
@@ -142,6 +151,10 @@ class InvoiceClient:
                 raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "InvalidTaxId":
                 raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
+                raise EntityForeignIdAlreadyExists(
+                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
+                )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
 
@@ -163,6 +176,7 @@ class AsyncInvoiceClient:
         search: typing.Optional[str] = None,
         vendor_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
         approver_id: typing.Union[typing.Optional[EntityUserId], typing.List[EntityUserId]],
+        invoice_id: typing.Union[typing.Optional[InvoiceId], typing.List[InvoiceId]],
         status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]],
     ) -> FindInvoiceResponse:
         async with httpx.AsyncClient() as _client:
@@ -179,6 +193,7 @@ class AsyncInvoiceClient:
                     "search": search,
                     "vendorId": vendor_id,
                     "approverId": approver_id,
+                    "invoiceId": invoice_id,
                     "status": status,
                 },
                 headers=remove_none_from_headers(
@@ -205,6 +220,10 @@ class AsyncInvoiceClient:
                 raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "InvalidTaxId":
                 raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
+                raise EntityForeignIdAlreadyExists(
+                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
+                )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def metrics(
@@ -214,6 +233,7 @@ class AsyncInvoiceClient:
         search: typing.Optional[str] = None,
         vendor_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
         approver_id: typing.Union[typing.Optional[EntityUserId], typing.List[EntityUserId]],
+        invoice_id: typing.Union[typing.Optional[InvoiceId], typing.List[InvoiceId]],
         status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]],
         due_date_start: typing.Optional[dt.datetime] = None,
         due_date_end: typing.Optional[dt.datetime] = None,
@@ -229,6 +249,7 @@ class AsyncInvoiceClient:
                     "search": search,
                     "vendorId": vendor_id,
                     "approverId": approver_id,
+                    "invoiceId": invoice_id,
                     "status": status,
                     "dueDateStart": serialize_datetime(due_date_start) if due_date_start is not None else None,
                     "dueDateEnd": serialize_datetime(due_date_end) if due_date_end is not None else None,
@@ -262,4 +283,8 @@ class AsyncInvoiceClient:
                 raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "InvalidTaxId":
                 raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
+                raise EntityForeignIdAlreadyExists(
+                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
+                )
         raise ApiError(status_code=_response.status_code, body=_response_json)

@@ -13,7 +13,9 @@ from .business_type import BusinessType
 from .counterparty_response import CounterpartyResponse
 from .ein import Ein
 from .entity_add_payees_request import EntityAddPayeesRequest
+from .entity_archive_payees_request import EntityArchivePayeesRequest
 from .entity_id import EntityId
+from .entity_onboarding_link_type import EntityOnboardingLinkType
 from .entity_request import EntityRequest
 from .entity_response import EntityResponse
 from .entity_status import EntityStatus
@@ -63,7 +65,9 @@ __all__ = [
     "CounterpartyResponse",
     "Ein",
     "EntityAddPayeesRequest",
+    "EntityArchivePayeesRequest",
     "EntityId",
+    "EntityOnboardingLinkType",
     "EntityRequest",
     "EntityResponse",
     "EntityStatus",

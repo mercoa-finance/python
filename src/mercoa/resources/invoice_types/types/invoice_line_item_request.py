@@ -15,12 +15,21 @@ class InvoiceLineItemRequest(pydantic.BaseModel):
             "If provided, will overwrite line item on the invoice with this ID. If not provided, will create a new line item.\n"
         )
     )
-    amount: typing.Optional[float]
+    amount: typing.Optional[float] = pydantic.Field(
+        description=(
+            "Total amount of line item in major units. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.\n"
+        )
+    )
     currency: typing.Optional[CurrencyCode]
     description: typing.Optional[str]
     name: typing.Optional[str]
     quantity: typing.Optional[int]
-    unit_price: typing.Optional[float] = pydantic.Field(alias="unitPrice")
+    unit_price: typing.Optional[float] = pydantic.Field(
+        alias="unitPrice",
+        description=(
+            "Unit price of the line item in major units. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.\n"
+        ),
+    )
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
