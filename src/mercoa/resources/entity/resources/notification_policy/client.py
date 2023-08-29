@@ -13,11 +13,7 @@ from .....core.remove_none_from_headers import remove_none_from_headers
 from .....environment import MercoaEnvironment
 from ....commons.errors.auth_header_malformed_error import AuthHeaderMalformedError
 from ....commons.errors.auth_header_missing_error import AuthHeaderMissingError
-from ....commons.errors.invalid_postal_code import InvalidPostalCode
-from ....commons.errors.invalid_state_or_province import InvalidStateOrProvince
 from ....commons.errors.unauthorized import Unauthorized
-from ....entity_types.errors.entity_foreign_id_already_exists import EntityForeignIdAlreadyExists
-from ....entity_types.errors.invalid_tax_id import InvalidTaxId
 from ....entity_types.types.entity_id import EntityId
 from ....entity_types.types.notification_policy_request import NotificationPolicyRequest
 from ....entity_types.types.notification_policy_response import NotificationPolicyResponse
@@ -51,16 +47,6 @@ class NotificationPolicyClient:
                 raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unauthorized":
                 raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "InvalidPostalCode":
-                raise InvalidPostalCode(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "InvalidStateOrProvince":
-                raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "InvalidTaxId":
-                raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
-                raise EntityForeignIdAlreadyExists(
-                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
-                )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get(self, entity_id: EntityId, notification_type: NotificationType) -> NotificationPolicyResponse:
@@ -87,16 +73,6 @@ class NotificationPolicyClient:
                 raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unauthorized":
                 raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "InvalidPostalCode":
-                raise InvalidPostalCode(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "InvalidStateOrProvince":
-                raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "InvalidTaxId":
-                raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
-                raise EntityForeignIdAlreadyExists(
-                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
-                )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def update(
@@ -126,16 +102,6 @@ class NotificationPolicyClient:
                 raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unauthorized":
                 raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "InvalidPostalCode":
-                raise InvalidPostalCode(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "InvalidStateOrProvince":
-                raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "InvalidTaxId":
-                raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
-                raise EntityForeignIdAlreadyExists(
-                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
-                )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
 
@@ -167,16 +133,6 @@ class AsyncNotificationPolicyClient:
                 raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unauthorized":
                 raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "InvalidPostalCode":
-                raise InvalidPostalCode(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "InvalidStateOrProvince":
-                raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "InvalidTaxId":
-                raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
-                raise EntityForeignIdAlreadyExists(
-                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
-                )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get(self, entity_id: EntityId, notification_type: NotificationType) -> NotificationPolicyResponse:
@@ -204,16 +160,6 @@ class AsyncNotificationPolicyClient:
                 raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unauthorized":
                 raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "InvalidPostalCode":
-                raise InvalidPostalCode(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "InvalidStateOrProvince":
-                raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "InvalidTaxId":
-                raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
-                raise EntityForeignIdAlreadyExists(
-                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
-                )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def update(
@@ -244,14 +190,4 @@ class AsyncNotificationPolicyClient:
                 raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unauthorized":
                 raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "InvalidPostalCode":
-                raise InvalidPostalCode(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "InvalidStateOrProvince":
-                raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "InvalidTaxId":
-                raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
-                raise EntityForeignIdAlreadyExists(
-                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
-                )
         raise ApiError(status_code=_response.status_code, body=_response_json)

@@ -12,11 +12,7 @@ from .....core.remove_none_from_headers import remove_none_from_headers
 from .....environment import MercoaEnvironment
 from ....commons.errors.auth_header_malformed_error import AuthHeaderMalformedError
 from ....commons.errors.auth_header_missing_error import AuthHeaderMissingError
-from ....commons.errors.invalid_postal_code import InvalidPostalCode
-from ....commons.errors.invalid_state_or_province import InvalidStateOrProvince
 from ....commons.errors.unauthorized import Unauthorized
-from ....entity_types.errors.entity_foreign_id_already_exists import EntityForeignIdAlreadyExists
-from ....entity_types.errors.invalid_tax_id import InvalidTaxId
 from ....entity_types.types.entity_id import EntityId
 from ....entity_types.types.find_counterparties_response import FindCounterpartiesResponse
 
@@ -26,11 +22,17 @@ class CounterpartyClient:
         self._environment = environment
         self._token = token
 
-    def find(self, entity_id: EntityId, *, payment_methods: typing.Optional[bool] = None) -> FindCounterpartiesResponse:
+    def find(
+        self,
+        entity_id: EntityId,
+        *,
+        payment_methods: typing.Optional[bool] = None,
+        counterparty_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
+    ) -> FindCounterpartiesResponse:
         _response = httpx.request(
             "GET",
             urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/counterparties"),
-            params={"paymentMethods": payment_methods},
+            params={"paymentMethods": payment_methods, "counterpartyId": counterparty_id},
             headers=remove_none_from_headers(
                 {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
             ),
@@ -49,16 +51,6 @@ class CounterpartyClient:
                 raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unauthorized":
                 raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "InvalidPostalCode":
-                raise InvalidPostalCode(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "InvalidStateOrProvince":
-                raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "InvalidTaxId":
-                raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
-                raise EntityForeignIdAlreadyExists(
-                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
-                )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
 
@@ -68,13 +60,17 @@ class AsyncCounterpartyClient:
         self._token = token
 
     async def find(
-        self, entity_id: EntityId, *, payment_methods: typing.Optional[bool] = None
+        self,
+        entity_id: EntityId,
+        *,
+        payment_methods: typing.Optional[bool] = None,
+        counterparty_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
     ) -> FindCounterpartiesResponse:
         async with httpx.AsyncClient() as _client:
             _response = await _client.request(
                 "GET",
                 urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/counterparties"),
-                params={"paymentMethods": payment_methods},
+                params={"paymentMethods": payment_methods, "counterpartyId": counterparty_id},
                 headers=remove_none_from_headers(
                     {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
                 ),
@@ -93,14 +89,4 @@ class AsyncCounterpartyClient:
                 raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unauthorized":
                 raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "InvalidPostalCode":
-                raise InvalidPostalCode(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "InvalidStateOrProvince":
-                raise InvalidStateOrProvince(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "InvalidTaxId":
-                raise InvalidTaxId(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "EntityForeignIdAlreadyExists":
-                raise EntityForeignIdAlreadyExists(
-                    pydantic.parse_obj_as(str, _response_json["content"])  # type: ignore
-                )
         raise ApiError(status_code=_response.status_code, body=_response_json)
