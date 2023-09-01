@@ -16,9 +16,7 @@ class CommentResponse(pydantic.BaseModel):
     user: typing.Optional[EntityUserResponse]
     associated_approval_action: typing.Optional[AssociatedApprovalAction] = pydantic.Field(
         alias="associatedApprovalAction",
-        description=(
-            "If an approval action has triggered the generation of this comment, returns the associated approval action and actor\n"
-        ),
+        description="If an approval action has triggered the generation of this comment, returns the associated approval action and actor",
     )
     created_at: dt.datetime = pydantic.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
@@ -33,5 +31,6 @@ class CommentResponse(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        smart_union = True
         allow_population_by_field_name = True
         json_encoders = {dt.datetime: serialize_datetime}

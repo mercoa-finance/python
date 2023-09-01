@@ -15,13 +15,13 @@ class PaymentMethodSchemaResponse(pydantic.BaseModel):
     id: PaymentMethodSchemaId
     name: str
     is_source: bool = pydantic.Field(
-        alias="isSource", description=("This payment method can be used as a payment source for an invoice\n")
+        alias="isSource", description="This payment method can be used as a payment source for an invoice"
     )
     is_destination: bool = pydantic.Field(
-        alias="isDestination", description=("This payment method can be used as a payment destination for an invoice\n")
+        alias="isDestination", description="This payment method can be used as a payment destination for an invoice"
     )
     supported_currencies: typing.List[CurrencyCode] = pydantic.Field(
-        alias="supportedCurrencies", description=("List of currencies that this payment method supports.\n")
+        alias="supportedCurrencies", description="List of currencies that this payment method supports."
     )
     fields: typing.List[PaymentMethodSchemaField]
     created_at: dt.datetime = pydantic.Field(alias="createdAt")
@@ -37,5 +37,6 @@ class PaymentMethodSchemaResponse(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        smart_union = True
         allow_population_by_field_name = True
         json_encoders = {dt.datetime: serialize_datetime}

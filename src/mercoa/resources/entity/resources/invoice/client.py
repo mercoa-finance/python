@@ -5,13 +5,12 @@ import typing
 import urllib.parse
 from json.decoder import JSONDecodeError
 
-import httpx
 import pydantic
 
 from .....core.api_error import ApiError
+from .....core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from .....core.datetime_utils import serialize_datetime
-from .....core.remove_none_from_headers import remove_none_from_headers
-from .....environment import MercoaEnvironment
+from .....core.remove_none_from_dict import remove_none_from_dict
 from ....commons.errors.auth_header_malformed_error import AuthHeaderMalformedError
 from ....commons.errors.auth_header_missing_error import AuthHeaderMissingError
 from ....commons.errors.unauthorized import Unauthorized
@@ -27,9 +26,8 @@ from ....payment_method_types.types.currency_code import CurrencyCode
 
 
 class InvoiceClient:
-    def __init__(self, *, environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION, token: str):
-        self._environment = environment
-        self._token = token
+    def __init__(self, *, client_wrapper: SyncClientWrapper):
+        self._client_wrapper = client_wrapper
 
     def find(
         self,
@@ -47,25 +45,53 @@ class InvoiceClient:
         invoice_id: typing.Union[typing.Optional[InvoiceId], typing.List[InvoiceId]],
         status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]],
     ) -> FindInvoiceResponse:
-        _response = httpx.request(
+        """
+        Get invoices for an entity
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - start_date: typing.Optional[dt.datetime]. Start date for invoice created on date filter.
+
+            - end_date: typing.Optional[dt.datetime]. End date for invoice created date filter.
+
+            - order_by: typing.Optional[InvoiceOrderByField]. Field to order invoices by. Defaults to CREATED_AT.
+
+            - order_direction: typing.Optional[OrderDirection]. Direction to order invoices by. Defaults to asc.
+
+            - limit: typing.Optional[int]. Number of invoices to return. Limit can range between 1 and 100, and the default is 10.
+
+            - starting_after: typing.Optional[InvoiceId]. The ID of the invoice to start after. If not provided, the first page of invoices will be returned.
+
+            - search: typing.Optional[str]. Filter vendors by name. Partial matches are supported.
+
+            - vendor_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter invoices by vendor ID.
+
+            - approver_id: typing.Union[typing.Optional[EntityUserId], typing.List[EntityUserId]]. Filter invoices by assigned approver user ID.
+
+            - invoice_id: typing.Union[typing.Optional[InvoiceId], typing.List[InvoiceId]]. Filter invoices by invoice ID.
+
+            - status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]]. Invoice status to filter on
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/invoices"),
-            params={
-                "startDate": serialize_datetime(start_date) if start_date is not None else None,
-                "endDate": serialize_datetime(end_date) if end_date is not None else None,
-                "orderBy": order_by,
-                "orderDirection": order_direction,
-                "limit": limit,
-                "startingAfter": starting_after,
-                "search": search,
-                "vendorId": vendor_id,
-                "approverId": approver_id,
-                "invoiceId": invoice_id,
-                "status": status,
-            },
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/invoices"),
+            params=remove_none_from_dict(
+                {
+                    "startDate": serialize_datetime(start_date) if start_date is not None else None,
+                    "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                    "orderBy": order_by,
+                    "orderDirection": order_direction,
+                    "limit": limit,
+                    "startingAfter": starting_after,
+                    "search": search,
+                    "vendorId": vendor_id,
+                    "approverId": approver_id,
+                    "invoiceId": invoice_id,
+                    "status": status,
+                }
             ),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -98,24 +124,52 @@ class InvoiceClient:
         created_date_end: typing.Optional[dt.datetime] = None,
         currency: CurrencyCode,
     ) -> InvoiceMetricsResponse:
-        _response = httpx.request(
+        """
+        Get invoice metrics for an entity
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - search: typing.Optional[str]. Filter vendors by name. Partial matches are supported.
+
+            - vendor_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter invoices by vendor ID.
+
+            - approver_id: typing.Union[typing.Optional[EntityUserId], typing.List[EntityUserId]]. Filter invoices by assigned approver user ID.
+
+            - invoice_id: typing.Union[typing.Optional[InvoiceId], typing.List[InvoiceId]]. Filter invoices by invoice ID.
+
+            - status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]]. Invoice status to filter on
+
+            - due_date_start: typing.Optional[dt.datetime]. Start date for invoice dueDate filter.
+
+            - due_date_end: typing.Optional[dt.datetime]. End date for invoice dueDate filter.
+
+            - created_date_start: typing.Optional[dt.datetime]. Start date for invoice created on date filter.
+
+            - created_date_end: typing.Optional[dt.datetime]. End date for invoice created date filter.
+
+            - currency: CurrencyCode. Currency to filter on
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/invoice-metrics"),
-            params={
-                "search": search,
-                "vendorId": vendor_id,
-                "approverId": approver_id,
-                "invoiceId": invoice_id,
-                "status": status,
-                "dueDateStart": serialize_datetime(due_date_start) if due_date_start is not None else None,
-                "dueDateEnd": serialize_datetime(due_date_end) if due_date_end is not None else None,
-                "createdDateStart": serialize_datetime(created_date_start) if created_date_start is not None else None,
-                "createdDateEnd": serialize_datetime(created_date_end) if created_date_end is not None else None,
-                "currency": currency,
-            },
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/invoice-metrics"),
+            params=remove_none_from_dict(
+                {
+                    "search": search,
+                    "vendorId": vendor_id,
+                    "approverId": approver_id,
+                    "invoiceId": invoice_id,
+                    "status": status,
+                    "dueDateStart": serialize_datetime(due_date_start) if due_date_start is not None else None,
+                    "dueDateEnd": serialize_datetime(due_date_end) if due_date_end is not None else None,
+                    "createdDateStart": serialize_datetime(created_date_start)
+                    if created_date_start is not None
+                    else None,
+                    "createdDateEnd": serialize_datetime(created_date_end) if created_date_end is not None else None,
+                    "currency": currency,
+                }
             ),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -135,9 +189,8 @@ class InvoiceClient:
 
 
 class AsyncInvoiceClient:
-    def __init__(self, *, environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION, token: str):
-        self._environment = environment
-        self._token = token
+    def __init__(self, *, client_wrapper: AsyncClientWrapper):
+        self._client_wrapper = client_wrapper
 
     async def find(
         self,
@@ -155,11 +208,39 @@ class AsyncInvoiceClient:
         invoice_id: typing.Union[typing.Optional[InvoiceId], typing.List[InvoiceId]],
         status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]],
     ) -> FindInvoiceResponse:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "GET",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/invoices"),
-                params={
+        """
+        Get invoices for an entity
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - start_date: typing.Optional[dt.datetime]. Start date for invoice created on date filter.
+
+            - end_date: typing.Optional[dt.datetime]. End date for invoice created date filter.
+
+            - order_by: typing.Optional[InvoiceOrderByField]. Field to order invoices by. Defaults to CREATED_AT.
+
+            - order_direction: typing.Optional[OrderDirection]. Direction to order invoices by. Defaults to asc.
+
+            - limit: typing.Optional[int]. Number of invoices to return. Limit can range between 1 and 100, and the default is 10.
+
+            - starting_after: typing.Optional[InvoiceId]. The ID of the invoice to start after. If not provided, the first page of invoices will be returned.
+
+            - search: typing.Optional[str]. Filter vendors by name. Partial matches are supported.
+
+            - vendor_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter invoices by vendor ID.
+
+            - approver_id: typing.Union[typing.Optional[EntityUserId], typing.List[EntityUserId]]. Filter invoices by assigned approver user ID.
+
+            - invoice_id: typing.Union[typing.Optional[InvoiceId], typing.List[InvoiceId]]. Filter invoices by invoice ID.
+
+            - status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]]. Invoice status to filter on
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "GET",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/invoices"),
+            params=remove_none_from_dict(
+                {
                     "startDate": serialize_datetime(start_date) if start_date is not None else None,
                     "endDate": serialize_datetime(end_date) if end_date is not None else None,
                     "orderBy": order_by,
@@ -171,12 +252,11 @@ class AsyncInvoiceClient:
                     "approverId": approver_id,
                     "invoiceId": invoice_id,
                     "status": status,
-                },
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+                }
+            ),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:
@@ -207,11 +287,37 @@ class AsyncInvoiceClient:
         created_date_end: typing.Optional[dt.datetime] = None,
         currency: CurrencyCode,
     ) -> InvoiceMetricsResponse:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "GET",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/invoice-metrics"),
-                params={
+        """
+        Get invoice metrics for an entity
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - search: typing.Optional[str]. Filter vendors by name. Partial matches are supported.
+
+            - vendor_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter invoices by vendor ID.
+
+            - approver_id: typing.Union[typing.Optional[EntityUserId], typing.List[EntityUserId]]. Filter invoices by assigned approver user ID.
+
+            - invoice_id: typing.Union[typing.Optional[InvoiceId], typing.List[InvoiceId]]. Filter invoices by invoice ID.
+
+            - status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]]. Invoice status to filter on
+
+            - due_date_start: typing.Optional[dt.datetime]. Start date for invoice dueDate filter.
+
+            - due_date_end: typing.Optional[dt.datetime]. End date for invoice dueDate filter.
+
+            - created_date_start: typing.Optional[dt.datetime]. Start date for invoice created on date filter.
+
+            - created_date_end: typing.Optional[dt.datetime]. End date for invoice created date filter.
+
+            - currency: CurrencyCode. Currency to filter on
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "GET",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/invoice-metrics"),
+            params=remove_none_from_dict(
+                {
                     "search": search,
                     "vendorId": vendor_id,
                     "approverId": approver_id,
@@ -224,12 +330,11 @@ class AsyncInvoiceClient:
                     else None,
                     "createdDateEnd": serialize_datetime(created_date_end) if created_date_end is not None else None,
                     "currency": currency,
-                },
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+                }
+            ),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:

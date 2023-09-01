@@ -7,8 +7,8 @@ T_Result = typing.TypeVar("T_Result")
 
 
 class PaymentRailMarkupType(str, enum.Enum):
-    FLAT = "flat"
-    PERCENT = "percent"
+    FLAT = "FLAT"
+    PERCENT = "PERCENT"
 
     def visit(self, flat: typing.Callable[[], T_Result], percent: typing.Callable[[], T_Result]) -> T_Result:
         if self is PaymentRailMarkupType.FLAT:

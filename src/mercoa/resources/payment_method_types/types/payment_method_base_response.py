@@ -14,11 +14,11 @@ class PaymentMethodBaseResponse(pydantic.BaseModel):
     id: PaymentMethodId
     is_default_source: bool = pydantic.Field(
         alias="isDefaultSource",
-        description=("Indicates whether this payment method is the default source for the entity\n"),
+        description="Indicates whether this payment method is the default source for the entity",
     )
     is_default_destination: bool = pydantic.Field(
         alias="isDefaultDestination",
-        description=("Indicates whether this payment method is the default destination for the entity\n"),
+        description="Indicates whether this payment method is the default destination for the entity",
     )
     supported_currencies: typing.List[CurrencyCode] = pydantic.Field(alias="supportedCurrencies")
     created_at: dt.datetime = pydantic.Field(alias="createdAt")
@@ -34,5 +34,6 @@ class PaymentMethodBaseResponse(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        smart_union = True
         allow_population_by_field_name = True
         json_encoders = {dt.datetime: serialize_datetime}

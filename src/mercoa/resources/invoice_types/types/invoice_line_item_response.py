@@ -11,13 +11,13 @@ from ...payment_method_types.types.currency_code import CurrencyCode
 
 class InvoiceLineItemResponse(pydantic.BaseModel):
     id: str
-    amount: typing.Optional[float] = pydantic.Field(description=("Total amount of line item in major units.\n"))
+    amount: typing.Optional[float] = pydantic.Field(description="Total amount of line item in major units.")
     currency: typing.Optional[CurrencyCode]
     description: typing.Optional[str]
     name: typing.Optional[str]
     quantity: typing.Optional[int]
     unit_price: typing.Optional[float] = pydantic.Field(
-        alias="unitPrice", description=("Unit price of line item in major units.\n")
+        alias="unitPrice", description="Unit price of line item in major units."
     )
     created_at: dt.datetime = pydantic.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
@@ -32,5 +32,6 @@ class InvoiceLineItemResponse(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        smart_union = True
         allow_population_by_field_name = True
         json_encoders = {dt.datetime: serialize_datetime}

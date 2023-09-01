@@ -4,13 +4,11 @@ import typing
 import urllib.parse
 from json.decoder import JSONDecodeError
 
-import httpx
 import pydantic
 
 from .....core.api_error import ApiError
+from .....core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from .....core.jsonable_encoder import jsonable_encoder
-from .....core.remove_none_from_headers import remove_none_from_headers
-from .....environment import MercoaEnvironment
 from ....commons.errors.auth_header_malformed_error import AuthHeaderMalformedError
 from ....commons.errors.auth_header_missing_error import AuthHeaderMissingError
 from ....commons.errors.unauthorized import Unauthorized
@@ -22,19 +20,25 @@ from ....entity_types.types.entity_id import EntityId
 from .errors.num_approver_less_than_one_error import NumApproverLessThanOneError
 from .errors.num_approvers_user_list_mismatch_error import NumApproversUserListMismatchError
 
+# this is used as the default value for optional parameters
+OMIT = typing.cast(typing.Any, ...)
+
 
 class ApprovalPolicyClient:
-    def __init__(self, *, environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION, token: str):
-        self._environment = environment
-        self._token = token
+    def __init__(self, *, client_wrapper: SyncClientWrapper):
+        self._client_wrapper = client_wrapper
 
     def get_all(self, entity_id: EntityId) -> typing.List[ApprovalPolicyResponse]:
-        _response = httpx.request(
+        """
+        Retrieve all invoice approval policies associated with Entity
+
+        Parameters:
+            - entity_id: EntityId.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/approval-policies"),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/approval-policies"),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -53,13 +57,19 @@ class ApprovalPolicyClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def create(self, entity_id: EntityId, *, request: ApprovalPolicyRequest) -> ApprovalPolicyResponse:
-        _response = httpx.request(
+        """
+        Create an invoice approval policy associated with Entity
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - request: ApprovalPolicyRequest.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/approval-policy"),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/approval-policy"),
             json=jsonable_encoder(request),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -84,12 +94,20 @@ class ApprovalPolicyClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get(self, entity_id: EntityId, policy_id: ApprovalPolicyId) -> ApprovalPolicyResponse:
-        _response = httpx.request(
+        """
+        Retrieve an invoice approval policy associated with Entity
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - policy_id: ApprovalPolicyId.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/approval-policy/{policy_id}"),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/approval-policy/{policy_id}"
             ),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -110,13 +128,23 @@ class ApprovalPolicyClient:
     def update(
         self, entity_id: EntityId, policy_id: ApprovalPolicyId, *, request: ApprovalPolicyUpdateRequest
     ) -> ApprovalPolicyResponse:
-        _response = httpx.request(
+        """
+        Update an invoice approval policy associated with Entity
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - policy_id: ApprovalPolicyId.
+
+            - request: ApprovalPolicyUpdateRequest.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/approval-policy/{policy_id}"),
-            json=jsonable_encoder(request),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/approval-policy/{policy_id}"
             ),
+            json=jsonable_encoder(request),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -141,12 +169,20 @@ class ApprovalPolicyClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def delete(self, entity_id: EntityId, policy_id: ApprovalPolicyId) -> None:
-        _response = httpx.request(
+        """
+        Delete an invoice approval policy associated with Entity. BEWARE: Any approval policy deletion will result in all associated downstream policies also being deleted.
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - policy_id: ApprovalPolicyId.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "DELETE",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/approval-policy/{policy_id}"),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/approval-policy/{policy_id}"
             ),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         if 200 <= _response.status_code < 300:
@@ -166,20 +202,22 @@ class ApprovalPolicyClient:
 
 
 class AsyncApprovalPolicyClient:
-    def __init__(self, *, environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION, token: str):
-        self._environment = environment
-        self._token = token
+    def __init__(self, *, client_wrapper: AsyncClientWrapper):
+        self._client_wrapper = client_wrapper
 
     async def get_all(self, entity_id: EntityId) -> typing.List[ApprovalPolicyResponse]:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "GET",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/approval-policies"),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Retrieve all invoice approval policies associated with Entity
+
+        Parameters:
+            - entity_id: EntityId.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "GET",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/approval-policies"),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:
@@ -196,16 +234,21 @@ class AsyncApprovalPolicyClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def create(self, entity_id: EntityId, *, request: ApprovalPolicyRequest) -> ApprovalPolicyResponse:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "POST",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/approval-policy"),
-                json=jsonable_encoder(request),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Create an invoice approval policy associated with Entity
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - request: ApprovalPolicyRequest.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "POST",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/approval-policy"),
+            json=jsonable_encoder(request),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:
@@ -228,15 +271,22 @@ class AsyncApprovalPolicyClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get(self, entity_id: EntityId, policy_id: ApprovalPolicyId) -> ApprovalPolicyResponse:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "GET",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/approval-policy/{policy_id}"),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Retrieve an invoice approval policy associated with Entity
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - policy_id: ApprovalPolicyId.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "GET",
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/approval-policy/{policy_id}"
+            ),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:
@@ -255,16 +305,25 @@ class AsyncApprovalPolicyClient:
     async def update(
         self, entity_id: EntityId, policy_id: ApprovalPolicyId, *, request: ApprovalPolicyUpdateRequest
     ) -> ApprovalPolicyResponse:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "POST",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/approval-policy/{policy_id}"),
-                json=jsonable_encoder(request),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Update an invoice approval policy associated with Entity
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - policy_id: ApprovalPolicyId.
+
+            - request: ApprovalPolicyUpdateRequest.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "POST",
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/approval-policy/{policy_id}"
+            ),
+            json=jsonable_encoder(request),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:
@@ -287,15 +346,22 @@ class AsyncApprovalPolicyClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def delete(self, entity_id: EntityId, policy_id: ApprovalPolicyId) -> None:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "DELETE",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/approval-policy/{policy_id}"),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Delete an invoice approval policy associated with Entity. BEWARE: Any approval policy deletion will result in all associated downstream policies also being deleted.
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - policy_id: ApprovalPolicyId.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "DELETE",
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/approval-policy/{policy_id}"
+            ),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         if 200 <= _response.status_code < 300:
             return
         try:

@@ -4,13 +4,11 @@ import typing
 import urllib.parse
 from json.decoder import JSONDecodeError
 
-import httpx
 import pydantic
 
 from .....core.api_error import ApiError
+from .....core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from .....core.jsonable_encoder import jsonable_encoder
-from .....core.remove_none_from_headers import remove_none_from_headers
-from .....environment import MercoaEnvironment
 from ....commons.errors.auth_header_malformed_error import AuthHeaderMalformedError
 from ....commons.errors.auth_header_missing_error import AuthHeaderMissingError
 from ....commons.errors.unauthorized import Unauthorized
@@ -22,21 +20,27 @@ from ....entity_types.types.token_generation_options import TokenGenerationOptio
 from .resources.notification_policy.client import AsyncNotificationPolicyClient, NotificationPolicyClient
 from .resources.notifications.client import AsyncNotificationsClient, NotificationsClient
 
+# this is used as the default value for optional parameters
+OMIT = typing.cast(typing.Any, ...)
+
 
 class UserClient:
-    def __init__(self, *, environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION, token: str):
-        self._environment = environment
-        self._token = token
-        self.notification_policy = NotificationPolicyClient(environment=self._environment, token=self._token)
-        self.notifications = NotificationsClient(environment=self._environment, token=self._token)
+    def __init__(self, *, client_wrapper: SyncClientWrapper):
+        self._client_wrapper = client_wrapper
+        self.notification_policy = NotificationPolicyClient(client_wrapper=self._client_wrapper)
+        self.notifications = NotificationsClient(client_wrapper=self._client_wrapper)
 
     def get_all(self, entity_id: EntityId) -> typing.List[EntityUserResponse]:
-        _response = httpx.request(
+        """
+        Get all entity users
+
+        Parameters:
+            - entity_id: EntityId.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/users"),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/users"),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -55,13 +59,17 @@ class UserClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def create(self, entity_id: EntityId, *, request: EntityUserRequest) -> EntityUserResponse:
-        _response = httpx.request(
+        """
+        Parameters:
+            - entity_id: EntityId.
+
+            - request: EntityUserRequest.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/user"),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/user"),
             json=jsonable_encoder(request),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -80,12 +88,18 @@ class UserClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get(self, entity_id: EntityId, user_id: EntityUserId) -> EntityUserResponse:
-        _response = httpx.request(
+        """
+        Get entity user
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - user_id: EntityUserId.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/user/{user_id}"),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/user/{user_id}"),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -104,13 +118,21 @@ class UserClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def update(self, entity_id: EntityId, user_id: EntityUserId, *, request: EntityUserRequest) -> EntityUserResponse:
-        _response = httpx.request(
+        """
+        Update entity user
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - user_id: EntityUserId.
+
+            - request: EntityUserRequest.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/user/{user_id}"),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/user/{user_id}"),
             json=jsonable_encoder(request),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -129,12 +151,18 @@ class UserClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def delete(self, entity_id: EntityId, user_id: EntityUserId) -> None:
-        _response = httpx.request(
+        """
+        Delete entity user
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - user_id: EntityUserId.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "DELETE",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/user/{user_id}"),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/user/{user_id}"),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         if 200 <= _response.status_code < 300:
@@ -153,12 +181,18 @@ class UserClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get_raw_token(self, entity_id: EntityId, user_id: EntityUserId) -> str:
-        _response = httpx.request(
+        """
+        Get JWT token for entity user
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - user_id: EntityUserId.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/user/{user_id}/token"),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/user/{user_id}/token"),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -177,13 +211,21 @@ class UserClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get_token(self, entity_id: EntityId, user_id: EntityUserId, *, request: TokenGenerationOptions) -> str:
-        _response = httpx.request(
+        """
+        Get JWT token for entity user with iFrame options
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - user_id: EntityUserId.
+
+            - request: TokenGenerationOptions.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/user/{user_id}/token"),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/user/{user_id}/token"),
             json=jsonable_encoder(request),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -203,22 +245,24 @@ class UserClient:
 
 
 class AsyncUserClient:
-    def __init__(self, *, environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION, token: str):
-        self._environment = environment
-        self._token = token
-        self.notification_policy = AsyncNotificationPolicyClient(environment=self._environment, token=self._token)
-        self.notifications = AsyncNotificationsClient(environment=self._environment, token=self._token)
+    def __init__(self, *, client_wrapper: AsyncClientWrapper):
+        self._client_wrapper = client_wrapper
+        self.notification_policy = AsyncNotificationPolicyClient(client_wrapper=self._client_wrapper)
+        self.notifications = AsyncNotificationsClient(client_wrapper=self._client_wrapper)
 
     async def get_all(self, entity_id: EntityId) -> typing.List[EntityUserResponse]:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "GET",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/users"),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Get all entity users
+
+        Parameters:
+            - entity_id: EntityId.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "GET",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/users"),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:
@@ -235,16 +279,19 @@ class AsyncUserClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def create(self, entity_id: EntityId, *, request: EntityUserRequest) -> EntityUserResponse:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "POST",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/user"),
-                json=jsonable_encoder(request),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Parameters:
+            - entity_id: EntityId.
+
+            - request: EntityUserRequest.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "POST",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/user"),
+            json=jsonable_encoder(request),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:
@@ -261,15 +308,20 @@ class AsyncUserClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get(self, entity_id: EntityId, user_id: EntityUserId) -> EntityUserResponse:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "GET",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/user/{user_id}"),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Get entity user
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - user_id: EntityUserId.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "GET",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/user/{user_id}"),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:
@@ -288,16 +340,23 @@ class AsyncUserClient:
     async def update(
         self, entity_id: EntityId, user_id: EntityUserId, *, request: EntityUserRequest
     ) -> EntityUserResponse:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "POST",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/user/{user_id}"),
-                json=jsonable_encoder(request),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Update entity user
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - user_id: EntityUserId.
+
+            - request: EntityUserRequest.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "POST",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/user/{user_id}"),
+            json=jsonable_encoder(request),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:
@@ -314,15 +373,20 @@ class AsyncUserClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def delete(self, entity_id: EntityId, user_id: EntityUserId) -> None:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "DELETE",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/user/{user_id}"),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Delete entity user
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - user_id: EntityUserId.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "DELETE",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/user/{user_id}"),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         if 200 <= _response.status_code < 300:
             return
         try:
@@ -339,15 +403,20 @@ class AsyncUserClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get_raw_token(self, entity_id: EntityId, user_id: EntityUserId) -> str:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "GET",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/user/{user_id}/token"),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Get JWT token for entity user
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - user_id: EntityUserId.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "GET",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/user/{user_id}/token"),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:
@@ -364,16 +433,23 @@ class AsyncUserClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get_token(self, entity_id: EntityId, user_id: EntityUserId, *, request: TokenGenerationOptions) -> str:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "POST",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/user/{user_id}/token"),
-                json=jsonable_encoder(request),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Get JWT token for entity user with iFrame options
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - user_id: EntityUserId.
+
+            - request: TokenGenerationOptions.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "POST",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/user/{user_id}/token"),
+            json=jsonable_encoder(request),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:

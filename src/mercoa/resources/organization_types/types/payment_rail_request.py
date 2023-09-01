@@ -13,7 +13,7 @@ from .payment_rail_markup import PaymentRailMarkup
 class PaymentRailRequest(pydantic.BaseModel):
     type: PaymentMethodType
     name: str = pydantic.Field(
-        description=("Name of the payment method. For custom payment methods, this is the ID of the schema.\n")
+        description="Name of the payment method. For custom payment methods, this is the ID of the schema."
     )
     markup: typing.Optional[PaymentRailMarkup]
     description: typing.Optional[str]
@@ -29,4 +29,5 @@ class PaymentRailRequest(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        smart_union = True
         json_encoders = {dt.datetime: serialize_datetime}

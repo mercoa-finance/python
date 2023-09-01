@@ -4,13 +4,12 @@ import typing
 import urllib.parse
 from json.decoder import JSONDecodeError
 
-import httpx
 import pydantic
 
 from ...core.api_error import ApiError
+from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ...core.jsonable_encoder import jsonable_encoder
-from ...core.remove_none_from_headers import remove_none_from_headers
-from ...environment import MercoaEnvironment
+from ...core.remove_none_from_dict import remove_none_from_dict
 from ..commons.errors.auth_header_malformed_error import AuthHeaderMalformedError
 from ..commons.errors.auth_header_missing_error import AuthHeaderMissingError
 from ..commons.errors.unauthorized import Unauthorized
@@ -18,11 +17,13 @@ from ..entity_types.types.entity_id import EntityId
 from ..entity_types.types.vendor_network import VendorNetwork
 from .types.ocr_response import OcrResponse
 
+# this is used as the default value for optional parameters
+OMIT = typing.cast(typing.Any, ...)
+
 
 class OcrClient:
-    def __init__(self, *, environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION, token: str):
-        self._environment = environment
-        self._token = token
+    def __init__(self, *, client_wrapper: SyncClientWrapper):
+        self._client_wrapper = client_wrapper
 
     def ocr(
         self,
@@ -32,14 +33,24 @@ class OcrClient:
         mime_type: str,
         image: str,
     ) -> OcrResponse:
-        _response = httpx.request(
+        """
+        Run OCR on an Base64 encoded image or PDF
+
+        Parameters:
+            - vendor_network: typing.Optional[VendorNetwork]. Limit OCR vendor search to a specific network
+
+            - entity_id: typing.Optional[EntityId]. When using the Entity vendor network, specify the entity to use if. EntityId on an auth token will take precedence over this parameter.
+
+            - mime_type: str. MIME type of the image. Supported types are image/png, image/jpeg, and application/pdf.
+
+            - image: str. Base64 encoded image or PDF. PNG, JPG, and PDF are supported. 10MB max.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._environment.value}/", "ocr"),
-            params={"vendorNetwork": vendor_network, "entityId": entity_id},
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "ocr"),
+            params=remove_none_from_dict({"vendorNetwork": vendor_network, "entityId": entity_id}),
             json=jsonable_encoder({"mimeType": mime_type, "image": image}),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -59,9 +70,8 @@ class OcrClient:
 
 
 class AsyncOcrClient:
-    def __init__(self, *, environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION, token: str):
-        self._environment = environment
-        self._token = token
+    def __init__(self, *, client_wrapper: AsyncClientWrapper):
+        self._client_wrapper = client_wrapper
 
     async def ocr(
         self,
@@ -71,17 +81,26 @@ class AsyncOcrClient:
         mime_type: str,
         image: str,
     ) -> OcrResponse:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "POST",
-                urllib.parse.urljoin(f"{self._environment.value}/", "ocr"),
-                params={"vendorNetwork": vendor_network, "entityId": entity_id},
-                json=jsonable_encoder({"mimeType": mime_type, "image": image}),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Run OCR on an Base64 encoded image or PDF
+
+        Parameters:
+            - vendor_network: typing.Optional[VendorNetwork]. Limit OCR vendor search to a specific network
+
+            - entity_id: typing.Optional[EntityId]. When using the Entity vendor network, specify the entity to use if. EntityId on an auth token will take precedence over this parameter.
+
+            - mime_type: str. MIME type of the image. Supported types are image/png, image/jpeg, and application/pdf.
+
+            - image: str. Base64 encoded image or PDF. PNG, JPG, and PDF are supported. 10MB max.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "POST",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "ocr"),
+            params=remove_none_from_dict({"vendorNetwork": vendor_network, "entityId": entity_id}),
+            json=jsonable_encoder({"mimeType": mime_type, "image": image}),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:

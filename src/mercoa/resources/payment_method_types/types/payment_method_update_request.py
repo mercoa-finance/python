@@ -15,6 +15,7 @@ class PaymentMethodUpdateRequest_Custom(CustomPaymentMethodUpdateRequest):
 
     class Config:
         frozen = True
+        smart_union = True
         allow_population_by_field_name = True
 
 
@@ -23,6 +24,7 @@ class PaymentMethodUpdateRequest_BankAccount(PaymentMethodBaseRequest):
 
     class Config:
         frozen = True
+        smart_union = True
         allow_population_by_field_name = True
 
 
@@ -31,6 +33,7 @@ class PaymentMethodUpdateRequest_Card(PaymentMethodBaseRequest):
 
     class Config:
         frozen = True
+        smart_union = True
         allow_population_by_field_name = True
 
 
@@ -39,6 +42,7 @@ class PaymentMethodUpdateRequest_Check(PaymentMethodBaseRequest):
 
     class Config:
         frozen = True
+        smart_union = True
         allow_population_by_field_name = True
 
 

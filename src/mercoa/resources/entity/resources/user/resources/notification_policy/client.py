@@ -4,13 +4,11 @@ import typing
 import urllib.parse
 from json.decoder import JSONDecodeError
 
-import httpx
 import pydantic
 
 from .......core.api_error import ApiError
+from .......core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from .......core.jsonable_encoder import jsonable_encoder
-from .......core.remove_none_from_headers import remove_none_from_headers
-from .......environment import MercoaEnvironment
 from ......commons.errors.auth_header_malformed_error import AuthHeaderMalformedError
 from ......commons.errors.auth_header_missing_error import AuthHeaderMissingError
 from ......commons.errors.unauthorized import Unauthorized
@@ -19,21 +17,29 @@ from ......entity_types.types.entity_user_id import EntityUserId
 from ......entity_types.types.notification_type import NotificationType
 from ......entity_types.types.user_notification_policy_response import UserNotificationPolicyResponse
 
+# this is used as the default value for optional parameters
+OMIT = typing.cast(typing.Any, ...)
+
 
 class NotificationPolicyClient:
-    def __init__(self, *, environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION, token: str):
-        self._environment = environment
-        self._token = token
+    def __init__(self, *, client_wrapper: SyncClientWrapper):
+        self._client_wrapper = client_wrapper
 
     def get_all(self, entity_id: EntityId, user_id: EntityUserId) -> typing.List[UserNotificationPolicyResponse]:
-        _response = httpx.request(
+        """
+        Retrieve all notification policies associated with this entity user
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - user_id: EntityUserId.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(
-                f"{self._environment.value}/", f"entity/{entity_id}/user/{user_id}/notification-policies"
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/user/{user_id}/notification-policies"
             ),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -54,15 +60,23 @@ class NotificationPolicyClient:
     def get(
         self, entity_id: EntityId, user_id: EntityUserId, notification_type: NotificationType
     ) -> UserNotificationPolicyResponse:
-        _response = httpx.request(
+        """
+        Retrieve notification policy associated with this entity user
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - user_id: EntityUserId.
+
+            - notification_type: NotificationType.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(
-                f"{self._environment.value}/",
+                f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{entity_id}/user/{user_id}/notification-policy/{notification_type}",
             ),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -83,16 +97,26 @@ class NotificationPolicyClient:
     def update(
         self, entity_id: EntityId, user_id: EntityUserId, notification_type: NotificationType, *, disabled: bool
     ) -> UserNotificationPolicyResponse:
-        _response = httpx.request(
+        """
+        Update notification policy associated with this entity user
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - user_id: EntityUserId.
+
+            - notification_type: NotificationType.
+
+            - disabled: bool.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(
-                f"{self._environment.value}/",
+                f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{entity_id}/user/{user_id}/notification-policy/{notification_type}",
             ),
             json=jsonable_encoder({"disabled": disabled}),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -112,22 +136,26 @@ class NotificationPolicyClient:
 
 
 class AsyncNotificationPolicyClient:
-    def __init__(self, *, environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION, token: str):
-        self._environment = environment
-        self._token = token
+    def __init__(self, *, client_wrapper: AsyncClientWrapper):
+        self._client_wrapper = client_wrapper
 
     async def get_all(self, entity_id: EntityId, user_id: EntityUserId) -> typing.List[UserNotificationPolicyResponse]:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "GET",
-                urllib.parse.urljoin(
-                    f"{self._environment.value}/", f"entity/{entity_id}/user/{user_id}/notification-policies"
-                ),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Retrieve all notification policies associated with this entity user
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - user_id: EntityUserId.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "GET",
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/user/{user_id}/notification-policies"
+            ),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:
@@ -146,18 +174,25 @@ class AsyncNotificationPolicyClient:
     async def get(
         self, entity_id: EntityId, user_id: EntityUserId, notification_type: NotificationType
     ) -> UserNotificationPolicyResponse:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "GET",
-                urllib.parse.urljoin(
-                    f"{self._environment.value}/",
-                    f"entity/{entity_id}/user/{user_id}/notification-policy/{notification_type}",
-                ),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Retrieve notification policy associated with this entity user
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - user_id: EntityUserId.
+
+            - notification_type: NotificationType.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "GET",
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/",
+                f"entity/{entity_id}/user/{user_id}/notification-policy/{notification_type}",
+            ),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:
@@ -176,19 +211,28 @@ class AsyncNotificationPolicyClient:
     async def update(
         self, entity_id: EntityId, user_id: EntityUserId, notification_type: NotificationType, *, disabled: bool
     ) -> UserNotificationPolicyResponse:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "POST",
-                urllib.parse.urljoin(
-                    f"{self._environment.value}/",
-                    f"entity/{entity_id}/user/{user_id}/notification-policy/{notification_type}",
-                ),
-                json=jsonable_encoder({"disabled": disabled}),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Update notification policy associated with this entity user
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - user_id: EntityUserId.
+
+            - notification_type: NotificationType.
+
+            - disabled: bool.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "POST",
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/",
+                f"entity/{entity_id}/user/{user_id}/notification-policy/{notification_type}",
+            ),
+            json=jsonable_encoder({"disabled": disabled}),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:

@@ -15,9 +15,7 @@ class NotificationResponse(pydantic.BaseModel):
     id: NotificationId
     invoice_id: typing.Optional[InvoiceId] = pydantic.Field(
         alias="invoiceId",
-        description=(
-            "The invoice ID that this notification is related to. This field is only present for notifications related to invoices.\n"
-        ),
+        description="The invoice ID that this notification is related to. This field is only present for notifications related to invoices.",
     )
     type: NotificationType
     created_at: dt.datetime = pydantic.Field(alias="createdAt")
@@ -32,5 +30,6 @@ class NotificationResponse(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        smart_union = True
         allow_population_by_field_name = True
         json_encoders = {dt.datetime: serialize_datetime}

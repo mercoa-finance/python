@@ -11,14 +11,10 @@ from ...payment_method_types.types.currency_code import CurrencyCode
 
 class InvoiceLineItemRequest(pydantic.BaseModel):
     id: typing.Optional[str] = pydantic.Field(
-        description=(
-            "If provided, will overwrite line item on the invoice with this ID. If not provided, will create a new line item.\n"
-        )
+        description="If provided, will overwrite line item on the invoice with this ID. If not provided, will create a new line item."
     )
     amount: typing.Optional[float] = pydantic.Field(
-        description=(
-            "Total amount of line item in major units. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.\n"
-        )
+        description="Total amount of line item in major units. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated."
     )
     currency: typing.Optional[CurrencyCode]
     description: typing.Optional[str]
@@ -26,9 +22,7 @@ class InvoiceLineItemRequest(pydantic.BaseModel):
     quantity: typing.Optional[int]
     unit_price: typing.Optional[float] = pydantic.Field(
         alias="unitPrice",
-        description=(
-            "Unit price of the line item in major units. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.\n"
-        ),
+        description="Unit price of the line item in major units. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.",
     )
 
     def json(self, **kwargs: typing.Any) -> str:
@@ -41,5 +35,6 @@ class InvoiceLineItemRequest(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        smart_union = True
         allow_population_by_field_name = True
         json_encoders = {dt.datetime: serialize_datetime}

@@ -17,7 +17,7 @@ class BankAccountRequest(PaymentMethodBaseRequest):
     account_number: str = pydantic.Field(alias="accountNumber")
     account_type: BankType = pydantic.Field(alias="accountType")
     plaid: typing.Optional[PlaidLinkRequest] = pydantic.Field(
-        description=("If provided, will link a bank account using Plaid Link\n")
+        description="If provided, will link a bank account using Plaid Link"
     )
 
     def json(self, **kwargs: typing.Any) -> str:
@@ -30,5 +30,6 @@ class BankAccountRequest(PaymentMethodBaseRequest):
 
     class Config:
         frozen = True
+        smart_union = True
         allow_population_by_field_name = True
         json_encoders = {dt.datetime: serialize_datetime}

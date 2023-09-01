@@ -16,6 +16,7 @@ class IdentifierList_RolesList(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        smart_union = True
 
 
 class IdentifierList_UserList(pydantic.BaseModel):
@@ -24,6 +25,7 @@ class IdentifierList_UserList(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        smart_union = True
 
 
 IdentifierList = typing.Union[IdentifierList_RolesList, IdentifierList_UserList]

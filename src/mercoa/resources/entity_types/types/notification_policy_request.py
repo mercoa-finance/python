@@ -11,9 +11,7 @@ from ....core.datetime_utils import serialize_datetime
 class NotificationPolicyRequest(pydantic.BaseModel):
     additional_roles: typing.List[str] = pydantic.Field(
         alias="additionalRoles",
-        description=(
-            "List of user roles that should receive notifications in addition to the default users for this notification type\n"
-        ),
+        description="List of user roles that should receive notifications in addition to the default users for this notification type",
     )
 
     def json(self, **kwargs: typing.Any) -> str:
@@ -26,5 +24,6 @@ class NotificationPolicyRequest(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        smart_union = True
         allow_population_by_field_name = True
         json_encoders = {dt.datetime: serialize_datetime}

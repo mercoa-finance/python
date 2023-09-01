@@ -10,7 +10,7 @@ from .notification_type import NotificationType
 
 
 class UserNotificationPolicyResponse(pydantic.BaseModel):
-    disabled: bool = pydantic.Field(description=("True if the selected notification type is disabled for this user\n"))
+    disabled: bool = pydantic.Field(description="True if the selected notification type is disabled for this user")
     type: NotificationType
 
     def json(self, **kwargs: typing.Any) -> str:
@@ -23,4 +23,5 @@ class UserNotificationPolicyResponse(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        smart_union = True
         json_encoders = {dt.datetime: serialize_datetime}

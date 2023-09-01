@@ -12,7 +12,7 @@ from .entity_user_id import EntityUserId
 class EntityUserResponse(pydantic.BaseModel):
     id: EntityUserId
     foreign_id: typing.Optional[str] = pydantic.Field(
-        alias="foreignId", description=("Id from external auth provider or your auth system\n")
+        alias="foreignId", description="Id from external auth provider or your auth system"
     )
     email: typing.Optional[str]
     name: typing.Optional[str]
@@ -30,5 +30,6 @@ class EntityUserResponse(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        smart_union = True
         allow_population_by_field_name = True
         json_encoders = {dt.datetime: serialize_datetime}

@@ -9,10 +9,8 @@ from ....core.datetime_utils import serialize_datetime
 
 
 class PlaidLinkRequest(pydantic.BaseModel):
-    account_id: typing.Optional[str] = pydantic.Field(alias="accountId", description=("Account ID from Plaid Link\n"))
-    public_token: typing.Optional[str] = pydantic.Field(
-        alias="publicToken", description=("Public token from Plaid Link\n")
-    )
+    account_id: typing.Optional[str] = pydantic.Field(alias="accountId", description="Account ID from Plaid Link")
+    public_token: typing.Optional[str] = pydantic.Field(alias="publicToken", description="Public token from Plaid Link")
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
@@ -24,5 +22,6 @@ class PlaidLinkRequest(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        smart_union = True
         allow_population_by_field_name = True
         json_encoders = {dt.datetime: serialize_datetime}

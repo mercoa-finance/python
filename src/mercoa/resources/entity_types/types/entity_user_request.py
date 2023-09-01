@@ -13,7 +13,7 @@ class EntityUserRequest(pydantic.BaseModel):
     email: typing.Optional[str]
     name: typing.Optional[str]
     roles: typing.Optional[typing.List[str]] = pydantic.Field(
-        description=('List of roles. A role can be any string. For example: "payer", "approver", "viewer"\n')
+        description='List of roles. A role can be any string. For example: "payer", "approver", "viewer"'
     )
 
     def json(self, **kwargs: typing.Any) -> str:
@@ -26,5 +26,6 @@ class EntityUserRequest(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        smart_union = True
         allow_population_by_field_name = True
         json_encoders = {dt.datetime: serialize_datetime}

@@ -4,13 +4,11 @@ import typing
 import urllib.parse
 from json.decoder import JSONDecodeError
 
-import httpx
 import pydantic
 
 from ...core.api_error import ApiError
+from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ...core.jsonable_encoder import jsonable_encoder
-from ...core.remove_none_from_headers import remove_none_from_headers
-from ...environment import MercoaEnvironment
 from ..commons.errors.auth_header_malformed_error import AuthHeaderMalformedError
 from ..commons.errors.auth_header_missing_error import AuthHeaderMissingError
 from ..commons.errors.unauthorized import Unauthorized
@@ -18,19 +16,22 @@ from ..payment_method_types.types.payment_method_schema_id import PaymentMethodS
 from ..payment_method_types.types.payment_method_schema_request import PaymentMethodSchemaRequest
 from ..payment_method_types.types.payment_method_schema_response import PaymentMethodSchemaResponse
 
+# this is used as the default value for optional parameters
+OMIT = typing.cast(typing.Any, ...)
+
 
 class PaymentMethodSchemaClient:
-    def __init__(self, *, environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION, token: str):
-        self._environment = environment
-        self._token = token
+    def __init__(self, *, client_wrapper: SyncClientWrapper):
+        self._client_wrapper = client_wrapper
 
     def get_all(self) -> typing.List[PaymentMethodSchemaResponse]:
-        _response = httpx.request(
+        """
+        Get all custom payment method schemas
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._environment.value}/", "paymentMethod/schema"),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "paymentMethod/schema"),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -49,13 +50,17 @@ class PaymentMethodSchemaClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def create(self, *, request: PaymentMethodSchemaRequest) -> PaymentMethodSchemaResponse:
-        _response = httpx.request(
+        """
+        Create custom payment method schema
+
+        Parameters:
+            - request: PaymentMethodSchemaRequest.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._environment.value}/", "paymentMethod/schema"),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "paymentMethod/schema"),
             json=jsonable_encoder(request),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -76,13 +81,19 @@ class PaymentMethodSchemaClient:
     def update(
         self, schema_id: PaymentMethodSchemaId, *, request: PaymentMethodSchemaRequest
     ) -> PaymentMethodSchemaResponse:
-        _response = httpx.request(
+        """
+        Update custom payment method schema
+
+        Parameters:
+            - schema_id: PaymentMethodSchemaId.
+
+            - request: PaymentMethodSchemaRequest.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"paymentMethod/schema/{schema_id}"),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"paymentMethod/schema/{schema_id}"),
             json=jsonable_encoder(request),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -101,12 +112,16 @@ class PaymentMethodSchemaClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get(self, schema_id: PaymentMethodSchemaId) -> PaymentMethodSchemaResponse:
-        _response = httpx.request(
+        """
+        Get custom payment method schema
+
+        Parameters:
+            - schema_id: PaymentMethodSchemaId.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"paymentMethod/schema/{schema_id}"),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"paymentMethod/schema/{schema_id}"),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -125,12 +140,16 @@ class PaymentMethodSchemaClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def delete(self, schema_id: PaymentMethodSchemaId) -> None:
-        _response = httpx.request(
+        """
+        Delete custom payment method schema. Schema that have been used in an invoice cannot be deleted.
+
+        Parameters:
+            - schema_id: PaymentMethodSchemaId.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "DELETE",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"paymentMethod/schema/{schema_id}"),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"paymentMethod/schema/{schema_id}"),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         if 200 <= _response.status_code < 300:
@@ -150,20 +169,19 @@ class PaymentMethodSchemaClient:
 
 
 class AsyncPaymentMethodSchemaClient:
-    def __init__(self, *, environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION, token: str):
-        self._environment = environment
-        self._token = token
+    def __init__(self, *, client_wrapper: AsyncClientWrapper):
+        self._client_wrapper = client_wrapper
 
     async def get_all(self) -> typing.List[PaymentMethodSchemaResponse]:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "GET",
-                urllib.parse.urljoin(f"{self._environment.value}/", "paymentMethod/schema"),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Get all custom payment method schemas
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "GET",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "paymentMethod/schema"),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:
@@ -180,16 +198,19 @@ class AsyncPaymentMethodSchemaClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def create(self, *, request: PaymentMethodSchemaRequest) -> PaymentMethodSchemaResponse:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "POST",
-                urllib.parse.urljoin(f"{self._environment.value}/", "paymentMethod/schema"),
-                json=jsonable_encoder(request),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Create custom payment method schema
+
+        Parameters:
+            - request: PaymentMethodSchemaRequest.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "POST",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "paymentMethod/schema"),
+            json=jsonable_encoder(request),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:
@@ -208,16 +229,21 @@ class AsyncPaymentMethodSchemaClient:
     async def update(
         self, schema_id: PaymentMethodSchemaId, *, request: PaymentMethodSchemaRequest
     ) -> PaymentMethodSchemaResponse:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "POST",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"paymentMethod/schema/{schema_id}"),
-                json=jsonable_encoder(request),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Update custom payment method schema
+
+        Parameters:
+            - schema_id: PaymentMethodSchemaId.
+
+            - request: PaymentMethodSchemaRequest.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "POST",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"paymentMethod/schema/{schema_id}"),
+            json=jsonable_encoder(request),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:
@@ -234,15 +260,18 @@ class AsyncPaymentMethodSchemaClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get(self, schema_id: PaymentMethodSchemaId) -> PaymentMethodSchemaResponse:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "GET",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"paymentMethod/schema/{schema_id}"),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Get custom payment method schema
+
+        Parameters:
+            - schema_id: PaymentMethodSchemaId.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "GET",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"paymentMethod/schema/{schema_id}"),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:
@@ -259,15 +288,18 @@ class AsyncPaymentMethodSchemaClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def delete(self, schema_id: PaymentMethodSchemaId) -> None:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "DELETE",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"paymentMethod/schema/{schema_id}"),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Delete custom payment method schema. Schema that have been used in an invoice cannot be deleted.
+
+        Parameters:
+            - schema_id: PaymentMethodSchemaId.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "DELETE",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"paymentMethod/schema/{schema_id}"),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         if 200 <= _response.status_code < 300:
             return
         try:

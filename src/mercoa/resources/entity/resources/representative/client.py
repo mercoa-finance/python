@@ -4,13 +4,11 @@ import typing
 import urllib.parse
 from json.decoder import JSONDecodeError
 
-import httpx
 import pydantic
 
 from .....core.api_error import ApiError
+from .....core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from .....core.jsonable_encoder import jsonable_encoder
-from .....core.remove_none_from_headers import remove_none_from_headers
-from .....environment import MercoaEnvironment
 from ....commons.errors.auth_header_malformed_error import AuthHeaderMalformedError
 from ....commons.errors.auth_header_missing_error import AuthHeaderMissingError
 from ....commons.errors.invalid_postal_code import InvalidPostalCode
@@ -22,19 +20,25 @@ from ....entity_types.types.representative_id import RepresentativeId
 from ....entity_types.types.representative_request import RepresentativeRequest
 from ....entity_types.types.representative_response import RepresentativeResponse
 
+# this is used as the default value for optional parameters
+OMIT = typing.cast(typing.Any, ...)
+
 
 class RepresentativeClient:
-    def __init__(self, *, environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION, token: str):
-        self._environment = environment
-        self._token = token
+    def __init__(self, *, client_wrapper: SyncClientWrapper):
+        self._client_wrapper = client_wrapper
 
     def get_all(self, entity_id: EntityId) -> typing.List[RepresentativeResponse]:
-        _response = httpx.request(
+        """
+        Get representatives for an entity
+
+        Parameters:
+            - entity_id: EntityId.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/representatives"),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/representatives"),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -53,13 +57,19 @@ class RepresentativeClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def create(self, entity_id: EntityId, *, request: RepresentativeRequest) -> RepresentativeResponse:
-        _response = httpx.request(
+        """
+        Create representative
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - request: RepresentativeRequest.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/representative"),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/representative"),
             json=jsonable_encoder(request),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -84,14 +94,20 @@ class RepresentativeClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get(self, entity_id: EntityId, representative_id: RepresentativeId) -> RepresentativeResponse:
-        _response = httpx.request(
+        """
+        Get representative
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - representative_id: RepresentativeId.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(
-                f"{self._environment.value}/", f"entity/{entity_id}/representative/{representative_id}"
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/representative/{representative_id}"
             ),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -110,14 +126,20 @@ class RepresentativeClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def delete(self, entity_id: EntityId, representative_id: RepresentativeId) -> None:
-        _response = httpx.request(
+        """
+        Delete representative
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - representative_id: RepresentativeId.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "DELETE",
             urllib.parse.urljoin(
-                f"{self._environment.value}/", f"entity/{entity_id}/representative/{representative_id}"
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/representative/{representative_id}"
             ),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         if 200 <= _response.status_code < 300:
@@ -137,20 +159,22 @@ class RepresentativeClient:
 
 
 class AsyncRepresentativeClient:
-    def __init__(self, *, environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION, token: str):
-        self._environment = environment
-        self._token = token
+    def __init__(self, *, client_wrapper: AsyncClientWrapper):
+        self._client_wrapper = client_wrapper
 
     async def get_all(self, entity_id: EntityId) -> typing.List[RepresentativeResponse]:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "GET",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/representatives"),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Get representatives for an entity
+
+        Parameters:
+            - entity_id: EntityId.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "GET",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/representatives"),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:
@@ -167,16 +191,21 @@ class AsyncRepresentativeClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def create(self, entity_id: EntityId, *, request: RepresentativeRequest) -> RepresentativeResponse:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "POST",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/representative"),
-                json=jsonable_encoder(request),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Create representative
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - request: RepresentativeRequest.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "POST",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/representative"),
+            json=jsonable_encoder(request),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:
@@ -199,17 +228,22 @@ class AsyncRepresentativeClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get(self, entity_id: EntityId, representative_id: RepresentativeId) -> RepresentativeResponse:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "GET",
-                urllib.parse.urljoin(
-                    f"{self._environment.value}/", f"entity/{entity_id}/representative/{representative_id}"
-                ),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Get representative
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - representative_id: RepresentativeId.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "GET",
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/representative/{representative_id}"
+            ),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:
@@ -226,17 +260,22 @@ class AsyncRepresentativeClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def delete(self, entity_id: EntityId, representative_id: RepresentativeId) -> None:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "DELETE",
-                urllib.parse.urljoin(
-                    f"{self._environment.value}/", f"entity/{entity_id}/representative/{representative_id}"
-                ),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Delete representative
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - representative_id: RepresentativeId.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "DELETE",
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/representative/{representative_id}"
+            ),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         if 200 <= _response.status_code < 300:
             return
         try:

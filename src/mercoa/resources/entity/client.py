@@ -4,13 +4,12 @@ import typing
 import urllib.parse
 from json.decoder import JSONDecodeError
 
-import httpx
 import pydantic
 
 from ...core.api_error import ApiError
+from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ...core.jsonable_encoder import jsonable_encoder
-from ...core.remove_none_from_headers import remove_none_from_headers
-from ...environment import MercoaEnvironment
+from ...core.remove_none_from_dict import remove_none_from_dict
 from ..commons.errors.auth_header_malformed_error import AuthHeaderMalformedError
 from ..commons.errors.auth_header_missing_error import AuthHeaderMissingError
 from ..commons.errors.invalid_postal_code import InvalidPostalCode
@@ -31,34 +30,47 @@ from ..entity_types.types.token_generation_options import TokenGenerationOptions
 from .resources.approval_policy.client import ApprovalPolicyClient, AsyncApprovalPolicyClient
 from .resources.counterparty.client import AsyncCounterpartyClient, CounterpartyClient
 from .resources.invoice.client import AsyncInvoiceClient, InvoiceClient
+from .resources.metadata.client import AsyncMetadataClient, MetadataClient
 from .resources.notification_policy.client import AsyncNotificationPolicyClient, NotificationPolicyClient
 from .resources.payment_method.client import AsyncPaymentMethodClient, PaymentMethodClient
 from .resources.representative.client import AsyncRepresentativeClient, RepresentativeClient
 from .resources.user.client import AsyncUserClient, UserClient
 
+# this is used as the default value for optional parameters
+OMIT = typing.cast(typing.Any, ...)
+
 
 class EntityClient:
-    def __init__(self, *, environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION, token: str):
-        self._environment = environment
-        self._token = token
-        self.user = UserClient(environment=self._environment, token=self._token)
-        self.approval_policy = ApprovalPolicyClient(environment=self._environment, token=self._token)
-        self.counterparty = CounterpartyClient(environment=self._environment, token=self._token)
-        self.invoice = InvoiceClient(environment=self._environment, token=self._token)
-        self.notification_policy = NotificationPolicyClient(environment=self._environment, token=self._token)
-        self.payment_method = PaymentMethodClient(environment=self._environment, token=self._token)
-        self.representative = RepresentativeClient(environment=self._environment, token=self._token)
+    def __init__(self, *, client_wrapper: SyncClientWrapper):
+        self._client_wrapper = client_wrapper
+        self.user = UserClient(client_wrapper=self._client_wrapper)
+        self.approval_policy = ApprovalPolicyClient(client_wrapper=self._client_wrapper)
+        self.counterparty = CounterpartyClient(client_wrapper=self._client_wrapper)
+        self.invoice = InvoiceClient(client_wrapper=self._client_wrapper)
+        self.metadata = MetadataClient(client_wrapper=self._client_wrapper)
+        self.notification_policy = NotificationPolicyClient(client_wrapper=self._client_wrapper)
+        self.payment_method = PaymentMethodClient(client_wrapper=self._client_wrapper)
+        self.representative = RepresentativeClient(client_wrapper=self._client_wrapper)
 
     def get_all(
         self, *, is_payee: typing.Optional[bool] = None, is_payor: typing.Optional[bool] = None
     ) -> typing.List[EntityResponse]:
-        _response = httpx.request(
+        """
+        Get all entities
+
+        Parameters:
+            - is_payee: typing.Optional[bool]. If true, entities that are marked as payees will be returned.
+                                               If false or not provided, entities that are marked as payees will not be returned.
+
+            - is_payor: typing.Optional[bool]. If true or not provided, entities that are marked as payors will be returned.
+                                               If false, entities that are marked as payors will not be returned.
+
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._environment.value}/", "entities"),
-            params={"isPayee": is_payee, "isPayor": is_payor},
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "entities"),
+            params=remove_none_from_dict({"isPayee": is_payee, "isPayor": is_payor}),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -87,21 +99,39 @@ class EntityClient:
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
     ) -> FindEntityResponse:
-        _response = httpx.request(
+        """
+        Parameters:
+            - foreign_id: typing.Union[typing.Optional[str], typing.List[str]].
+
+            - status: typing.Union[typing.Optional[EntityStatus], typing.List[EntityStatus]].
+
+            - is_payee: typing.Optional[bool]. If true, entities that are marked as payees will be returned.
+                                               If false or not provided, entities that are marked as payees will not be returned.
+
+            - is_payor: typing.Optional[bool]. If true or not provided, entities that are marked as payors will be returned.
+                                               If false, entities that are marked as payors will not be returned.
+
+            - name: typing.Optional[str]. Filter entities by name. Partial matches are supported.
+
+            - limit: typing.Optional[int]. Number of entities to return. Limit can range between 1 and 100, and the default is 10.
+
+            - starting_after: typing.Optional[EntityId]. The ID of the entity to start after. If not provided, the first page of entities will be returned.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._environment.value}/", "entity"),
-            params={
-                "foreignId": foreign_id,
-                "status": status,
-                "isPayee": is_payee,
-                "isPayor": is_payor,
-                "name": name,
-                "limit": limit,
-                "startingAfter": starting_after,
-            },
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "entity"),
+            params=remove_none_from_dict(
+                {
+                    "foreignId": foreign_id,
+                    "status": status,
+                    "isPayee": is_payee,
+                    "isPayor": is_payor,
+                    "name": name,
+                    "limit": limit,
+                    "startingAfter": starting_after,
+                }
             ),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -120,13 +150,15 @@ class EntityClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def create(self, *, request: EntityRequest) -> EntityResponse:
-        _response = httpx.request(
+        """
+        Parameters:
+            - request: EntityRequest.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._environment.value}/", "entity"),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "entity"),
             json=jsonable_encoder(request),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -155,12 +187,16 @@ class EntityClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get(self, entity_id: EntityId) -> EntityResponse:
-        _response = httpx.request(
+        """
+        Get entity
+
+        Parameters:
+            - entity_id: EntityId.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}"),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}"),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -179,13 +215,19 @@ class EntityClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def update(self, entity_id: EntityId, *, request: EntityUpdateRequest) -> EntityResponse:
-        _response = httpx.request(
+        """
+        Update entity
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - request: EntityUpdateRequest.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}"),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}"),
             json=jsonable_encoder(request),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -214,12 +256,16 @@ class EntityClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def delete(self, entity_id: EntityId) -> None:
-        _response = httpx.request(
+        """
+        Delete entity
+
+        Parameters:
+            - entity_id: EntityId.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "DELETE",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}"),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}"),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         if 200 <= _response.status_code < 300:
@@ -238,12 +284,16 @@ class EntityClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def accept_terms_of_service(self, entity_id: EntityId) -> None:
-        _response = httpx.request(
+        """
+        End user accepts Terms of Service
+
+        Parameters:
+            - entity_id: EntityId.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/accept-tos"),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/accept-tos"),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         if 200 <= _response.status_code < 300:
@@ -262,12 +312,14 @@ class EntityClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def initiate_kyb(self, entity_id: EntityId) -> None:
-        _response = httpx.request(
+        """
+        Parameters:
+            - entity_id: EntityId.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/request-kyb"),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/request-kyb"),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         if 200 <= _response.status_code < 300:
@@ -286,12 +338,16 @@ class EntityClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get_raw_token(self, entity_id: EntityId) -> str:
-        _response = httpx.request(
+        """
+        Get JWT token for entity
+
+        Parameters:
+            - entity_id: EntityId.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/token"),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/token"),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -310,13 +366,19 @@ class EntityClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get_token(self, entity_id: EntityId, *, request: TokenGenerationOptions) -> str:
-        _response = httpx.request(
+        """
+        Get JWT token for entity with iFrame options
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - request: TokenGenerationOptions.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/token"),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/token"),
             json=jsonable_encoder(request),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -335,12 +397,16 @@ class EntityClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def plaid_link_token(self, entity_id: EntityId) -> str:
-        _response = httpx.request(
+        """
+        Get Plaid token
+
+        Parameters:
+            - entity_id: EntityId.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/plaidLinkToken"),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/plaidLinkToken"),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -359,13 +425,19 @@ class EntityClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def add_payees(self, entity_id: EntityId, *, request: EntityAddPayeesRequest) -> None:
-        _response = httpx.request(
+        """
+        Create association between Entity and a given list of Payees. If a Payee has previously been archived, unarchives the Payee.
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - request: EntityAddPayeesRequest.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/addPayees"),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/addPayees"),
             json=jsonable_encoder(request),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         if 200 <= _response.status_code < 300:
@@ -384,13 +456,19 @@ class EntityClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def archive_payees(self, entity_id: EntityId, *, request: EntityArchivePayeesRequest) -> None:
-        _response = httpx.request(
+        """
+        Marks Payees as unsearchable by Entity via Counterparty search. Invoices associated with these Payees will still be searchable via Invoice search.
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - request: EntityArchivePayeesRequest.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/archivePayees"),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/archivePayees"),
             json=jsonable_encoder(request),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         if 200 <= _response.status_code < 300:
@@ -415,13 +493,21 @@ class EntityClient:
         type: EntityOnboardingLinkType,
         connected_entity_id: typing.Optional[EntityId] = None,
     ) -> str:
-        _response = httpx.request(
+        """
+        Generate an onboarding link for the entity. The onboarding link will be valid for 24 hours.
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - type: EntityOnboardingLinkType. The type of onboarding link to generate. If not provided, the default is payee. The onboarding options are determined by your organization's onboarding configuration.
+
+            - connected_entity_id: typing.Optional[EntityId]. The ID of the entity to connect to. If onboarding a payee, this should be the payor entity ID. If onboarding a payor, this should be the payee entity ID. If no connected entity ID is provided, the onboarding link will be for a standalone entity.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/onboarding"),
-            params={"type": type, "connectedEntityId": connected_entity_id},
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/onboarding"),
+            params=remove_none_from_dict({"type": type, "connectedEntityId": connected_entity_id}),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -446,13 +532,21 @@ class EntityClient:
         type: EntityOnboardingLinkType,
         connected_entity_id: typing.Optional[EntityId] = None,
     ) -> None:
-        _response = httpx.request(
+        """
+        Send an email with a onboarding link to the entity. The email will be sent to the email address associated with the entity. The onboarding link will be valid for 7 days.
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - type: EntityOnboardingLinkType. The type of onboarding link to generate. If not provided, the default is payee. The onboarding options are determined by your organization's onboarding configuration.
+
+            - connected_entity_id: typing.Optional[EntityId]. The ID of the entity to connect to. If onboarding a payee, this should be the payor entity ID. If onboarding a payor, this should be the payee entity ID. If no connected entity ID is provided, the onboarding link will be for a standalone entity.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/onboarding"),
-            params={"type": type, "connectedEntityId": connected_entity_id},
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/onboarding"),
+            params=remove_none_from_dict({"type": type, "connectedEntityId": connected_entity_id}),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         if 200 <= _response.status_code < 300:
@@ -472,30 +566,38 @@ class EntityClient:
 
 
 class AsyncEntityClient:
-    def __init__(self, *, environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION, token: str):
-        self._environment = environment
-        self._token = token
-        self.user = AsyncUserClient(environment=self._environment, token=self._token)
-        self.approval_policy = AsyncApprovalPolicyClient(environment=self._environment, token=self._token)
-        self.counterparty = AsyncCounterpartyClient(environment=self._environment, token=self._token)
-        self.invoice = AsyncInvoiceClient(environment=self._environment, token=self._token)
-        self.notification_policy = AsyncNotificationPolicyClient(environment=self._environment, token=self._token)
-        self.payment_method = AsyncPaymentMethodClient(environment=self._environment, token=self._token)
-        self.representative = AsyncRepresentativeClient(environment=self._environment, token=self._token)
+    def __init__(self, *, client_wrapper: AsyncClientWrapper):
+        self._client_wrapper = client_wrapper
+        self.user = AsyncUserClient(client_wrapper=self._client_wrapper)
+        self.approval_policy = AsyncApprovalPolicyClient(client_wrapper=self._client_wrapper)
+        self.counterparty = AsyncCounterpartyClient(client_wrapper=self._client_wrapper)
+        self.invoice = AsyncInvoiceClient(client_wrapper=self._client_wrapper)
+        self.metadata = AsyncMetadataClient(client_wrapper=self._client_wrapper)
+        self.notification_policy = AsyncNotificationPolicyClient(client_wrapper=self._client_wrapper)
+        self.payment_method = AsyncPaymentMethodClient(client_wrapper=self._client_wrapper)
+        self.representative = AsyncRepresentativeClient(client_wrapper=self._client_wrapper)
 
     async def get_all(
         self, *, is_payee: typing.Optional[bool] = None, is_payor: typing.Optional[bool] = None
     ) -> typing.List[EntityResponse]:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "GET",
-                urllib.parse.urljoin(f"{self._environment.value}/", "entities"),
-                params={"isPayee": is_payee, "isPayor": is_payor},
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Get all entities
+
+        Parameters:
+            - is_payee: typing.Optional[bool]. If true, entities that are marked as payees will be returned.
+                                               If false or not provided, entities that are marked as payees will not be returned.
+
+            - is_payor: typing.Optional[bool]. If true or not provided, entities that are marked as payors will be returned.
+                                               If false, entities that are marked as payors will not be returned.
+
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "GET",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "entities"),
+            params=remove_none_from_dict({"isPayee": is_payee, "isPayor": is_payor}),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:
@@ -522,11 +624,29 @@ class AsyncEntityClient:
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
     ) -> FindEntityResponse:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "GET",
-                urllib.parse.urljoin(f"{self._environment.value}/", "entity"),
-                params={
+        """
+        Parameters:
+            - foreign_id: typing.Union[typing.Optional[str], typing.List[str]].
+
+            - status: typing.Union[typing.Optional[EntityStatus], typing.List[EntityStatus]].
+
+            - is_payee: typing.Optional[bool]. If true, entities that are marked as payees will be returned.
+                                               If false or not provided, entities that are marked as payees will not be returned.
+
+            - is_payor: typing.Optional[bool]. If true or not provided, entities that are marked as payors will be returned.
+                                               If false, entities that are marked as payors will not be returned.
+
+            - name: typing.Optional[str]. Filter entities by name. Partial matches are supported.
+
+            - limit: typing.Optional[int]. Number of entities to return. Limit can range between 1 and 100, and the default is 10.
+
+            - starting_after: typing.Optional[EntityId]. The ID of the entity to start after. If not provided, the first page of entities will be returned.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "GET",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "entity"),
+            params=remove_none_from_dict(
+                {
                     "foreignId": foreign_id,
                     "status": status,
                     "isPayee": is_payee,
@@ -534,12 +654,11 @@ class AsyncEntityClient:
                     "name": name,
                     "limit": limit,
                     "startingAfter": starting_after,
-                },
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+                }
+            ),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:
@@ -556,16 +675,17 @@ class AsyncEntityClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def create(self, *, request: EntityRequest) -> EntityResponse:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "POST",
-                urllib.parse.urljoin(f"{self._environment.value}/", "entity"),
-                json=jsonable_encoder(request),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Parameters:
+            - request: EntityRequest.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "POST",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "entity"),
+            json=jsonable_encoder(request),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:
@@ -592,15 +712,18 @@ class AsyncEntityClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get(self, entity_id: EntityId) -> EntityResponse:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "GET",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}"),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Get entity
+
+        Parameters:
+            - entity_id: EntityId.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "GET",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}"),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:
@@ -617,16 +740,21 @@ class AsyncEntityClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def update(self, entity_id: EntityId, *, request: EntityUpdateRequest) -> EntityResponse:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "POST",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}"),
-                json=jsonable_encoder(request),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Update entity
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - request: EntityUpdateRequest.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "POST",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}"),
+            json=jsonable_encoder(request),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:
@@ -653,15 +781,18 @@ class AsyncEntityClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def delete(self, entity_id: EntityId) -> None:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "DELETE",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}"),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Delete entity
+
+        Parameters:
+            - entity_id: EntityId.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "DELETE",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}"),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         if 200 <= _response.status_code < 300:
             return
         try:
@@ -678,15 +809,18 @@ class AsyncEntityClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def accept_terms_of_service(self, entity_id: EntityId) -> None:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "POST",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/accept-tos"),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        End user accepts Terms of Service
+
+        Parameters:
+            - entity_id: EntityId.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "POST",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/accept-tos"),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         if 200 <= _response.status_code < 300:
             return
         try:
@@ -703,15 +837,16 @@ class AsyncEntityClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def initiate_kyb(self, entity_id: EntityId) -> None:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "POST",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/request-kyb"),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Parameters:
+            - entity_id: EntityId.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "POST",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/request-kyb"),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         if 200 <= _response.status_code < 300:
             return
         try:
@@ -728,15 +863,18 @@ class AsyncEntityClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get_raw_token(self, entity_id: EntityId) -> str:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "GET",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/token"),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Get JWT token for entity
+
+        Parameters:
+            - entity_id: EntityId.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "GET",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/token"),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:
@@ -753,16 +891,21 @@ class AsyncEntityClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get_token(self, entity_id: EntityId, *, request: TokenGenerationOptions) -> str:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "POST",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/token"),
-                json=jsonable_encoder(request),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Get JWT token for entity with iFrame options
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - request: TokenGenerationOptions.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "POST",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/token"),
+            json=jsonable_encoder(request),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:
@@ -779,15 +922,18 @@ class AsyncEntityClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def plaid_link_token(self, entity_id: EntityId) -> str:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "GET",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/plaidLinkToken"),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Get Plaid token
+
+        Parameters:
+            - entity_id: EntityId.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "GET",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/plaidLinkToken"),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:
@@ -804,16 +950,21 @@ class AsyncEntityClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def add_payees(self, entity_id: EntityId, *, request: EntityAddPayeesRequest) -> None:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "POST",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/addPayees"),
-                json=jsonable_encoder(request),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Create association between Entity and a given list of Payees. If a Payee has previously been archived, unarchives the Payee.
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - request: EntityAddPayeesRequest.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "POST",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/addPayees"),
+            json=jsonable_encoder(request),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         if 200 <= _response.status_code < 300:
             return
         try:
@@ -830,16 +981,21 @@ class AsyncEntityClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def archive_payees(self, entity_id: EntityId, *, request: EntityArchivePayeesRequest) -> None:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "POST",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/archivePayees"),
-                json=jsonable_encoder(request),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Marks Payees as unsearchable by Entity via Counterparty search. Invoices associated with these Payees will still be searchable via Invoice search.
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - request: EntityArchivePayeesRequest.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "POST",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/archivePayees"),
+            json=jsonable_encoder(request),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         if 200 <= _response.status_code < 300:
             return
         try:
@@ -862,16 +1018,23 @@ class AsyncEntityClient:
         type: EntityOnboardingLinkType,
         connected_entity_id: typing.Optional[EntityId] = None,
     ) -> str:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "GET",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/onboarding"),
-                params={"type": type, "connectedEntityId": connected_entity_id},
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Generate an onboarding link for the entity. The onboarding link will be valid for 24 hours.
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - type: EntityOnboardingLinkType. The type of onboarding link to generate. If not provided, the default is payee. The onboarding options are determined by your organization's onboarding configuration.
+
+            - connected_entity_id: typing.Optional[EntityId]. The ID of the entity to connect to. If onboarding a payee, this should be the payor entity ID. If onboarding a payor, this should be the payee entity ID. If no connected entity ID is provided, the onboarding link will be for a standalone entity.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "GET",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/onboarding"),
+            params=remove_none_from_dict({"type": type, "connectedEntityId": connected_entity_id}),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:
@@ -894,16 +1057,23 @@ class AsyncEntityClient:
         type: EntityOnboardingLinkType,
         connected_entity_id: typing.Optional[EntityId] = None,
     ) -> None:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "POST",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/onboarding"),
-                params={"type": type, "connectedEntityId": connected_entity_id},
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Send an email with a onboarding link to the entity. The email will be sent to the email address associated with the entity. The onboarding link will be valid for 7 days.
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - type: EntityOnboardingLinkType. The type of onboarding link to generate. If not provided, the default is payee. The onboarding options are determined by your organization's onboarding configuration.
+
+            - connected_entity_id: typing.Optional[EntityId]. The ID of the entity to connect to. If onboarding a payee, this should be the payor entity ID. If onboarding a payor, this should be the payee entity ID. If no connected entity ID is provided, the onboarding link will be for a standalone entity.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "POST",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/onboarding"),
+            params=remove_none_from_dict({"type": type, "connectedEntityId": connected_entity_id}),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         if 200 <= _response.status_code < 300:
             return
         try:

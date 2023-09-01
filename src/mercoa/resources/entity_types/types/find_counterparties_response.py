@@ -11,13 +11,13 @@ from .counterparty_response import CounterpartyResponse
 
 class FindCounterpartiesResponse(pydantic.BaseModel):
     entity_counterparties: typing.List[CounterpartyResponse] = pydantic.Field(
-        alias="entityCounterparties", description=("Counterparties that have been paid by this entity\n")
+        alias="entityCounterparties", description="Counterparties that have been paid by this entity"
     )
     platform_counterparties: typing.List[CounterpartyResponse] = pydantic.Field(
-        alias="platformCounterparties", description=("Counterparties that have paid by any entity on your platform\n")
+        alias="platformCounterparties", description="Counterparties that have paid by any entity on your platform"
     )
     mercoa_counterparties: typing.List[CounterpartyResponse] = pydantic.Field(
-        alias="mercoaCounterparties", description=("External counterparties that have been verified by Mercoa\n")
+        alias="mercoaCounterparties", description="External counterparties that have been verified by Mercoa"
     )
 
     def json(self, **kwargs: typing.Any) -> str:
@@ -30,5 +30,6 @@ class FindCounterpartiesResponse(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        smart_union = True
         allow_population_by_field_name = True
         json_encoders = {dt.datetime: serialize_datetime}

@@ -4,13 +4,11 @@ import typing
 import urllib.parse
 from json.decoder import JSONDecodeError
 
-import httpx
 import pydantic
 
 from .....core.api_error import ApiError
+from .....core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from .....core.jsonable_encoder import jsonable_encoder
-from .....core.remove_none_from_headers import remove_none_from_headers
-from .....environment import MercoaEnvironment
 from ....commons.errors.auth_header_malformed_error import AuthHeaderMalformedError
 from ....commons.errors.auth_header_missing_error import AuthHeaderMissingError
 from ....commons.errors.unauthorized import Unauthorized
@@ -19,19 +17,25 @@ from ....invoice_types.types.comment_request import CommentRequest
 from ....invoice_types.types.comment_response import CommentResponse
 from ....invoice_types.types.invoice_id import InvoiceId
 
+# this is used as the default value for optional parameters
+OMIT = typing.cast(typing.Any, ...)
+
 
 class CommentClient:
-    def __init__(self, *, environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION, token: str):
-        self._environment = environment
-        self._token = token
+    def __init__(self, *, client_wrapper: SyncClientWrapper):
+        self._client_wrapper = client_wrapper
 
     def get_all(self, invoice_id: InvoiceId) -> typing.List[CommentResponse]:
-        _response = httpx.request(
+        """
+        Get all comments associated with this invoice
+
+        Parameters:
+            - invoice_id: InvoiceId.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"invoice/{invoice_id}/comments"),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/comments"),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -50,13 +54,19 @@ class CommentClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def create(self, invoice_id: InvoiceId, *, request: CommentRequest) -> CommentResponse:
-        _response = httpx.request(
+        """
+        Add a comment to this invoice
+
+        Parameters:
+            - invoice_id: InvoiceId.
+
+            - request: CommentRequest.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"invoice/{invoice_id}/comment"),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/comment"),
             json=jsonable_encoder(request),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -75,12 +85,20 @@ class CommentClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get(self, invoice_id: InvoiceId, comment_id: CommentId) -> CommentResponse:
-        _response = httpx.request(
+        """
+        Get a comment on this invoice
+
+        Parameters:
+            - invoice_id: InvoiceId.
+
+            - comment_id: CommentId.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"invoice/{invoice_id}/comment/{comment_id}"),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/comment/{comment_id}"
             ),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -99,13 +117,23 @@ class CommentClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def update(self, invoice_id: InvoiceId, comment_id: CommentId, *, request: CommentRequest) -> CommentResponse:
-        _response = httpx.request(
+        """
+        Edit a comment on this invoice
+
+        Parameters:
+            - invoice_id: InvoiceId.
+
+            - comment_id: CommentId.
+
+            - request: CommentRequest.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"invoice/{invoice_id}/comment/{comment_id}"),
-            json=jsonable_encoder(request),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/comment/{comment_id}"
             ),
+            json=jsonable_encoder(request),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -124,12 +152,20 @@ class CommentClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def delete(self, invoice_id: InvoiceId, comment_id: CommentId) -> None:
-        _response = httpx.request(
+        """
+        Delete a comment on this invoice
+
+        Parameters:
+            - invoice_id: InvoiceId.
+
+            - comment_id: CommentId.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "DELETE",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"invoice/{invoice_id}/comment/{comment_id}"),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/comment/{comment_id}"
             ),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         if 200 <= _response.status_code < 300:
@@ -149,20 +185,22 @@ class CommentClient:
 
 
 class AsyncCommentClient:
-    def __init__(self, *, environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION, token: str):
-        self._environment = environment
-        self._token = token
+    def __init__(self, *, client_wrapper: AsyncClientWrapper):
+        self._client_wrapper = client_wrapper
 
     async def get_all(self, invoice_id: InvoiceId) -> typing.List[CommentResponse]:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "GET",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"invoice/{invoice_id}/comments"),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Get all comments associated with this invoice
+
+        Parameters:
+            - invoice_id: InvoiceId.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "GET",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/comments"),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:
@@ -179,16 +217,21 @@ class AsyncCommentClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def create(self, invoice_id: InvoiceId, *, request: CommentRequest) -> CommentResponse:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "POST",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"invoice/{invoice_id}/comment"),
-                json=jsonable_encoder(request),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Add a comment to this invoice
+
+        Parameters:
+            - invoice_id: InvoiceId.
+
+            - request: CommentRequest.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "POST",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/comment"),
+            json=jsonable_encoder(request),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:
@@ -205,15 +248,22 @@ class AsyncCommentClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get(self, invoice_id: InvoiceId, comment_id: CommentId) -> CommentResponse:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "GET",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"invoice/{invoice_id}/comment/{comment_id}"),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Get a comment on this invoice
+
+        Parameters:
+            - invoice_id: InvoiceId.
+
+            - comment_id: CommentId.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "GET",
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/comment/{comment_id}"
+            ),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:
@@ -230,16 +280,25 @@ class AsyncCommentClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def update(self, invoice_id: InvoiceId, comment_id: CommentId, *, request: CommentRequest) -> CommentResponse:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "POST",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"invoice/{invoice_id}/comment/{comment_id}"),
-                json=jsonable_encoder(request),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Edit a comment on this invoice
+
+        Parameters:
+            - invoice_id: InvoiceId.
+
+            - comment_id: CommentId.
+
+            - request: CommentRequest.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "POST",
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/comment/{comment_id}"
+            ),
+            json=jsonable_encoder(request),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:
@@ -256,15 +315,22 @@ class AsyncCommentClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def delete(self, invoice_id: InvoiceId, comment_id: CommentId) -> None:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "DELETE",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"invoice/{invoice_id}/comment/{comment_id}"),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Delete a comment on this invoice
+
+        Parameters:
+            - invoice_id: InvoiceId.
+
+            - comment_id: CommentId.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "DELETE",
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/comment/{comment_id}"
+            ),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         if 200 <= _response.status_code < 300:
             return
         try:

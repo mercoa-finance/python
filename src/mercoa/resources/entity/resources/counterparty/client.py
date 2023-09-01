@@ -4,12 +4,11 @@ import typing
 import urllib.parse
 from json.decoder import JSONDecodeError
 
-import httpx
 import pydantic
 
 from .....core.api_error import ApiError
-from .....core.remove_none_from_headers import remove_none_from_headers
-from .....environment import MercoaEnvironment
+from .....core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
+from .....core.remove_none_from_dict import remove_none_from_dict
 from ....commons.errors.auth_header_malformed_error import AuthHeaderMalformedError
 from ....commons.errors.auth_header_missing_error import AuthHeaderMissingError
 from ....commons.errors.unauthorized import Unauthorized
@@ -18,9 +17,8 @@ from ....entity_types.types.find_counterparties_response import FindCounterparti
 
 
 class CounterpartyClient:
-    def __init__(self, *, environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION, token: str):
-        self._environment = environment
-        self._token = token
+    def __init__(self, *, client_wrapper: SyncClientWrapper):
+        self._client_wrapper = client_wrapper
 
     def find(
         self,
@@ -29,13 +27,21 @@ class CounterpartyClient:
         payment_methods: typing.Optional[bool] = None,
         counterparty_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
     ) -> FindCounterpartiesResponse:
-        _response = httpx.request(
+        """
+        Find counterparties
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - payment_methods: typing.Optional[bool]. include payment method information in response
+
+            - counterparty_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. filter by counterparty ids
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/counterparties"),
-            params={"paymentMethods": payment_methods, "counterpartyId": counterparty_id},
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/counterparties"),
+            params=remove_none_from_dict({"paymentMethods": payment_methods, "counterpartyId": counterparty_id}),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -55,9 +61,8 @@ class CounterpartyClient:
 
 
 class AsyncCounterpartyClient:
-    def __init__(self, *, environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION, token: str):
-        self._environment = environment
-        self._token = token
+    def __init__(self, *, client_wrapper: AsyncClientWrapper):
+        self._client_wrapper = client_wrapper
 
     async def find(
         self,
@@ -66,16 +71,23 @@ class AsyncCounterpartyClient:
         payment_methods: typing.Optional[bool] = None,
         counterparty_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
     ) -> FindCounterpartiesResponse:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "GET",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/counterparties"),
-                params={"paymentMethods": payment_methods, "counterpartyId": counterparty_id},
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Find counterparties
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - payment_methods: typing.Optional[bool]. include payment method information in response
+
+            - counterparty_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. filter by counterparty ids
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "GET",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/counterparties"),
+            params=remove_none_from_dict({"paymentMethods": payment_methods, "counterpartyId": counterparty_id}),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:

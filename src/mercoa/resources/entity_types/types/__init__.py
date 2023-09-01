@@ -15,6 +15,7 @@ from .ein import Ein
 from .entity_add_payees_request import EntityAddPayeesRequest
 from .entity_archive_payees_request import EntityArchivePayeesRequest
 from .entity_id import EntityId
+from .entity_metadata_response import EntityMetadataResponse
 from .entity_onboarding_link_type import EntityOnboardingLinkType
 from .entity_request import EntityRequest
 from .entity_response import EntityResponse
@@ -67,6 +68,7 @@ __all__ = [
     "EntityAddPayeesRequest",
     "EntityArchivePayeesRequest",
     "EntityId",
+    "EntityMetadataResponse",
     "EntityOnboardingLinkType",
     "EntityRequest",
     "EntityResponse",

@@ -10,7 +10,7 @@ from ...entity_types.types.entity_user_id import EntityUserId
 
 
 class ApprovalRequest(pydantic.BaseModel):
-    text: typing.Optional[str] = pydantic.Field(description=("Comment associated with this approval action.\n"))
+    text: typing.Optional[str] = pydantic.Field(description="Comment associated with this approval action.")
     user_id: EntityUserId = pydantic.Field(alias="userId")
 
     def json(self, **kwargs: typing.Any) -> str:
@@ -23,5 +23,6 @@ class ApprovalRequest(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        smart_union = True
         allow_population_by_field_name = True
         json_encoders = {dt.datetime: serialize_datetime}

@@ -5,13 +5,12 @@ import typing
 import urllib.parse
 from json.decoder import JSONDecodeError
 
-import httpx
 import pydantic
 
 from .......core.api_error import ApiError
+from .......core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from .......core.datetime_utils import serialize_datetime
-from .......core.remove_none_from_headers import remove_none_from_headers
-from .......environment import MercoaEnvironment
+from .......core.remove_none_from_dict import remove_none_from_dict
 from ......commons.errors.auth_header_malformed_error import AuthHeaderMalformedError
 from ......commons.errors.auth_header_missing_error import AuthHeaderMissingError
 from ......commons.errors.unauthorized import Unauthorized
@@ -25,9 +24,8 @@ from ......entity_types.types.notification_type import NotificationType
 
 
 class NotificationsClient:
-    def __init__(self, *, environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION, token: str):
-        self._environment = environment
-        self._token = token
+    def __init__(self, *, client_wrapper: SyncClientWrapper):
+        self._client_wrapper = client_wrapper
 
     def find(
         self,
@@ -41,20 +39,42 @@ class NotificationsClient:
         starting_after: typing.Optional[NotificationId] = None,
         notification_type: typing.Union[typing.Optional[NotificationType], typing.List[NotificationType]],
     ) -> FindNotificationResponse:
-        _response = httpx.request(
+        """
+        Get all notifications
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - user_id: EntityUserId.
+
+            - start_date: typing.Optional[dt.datetime]. Start date for notification created on date filter.
+
+            - end_date: typing.Optional[dt.datetime]. End date for notification created date filter.
+
+            - order_direction: typing.Optional[OrderDirection]. Direction to order notifications by. Defaults to asc.
+
+            - limit: typing.Optional[int]. Number of invoices to return. Limit can range between 1 and 100, and the default is 10.
+
+            - starting_after: typing.Optional[NotificationId]. The ID of the notification to start after. If not provided, the first page of invoices will be returned.
+
+            - notification_type: typing.Union[typing.Optional[NotificationType], typing.List[NotificationType]]. The type of notification to filter by.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/user/{user_id}/notifications"),
-            params={
-                "startDate": serialize_datetime(start_date) if start_date is not None else None,
-                "endDate": serialize_datetime(end_date) if end_date is not None else None,
-                "orderDirection": order_direction,
-                "limit": limit,
-                "startingAfter": starting_after,
-                "notificationType": notification_type,
-            },
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/user/{user_id}/notifications"
             ),
+            params=remove_none_from_dict(
+                {
+                    "startDate": serialize_datetime(start_date) if start_date is not None else None,
+                    "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                    "orderDirection": order_direction,
+                    "limit": limit,
+                    "startingAfter": starting_after,
+                    "notificationType": notification_type,
+                }
+            ),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -73,14 +93,23 @@ class NotificationsClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get(self, entity_id: EntityId, user_id: EntityUserId, notification_id: NotificationId) -> NotificationResponse:
-        _response = httpx.request(
+        """
+        Get notification
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - user_id: EntityUserId.
+
+            - notification_id: NotificationId.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(
-                f"{self._environment.value}/", f"entity/{entity_id}/user/{user_id}/notification/{notification_id}"
+                f"{self._client_wrapper.get_base_url()}/",
+                f"entity/{entity_id}/user/{user_id}/notification/{notification_id}",
             ),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -100,9 +129,8 @@ class NotificationsClient:
 
 
 class AsyncNotificationsClient:
-    def __init__(self, *, environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION, token: str):
-        self._environment = environment
-        self._token = token
+    def __init__(self, *, client_wrapper: AsyncClientWrapper):
+        self._client_wrapper = client_wrapper
 
     async def find(
         self,
@@ -116,23 +144,44 @@ class AsyncNotificationsClient:
         starting_after: typing.Optional[NotificationId] = None,
         notification_type: typing.Union[typing.Optional[NotificationType], typing.List[NotificationType]],
     ) -> FindNotificationResponse:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "GET",
-                urllib.parse.urljoin(f"{self._environment.value}/", f"entity/{entity_id}/user/{user_id}/notifications"),
-                params={
+        """
+        Get all notifications
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - user_id: EntityUserId.
+
+            - start_date: typing.Optional[dt.datetime]. Start date for notification created on date filter.
+
+            - end_date: typing.Optional[dt.datetime]. End date for notification created date filter.
+
+            - order_direction: typing.Optional[OrderDirection]. Direction to order notifications by. Defaults to asc.
+
+            - limit: typing.Optional[int]. Number of invoices to return. Limit can range between 1 and 100, and the default is 10.
+
+            - starting_after: typing.Optional[NotificationId]. The ID of the notification to start after. If not provided, the first page of invoices will be returned.
+
+            - notification_type: typing.Union[typing.Optional[NotificationType], typing.List[NotificationType]]. The type of notification to filter by.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "GET",
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/user/{user_id}/notifications"
+            ),
+            params=remove_none_from_dict(
+                {
                     "startDate": serialize_datetime(start_date) if start_date is not None else None,
                     "endDate": serialize_datetime(end_date) if end_date is not None else None,
                     "orderDirection": order_direction,
                     "limit": limit,
                     "startingAfter": starting_after,
                     "notificationType": notification_type,
-                },
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+                }
+            ),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:
@@ -151,17 +200,25 @@ class AsyncNotificationsClient:
     async def get(
         self, entity_id: EntityId, user_id: EntityUserId, notification_id: NotificationId
     ) -> NotificationResponse:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "GET",
-                urllib.parse.urljoin(
-                    f"{self._environment.value}/", f"entity/{entity_id}/user/{user_id}/notification/{notification_id}"
-                ),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Get notification
+
+        Parameters:
+            - entity_id: EntityId.
+
+            - user_id: EntityUserId.
+
+            - notification_id: NotificationId.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "GET",
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/",
+                f"entity/{entity_id}/user/{user_id}/notification/{notification_id}",
+            ),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:

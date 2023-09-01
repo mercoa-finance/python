@@ -25,18 +25,18 @@ from .invoice_status import InvoiceStatus
 class InvoiceResponse(pydantic.BaseModel):
     id: InvoiceId
     status: InvoiceStatus
-    amount: typing.Optional[float] = pydantic.Field(description=("Total amount of invoice in major units\n"))
+    amount: typing.Optional[float] = pydantic.Field(description="Total amount of invoice in major units")
     currency: typing.Optional[CurrencyCode]
     invoice_date: typing.Optional[dt.datetime] = pydantic.Field(
-        alias="invoiceDate", description=("Date the invoice was created.\n")
+        alias="invoiceDate", description="Date the invoice was created."
     )
     deduction_date: typing.Optional[dt.datetime] = pydantic.Field(
-        alias="deductionDate", description=("Date when funds will be deducted from payer's account.\n")
+        alias="deductionDate", description="Date when funds will be deducted from payer's account."
     )
     settlement_date: typing.Optional[dt.datetime] = pydantic.Field(
-        alias="settlementDate", description=("Date of funds settlement.\n")
+        alias="settlementDate", description="Date of funds settlement."
     )
-    due_date: typing.Optional[dt.datetime] = pydantic.Field(alias="dueDate", description=("Due date of invoice.\n"))
+    due_date: typing.Optional[dt.datetime] = pydantic.Field(alias="dueDate", description="Due date of invoice.")
     invoice_number: typing.Optional[str] = pydantic.Field(alias="invoiceNumber")
     note_to_self: typing.Optional[str] = pydantic.Field(alias="noteToSelf")
     service_start_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceStartDate")
@@ -56,13 +56,13 @@ class InvoiceResponse(pydantic.BaseModel):
     line_items: typing.Optional[typing.List[InvoiceLineItemResponse]] = pydantic.Field(alias="lineItems")
     approvers: typing.List[ApprovalSlot]
     approval_policy: typing.List[ApprovalPolicyResponse] = pydantic.Field(alias="approvalPolicy")
-    metadata: typing.Dict[str, str] = pydantic.Field(description=("Metadata associated with this invoice.\n"))
+    metadata: typing.Dict[str, str] = pydantic.Field(description="Metadata associated with this invoice.")
     created_by: typing.Optional[EntityUserResponse] = pydantic.Field(
-        alias="createdBy", description=("Entity user who created this invoice.\n")
+        alias="createdBy", description="Entity user who created this invoice."
     )
     failure_type: typing.Optional[InvoiceFailureType] = pydantic.Field(
         alias="failureType",
-        description=("If the invoice failed to be paid, this field will be populated with the type of failure.\n"),
+        description="If the invoice failed to be paid, this field will be populated with the type of failure.",
     )
     processed_at: typing.Optional[dt.datetime] = pydantic.Field(alias="processedAt")
     created_at: dt.datetime = pydantic.Field(alias="createdAt")
@@ -78,5 +78,6 @@ class InvoiceResponse(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        smart_union = True
         allow_population_by_field_name = True
         json_encoders = {dt.datetime: serialize_datetime}

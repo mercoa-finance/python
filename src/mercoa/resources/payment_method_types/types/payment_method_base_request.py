@@ -11,15 +11,11 @@ from ....core.datetime_utils import serialize_datetime
 class PaymentMethodBaseRequest(pydantic.BaseModel):
     default_source: typing.Optional[bool] = pydantic.Field(
         alias="defaultSource",
-        description=(
-            "If true, this payment method will be set as the default source. Only one payment method can be set as the default source. If another payment method is already set as the default source, it will be unset.\n"
-        ),
+        description="If true, this payment method will be set as the default source. Only one payment method can be set as the default source. If another payment method is already set as the default source, it will be unset.",
     )
     default_destination: typing.Optional[bool] = pydantic.Field(
         alias="defaultDestination",
-        description=(
-            "If true, this payment method will be set as the default destination. Only one payment method can be set as the default destination. If another payment method is already set as the default destination, it will be unset.\n"
-        ),
+        description="If true, this payment method will be set as the default destination. Only one payment method can be set as the default destination. If another payment method is already set as the default destination, it will be unset.",
     )
 
     def json(self, **kwargs: typing.Any) -> str:
@@ -32,5 +28,6 @@ class PaymentMethodBaseRequest(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        smart_union = True
         allow_population_by_field_name = True
         json_encoders = {dt.datetime: serialize_datetime}

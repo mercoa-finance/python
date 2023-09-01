@@ -3,12 +3,11 @@
 import urllib.parse
 from json.decoder import JSONDecodeError
 
-import httpx
 import pydantic
 
 from ...core.api_error import ApiError
-from ...core.remove_none_from_headers import remove_none_from_headers
-from ...environment import MercoaEnvironment
+from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
+from ...core.remove_none_from_dict import remove_none_from_dict
 from ..commons.errors.auth_header_malformed_error import AuthHeaderMalformedError
 from ..commons.errors.auth_header_missing_error import AuthHeaderMissingError
 from ..commons.errors.unauthorized import Unauthorized
@@ -16,18 +15,21 @@ from .types.bank_lookup_response import BankLookupResponse
 
 
 class BankLookupClient:
-    def __init__(self, *, environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION, token: str):
-        self._environment = environment
-        self._token = token
+    def __init__(self, *, client_wrapper: SyncClientWrapper):
+        self._client_wrapper = client_wrapper
 
     def find(self, *, routing_number: str) -> BankLookupResponse:
-        _response = httpx.request(
+        """
+        Find bank account details
+
+        Parameters:
+            - routing_number: str. Routing number to validate
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._environment.value}/", "bankLookup"),
-            params={"routingNumber": routing_number},
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "bankLookup"),
+            params=remove_none_from_dict({"routingNumber": routing_number}),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -47,21 +49,23 @@ class BankLookupClient:
 
 
 class AsyncBankLookupClient:
-    def __init__(self, *, environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION, token: str):
-        self._environment = environment
-        self._token = token
+    def __init__(self, *, client_wrapper: AsyncClientWrapper):
+        self._client_wrapper = client_wrapper
 
     async def find(self, *, routing_number: str) -> BankLookupResponse:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "GET",
-                urllib.parse.urljoin(f"{self._environment.value}/", "bankLookup"),
-                params={"routingNumber": routing_number},
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Find bank account details
+
+        Parameters:
+            - routing_number: str. Routing number to validate
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "GET",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "bankLookup"),
+            params=remove_none_from_dict({"routingNumber": routing_number}),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:

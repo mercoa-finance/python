@@ -12,6 +12,9 @@ from .email_sender_response import EmailSenderResponse
 from .individual_onboarding_options import IndividualOnboardingOptions
 from .invoice_notification_configuration_request import InvoiceNotificationConfigurationRequest
 from .invoice_notification_configuration_response import InvoiceNotificationConfigurationResponse
+from .metadata_conditional import MetadataConditional
+from .metadata_schema import MetadataSchema
+from .metadata_type import MetadataType
 from .notification_configuration_request import (
     NotificationConfigurationRequest,
     NotificationConfigurationRequest_Invoice,
@@ -46,6 +49,9 @@ __all__ = [
     "IndividualOnboardingOptions",
     "InvoiceNotificationConfigurationRequest",
     "InvoiceNotificationConfigurationResponse",
+    "MetadataConditional",
+    "MetadataSchema",
+    "MetadataType",
     "NotificationConfigurationRequest",
     "NotificationConfigurationRequest_Invoice",
     "NotificationConfigurationResponse",

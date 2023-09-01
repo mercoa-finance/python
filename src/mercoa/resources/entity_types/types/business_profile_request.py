@@ -19,18 +19,18 @@ class BusinessProfileRequest(pydantic.BaseModel):
     phone: typing.Optional[PhoneNumber]
     doing_business_as: typing.Optional[str] = pydantic.Field(alias="doingBusinessAs")
     website: typing.Optional[str] = pydantic.Field(
-        description=("Website URL for the business. Must be in the format http://www.example.com\n")
+        description="Website URL for the business. Must be in the format http://www.example.com"
     )
     description: typing.Optional[str] = pydantic.Field(
-        description=("Description of the business. Required for KYB if website is not provided.\n")
+        description="Description of the business. Required for KYB if website is not provided."
     )
     address: typing.Optional[Address]
     tax_id: typing.Optional[TaxId] = pydantic.Field(
         alias="taxId",
-        description=("Tax ID for the business. Currently only EIN is supported. Must be in the format XX-XXXXXXX.\n"),
+        description="Tax ID for the business. Currently only EIN is supported. Must be in the format XX-XXXXXXX.",
     )
     formation_date: typing.Optional[dt.datetime] = pydantic.Field(
-        alias="formationDate", description=("Date of business formation\n")
+        alias="formationDate", description="Date of business formation"
     )
 
     def json(self, **kwargs: typing.Any) -> str:
@@ -43,5 +43,6 @@ class BusinessProfileRequest(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        smart_union = True
         allow_population_by_field_name = True
         json_encoders = {dt.datetime: serialize_datetime}

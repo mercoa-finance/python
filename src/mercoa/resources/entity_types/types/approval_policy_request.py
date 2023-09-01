@@ -15,7 +15,7 @@ class ApprovalPolicyRequest(pydantic.BaseModel):
     trigger: Trigger
     rule: Rule
     upstream_policy_id: ApprovalPolicyId = pydantic.Field(
-        alias="upstreamPolicyId", description=("Use 'root' if no upstreamPolicyId is intended to be set.\n")
+        alias="upstreamPolicyId", description="Use 'root' if no upstreamPolicyId is intended to be set."
     )
 
     def json(self, **kwargs: typing.Any) -> str:
@@ -28,5 +28,6 @@ class ApprovalPolicyRequest(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        smart_union = True
         allow_population_by_field_name = True
         json_encoders = {dt.datetime: serialize_datetime}

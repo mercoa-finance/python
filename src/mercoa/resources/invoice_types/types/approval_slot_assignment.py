@@ -12,7 +12,7 @@ from .approval_slot_id import ApprovalSlotId
 
 class ApprovalSlotAssignment(pydantic.BaseModel):
     approval_slot_id: ApprovalSlotId = pydantic.Field(
-        alias="approvalSlotId", description=("The identifier for the approval slot this user is assigned to.\n")
+        alias="approvalSlotId", description="The identifier for the approval slot this user is assigned to."
     )
     assigned_user_id: EntityUserId = pydantic.Field(alias="assignedUserId")
 
@@ -26,5 +26,6 @@ class ApprovalSlotAssignment(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        smart_union = True
         allow_population_by_field_name = True
         json_encoders = {dt.datetime: serialize_datetime}

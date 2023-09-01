@@ -12,9 +12,7 @@ from .notification_type import NotificationType
 class NotificationPolicyResponse(pydantic.BaseModel):
     additional_roles: typing.List[str] = pydantic.Field(
         alias="additionalRoles",
-        description=(
-            "List of user roles that should receive notifications in addition to the default users for this notification type\n"
-        ),
+        description="List of user roles that should receive notifications in addition to the default users for this notification type",
     )
     type: NotificationType
 
@@ -28,5 +26,6 @@ class NotificationPolicyResponse(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        smart_union = True
         allow_population_by_field_name = True
         json_encoders = {dt.datetime: serialize_datetime}

@@ -5,14 +5,13 @@ import typing
 import urllib.parse
 from json.decoder import JSONDecodeError
 
-import httpx
 import pydantic
 
 from ...core.api_error import ApiError
+from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ...core.datetime_utils import serialize_datetime
 from ...core.jsonable_encoder import jsonable_encoder
-from ...core.remove_none_from_headers import remove_none_from_headers
-from ...environment import MercoaEnvironment
+from ...core.remove_none_from_dict import remove_none_from_dict
 from ..commons.errors.auth_header_malformed_error import AuthHeaderMalformedError
 from ..commons.errors.auth_header_missing_error import AuthHeaderMissingError
 from ..commons.errors.unauthorized import Unauthorized
@@ -24,14 +23,14 @@ from .resources.notification_configuration.client import (
     NotificationConfigurationClient,
 )
 
+# this is used as the default value for optional parameters
+OMIT = typing.cast(typing.Any, ...)
+
 
 class OrganizationClient:
-    def __init__(self, *, environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION, token: str):
-        self._environment = environment
-        self._token = token
-        self.notification_configuration = NotificationConfigurationClient(
-            environment=self._environment, token=self._token
-        )
+    def __init__(self, *, client_wrapper: SyncClientWrapper):
+        self._client_wrapper = client_wrapper
+        self.notification_configuration = NotificationConfigurationClient(client_wrapper=self._client_wrapper)
 
     def get(
         self,
@@ -41,20 +40,38 @@ class OrganizationClient:
         color_scheme: typing.Optional[bool] = None,
         payee_onboarding_options: typing.Optional[bool] = None,
         payor_onboarding_options: typing.Optional[bool] = None,
+        metadata_schema: typing.Optional[bool] = None,
     ) -> OrganizationResponse:
-        _response = httpx.request(
+        """
+        Get current organization information
+
+        Parameters:
+            - payment_methods: typing.Optional[bool]. include supported payment methods in response
+
+            - email_provider: typing.Optional[bool]. include email provider info in response
+
+            - color_scheme: typing.Optional[bool]. include color scheme info in response
+
+            - payee_onboarding_options: typing.Optional[bool]. include payee onboarding options in response
+
+            - payor_onboarding_options: typing.Optional[bool]. include payor onboarding options in response
+
+            - metadata_schema: typing.Optional[bool]. include metadata schema in response
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._environment.value}/", "organization"),
-            params={
-                "paymentMethods": payment_methods,
-                "emailProvider": email_provider,
-                "colorScheme": color_scheme,
-                "payeeOnboardingOptions": payee_onboarding_options,
-                "payorOnboardingOptions": payor_onboarding_options,
-            },
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "organization"),
+            params=remove_none_from_dict(
+                {
+                    "paymentMethods": payment_methods,
+                    "emailProvider": email_provider,
+                    "colorScheme": color_scheme,
+                    "payeeOnboardingOptions": payee_onboarding_options,
+                    "payorOnboardingOptions": payor_onboarding_options,
+                    "metadataSchema": metadata_schema,
+                }
             ),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -73,13 +90,17 @@ class OrganizationClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def update(self, *, request: OrganizationRequest) -> OrganizationResponse:
-        _response = httpx.request(
+        """
+        Update current organization
+
+        Parameters:
+            - request: OrganizationRequest.
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._environment.value}/", "organization"),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "organization"),
             json=jsonable_encoder(request),
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-            ),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -100,16 +121,24 @@ class OrganizationClient:
     def email_log(
         self, *, start_date: typing.Optional[dt.datetime] = None, end_date: typing.Optional[dt.datetime] = None
     ) -> typing.List[EmailLogResponse]:
-        _response = httpx.request(
+        """
+        Get log of all emails sent to this organization. Content format subject to change.
+
+        Parameters:
+            - start_date: typing.Optional[dt.datetime].
+
+            - end_date: typing.Optional[dt.datetime].
+        """
+        _response = self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._environment.value}/", "organization/emailLog"),
-            params={
-                "startDate": serialize_datetime(start_date) if start_date is not None else None,
-                "endDate": serialize_datetime(end_date) if end_date is not None else None,
-            },
-            headers=remove_none_from_headers(
-                {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "organization/emailLog"),
+            params=remove_none_from_dict(
+                {
+                    "startDate": serialize_datetime(start_date) if start_date is not None else None,
+                    "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                }
             ),
+            headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
         try:
@@ -129,12 +158,9 @@ class OrganizationClient:
 
 
 class AsyncOrganizationClient:
-    def __init__(self, *, environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION, token: str):
-        self._environment = environment
-        self._token = token
-        self.notification_configuration = AsyncNotificationConfigurationClient(
-            environment=self._environment, token=self._token
-        )
+    def __init__(self, *, client_wrapper: AsyncClientWrapper):
+        self._client_wrapper = client_wrapper
+        self.notification_configuration = AsyncNotificationConfigurationClient(client_wrapper=self._client_wrapper)
 
     async def get(
         self,
@@ -144,23 +170,40 @@ class AsyncOrganizationClient:
         color_scheme: typing.Optional[bool] = None,
         payee_onboarding_options: typing.Optional[bool] = None,
         payor_onboarding_options: typing.Optional[bool] = None,
+        metadata_schema: typing.Optional[bool] = None,
     ) -> OrganizationResponse:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "GET",
-                urllib.parse.urljoin(f"{self._environment.value}/", "organization"),
-                params={
+        """
+        Get current organization information
+
+        Parameters:
+            - payment_methods: typing.Optional[bool]. include supported payment methods in response
+
+            - email_provider: typing.Optional[bool]. include email provider info in response
+
+            - color_scheme: typing.Optional[bool]. include color scheme info in response
+
+            - payee_onboarding_options: typing.Optional[bool]. include payee onboarding options in response
+
+            - payor_onboarding_options: typing.Optional[bool]. include payor onboarding options in response
+
+            - metadata_schema: typing.Optional[bool]. include metadata schema in response
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "GET",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "organization"),
+            params=remove_none_from_dict(
+                {
                     "paymentMethods": payment_methods,
                     "emailProvider": email_provider,
                     "colorScheme": color_scheme,
                     "payeeOnboardingOptions": payee_onboarding_options,
                     "payorOnboardingOptions": payor_onboarding_options,
-                },
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+                    "metadataSchema": metadata_schema,
+                }
+            ),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:
@@ -177,16 +220,19 @@ class AsyncOrganizationClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def update(self, *, request: OrganizationRequest) -> OrganizationResponse:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "POST",
-                urllib.parse.urljoin(f"{self._environment.value}/", "organization"),
-                json=jsonable_encoder(request),
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+        """
+        Update current organization
+
+        Parameters:
+            - request: OrganizationRequest.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "POST",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "organization"),
+            json=jsonable_encoder(request),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:
@@ -205,19 +251,26 @@ class AsyncOrganizationClient:
     async def email_log(
         self, *, start_date: typing.Optional[dt.datetime] = None, end_date: typing.Optional[dt.datetime] = None
     ) -> typing.List[EmailLogResponse]:
-        async with httpx.AsyncClient() as _client:
-            _response = await _client.request(
-                "GET",
-                urllib.parse.urljoin(f"{self._environment.value}/", "organization/emailLog"),
-                params={
+        """
+        Get log of all emails sent to this organization. Content format subject to change.
+
+        Parameters:
+            - start_date: typing.Optional[dt.datetime].
+
+            - end_date: typing.Optional[dt.datetime].
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "GET",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "organization/emailLog"),
+            params=remove_none_from_dict(
+                {
                     "startDate": serialize_datetime(start_date) if start_date is not None else None,
                     "endDate": serialize_datetime(end_date) if end_date is not None else None,
-                },
-                headers=remove_none_from_headers(
-                    {"Authorization": f"Bearer {self._token}" if self._token is not None else None}
-                ),
-                timeout=60,
-            )
+                }
+            ),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
         try:
             _response_json = _response.json()
         except JSONDecodeError:

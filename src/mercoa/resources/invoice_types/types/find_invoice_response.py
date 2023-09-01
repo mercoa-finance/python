@@ -11,13 +11,11 @@ from .invoice_response import InvoiceResponse
 
 class FindInvoiceResponse(pydantic.BaseModel):
     count: int = pydantic.Field(
-        description=(
-            "Total number of notifications for the given start and end date filters. This value is not limited by the limit parameter. It is provided so that you can determine how many pages of results are available.\n"
-        )
+        description="Total number of notifications for the given start and end date filters. This value is not limited by the limit parameter. It is provided so that you can determine how many pages of results are available."
     )
     has_more: bool = pydantic.Field(
         alias="hasMore",
-        description=("True if there are more notifications available for the given start and end date filters.\n"),
+        description="True if there are more notifications available for the given start and end date filters.",
     )
     data: typing.List[InvoiceResponse]
 
@@ -31,5 +29,6 @@ class FindInvoiceResponse(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        smart_union = True
         allow_population_by_field_name = True
         json_encoders = {dt.datetime: serialize_datetime}

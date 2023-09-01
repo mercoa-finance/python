@@ -8,6 +8,7 @@ import pydantic
 from ....core.datetime_utils import serialize_datetime
 from .color_scheme_response import ColorSchemeResponse
 from .email_provider_response import EmailProviderResponse
+from .metadata_schema import MetadataSchema
 from .onboarding_options_response import OnboardingOptionsResponse
 from .organization_id import OrganizationId
 from .payment_methods_response import PaymentMethodsResponse
@@ -29,6 +30,7 @@ class OrganizationResponse(pydantic.BaseModel):
     payor_onboarding_options: typing.Optional[OnboardingOptionsResponse] = pydantic.Field(
         alias="payorOnboardingOptions"
     )
+    metadata_schema: typing.Optional[typing.List[MetadataSchema]] = pydantic.Field(alias="metadataSchema")
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
@@ -40,5 +42,6 @@ class OrganizationResponse(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        smart_union = True
         allow_population_by_field_name = True
         json_encoders = {dt.datetime: serialize_datetime}

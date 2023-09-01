@@ -13,16 +13,14 @@ from .approver_action import ApproverAction
 
 class ApprovalSlot(pydantic.BaseModel):
     approval_slot_id: ApprovalSlotId = pydantic.Field(
-        alias="approvalSlotId", description=("The identifier for this approval slot\n")
+        alias="approvalSlotId", description="The identifier for this approval slot"
     )
     assigned_user_id: typing.Optional[EntityUserId] = pydantic.Field(alias="assignedUserId")
     action: ApproverAction
     eligible_roles: typing.List[str] = pydantic.Field(alias="eligibleRoles")
     eligible_user_ids: typing.List[EntityUserId] = pydantic.Field(alias="eligibleUserIds")
     date: dt.datetime = pydantic.Field(
-        description=(
-            "Either the date the invoice was created, date the approver was assigned, or date of last action by approver, whichever is latest.\n"
-        )
+        description="Either the date the invoice was created, date the approver was assigned, or date of last action by approver, whichever is latest."
     )
 
     def json(self, **kwargs: typing.Any) -> str:
@@ -35,5 +33,6 @@ class ApprovalSlot(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        smart_union = True
         allow_population_by_field_name = True
         json_encoders = {dt.datetime: serialize_datetime}

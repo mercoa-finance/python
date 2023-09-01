@@ -10,9 +10,7 @@ from .entity_id import EntityId
 
 
 class EntityAddPayeesRequest(pydantic.BaseModel):
-    payees: typing.List[EntityId] = pydantic.Field(
-        description=("List of payee entity IDs to associate with the entity\n")
-    )
+    payees: typing.List[EntityId] = pydantic.Field(description="List of payee entity IDs to associate with the entity")
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
@@ -24,4 +22,5 @@ class EntityAddPayeesRequest(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        smart_union = True
         json_encoders = {dt.datetime: serialize_datetime}
