@@ -12,9 +12,13 @@ from ...core.jsonable_encoder import jsonable_encoder
 from ...core.remove_none_from_dict import remove_none_from_dict
 from ..commons.errors.auth_header_malformed_error import AuthHeaderMalformedError
 from ..commons.errors.auth_header_missing_error import AuthHeaderMissingError
+from ..commons.errors.forbidden import Forbidden
+from ..commons.errors.not_found import NotFound
 from ..commons.errors.unauthorized import Unauthorized
+from ..commons.errors.unimplemented import Unimplemented
 from ..entity_types.types.entity_id import EntityId
 from ..entity_types.types.vendor_network import VendorNetwork
+from .errors.ocr_failure import OcrFailure
 from .types.ocr_response import OcrResponse
 
 # this is used as the default value for optional parameters
@@ -60,12 +64,20 @@ class OcrClient:
         if 200 <= _response.status_code < 300:
             return pydantic.parse_obj_as(OcrResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
+            if _response_json["errorName"] == "OcrFailure":
+                raise OcrFailure(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "AuthHeaderMissingError":
                 raise AuthHeaderMissingError()
             if _response_json["errorName"] == "AuthHeaderMalformedError":
                 raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unauthorized":
                 raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
 
@@ -108,10 +120,18 @@ class AsyncOcrClient:
         if 200 <= _response.status_code < 300:
             return pydantic.parse_obj_as(OcrResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
+            if _response_json["errorName"] == "OcrFailure":
+                raise OcrFailure(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "AuthHeaderMissingError":
                 raise AuthHeaderMissingError()
             if _response_json["errorName"] == "AuthHeaderMalformedError":
                 raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unauthorized":
                 raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)

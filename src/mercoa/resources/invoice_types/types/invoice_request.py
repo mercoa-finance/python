@@ -38,12 +38,18 @@ class InvoiceRequest(pydantic.BaseModel):
     service_start_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceStartDate")
     service_end_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceEndDate")
     payer_id: typing.Optional[EntityId] = pydantic.Field(alias="payerId")
-    payment_source_id: typing.Optional[PaymentMethodId] = pydantic.Field(alias="paymentSourceId")
+    payment_source_id: typing.Optional[PaymentMethodId] = pydantic.Field(
+        alias="paymentSourceId",
+        description="ID of payment source for this invoice. If not provided, will attempt to use the default payment source for the payer when creating an invoice if a default payment source exists for the payer.",
+    )
     approvers: typing.Optional[typing.List[ApprovalSlotAssignment]] = pydantic.Field(
         description="Set approvers for this invoice."
     )
     vendor_id: typing.Optional[EntityId] = pydantic.Field(alias="vendorId")
-    payment_destination_id: typing.Optional[PaymentMethodId] = pydantic.Field(alias="paymentDestinationId")
+    payment_destination_id: typing.Optional[PaymentMethodId] = pydantic.Field(
+        alias="paymentDestinationId",
+        description="ID of payment destination for this invoice. If not provided, will attempt to use the default payment destination for the vendor when creating an invoice if a default payment destination exists for the vendor.",
+    )
     line_items: typing.Optional[typing.List[InvoiceLineItemRequest]] = pydantic.Field(alias="lineItems")
     metadata: typing.Optional[typing.Dict[str, str]] = pydantic.Field(
         description="Metadata associated with this invoice. You can specify up to 10 keys, with key names up to 40 characters long and values up to 200 characters long."

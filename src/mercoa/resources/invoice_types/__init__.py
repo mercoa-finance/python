@@ -22,6 +22,7 @@ from .types import (
     InvoiceResponse,
     InvoiceStatus,
 )
+from .errors import DuplicateInvoiceNumber, InvoiceError, InvoiceStatusError, VendorNotFound
 
 __all__ = [
     "ApprovalRequest",
@@ -34,7 +35,9 @@ __all__ = [
     "CommentRequest",
     "CommentResponse",
     "DocumentResponse",
+    "DuplicateInvoiceNumber",
     "FindInvoiceResponse",
+    "InvoiceError",
     "InvoiceFailureType",
     "InvoiceId",
     "InvoiceLineItemRequest",
@@ -44,4 +47,6 @@ __all__ = [
     "InvoiceRequest",
     "InvoiceResponse",
     "InvoiceStatus",
+    "InvoiceStatusError",
+    "VendorNotFound",
 ]

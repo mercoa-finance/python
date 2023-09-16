@@ -11,6 +11,8 @@ class InvoiceOrderByField(str, enum.Enum):
     DUE_DATE = "DUE_DATE"
     CREATED_AT = "CREATED_AT"
     INVOICE_NUMBER = "INVOICE_NUMBER"
+    VENDOR_NAME = "VENDOR_NAME"
+    PAYER_NAME = "PAYER_NAME"
 
     def visit(
         self,
@@ -18,6 +20,8 @@ class InvoiceOrderByField(str, enum.Enum):
         due_date: typing.Callable[[], T_Result],
         created_at: typing.Callable[[], T_Result],
         invoice_number: typing.Callable[[], T_Result],
+        vendor_name: typing.Callable[[], T_Result],
+        payer_name: typing.Callable[[], T_Result],
     ) -> T_Result:
         if self is InvoiceOrderByField.AMOUNT:
             return amount()
@@ -27,3 +31,7 @@ class InvoiceOrderByField(str, enum.Enum):
             return created_at()
         if self is InvoiceOrderByField.INVOICE_NUMBER:
             return invoice_number()
+        if self is InvoiceOrderByField.VENDOR_NAME:
+            return vendor_name()
+        if self is InvoiceOrderByField.PAYER_NAME:
+            return payer_name()

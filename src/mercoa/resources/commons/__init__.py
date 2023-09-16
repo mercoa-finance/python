@@ -4,9 +4,12 @@ from .types import Address, BirthDate, FullName, IndividualGovernmentId, Itin, O
 from .errors import (
     AuthHeaderMalformedError,
     AuthHeaderMissingError,
+    Forbidden,
     InvalidPostalCode,
     InvalidStateOrProvince,
+    NotFound,
     Unauthorized,
+    Unimplemented,
 )
 
 __all__ = [
@@ -14,13 +17,16 @@ __all__ = [
     "AuthHeaderMalformedError",
     "AuthHeaderMissingError",
     "BirthDate",
+    "Forbidden",
     "FullName",
     "IndividualGovernmentId",
     "InvalidPostalCode",
     "InvalidStateOrProvince",
     "Itin",
+    "NotFound",
     "OrderDirection",
     "PhoneNumber",
     "Ssn",
     "Unauthorized",
+    "Unimplemented",
 ]

@@ -2,14 +2,20 @@
 
 from .auth_header_malformed_error import AuthHeaderMalformedError
 from .auth_header_missing_error import AuthHeaderMissingError
+from .forbidden import Forbidden
 from .invalid_postal_code import InvalidPostalCode
 from .invalid_state_or_province import InvalidStateOrProvince
+from .not_found import NotFound
 from .unauthorized import Unauthorized
+from .unimplemented import Unimplemented
 
 __all__ = [
     "AuthHeaderMalformedError",
     "AuthHeaderMissingError",
+    "Forbidden",
     "InvalidPostalCode",
     "InvalidStateOrProvince",
+    "NotFound",
     "Unauthorized",
+    "Unimplemented",
 ]

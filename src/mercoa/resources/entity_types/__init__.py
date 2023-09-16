@@ -58,7 +58,7 @@ from .types import (
     UserNotificationPolicyResponse,
     VendorNetwork,
 )
-from .errors import EntityForeignIdAlreadyExists, InvalidTaxId
+from .errors import EntityError, EntityForeignIdAlreadyExists, InvalidTaxId, TokenGenerationFailed
 
 __all__ = [
     "AccountType",
@@ -75,6 +75,7 @@ __all__ = [
     "Ein",
     "EntityAddPayeesRequest",
     "EntityArchivePayeesRequest",
+    "EntityError",
     "EntityForeignIdAlreadyExists",
     "EntityId",
     "EntityMetadataResponse",
@@ -109,6 +110,7 @@ __all__ = [
     "Rule",
     "Rule_Approver",
     "TaxId",
+    "TokenGenerationFailed",
     "TokenGenerationInvoiceOptions",
     "TokenGenerationOptions",
     "TokenGenerationPagesOptions",
