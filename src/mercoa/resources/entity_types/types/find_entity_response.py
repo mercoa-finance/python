@@ -11,11 +11,10 @@ from .entity_response import EntityResponse
 
 class FindEntityResponse(pydantic.BaseModel):
     count: int = pydantic.Field(
-        description="Total number of notifications for the given start and end date filters. This value is not limited by the limit parameter. It is provided so that you can determine how many pages of results are available."
+        description="Total number of entities for the given filters. This value is not limited by the limit parameter. It is provided so that you can determine how many pages of results are available."
     )
     has_more: bool = pydantic.Field(
-        alias="hasMore",
-        description="True if there are more notifications available for the given start and end date filters.",
+        alias="hasMore", description="True if there are more entities available for the given filters."
     )
     data: typing.List[EntityResponse]
 

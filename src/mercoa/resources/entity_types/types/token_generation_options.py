@@ -13,6 +13,9 @@ from .token_generation_vendor_options import TokenGenerationVendorOptions
 
 
 class TokenGenerationOptions(pydantic.BaseModel):
+    expires_in: typing.Optional[str] = pydantic.Field(
+        alias="expiresIn", description="Expressed in seconds or a string describing a time span. The default is 1h."
+    )
     invoice: typing.Optional[TokenGenerationInvoiceOptions]
     pages: typing.Optional[TokenGenerationPagesOptions]
     style: typing.Optional[TokenGenerationStyleOptions]
@@ -29,4 +32,5 @@ class TokenGenerationOptions(pydantic.BaseModel):
     class Config:
         frozen = True
         smart_union = True
+        allow_population_by_field_name = True
         json_encoders = {dt.datetime: serialize_datetime}

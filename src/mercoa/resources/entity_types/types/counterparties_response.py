@@ -6,13 +6,18 @@ import typing
 import pydantic
 
 from ....core.datetime_utils import serialize_datetime
-from ...invoice_types.types.invoice_status import InvoiceStatus
+from .counterparty_response import CounterpartyResponse
 
 
-class TokenGenerationInvoiceOptions(pydantic.BaseModel):
-    status: typing.List[InvoiceStatus]
-    mark_paid: typing.Optional[bool] = pydantic.Field(
-        alias="markPaid", description="If true, the user will be able to mark invoices as paid."
+class CounterpartiesResponse(pydantic.BaseModel):
+    entity_counterparties: typing.List[CounterpartyResponse] = pydantic.Field(
+        alias="entityCounterparties", description="Counterparties that have been paid by this entity"
+    )
+    platform_counterparties: typing.List[CounterpartyResponse] = pydantic.Field(
+        alias="platformCounterparties", description="Counterparties that have paid by any entity on your platform"
+    )
+    mercoa_counterparties: typing.List[CounterpartyResponse] = pydantic.Field(
+        alias="mercoaCounterparties", description="External counterparties that have been verified by Mercoa"
     )
 
     def json(self, **kwargs: typing.Any) -> str:

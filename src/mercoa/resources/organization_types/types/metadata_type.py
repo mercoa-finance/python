@@ -11,6 +11,7 @@ class MetadataType(str, enum.Enum):
     NUMBER = "NUMBER"
     DATE = "DATE"
     BOOLEAN = "BOOLEAN"
+    KEY_VALUE = "KEY_VALUE"
 
     def visit(
         self,
@@ -18,6 +19,7 @@ class MetadataType(str, enum.Enum):
         number: typing.Callable[[], T_Result],
         date: typing.Callable[[], T_Result],
         boolean: typing.Callable[[], T_Result],
+        key_value: typing.Callable[[], T_Result],
     ) -> T_Result:
         if self is MetadataType.STRING:
             return string()
@@ -27,3 +29,5 @@ class MetadataType(str, enum.Enum):
             return date()
         if self is MetadataType.BOOLEAN:
             return boolean()
+        if self is MetadataType.KEY_VALUE:
+            return key_value()

@@ -10,7 +10,9 @@ from .vendor_network import VendorNetwork
 
 
 class TokenGenerationVendorOptions(pydantic.BaseModel):
-    disable_creation: typing.Optional[bool] = pydantic.Field(alias="disableCreation")
+    disable_creation: typing.Optional[bool] = pydantic.Field(
+        alias="disableCreation", description="If true, the user will not be able to create new vendors."
+    )
     network: VendorNetwork
 
     def json(self, **kwargs: typing.Any) -> str:

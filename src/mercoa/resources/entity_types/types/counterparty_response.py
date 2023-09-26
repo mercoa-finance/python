@@ -7,11 +7,13 @@ import pydantic
 
 from ....core.datetime_utils import serialize_datetime
 from ...payment_method_types.types.payment_method_response import PaymentMethodResponse
+from .counterparty_network_type import CounterpartyNetworkType
 from .entity_response import EntityResponse
 
 
 class CounterpartyResponse(EntityResponse):
     payment_methods: typing.List[PaymentMethodResponse] = pydantic.Field(alias="paymentMethods")
+    counterparty_type: typing.List[CounterpartyNetworkType] = pydantic.Field(alias="counterpartyType")
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

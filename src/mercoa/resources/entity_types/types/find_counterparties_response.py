@@ -10,15 +10,13 @@ from .counterparty_response import CounterpartyResponse
 
 
 class FindCounterpartiesResponse(pydantic.BaseModel):
-    entity_counterparties: typing.List[CounterpartyResponse] = pydantic.Field(
-        alias="entityCounterparties", description="Counterparties that have been paid by this entity"
+    count: int = pydantic.Field(
+        description="Total number of counterparties for the given filters. This value is not limited by the limit parameter. It is provided so that you can determine how many pages of results are available."
     )
-    platform_counterparties: typing.List[CounterpartyResponse] = pydantic.Field(
-        alias="platformCounterparties", description="Counterparties that have paid by any entity on your platform"
+    has_more: bool = pydantic.Field(
+        alias="hasMore", description="True if there are more counterparties available for the given filters."
     )
-    mercoa_counterparties: typing.List[CounterpartyResponse] = pydantic.Field(
-        alias="mercoaCounterparties", description="External counterparties that have been verified by Mercoa"
-    )
+    data: typing.List[CounterpartyResponse]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

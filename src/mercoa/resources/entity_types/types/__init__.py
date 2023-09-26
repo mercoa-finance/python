@@ -10,10 +10,14 @@ from .approver_rule import ApproverRule
 from .business_profile_request import BusinessProfileRequest
 from .business_profile_response import BusinessProfileResponse
 from .business_type import BusinessType
+from .counterparties_response import CounterpartiesResponse
+from .counterparty_network_type import CounterpartyNetworkType
 from .counterparty_response import CounterpartyResponse
 from .ein import Ein
 from .entity_add_payees_request import EntityAddPayeesRequest
+from .entity_add_payors_request import EntityAddPayorsRequest
 from .entity_archive_payees_request import EntityArchivePayeesRequest
+from .entity_archive_payors_request import EntityArchivePayorsRequest
 from .entity_id import EntityId
 from .entity_metadata_response import EntityMetadataResponse
 from .entity_onboarding_link_type import EntityOnboardingLinkType
@@ -63,10 +67,14 @@ __all__ = [
     "BusinessProfileRequest",
     "BusinessProfileResponse",
     "BusinessType",
+    "CounterpartiesResponse",
+    "CounterpartyNetworkType",
     "CounterpartyResponse",
     "Ein",
     "EntityAddPayeesRequest",
+    "EntityAddPayorsRequest",
     "EntityArchivePayeesRequest",
+    "EntityArchivePayorsRequest",
     "EntityId",
     "EntityMetadataResponse",
     "EntityOnboardingLinkType",
