@@ -76,8 +76,6 @@ class PaymentMethodClient:
 
     def create(self, entity_id: EntityId, *, request: PaymentMethodRequest) -> PaymentMethodResponse:
         """
-        Create payment method
-
         Parameters:
             - entity_id: EntityId.
 
@@ -115,8 +113,6 @@ class PaymentMethodClient:
 
     def get(self, entity_id: EntityId, payment_method_id: PaymentMethodId) -> PaymentMethodResponse:
         """
-        Get payment method
-
         Parameters:
             - entity_id: EntityId.
 
@@ -157,7 +153,7 @@ class PaymentMethodClient:
         self, entity_id: EntityId, payment_method_id: PaymentMethodId, *, request: PaymentMethodUpdateRequest
     ) -> PaymentMethodResponse:
         """
-        Update payment method. Only custom payment methods can be updated.
+        Only custom payment methods can be updated.
 
         Parameters:
             - entity_id: EntityId.
@@ -200,8 +196,6 @@ class PaymentMethodClient:
 
     def delete(self, entity_id: EntityId, payment_method_id: PaymentMethodId) -> None:
         """
-        Delete payment method
-
         Parameters:
             - entity_id: EntityId.
 
@@ -238,7 +232,7 @@ class PaymentMethodClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def initiate_micro_deposits(self, entity_id: EntityId, payment_method_id: PaymentMethodId) -> None:
+    def initiate_micro_deposits(self, entity_id: EntityId, payment_method_id: PaymentMethodId) -> PaymentMethodResponse:
         """
         Initiate micro deposits for a bank account
 
@@ -256,12 +250,12 @@ class PaymentMethodClient:
             headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
-        if 200 <= _response.status_code < 300:
-            return
         try:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return pydantic.parse_obj_as(PaymentMethodResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "PaymentMethodError":
                 raise PaymentMethodError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
@@ -281,7 +275,7 @@ class PaymentMethodClient:
 
     def complete_micro_deposits(
         self, entity_id: EntityId, payment_method_id: PaymentMethodId, *, amounts: typing.List[int]
-    ) -> None:
+    ) -> PaymentMethodResponse:
         """
         Complete micro deposit verification
 
@@ -302,12 +296,12 @@ class PaymentMethodClient:
             headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
-        if 200 <= _response.status_code < 300:
-            return
         try:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return pydantic.parse_obj_as(PaymentMethodResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "PaymentMethodError":
                 raise PaymentMethodError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
@@ -374,8 +368,6 @@ class AsyncPaymentMethodClient:
 
     async def create(self, entity_id: EntityId, *, request: PaymentMethodRequest) -> PaymentMethodResponse:
         """
-        Create payment method
-
         Parameters:
             - entity_id: EntityId.
 
@@ -413,8 +405,6 @@ class AsyncPaymentMethodClient:
 
     async def get(self, entity_id: EntityId, payment_method_id: PaymentMethodId) -> PaymentMethodResponse:
         """
-        Get payment method
-
         Parameters:
             - entity_id: EntityId.
 
@@ -455,7 +445,7 @@ class AsyncPaymentMethodClient:
         self, entity_id: EntityId, payment_method_id: PaymentMethodId, *, request: PaymentMethodUpdateRequest
     ) -> PaymentMethodResponse:
         """
-        Update payment method. Only custom payment methods can be updated.
+        Only custom payment methods can be updated.
 
         Parameters:
             - entity_id: EntityId.
@@ -498,8 +488,6 @@ class AsyncPaymentMethodClient:
 
     async def delete(self, entity_id: EntityId, payment_method_id: PaymentMethodId) -> None:
         """
-        Delete payment method
-
         Parameters:
             - entity_id: EntityId.
 
@@ -536,7 +524,9 @@ class AsyncPaymentMethodClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def initiate_micro_deposits(self, entity_id: EntityId, payment_method_id: PaymentMethodId) -> None:
+    async def initiate_micro_deposits(
+        self, entity_id: EntityId, payment_method_id: PaymentMethodId
+    ) -> PaymentMethodResponse:
         """
         Initiate micro deposits for a bank account
 
@@ -554,12 +544,12 @@ class AsyncPaymentMethodClient:
             headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
-        if 200 <= _response.status_code < 300:
-            return
         try:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return pydantic.parse_obj_as(PaymentMethodResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "PaymentMethodError":
                 raise PaymentMethodError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
@@ -579,7 +569,7 @@ class AsyncPaymentMethodClient:
 
     async def complete_micro_deposits(
         self, entity_id: EntityId, payment_method_id: PaymentMethodId, *, amounts: typing.List[int]
-    ) -> None:
+    ) -> PaymentMethodResponse:
         """
         Complete micro deposit verification
 
@@ -600,12 +590,12 @@ class AsyncPaymentMethodClient:
             headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
-        if 200 <= _response.status_code < 300:
-            return
         try:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return pydantic.parse_obj_as(PaymentMethodResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "PaymentMethodError":
                 raise PaymentMethodError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore

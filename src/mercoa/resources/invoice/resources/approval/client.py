@@ -30,8 +30,6 @@ class ApprovalClient:
 
     def approve(self, invoice_id: InvoiceId, *, request: ApprovalRequest) -> None:
         """
-        Approve invoice
-
         Parameters:
             - invoice_id: InvoiceId.
 
@@ -71,8 +69,6 @@ class ApprovalClient:
 
     def reject(self, invoice_id: InvoiceId, *, request: ApprovalRequest) -> None:
         """
-        Reject invoice
-
         Parameters:
             - invoice_id: InvoiceId.
 
@@ -117,8 +113,6 @@ class AsyncApprovalClient:
 
     async def approve(self, invoice_id: InvoiceId, *, request: ApprovalRequest) -> None:
         """
-        Approve invoice
-
         Parameters:
             - invoice_id: InvoiceId.
 
@@ -158,8 +152,6 @@ class AsyncApprovalClient:
 
     async def reject(self, invoice_id: InvoiceId, *, request: ApprovalRequest) -> None:
         """
-        Reject invoice
-
         Parameters:
             - invoice_id: InvoiceId.
 

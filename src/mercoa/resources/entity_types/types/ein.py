@@ -9,7 +9,7 @@ from ....core.datetime_utils import serialize_datetime
 
 
 class Ein(pydantic.BaseModel):
-    number: str
+    number: str = pydantic.Field(description="Must be in the format XX-XXXXXXX.")
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

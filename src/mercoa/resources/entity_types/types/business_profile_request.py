@@ -26,8 +26,7 @@ class BusinessProfileRequest(pydantic.BaseModel):
     )
     address: typing.Optional[Address]
     tax_id: typing.Optional[TaxId] = pydantic.Field(
-        alias="taxId",
-        description="Tax ID for the business. Currently only EIN is supported. Must be in the format XX-XXXXXXX.",
+        alias="taxId", description="Tax ID for the business. Currently only EIN is supported."
     )
     formation_date: typing.Optional[dt.datetime] = pydantic.Field(
         alias="formationDate", description="Date of business formation"

@@ -12,7 +12,7 @@ from .entity_user_id import EntityUserId
 class EntityUserResponse(pydantic.BaseModel):
     id: EntityUserId
     foreign_id: typing.Optional[str] = pydantic.Field(
-        alias="foreignId", description="Id from external auth provider or your auth system"
+        alias="foreignId", description="The ID used to identify this user in your system."
     )
     email: typing.Optional[str]
     name: typing.Optional[str]

@@ -15,7 +15,8 @@ class ApprovalPolicyRequest(pydantic.BaseModel):
     trigger: Trigger
     rule: Rule
     upstream_policy_id: ApprovalPolicyId = pydantic.Field(
-        alias="upstreamPolicyId", description="Use 'root' if no upstreamPolicyId is intended to be set."
+        alias="upstreamPolicyId",
+        description="The policy ID of the previous approval policy in the chain of policies. Use 'root' if no upstreamPolicyId is intended to be set.",
     )
 
     def json(self, **kwargs: typing.Any) -> str:

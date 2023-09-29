@@ -10,9 +10,17 @@ from ....core.datetime_utils import serialize_datetime
 
 class Responsibilities(pydantic.BaseModel):
     job_title: typing.Optional[str] = pydantic.Field(alias="jobTitle")
-    is_controller: typing.Optional[bool] = pydantic.Field(alias="isController")
-    is_owner: typing.Optional[bool] = pydantic.Field(alias="isOwner")
-    ownership_percentage: typing.Optional[float] = pydantic.Field(alias="ownershipPercentage")
+    is_controller: typing.Optional[bool] = pydantic.Field(
+        alias="isController",
+        description="Indicates whether this individual has significant management responsibilities within the business",
+    )
+    is_owner: typing.Optional[bool] = pydantic.Field(
+        alias="isOwner",
+        description="Indicates whether this individual has an ownership stake of at least 25% in the business",
+    )
+    ownership_percentage: typing.Optional[float] = pydantic.Field(
+        alias="ownershipPercentage", description="Percentage of ownership in the business. Must be between 0 and 100."
+    )
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

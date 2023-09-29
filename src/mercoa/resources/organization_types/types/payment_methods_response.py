@@ -10,9 +10,17 @@ from .payment_rail_response import PaymentRailResponse
 
 
 class PaymentMethodsResponse(pydantic.BaseModel):
-    payer_payments: typing.List[PaymentRailResponse] = pydantic.Field(alias="payerPayments")
-    backup_disbursements: typing.List[PaymentRailResponse] = pydantic.Field(alias="backupDisbursements")
-    vendor_disbursements: typing.List[PaymentRailResponse] = pydantic.Field(alias="vendorDisbursements")
+    payer_payments: typing.List[PaymentRailResponse] = pydantic.Field(
+        alias="payerPayments", description="List of payment methods that can be used to pay invoices."
+    )
+    backup_disbursements: typing.List[PaymentRailResponse] = pydantic.Field(
+        alias="backupDisbursements",
+        description="List of payment methods that can be created by a payor to send disbursements.",
+    )
+    vendor_disbursements: typing.List[PaymentRailResponse] = pydantic.Field(
+        alias="vendorDisbursements",
+        description="List of payment methods that can be created by a payee to receive disbursements.",
+    )
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

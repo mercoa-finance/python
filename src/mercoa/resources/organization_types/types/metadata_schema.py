@@ -6,7 +6,7 @@ import typing
 import pydantic
 
 from ....core.datetime_utils import serialize_datetime
-from .metadata_conditional import MetadataConditional
+from .metadata_show_conditions import MetadataShowConditions
 from .metadata_type import MetadataType
 
 
@@ -19,8 +19,9 @@ class MetadataSchema(pydantic.BaseModel):
         alias="allowMultiple",
         description="Whether or not multiple values are allowed for this field. Defaults to false. If true, the value will be a list of the specified type.",
     )
-    conditional: typing.Optional[MetadataConditional] = pydantic.Field(
-        description="A list of conditional rules that determine whether or not this field should be shown. The field will only be shown if all of the conditions are met. If no conditions are specified, the field will always be shown."
+    show_conditions: typing.Optional[MetadataShowConditions] = pydantic.Field(
+        alias="showConditions",
+        description="A list of conditional rules that determine whether or not this field should be shown. The field will only be shown if all of the conditions are met. If no conditions are specified, the field will always be shown.",
     )
 
     def json(self, **kwargs: typing.Any) -> str:

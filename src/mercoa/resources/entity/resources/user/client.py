@@ -214,47 +214,9 @@ class UserClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def get_raw_token(self, entity_id: EntityId, user_id: EntityUserId) -> str:
-        """
-        Get JWT token for entity user
-
-        Parameters:
-            - entity_id: EntityId.
-
-            - user_id: EntityUserId.
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/user/{user_id}/token"),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
-        )
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(str, _response_json)  # type: ignore
-        if "errorName" in _response_json:
-            if _response_json["errorName"] == "TokenGenerationFailed":
-                raise TokenGenerationFailed(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "AuthHeaderMissingError":
-                raise AuthHeaderMissingError()
-            if _response_json["errorName"] == "AuthHeaderMalformedError":
-                raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unauthorized":
-                raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Forbidden":
-                raise Forbidden(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "NotFound":
-                raise NotFound(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unimplemented":
-                raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
     def get_token(self, entity_id: EntityId, user_id: EntityUserId, *, request: TokenGenerationOptions) -> str:
         """
-        Get JWT token for entity user with iFrame options
+        Generate a JWT token for an entity user with the given options. This token can be used to authenticate the entity and entity user in the Mercoa API and iFrame.
 
         Parameters:
             - entity_id: EntityId.
@@ -482,47 +444,9 @@ class AsyncUserClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def get_raw_token(self, entity_id: EntityId, user_id: EntityUserId) -> str:
-        """
-        Get JWT token for entity user
-
-        Parameters:
-            - entity_id: EntityId.
-
-            - user_id: EntityUserId.
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/user/{user_id}/token"),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
-        )
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(str, _response_json)  # type: ignore
-        if "errorName" in _response_json:
-            if _response_json["errorName"] == "TokenGenerationFailed":
-                raise TokenGenerationFailed(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "AuthHeaderMissingError":
-                raise AuthHeaderMissingError()
-            if _response_json["errorName"] == "AuthHeaderMalformedError":
-                raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unauthorized":
-                raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Forbidden":
-                raise Forbidden(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "NotFound":
-                raise NotFound(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unimplemented":
-                raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
     async def get_token(self, entity_id: EntityId, user_id: EntityUserId, *, request: TokenGenerationOptions) -> str:
         """
-        Get JWT token for entity user with iFrame options
+        Generate a JWT token for an entity user with the given options. This token can be used to authenticate the entity and entity user in the Mercoa API and iFrame.
 
         Parameters:
             - entity_id: EntityId.

@@ -11,8 +11,12 @@ from .individual_profile_request import IndividualProfileRequest
 
 
 class ProfileRequest(pydantic.BaseModel):
-    business: typing.Optional[BusinessProfileRequest]
-    individual: typing.Optional[IndividualProfileRequest]
+    business: typing.Optional[BusinessProfileRequest] = pydantic.Field(
+        description="If this entity is a business, set this field"
+    )
+    individual: typing.Optional[IndividualProfileRequest] = pydantic.Field(
+        description="If this entity is a individual, set this field"
+    )
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

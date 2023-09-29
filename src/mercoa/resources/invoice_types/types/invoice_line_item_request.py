@@ -24,6 +24,9 @@ class InvoiceLineItemRequest(pydantic.BaseModel):
         alias="unitPrice",
         description="Unit price of the line item in major units. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.",
     )
+    service_start_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceStartDate")
+    service_end_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceEndDate")
+    metadata: typing.Optional[typing.Dict[str, str]]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

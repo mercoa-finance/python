@@ -11,9 +11,13 @@ from .profile_request import ProfileRequest
 
 
 class EntityRequest(pydantic.BaseModel):
-    foreign_id: typing.Optional[str] = pydantic.Field(alias="foreignId")
+    foreign_id: typing.Optional[str] = pydantic.Field(
+        alias="foreignId",
+        description="The ID used to identify this entity in your system. This ID must be unique across all entities in your system.",
+    )
     email_to: typing.Optional[str] = pydantic.Field(
-        alias="emailTo", description="Email inbox address. Do not include the @domain.com"
+        alias="emailTo",
+        description="Sets the email address to which to send invoices to be added to the Invoice Inbox. Only provide the local-part/username of the email address, do not include the @domain.com",
     )
     email_to_alias: typing.Optional[typing.List[str]] = pydantic.Field(
         alias="emailToAlias",
@@ -25,13 +29,11 @@ class EntityRequest(pydantic.BaseModel):
     )
     account_type: AccountType = pydantic.Field(alias="accountType")
     profile: ProfileRequest
-    is_payor: typing.Optional[bool] = pydantic.Field(
-        alias="isPayor",
-        description="If this entity will be paying invoices, set this to true. In the near future, this will be a required parameter. Currently if this parameter is not set, it will default to true if ownedByOrg is true, and false otherwise.",
+    is_payor: bool = pydantic.Field(
+        alias="isPayor", description="If this entity will be paying invoices, set this to true."
     )
-    is_payee: typing.Optional[bool] = pydantic.Field(
-        alias="isPayee",
-        description="If this entity will be receiving payments, set this to true. In the near future, this will be a required parameter. Currently if this parameter is not set, it will default to false if ownedByOrg is true, and true otherwise.",
+    is_payee: bool = pydantic.Field(
+        alias="isPayee", description="If this entity will be receiving payments, set this to true."
     )
 
     def json(self, **kwargs: typing.Any) -> str:

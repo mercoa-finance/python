@@ -14,16 +14,28 @@ from .profile_response import ProfileResponse
 
 class EntityResponse(pydantic.BaseModel):
     id: EntityId
-    foreign_id: typing.Optional[str] = pydantic.Field(alias="foreignId")
-    email_to: typing.Optional[str] = pydantic.Field(alias="emailTo")
-    email_to_alias: typing.Optional[typing.List[str]] = pydantic.Field(alias="emailToAlias")
-    owned_by_org: bool = pydantic.Field(alias="ownedByOrg")
-    account_type: AccountType = pydantic.Field(alias="accountType")
     name: str
     email: str
+    foreign_id: typing.Optional[str] = pydantic.Field(
+        alias="foreignId", description="The ID used to identify this entity in your system"
+    )
+    email_to: typing.Optional[str] = pydantic.Field(
+        alias="emailTo",
+        description="Local-part/username of the email address to which to send invoices to be added to the Invoice Inbox.",
+    )
+    email_to_alias: typing.Optional[typing.List[str]] = pydantic.Field(
+        alias="emailToAlias",
+        description="Email inbox alias addresses. Used when forwarding emails to the emailTo address from an alias.",
+    )
+    owned_by_org: bool = pydantic.Field(
+        alias="ownedByOrg", description="True if this entity has a direct relationship with your organization."
+    )
+    account_type: AccountType = pydantic.Field(alias="accountType")
     profile: ProfileResponse
     status: EntityStatus
-    accepted_tos: bool = pydantic.Field(alias="acceptedTos")
+    accepted_tos: bool = pydantic.Field(
+        alias="acceptedTos", description="True if this entity has accepted the terms of service."
+    )
     is_payor: bool = pydantic.Field(alias="isPayor", description="True if this entity can pay invoices.")
     is_payee: bool = pydantic.Field(alias="isPayee", description="True if this entity can receive payments.")
     created_at: dt.datetime = pydantic.Field(alias="createdAt")

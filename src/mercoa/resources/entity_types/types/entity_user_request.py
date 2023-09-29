@@ -9,7 +9,9 @@ from ....core.datetime_utils import serialize_datetime
 
 
 class EntityUserRequest(pydantic.BaseModel):
-    foreign_id: typing.Optional[str] = pydantic.Field(alias="foreignId")
+    foreign_id: typing.Optional[str] = pydantic.Field(
+        alias="foreignId", description="The ID used to identify this user in your system."
+    )
     email: typing.Optional[str]
     name: typing.Optional[str]
     roles: typing.Optional[typing.List[str]] = pydantic.Field(

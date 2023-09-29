@@ -22,7 +22,7 @@ from .types import (
     InvoiceResponse,
     InvoiceStatus,
 )
-from .errors import DuplicateInvoiceNumber, InvoiceError, InvoiceStatusError, VendorNotFound
+from .errors import DuplicateInvoiceNumber, InvoiceError, InvoiceQueryError, InvoiceStatusError, VendorNotFound
 
 __all__ = [
     "ApprovalRequest",
@@ -44,6 +44,7 @@ __all__ = [
     "InvoiceLineItemResponse",
     "InvoiceMetricsResponse",
     "InvoiceOrderByField",
+    "InvoiceQueryError",
     "InvoiceRequest",
     "InvoiceResponse",
     "InvoiceStatus",

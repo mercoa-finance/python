@@ -33,7 +33,7 @@ class ApprovalPolicyClient:
 
     def get_all(self, entity_id: EntityId) -> typing.List[ApprovalPolicyResponse]:
         """
-        Retrieve all invoice approval policies associated with Entity
+        Retrieve all invoice approval policies associated with an entity
 
         Parameters:
             - entity_id: EntityId.
@@ -67,7 +67,7 @@ class ApprovalPolicyClient:
 
     def create(self, entity_id: EntityId, *, request: ApprovalPolicyRequest) -> ApprovalPolicyResponse:
         """
-        Create an invoice approval policy associated with Entity
+        Create an invoice approval policy associated with an entity
 
         Parameters:
             - entity_id: EntityId.
@@ -110,7 +110,7 @@ class ApprovalPolicyClient:
 
     def get(self, entity_id: EntityId, policy_id: ApprovalPolicyId) -> ApprovalPolicyResponse:
         """
-        Retrieve an invoice approval policy associated with Entity
+        Retrieve an invoice approval policy associated with an entity
 
         Parameters:
             - entity_id: EntityId.
@@ -150,7 +150,7 @@ class ApprovalPolicyClient:
         self, entity_id: EntityId, policy_id: ApprovalPolicyId, *, request: ApprovalPolicyUpdateRequest
     ) -> ApprovalPolicyResponse:
         """
-        Update an invoice approval policy associated with Entity
+        Update an invoice approval policy associated with an entity
 
         Parameters:
             - entity_id: EntityId.
@@ -240,7 +240,7 @@ class AsyncApprovalPolicyClient:
 
     async def get_all(self, entity_id: EntityId) -> typing.List[ApprovalPolicyResponse]:
         """
-        Retrieve all invoice approval policies associated with Entity
+        Retrieve all invoice approval policies associated with an entity
 
         Parameters:
             - entity_id: EntityId.
@@ -274,7 +274,7 @@ class AsyncApprovalPolicyClient:
 
     async def create(self, entity_id: EntityId, *, request: ApprovalPolicyRequest) -> ApprovalPolicyResponse:
         """
-        Create an invoice approval policy associated with Entity
+        Create an invoice approval policy associated with an entity
 
         Parameters:
             - entity_id: EntityId.
@@ -317,7 +317,7 @@ class AsyncApprovalPolicyClient:
 
     async def get(self, entity_id: EntityId, policy_id: ApprovalPolicyId) -> ApprovalPolicyResponse:
         """
-        Retrieve an invoice approval policy associated with Entity
+        Retrieve an invoice approval policy associated with an entity
 
         Parameters:
             - entity_id: EntityId.
@@ -357,7 +357,7 @@ class AsyncApprovalPolicyClient:
         self, entity_id: EntityId, policy_id: ApprovalPolicyId, *, request: ApprovalPolicyUpdateRequest
     ) -> ApprovalPolicyResponse:
         """
-        Update an invoice approval policy associated with Entity
+        Update an invoice approval policy associated with an entity
 
         Parameters:
             - entity_id: EntityId.

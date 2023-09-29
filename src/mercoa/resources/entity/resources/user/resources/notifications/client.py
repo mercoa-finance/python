@@ -43,8 +43,6 @@ class NotificationsClient:
         notification_type: typing.Union[typing.Optional[NotificationType], typing.List[NotificationType]],
     ) -> FindNotificationResponse:
         """
-        Get all notifications
-
         Parameters:
             - entity_id: EntityId.
 
@@ -103,8 +101,6 @@ class NotificationsClient:
 
     def get(self, entity_id: EntityId, user_id: EntityUserId, notification_id: NotificationId) -> NotificationResponse:
         """
-        Get notification
-
         Parameters:
             - entity_id: EntityId.
 
@@ -160,8 +156,6 @@ class AsyncNotificationsClient:
         notification_type: typing.Union[typing.Optional[NotificationType], typing.List[NotificationType]],
     ) -> FindNotificationResponse:
         """
-        Get all notifications
-
         Parameters:
             - entity_id: EntityId.
 
@@ -222,8 +216,6 @@ class AsyncNotificationsClient:
         self, entity_id: EntityId, user_id: EntityUserId, notification_id: NotificationId
     ) -> NotificationResponse:
         """
-        Get notification
-
         Parameters:
             - entity_id: EntityId.
 

@@ -22,10 +22,6 @@ from ..entity_types.errors.entity_error import EntityError
 from ..entity_types.errors.entity_foreign_id_already_exists import EntityForeignIdAlreadyExists
 from ..entity_types.errors.invalid_tax_id import InvalidTaxId
 from ..entity_types.errors.token_generation_failed import TokenGenerationFailed
-from ..entity_types.types.entity_add_payees_request import EntityAddPayeesRequest
-from ..entity_types.types.entity_add_payors_request import EntityAddPayorsRequest
-from ..entity_types.types.entity_archive_payees_request import EntityArchivePayeesRequest
-from ..entity_types.types.entity_archive_payors_request import EntityArchivePayorsRequest
 from ..entity_types.types.entity_id import EntityId
 from ..entity_types.types.entity_onboarding_link_type import EntityOnboardingLinkType
 from ..entity_types.types.entity_request import EntityRequest
@@ -59,51 +55,10 @@ class EntityClient:
         self.payment_method = PaymentMethodClient(client_wrapper=self._client_wrapper)
         self.representative = RepresentativeClient(client_wrapper=self._client_wrapper)
 
-    def get_all(
-        self, *, is_payee: typing.Optional[bool] = None, is_payor: typing.Optional[bool] = None
-    ) -> typing.List[EntityResponse]:
-        """
-        Get all entities
-
-        Parameters:
-            - is_payee: typing.Optional[bool]. If true, entities that are marked as payees will be returned.
-                                               If false or not provided, entities that are marked as payees will not be returned.
-
-            - is_payor: typing.Optional[bool]. If true or not provided, entities that are marked as payors will be returned.
-                                               If false, entities that are marked as payors will not be returned.
-
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "entities"),
-            params=remove_none_from_dict({"isPayee": is_payee, "isPayor": is_payor}),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
-        )
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(typing.List[EntityResponse], _response_json)  # type: ignore
-        if "errorName" in _response_json:
-            if _response_json["errorName"] == "AuthHeaderMissingError":
-                raise AuthHeaderMissingError()
-            if _response_json["errorName"] == "AuthHeaderMalformedError":
-                raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unauthorized":
-                raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Forbidden":
-                raise Forbidden(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "NotFound":
-                raise NotFound(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unimplemented":
-                raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
     def find(
         self,
         *,
+        owned_by_org: typing.Optional[bool] = None,
         foreign_id: typing.Union[typing.Optional[str], typing.List[str]],
         status: typing.Union[typing.Optional[EntityStatus], typing.List[EntityStatus]],
         is_payee: typing.Optional[bool] = None,
@@ -113,8 +68,12 @@ class EntityClient:
         starting_after: typing.Optional[EntityId] = None,
     ) -> FindEntityResponse:
         """
+        Search all entities with the given filters. If no filters are provided, all entities will be returned.
+
         Parameters:
-            - foreign_id: typing.Union[typing.Optional[str], typing.List[str]].
+            - owned_by_org: typing.Optional[bool]. If true, only entities with a direct relationship to the requesting organization will be returned. If false or not provided, all entities will be returned.
+
+            - foreign_id: typing.Union[typing.Optional[str], typing.List[str]]. ID used to identify this entity in your system
 
             - status: typing.Union[typing.Optional[EntityStatus], typing.List[EntityStatus]].
 
@@ -135,6 +94,7 @@ class EntityClient:
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "entity"),
             params=remove_none_from_dict(
                 {
+                    "ownedByOrg": owned_by_org,
                     "foreignId": foreign_id,
                     "status": status,
                     "isPayee": is_payee,
@@ -215,8 +175,6 @@ class EntityClient:
 
     def get(self, entity_id: EntityId) -> EntityResponse:
         """
-        Get entity
-
         Parameters:
             - entity_id: EntityId.
         """
@@ -249,8 +207,6 @@ class EntityClient:
 
     def update(self, entity_id: EntityId, *, request: EntityUpdateRequest) -> EntityResponse:
         """
-        Update entity
-
         Parameters:
             - entity_id: EntityId.
 
@@ -298,8 +254,6 @@ class EntityClient:
 
     def delete(self, entity_id: EntityId) -> None:
         """
-        Delete entity
-
         Parameters:
             - entity_id: EntityId.
         """
@@ -332,7 +286,7 @@ class EntityClient:
 
     def accept_terms_of_service(self, entity_id: EntityId) -> None:
         """
-        End user accepts Terms of Service
+        This endpoint is used to indicate acceptance of Mercoa's terms of service for an entity. Send a request to this endpoint only after the entity has accepted the Mercoa ToS. Entities must accept Mercoa ToS before they can be send or pay invoices using Mercoa's payment rails.
 
         Parameters:
             - entity_id: EntityId.
@@ -368,6 +322,10 @@ class EntityClient:
 
     def initiate_kyb(self, entity_id: EntityId) -> None:
         """
+        This endpoint is used to initiate KYB for an entity.
+        Send a request to this endpoint only after the entity has accepted the Mercoa ToS,
+        all representatives have been added, and all required fields have been filled out.
+
         Parameters:
             - entity_id: EntityId.
         """
@@ -400,45 +358,9 @@ class EntityClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def get_raw_token(self, entity_id: EntityId) -> str:
-        """
-        Get JWT token for entity
-
-        Parameters:
-            - entity_id: EntityId.
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/token"),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
-        )
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(str, _response_json)  # type: ignore
-        if "errorName" in _response_json:
-            if _response_json["errorName"] == "TokenGenerationFailed":
-                raise TokenGenerationFailed(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "AuthHeaderMissingError":
-                raise AuthHeaderMissingError()
-            if _response_json["errorName"] == "AuthHeaderMalformedError":
-                raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unauthorized":
-                raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Forbidden":
-                raise Forbidden(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "NotFound":
-                raise NotFound(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unimplemented":
-                raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
     def get_token(self, entity_id: EntityId, *, request: TokenGenerationOptions) -> str:
         """
-        Get JWT token for entity with iFrame options
+        Generate a JWT token for an entity with the given options. This token can be used to authenticate the entity in the Mercoa API and iFrame.
 
         Parameters:
             - entity_id: EntityId.
@@ -461,190 +383,6 @@ class EntityClient:
         if "errorName" in _response_json:
             if _response_json["errorName"] == "TokenGenerationFailed":
                 raise TokenGenerationFailed(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "AuthHeaderMissingError":
-                raise AuthHeaderMissingError()
-            if _response_json["errorName"] == "AuthHeaderMalformedError":
-                raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unauthorized":
-                raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Forbidden":
-                raise Forbidden(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "NotFound":
-                raise NotFound(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unimplemented":
-                raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    def plaid_link_token(self, entity_id: EntityId) -> str:
-        """
-        Get Plaid token
-
-        Parameters:
-            - entity_id: EntityId.
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/plaidLinkToken"),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
-        )
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(str, _response_json)  # type: ignore
-        if "errorName" in _response_json:
-            if _response_json["errorName"] == "TokenGenerationFailed":
-                raise TokenGenerationFailed(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "AuthHeaderMissingError":
-                raise AuthHeaderMissingError()
-            if _response_json["errorName"] == "AuthHeaderMalformedError":
-                raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unauthorized":
-                raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Forbidden":
-                raise Forbidden(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "NotFound":
-                raise NotFound(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unimplemented":
-                raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    def add_payees(self, entity_id: EntityId, *, request: EntityAddPayeesRequest) -> None:
-        """
-        Create association between Entity and a given list of Payees. If a Payee has previously been archived, unarchives the Payee.
-
-        Parameters:
-            - entity_id: EntityId.
-
-            - request: EntityAddPayeesRequest.
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/addPayees"),
-            json=jsonable_encoder(request),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
-        )
-        if 200 <= _response.status_code < 300:
-            return
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if "errorName" in _response_json:
-            if _response_json["errorName"] == "AuthHeaderMissingError":
-                raise AuthHeaderMissingError()
-            if _response_json["errorName"] == "AuthHeaderMalformedError":
-                raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unauthorized":
-                raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Forbidden":
-                raise Forbidden(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "NotFound":
-                raise NotFound(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unimplemented":
-                raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    def archive_payees(self, entity_id: EntityId, *, request: EntityArchivePayeesRequest) -> None:
-        """
-        Marks Payees as unsearchable by Entity via Counterparty search. Invoices associated with these Payees will still be searchable via Invoice search.
-
-        Parameters:
-            - entity_id: EntityId.
-
-            - request: EntityArchivePayeesRequest.
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/archivePayees"),
-            json=jsonable_encoder(request),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
-        )
-        if 200 <= _response.status_code < 300:
-            return
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if "errorName" in _response_json:
-            if _response_json["errorName"] == "AuthHeaderMissingError":
-                raise AuthHeaderMissingError()
-            if _response_json["errorName"] == "AuthHeaderMalformedError":
-                raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unauthorized":
-                raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Forbidden":
-                raise Forbidden(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "NotFound":
-                raise NotFound(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unimplemented":
-                raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    def add_payors(self, entity_id: EntityId, *, request: EntityAddPayorsRequest) -> None:
-        """
-        Create association between Entity and a given list of Payors. If a Payor has previously been archived, unarchives the Payor.
-
-        Parameters:
-            - entity_id: EntityId.
-
-            - request: EntityAddPayorsRequest.
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/addPayors"),
-            json=jsonable_encoder(request),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
-        )
-        if 200 <= _response.status_code < 300:
-            return
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if "errorName" in _response_json:
-            if _response_json["errorName"] == "AuthHeaderMissingError":
-                raise AuthHeaderMissingError()
-            if _response_json["errorName"] == "AuthHeaderMalformedError":
-                raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unauthorized":
-                raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Forbidden":
-                raise Forbidden(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "NotFound":
-                raise NotFound(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unimplemented":
-                raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    def archive_payors(self, entity_id: EntityId, *, request: EntityArchivePayorsRequest) -> None:
-        """
-        Marks Payors as unsearchable by Entity via Counterparty search. Invoices associated with these Payors will still be searchable via Invoice search.
-
-        Parameters:
-            - entity_id: EntityId.
-
-            - request: EntityArchivePayorsRequest.
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/archivePayors"),
-            json=jsonable_encoder(request),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
-        )
-        if 200 <= _response.status_code < 300:
-            return
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if "errorName" in _response_json:
             if _response_json["errorName"] == "AuthHeaderMissingError":
                 raise AuthHeaderMissingError()
             if _response_json["errorName"] == "AuthHeaderMalformedError":
@@ -762,51 +500,10 @@ class AsyncEntityClient:
         self.payment_method = AsyncPaymentMethodClient(client_wrapper=self._client_wrapper)
         self.representative = AsyncRepresentativeClient(client_wrapper=self._client_wrapper)
 
-    async def get_all(
-        self, *, is_payee: typing.Optional[bool] = None, is_payor: typing.Optional[bool] = None
-    ) -> typing.List[EntityResponse]:
-        """
-        Get all entities
-
-        Parameters:
-            - is_payee: typing.Optional[bool]. If true, entities that are marked as payees will be returned.
-                                               If false or not provided, entities that are marked as payees will not be returned.
-
-            - is_payor: typing.Optional[bool]. If true or not provided, entities that are marked as payors will be returned.
-                                               If false, entities that are marked as payors will not be returned.
-
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "entities"),
-            params=remove_none_from_dict({"isPayee": is_payee, "isPayor": is_payor}),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
-        )
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(typing.List[EntityResponse], _response_json)  # type: ignore
-        if "errorName" in _response_json:
-            if _response_json["errorName"] == "AuthHeaderMissingError":
-                raise AuthHeaderMissingError()
-            if _response_json["errorName"] == "AuthHeaderMalformedError":
-                raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unauthorized":
-                raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Forbidden":
-                raise Forbidden(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "NotFound":
-                raise NotFound(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unimplemented":
-                raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
     async def find(
         self,
         *,
+        owned_by_org: typing.Optional[bool] = None,
         foreign_id: typing.Union[typing.Optional[str], typing.List[str]],
         status: typing.Union[typing.Optional[EntityStatus], typing.List[EntityStatus]],
         is_payee: typing.Optional[bool] = None,
@@ -816,8 +513,12 @@ class AsyncEntityClient:
         starting_after: typing.Optional[EntityId] = None,
     ) -> FindEntityResponse:
         """
+        Search all entities with the given filters. If no filters are provided, all entities will be returned.
+
         Parameters:
-            - foreign_id: typing.Union[typing.Optional[str], typing.List[str]].
+            - owned_by_org: typing.Optional[bool]. If true, only entities with a direct relationship to the requesting organization will be returned. If false or not provided, all entities will be returned.
+
+            - foreign_id: typing.Union[typing.Optional[str], typing.List[str]]. ID used to identify this entity in your system
 
             - status: typing.Union[typing.Optional[EntityStatus], typing.List[EntityStatus]].
 
@@ -838,6 +539,7 @@ class AsyncEntityClient:
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "entity"),
             params=remove_none_from_dict(
                 {
+                    "ownedByOrg": owned_by_org,
                     "foreignId": foreign_id,
                     "status": status,
                     "isPayee": is_payee,
@@ -918,8 +620,6 @@ class AsyncEntityClient:
 
     async def get(self, entity_id: EntityId) -> EntityResponse:
         """
-        Get entity
-
         Parameters:
             - entity_id: EntityId.
         """
@@ -952,8 +652,6 @@ class AsyncEntityClient:
 
     async def update(self, entity_id: EntityId, *, request: EntityUpdateRequest) -> EntityResponse:
         """
-        Update entity
-
         Parameters:
             - entity_id: EntityId.
 
@@ -1001,8 +699,6 @@ class AsyncEntityClient:
 
     async def delete(self, entity_id: EntityId) -> None:
         """
-        Delete entity
-
         Parameters:
             - entity_id: EntityId.
         """
@@ -1035,7 +731,7 @@ class AsyncEntityClient:
 
     async def accept_terms_of_service(self, entity_id: EntityId) -> None:
         """
-        End user accepts Terms of Service
+        This endpoint is used to indicate acceptance of Mercoa's terms of service for an entity. Send a request to this endpoint only after the entity has accepted the Mercoa ToS. Entities must accept Mercoa ToS before they can be send or pay invoices using Mercoa's payment rails.
 
         Parameters:
             - entity_id: EntityId.
@@ -1071,6 +767,10 @@ class AsyncEntityClient:
 
     async def initiate_kyb(self, entity_id: EntityId) -> None:
         """
+        This endpoint is used to initiate KYB for an entity.
+        Send a request to this endpoint only after the entity has accepted the Mercoa ToS,
+        all representatives have been added, and all required fields have been filled out.
+
         Parameters:
             - entity_id: EntityId.
         """
@@ -1103,45 +803,9 @@ class AsyncEntityClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def get_raw_token(self, entity_id: EntityId) -> str:
-        """
-        Get JWT token for entity
-
-        Parameters:
-            - entity_id: EntityId.
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/token"),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
-        )
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(str, _response_json)  # type: ignore
-        if "errorName" in _response_json:
-            if _response_json["errorName"] == "TokenGenerationFailed":
-                raise TokenGenerationFailed(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "AuthHeaderMissingError":
-                raise AuthHeaderMissingError()
-            if _response_json["errorName"] == "AuthHeaderMalformedError":
-                raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unauthorized":
-                raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Forbidden":
-                raise Forbidden(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "NotFound":
-                raise NotFound(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unimplemented":
-                raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
     async def get_token(self, entity_id: EntityId, *, request: TokenGenerationOptions) -> str:
         """
-        Get JWT token for entity with iFrame options
+        Generate a JWT token for an entity with the given options. This token can be used to authenticate the entity in the Mercoa API and iFrame.
 
         Parameters:
             - entity_id: EntityId.
@@ -1164,190 +828,6 @@ class AsyncEntityClient:
         if "errorName" in _response_json:
             if _response_json["errorName"] == "TokenGenerationFailed":
                 raise TokenGenerationFailed(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "AuthHeaderMissingError":
-                raise AuthHeaderMissingError()
-            if _response_json["errorName"] == "AuthHeaderMalformedError":
-                raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unauthorized":
-                raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Forbidden":
-                raise Forbidden(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "NotFound":
-                raise NotFound(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unimplemented":
-                raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    async def plaid_link_token(self, entity_id: EntityId) -> str:
-        """
-        Get Plaid token
-
-        Parameters:
-            - entity_id: EntityId.
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/plaidLinkToken"),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
-        )
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(str, _response_json)  # type: ignore
-        if "errorName" in _response_json:
-            if _response_json["errorName"] == "TokenGenerationFailed":
-                raise TokenGenerationFailed(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "AuthHeaderMissingError":
-                raise AuthHeaderMissingError()
-            if _response_json["errorName"] == "AuthHeaderMalformedError":
-                raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unauthorized":
-                raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Forbidden":
-                raise Forbidden(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "NotFound":
-                raise NotFound(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unimplemented":
-                raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    async def add_payees(self, entity_id: EntityId, *, request: EntityAddPayeesRequest) -> None:
-        """
-        Create association between Entity and a given list of Payees. If a Payee has previously been archived, unarchives the Payee.
-
-        Parameters:
-            - entity_id: EntityId.
-
-            - request: EntityAddPayeesRequest.
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/addPayees"),
-            json=jsonable_encoder(request),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
-        )
-        if 200 <= _response.status_code < 300:
-            return
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if "errorName" in _response_json:
-            if _response_json["errorName"] == "AuthHeaderMissingError":
-                raise AuthHeaderMissingError()
-            if _response_json["errorName"] == "AuthHeaderMalformedError":
-                raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unauthorized":
-                raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Forbidden":
-                raise Forbidden(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "NotFound":
-                raise NotFound(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unimplemented":
-                raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    async def archive_payees(self, entity_id: EntityId, *, request: EntityArchivePayeesRequest) -> None:
-        """
-        Marks Payees as unsearchable by Entity via Counterparty search. Invoices associated with these Payees will still be searchable via Invoice search.
-
-        Parameters:
-            - entity_id: EntityId.
-
-            - request: EntityArchivePayeesRequest.
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/archivePayees"),
-            json=jsonable_encoder(request),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
-        )
-        if 200 <= _response.status_code < 300:
-            return
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if "errorName" in _response_json:
-            if _response_json["errorName"] == "AuthHeaderMissingError":
-                raise AuthHeaderMissingError()
-            if _response_json["errorName"] == "AuthHeaderMalformedError":
-                raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unauthorized":
-                raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Forbidden":
-                raise Forbidden(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "NotFound":
-                raise NotFound(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unimplemented":
-                raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    async def add_payors(self, entity_id: EntityId, *, request: EntityAddPayorsRequest) -> None:
-        """
-        Create association between Entity and a given list of Payors. If a Payor has previously been archived, unarchives the Payor.
-
-        Parameters:
-            - entity_id: EntityId.
-
-            - request: EntityAddPayorsRequest.
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/addPayors"),
-            json=jsonable_encoder(request),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
-        )
-        if 200 <= _response.status_code < 300:
-            return
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if "errorName" in _response_json:
-            if _response_json["errorName"] == "AuthHeaderMissingError":
-                raise AuthHeaderMissingError()
-            if _response_json["errorName"] == "AuthHeaderMalformedError":
-                raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unauthorized":
-                raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Forbidden":
-                raise Forbidden(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "NotFound":
-                raise NotFound(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unimplemented":
-                raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    async def archive_payors(self, entity_id: EntityId, *, request: EntityArchivePayorsRequest) -> None:
-        """
-        Marks Payors as unsearchable by Entity via Counterparty search. Invoices associated with these Payors will still be searchable via Invoice search.
-
-        Parameters:
-            - entity_id: EntityId.
-
-            - request: EntityArchivePayorsRequest.
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/archivePayors"),
-            json=jsonable_encoder(request),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
-        )
-        if 200 <= _response.status_code < 300:
-            return
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if "errorName" in _response_json:
             if _response_json["errorName"] == "AuthHeaderMissingError":
                 raise AuthHeaderMissingError()
             if _response_json["errorName"] == "AuthHeaderMalformedError":

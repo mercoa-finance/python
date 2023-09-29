@@ -19,6 +19,9 @@ class InvoiceLineItemResponse(pydantic.BaseModel):
     unit_price: typing.Optional[float] = pydantic.Field(
         alias="unitPrice", description="Unit price of line item in major units."
     )
+    service_start_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceStartDate")
+    service_end_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceEndDate")
+    metadata: typing.Optional[typing.Dict[str, str]]
     created_at: dt.datetime = pydantic.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
 

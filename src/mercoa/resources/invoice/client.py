@@ -23,6 +23,7 @@ from ..entity_types.types.entity_id import EntityId
 from ..entity_types.types.entity_user_id import EntityUserId
 from ..invoice_types.errors.duplicate_invoice_number import DuplicateInvoiceNumber
 from ..invoice_types.errors.invoice_error import InvoiceError
+from ..invoice_types.errors.invoice_query_error import InvoiceQueryError
 from ..invoice_types.errors.invoice_status_error import InvoiceStatusError
 from ..invoice_types.errors.vendor_not_found import VendorNotFound
 from ..invoice_types.types.find_invoice_response import FindInvoiceResponse
@@ -57,6 +58,7 @@ class InvoiceClient:
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[InvoiceId] = None,
         search: typing.Optional[str] = None,
+        payer_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
         vendor_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
         approver_id: typing.Union[typing.Optional[EntityUserId], typing.List[EntityUserId]],
         invoice_id: typing.Union[typing.Optional[InvoiceId], typing.List[InvoiceId]],
@@ -66,7 +68,7 @@ class InvoiceClient:
         Search invoices for all entities in the organization
 
         Parameters:
-            - entity_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter invoices by entity ID.
+            - entity_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter invoices by the ID of the entity that created the invoice.
 
             - start_date: typing.Optional[dt.datetime]. Start date for invoice created on date filter.
 
@@ -81,6 +83,8 @@ class InvoiceClient:
             - starting_after: typing.Optional[InvoiceId]. The ID of the invoice to start after. If not provided, the first page of invoices will be returned.
 
             - search: typing.Optional[str]. Filter vendors by name. Partial matches are supported.
+
+            - payer_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter invoices by payer ID.
 
             - vendor_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter invoices by vendor ID.
 
@@ -103,6 +107,7 @@ class InvoiceClient:
                     "limit": limit,
                     "startingAfter": starting_after,
                     "search": search,
+                    "payerId": payer_id,
                     "vendorId": vendor_id,
                     "approverId": approver_id,
                     "invoiceId": invoice_id,
@@ -119,6 +124,8 @@ class InvoiceClient:
         if 200 <= _response.status_code < 300:
             return pydantic.parse_obj_as(FindInvoiceResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
+            if _response_json["errorName"] == "InvoiceQueryError":
+                raise InvoiceQueryError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "AuthHeaderMissingError":
                 raise AuthHeaderMissingError()
             if _response_json["errorName"] == "AuthHeaderMalformedError":
@@ -135,8 +142,6 @@ class InvoiceClient:
 
     def create(self, *, request: InvoiceRequest) -> InvoiceResponse:
         """
-        Create invoice
-
         Parameters:
             - request: InvoiceRequest.
         """
@@ -174,8 +179,6 @@ class InvoiceClient:
 
     def get(self, invoice_id: InvoiceId) -> InvoiceResponse:
         """
-        Get invoice
-
         Parameters:
             - invoice_id: InvoiceId.
         """
@@ -208,8 +211,6 @@ class InvoiceClient:
 
     def update(self, invoice_id: InvoiceId, *, request: InvoiceRequest) -> InvoiceResponse:
         """
-        Update invoice
-
         Parameters:
             - invoice_id: InvoiceId.
 
@@ -249,7 +250,7 @@ class InvoiceClient:
 
     def delete(self, invoice_id: InvoiceId) -> None:
         """
-        Delete invoice. Only invoices in the DRAFT and NEW status can be deleted.
+        Only invoices in the DRAFT and NEW status can be deleted.
 
         Parameters:
             - invoice_id: InvoiceId.
@@ -446,6 +447,7 @@ class AsyncInvoiceClient:
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[InvoiceId] = None,
         search: typing.Optional[str] = None,
+        payer_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
         vendor_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
         approver_id: typing.Union[typing.Optional[EntityUserId], typing.List[EntityUserId]],
         invoice_id: typing.Union[typing.Optional[InvoiceId], typing.List[InvoiceId]],
@@ -455,7 +457,7 @@ class AsyncInvoiceClient:
         Search invoices for all entities in the organization
 
         Parameters:
-            - entity_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter invoices by entity ID.
+            - entity_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter invoices by the ID of the entity that created the invoice.
 
             - start_date: typing.Optional[dt.datetime]. Start date for invoice created on date filter.
 
@@ -470,6 +472,8 @@ class AsyncInvoiceClient:
             - starting_after: typing.Optional[InvoiceId]. The ID of the invoice to start after. If not provided, the first page of invoices will be returned.
 
             - search: typing.Optional[str]. Filter vendors by name. Partial matches are supported.
+
+            - payer_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter invoices by payer ID.
 
             - vendor_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter invoices by vendor ID.
 
@@ -492,6 +496,7 @@ class AsyncInvoiceClient:
                     "limit": limit,
                     "startingAfter": starting_after,
                     "search": search,
+                    "payerId": payer_id,
                     "vendorId": vendor_id,
                     "approverId": approver_id,
                     "invoiceId": invoice_id,
@@ -508,6 +513,8 @@ class AsyncInvoiceClient:
         if 200 <= _response.status_code < 300:
             return pydantic.parse_obj_as(FindInvoiceResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
+            if _response_json["errorName"] == "InvoiceQueryError":
+                raise InvoiceQueryError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "AuthHeaderMissingError":
                 raise AuthHeaderMissingError()
             if _response_json["errorName"] == "AuthHeaderMalformedError":
@@ -524,8 +531,6 @@ class AsyncInvoiceClient:
 
     async def create(self, *, request: InvoiceRequest) -> InvoiceResponse:
         """
-        Create invoice
-
         Parameters:
             - request: InvoiceRequest.
         """
@@ -563,8 +568,6 @@ class AsyncInvoiceClient:
 
     async def get(self, invoice_id: InvoiceId) -> InvoiceResponse:
         """
-        Get invoice
-
         Parameters:
             - invoice_id: InvoiceId.
         """
@@ -597,8 +600,6 @@ class AsyncInvoiceClient:
 
     async def update(self, invoice_id: InvoiceId, *, request: InvoiceRequest) -> InvoiceResponse:
         """
-        Update invoice
-
         Parameters:
             - invoice_id: InvoiceId.
 
@@ -638,7 +639,7 @@ class AsyncInvoiceClient:
 
     async def delete(self, invoice_id: InvoiceId) -> None:
         """
-        Delete invoice. Only invoices in the DRAFT and NEW status can be deleted.
+        Only invoices in the DRAFT and NEW status can be deleted.
 
         Parameters:
             - invoice_id: InvoiceId.

@@ -68,8 +68,6 @@ class RepresentativeClient:
 
     def create(self, entity_id: EntityId, *, request: RepresentativeRequest) -> RepresentativeResponse:
         """
-        Create representative
-
         Parameters:
             - entity_id: EntityId.
 
@@ -113,8 +111,6 @@ class RepresentativeClient:
 
     def get(self, entity_id: EntityId, representative_id: RepresentativeId) -> RepresentativeResponse:
         """
-        Get representative
-
         Parameters:
             - entity_id: EntityId.
 
@@ -151,8 +147,6 @@ class RepresentativeClient:
 
     def delete(self, entity_id: EntityId, representative_id: RepresentativeId) -> None:
         """
-        Delete representative
-
         Parameters:
             - entity_id: EntityId.
 
@@ -228,8 +222,6 @@ class AsyncRepresentativeClient:
 
     async def create(self, entity_id: EntityId, *, request: RepresentativeRequest) -> RepresentativeResponse:
         """
-        Create representative
-
         Parameters:
             - entity_id: EntityId.
 
@@ -273,8 +265,6 @@ class AsyncRepresentativeClient:
 
     async def get(self, entity_id: EntityId, representative_id: RepresentativeId) -> RepresentativeResponse:
         """
-        Get representative
-
         Parameters:
             - entity_id: EntityId.
 
@@ -311,8 +301,6 @@ class AsyncRepresentativeClient:
 
     async def delete(self, entity_id: EntityId, representative_id: RepresentativeId) -> None:
         """
-        Delete representative
-
         Parameters:
             - entity_id: EntityId.
 

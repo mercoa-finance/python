@@ -20,10 +20,12 @@ from ....commons.errors.unimplemented import Unimplemented
 from ....commons.types.order_direction import OrderDirection
 from ....entity_types.types.entity_id import EntityId
 from ....entity_types.types.entity_user_id import EntityUserId
+from ....invoice_types.errors.invoice_query_error import InvoiceQueryError
 from ....invoice_types.types.find_invoice_response import FindInvoiceResponse
 from ....invoice_types.types.invoice_id import InvoiceId
 from ....invoice_types.types.invoice_metrics_response import InvoiceMetricsResponse
 from ....invoice_types.types.invoice_order_by_field import InvoiceOrderByField
+from ....invoice_types.types.invoice_response import InvoiceResponse
 from ....invoice_types.types.invoice_status import InvoiceStatus
 from ....payment_method_types.types.currency_code import CurrencyCode
 
@@ -36,6 +38,8 @@ class InvoiceClient:
         self,
         entity_id: EntityId,
         *,
+        exclude_payables: typing.Optional[bool] = None,
+        exclude_receivables: typing.Optional[bool] = None,
         start_date: typing.Optional[dt.datetime] = None,
         end_date: typing.Optional[dt.datetime] = None,
         order_by: typing.Optional[InvoiceOrderByField] = None,
@@ -44,15 +48,20 @@ class InvoiceClient:
         starting_after: typing.Optional[InvoiceId] = None,
         search: typing.Optional[str] = None,
         vendor_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
+        payer_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
         approver_id: typing.Union[typing.Optional[EntityUserId], typing.List[EntityUserId]],
         invoice_id: typing.Union[typing.Optional[InvoiceId], typing.List[InvoiceId]],
         status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]],
     ) -> FindInvoiceResponse:
         """
-        Get invoices for an entity
+        Get invoices for an entity with the given filters.
 
         Parameters:
             - entity_id: EntityId.
+
+            - exclude_payables: typing.Optional[bool]. Return only invoices that are receivable by the entity.
+
+            - exclude_receivables: typing.Optional[bool]. Return only invoices that are payable by the entity.
 
             - start_date: typing.Optional[dt.datetime]. Start date for invoice created on date filter.
 
@@ -70,6 +79,8 @@ class InvoiceClient:
 
             - vendor_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter invoices by vendor ID.
 
+            - payer_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter invoices by payer ID.
+
             - approver_id: typing.Union[typing.Optional[EntityUserId], typing.List[EntityUserId]]. Filter invoices by assigned approver user ID.
 
             - invoice_id: typing.Union[typing.Optional[InvoiceId], typing.List[InvoiceId]]. Filter invoices by invoice ID.
@@ -81,6 +92,8 @@ class InvoiceClient:
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/invoices"),
             params=remove_none_from_dict(
                 {
+                    "excludePayables": exclude_payables,
+                    "excludeReceivables": exclude_receivables,
                     "startDate": serialize_datetime(start_date) if start_date is not None else None,
                     "endDate": serialize_datetime(end_date) if end_date is not None else None,
                     "orderBy": order_by,
@@ -89,6 +102,7 @@ class InvoiceClient:
                     "startingAfter": starting_after,
                     "search": search,
                     "vendorId": vendor_id,
+                    "payerId": payer_id,
                     "approverId": approver_id,
                     "invoiceId": invoice_id,
                     "status": status,
@@ -103,6 +117,42 @@ class InvoiceClient:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
             return pydantic.parse_obj_as(FindInvoiceResponse, _response_json)  # type: ignore
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "InvoiceQueryError":
+                raise InvoiceQueryError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "AuthHeaderMissingError":
+                raise AuthHeaderMissingError()
+            if _response_json["errorName"] == "AuthHeaderMalformedError":
+                raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def get(self, entity_id: EntityId, invoice_id: InvoiceId) -> InvoiceResponse:
+        """
+        Parameters:
+            - entity_id: EntityId.
+
+            - invoice_id: InvoiceId. ID of the invoice to retrieve. This can be the full invoice ID (in_11aa2b77-6391-49e4-8c3f-b198009202c1) or the first 8 characters of the ID (11aa2b77).
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "GET",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/invoice/{invoice_id}"),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return pydantic.parse_obj_as(InvoiceResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "AuthHeaderMissingError":
                 raise AuthHeaderMissingError()
@@ -123,6 +173,9 @@ class InvoiceClient:
         entity_id: EntityId,
         *,
         search: typing.Optional[str] = None,
+        exclude_payables: typing.Optional[bool] = None,
+        exclude_receivables: typing.Optional[bool] = None,
+        payer_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
         vendor_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
         approver_id: typing.Union[typing.Optional[EntityUserId], typing.List[EntityUserId]],
         invoice_id: typing.Union[typing.Optional[InvoiceId], typing.List[InvoiceId]],
@@ -134,12 +187,18 @@ class InvoiceClient:
         currency: typing.Union[typing.Optional[CurrencyCode], typing.List[CurrencyCode]],
     ) -> typing.List[InvoiceMetricsResponse]:
         """
-        Get invoice metrics for an entity
+        Get invoice metrics for an entity with the given filters.
 
         Parameters:
             - entity_id: EntityId.
 
             - search: typing.Optional[str]. Filter vendors by name. Partial matches are supported.
+
+            - exclude_payables: typing.Optional[bool]. Only return invoices that are not payable by the entity. This will return only invoices that are receivable by the entity.
+
+            - exclude_receivables: typing.Optional[bool]. Only return invoices that are not receivable by the entity. This will return only invoices that are payable by the entity.
+
+            - payer_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter invoices by payer ID.
 
             - vendor_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter invoices by vendor ID.
 
@@ -165,6 +224,9 @@ class InvoiceClient:
             params=remove_none_from_dict(
                 {
                     "search": search,
+                    "excludePayables": exclude_payables,
+                    "excludeReceivables": exclude_receivables,
+                    "payerId": payer_id,
                     "vendorId": vendor_id,
                     "approverId": approver_id,
                     "invoiceId": invoice_id,
@@ -188,6 +250,8 @@ class InvoiceClient:
         if 200 <= _response.status_code < 300:
             return pydantic.parse_obj_as(typing.List[InvoiceMetricsResponse], _response_json)  # type: ignore
         if "errorName" in _response_json:
+            if _response_json["errorName"] == "InvoiceQueryError":
+                raise InvoiceQueryError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "AuthHeaderMissingError":
                 raise AuthHeaderMissingError()
             if _response_json["errorName"] == "AuthHeaderMalformedError":
@@ -211,6 +275,8 @@ class AsyncInvoiceClient:
         self,
         entity_id: EntityId,
         *,
+        exclude_payables: typing.Optional[bool] = None,
+        exclude_receivables: typing.Optional[bool] = None,
         start_date: typing.Optional[dt.datetime] = None,
         end_date: typing.Optional[dt.datetime] = None,
         order_by: typing.Optional[InvoiceOrderByField] = None,
@@ -219,15 +285,20 @@ class AsyncInvoiceClient:
         starting_after: typing.Optional[InvoiceId] = None,
         search: typing.Optional[str] = None,
         vendor_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
+        payer_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
         approver_id: typing.Union[typing.Optional[EntityUserId], typing.List[EntityUserId]],
         invoice_id: typing.Union[typing.Optional[InvoiceId], typing.List[InvoiceId]],
         status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]],
     ) -> FindInvoiceResponse:
         """
-        Get invoices for an entity
+        Get invoices for an entity with the given filters.
 
         Parameters:
             - entity_id: EntityId.
+
+            - exclude_payables: typing.Optional[bool]. Return only invoices that are receivable by the entity.
+
+            - exclude_receivables: typing.Optional[bool]. Return only invoices that are payable by the entity.
 
             - start_date: typing.Optional[dt.datetime]. Start date for invoice created on date filter.
 
@@ -245,6 +316,8 @@ class AsyncInvoiceClient:
 
             - vendor_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter invoices by vendor ID.
 
+            - payer_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter invoices by payer ID.
+
             - approver_id: typing.Union[typing.Optional[EntityUserId], typing.List[EntityUserId]]. Filter invoices by assigned approver user ID.
 
             - invoice_id: typing.Union[typing.Optional[InvoiceId], typing.List[InvoiceId]]. Filter invoices by invoice ID.
@@ -256,6 +329,8 @@ class AsyncInvoiceClient:
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/invoices"),
             params=remove_none_from_dict(
                 {
+                    "excludePayables": exclude_payables,
+                    "excludeReceivables": exclude_receivables,
                     "startDate": serialize_datetime(start_date) if start_date is not None else None,
                     "endDate": serialize_datetime(end_date) if end_date is not None else None,
                     "orderBy": order_by,
@@ -264,6 +339,7 @@ class AsyncInvoiceClient:
                     "startingAfter": starting_after,
                     "search": search,
                     "vendorId": vendor_id,
+                    "payerId": payer_id,
                     "approverId": approver_id,
                     "invoiceId": invoice_id,
                     "status": status,
@@ -278,6 +354,42 @@ class AsyncInvoiceClient:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
             return pydantic.parse_obj_as(FindInvoiceResponse, _response_json)  # type: ignore
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "InvoiceQueryError":
+                raise InvoiceQueryError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "AuthHeaderMissingError":
+                raise AuthHeaderMissingError()
+            if _response_json["errorName"] == "AuthHeaderMalformedError":
+                raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def get(self, entity_id: EntityId, invoice_id: InvoiceId) -> InvoiceResponse:
+        """
+        Parameters:
+            - entity_id: EntityId.
+
+            - invoice_id: InvoiceId. ID of the invoice to retrieve. This can be the full invoice ID (in_11aa2b77-6391-49e4-8c3f-b198009202c1) or the first 8 characters of the ID (11aa2b77).
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "GET",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/invoice/{invoice_id}"),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return pydantic.parse_obj_as(InvoiceResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "AuthHeaderMissingError":
                 raise AuthHeaderMissingError()
@@ -298,6 +410,9 @@ class AsyncInvoiceClient:
         entity_id: EntityId,
         *,
         search: typing.Optional[str] = None,
+        exclude_payables: typing.Optional[bool] = None,
+        exclude_receivables: typing.Optional[bool] = None,
+        payer_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
         vendor_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
         approver_id: typing.Union[typing.Optional[EntityUserId], typing.List[EntityUserId]],
         invoice_id: typing.Union[typing.Optional[InvoiceId], typing.List[InvoiceId]],
@@ -309,12 +424,18 @@ class AsyncInvoiceClient:
         currency: typing.Union[typing.Optional[CurrencyCode], typing.List[CurrencyCode]],
     ) -> typing.List[InvoiceMetricsResponse]:
         """
-        Get invoice metrics for an entity
+        Get invoice metrics for an entity with the given filters.
 
         Parameters:
             - entity_id: EntityId.
 
             - search: typing.Optional[str]. Filter vendors by name. Partial matches are supported.
+
+            - exclude_payables: typing.Optional[bool]. Only return invoices that are not payable by the entity. This will return only invoices that are receivable by the entity.
+
+            - exclude_receivables: typing.Optional[bool]. Only return invoices that are not receivable by the entity. This will return only invoices that are payable by the entity.
+
+            - payer_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter invoices by payer ID.
 
             - vendor_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter invoices by vendor ID.
 
@@ -340,6 +461,9 @@ class AsyncInvoiceClient:
             params=remove_none_from_dict(
                 {
                     "search": search,
+                    "excludePayables": exclude_payables,
+                    "excludeReceivables": exclude_receivables,
+                    "payerId": payer_id,
                     "vendorId": vendor_id,
                     "approverId": approver_id,
                     "invoiceId": invoice_id,
@@ -363,6 +487,8 @@ class AsyncInvoiceClient:
         if 200 <= _response.status_code < 300:
             return pydantic.parse_obj_as(typing.List[InvoiceMetricsResponse], _response_json)  # type: ignore
         if "errorName" in _response_json:
+            if _response_json["errorName"] == "InvoiceQueryError":
+                raise InvoiceQueryError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "AuthHeaderMissingError":
                 raise AuthHeaderMissingError()
             if _response_json["errorName"] == "AuthHeaderMalformedError":

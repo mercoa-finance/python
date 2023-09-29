@@ -11,9 +11,13 @@ from .profile_request import ProfileRequest
 
 
 class EntityUpdateRequest(pydantic.BaseModel):
-    foreign_id: typing.Optional[str] = pydantic.Field(alias="foreignId")
+    foreign_id: typing.Optional[str] = pydantic.Field(
+        alias="foreignId",
+        description="The ID used to identify this entity in your system. This ID must be unique across all entities in your system.",
+    )
     email_to: typing.Optional[str] = pydantic.Field(
-        alias="emailTo", description="Email inbox address. Do not include the @domain.com"
+        alias="emailTo",
+        description="Sets the email address to which to send invoices to be added to the Invoice Inbox. Only provide the local-part/username of the email address, do not include the @domain.com",
     )
     email_to_alias: typing.Optional[typing.List[str]] = pydantic.Field(
         alias="emailToAlias",

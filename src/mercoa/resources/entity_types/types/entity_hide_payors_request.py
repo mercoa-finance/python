@@ -9,8 +9,8 @@ from ....core.datetime_utils import serialize_datetime
 from .entity_id import EntityId
 
 
-class EntityArchivePayorsRequest(pydantic.BaseModel):
-    payors: typing.List[EntityId] = pydantic.Field(description="List of payor entity IDs to archive")
+class EntityHidePayorsRequest(pydantic.BaseModel):
+    payors: typing.List[EntityId] = pydantic.Field(description="List of payor entity IDs to hide")
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

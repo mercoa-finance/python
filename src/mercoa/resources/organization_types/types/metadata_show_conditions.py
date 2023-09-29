@@ -9,7 +9,10 @@ from ....core.datetime_utils import serialize_datetime
 from ...payment_method_types.types.payment_method_type import PaymentMethodType
 
 
-class MetadataConditional(pydantic.BaseModel):
+class MetadataShowConditions(pydantic.BaseModel):
+    has_options: typing.Optional[bool] = pydantic.Field(
+        alias="hasOptions", description="Show this field only if the entity has values set for the metadata key."
+    )
     has_document: typing.Optional[bool] = pydantic.Field(
         alias="hasDocument", description="Show this field only if a document has been attached."
     )

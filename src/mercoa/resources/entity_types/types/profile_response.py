@@ -11,8 +11,12 @@ from .individual_profile_response import IndividualProfileResponse
 
 
 class ProfileResponse(pydantic.BaseModel):
-    business: typing.Optional[BusinessProfileResponse]
-    individual: typing.Optional[IndividualProfileResponse]
+    business: typing.Optional[BusinessProfileResponse] = pydantic.Field(
+        description="Will be set if the entity is a business"
+    )
+    individual: typing.Optional[IndividualProfileResponse] = pydantic.Field(
+        description="Will be set if the entity is a individual"
+    )
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

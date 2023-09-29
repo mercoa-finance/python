@@ -46,7 +46,7 @@ class OrganizationClient:
         metadata_schema: typing.Optional[bool] = None,
     ) -> OrganizationResponse:
         """
-        Get current organization information
+        Get
 
         Parameters:
             - payment_methods: typing.Optional[bool]. include supported payment methods in response
@@ -194,7 +194,7 @@ class AsyncOrganizationClient:
         metadata_schema: typing.Optional[bool] = None,
     ) -> OrganizationResponse:
         """
-        Get current organization information
+        Get
 
         Parameters:
             - payment_methods: typing.Optional[bool]. include supported payment methods in response

@@ -2,7 +2,8 @@
 
 from .duplicate_invoice_number import DuplicateInvoiceNumber
 from .invoice_error import InvoiceError
+from .invoice_query_error import InvoiceQueryError
 from .invoice_status_error import InvoiceStatusError
 from .vendor_not_found import VendorNotFound
 
-__all__ = ["DuplicateInvoiceNumber", "InvoiceError", "InvoiceStatusError", "VendorNotFound"]
+__all__ = ["DuplicateInvoiceNumber", "InvoiceError", "InvoiceQueryError", "InvoiceStatusError", "VendorNotFound"]

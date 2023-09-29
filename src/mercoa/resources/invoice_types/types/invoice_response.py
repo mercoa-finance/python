@@ -13,7 +13,6 @@ from ...entity_types.types.entity_user_response import EntityUserResponse
 from ...payment_method_types.types.currency_code import CurrencyCode
 from ...payment_method_types.types.payment_method_id import PaymentMethodId
 from ...payment_method_types.types.payment_method_response import PaymentMethodResponse
-from ...transaction.types.transaction_response import TransactionResponse
 from .approval_slot import ApprovalSlot
 from .comment_response import CommentResponse
 from .invoice_failure_type import InvoiceFailureType
@@ -49,10 +48,14 @@ class InvoiceResponse(pydantic.BaseModel):
     vendor: typing.Optional[EntityResponse]
     payment_destination: typing.Optional[PaymentMethodResponse] = pydantic.Field(alias="paymentDestination")
     payment_destination_id: typing.Optional[PaymentMethodId] = pydantic.Field(alias="paymentDestinationId")
-    payment_destination_confirmed: bool = pydantic.Field(alias="paymentDestinationConfirmed")
-    has_documents: bool = pydantic.Field(alias="hasDocuments")
+    payment_destination_confirmed: bool = pydantic.Field(
+        alias="paymentDestinationConfirmed",
+        description="True if the payment destination has been confirmed by the vendor. False if the payment destination has been set (for example, a check to an address) but has not been confirmed by the vendor.",
+    )
+    has_documents: bool = pydantic.Field(
+        alias="hasDocuments", description="True if the invoice has documents attached."
+    )
     comments: typing.Optional[typing.List[CommentResponse]]
-    transactions: typing.Optional[typing.List[TransactionResponse]]
     line_items: typing.Optional[typing.List[InvoiceLineItemResponse]] = pydantic.Field(alias="lineItems")
     approvers: typing.List[ApprovalSlot]
     approval_policy: typing.List[ApprovalPolicyResponse] = pydantic.Field(alias="approvalPolicy")

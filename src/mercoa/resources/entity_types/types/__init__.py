@@ -16,8 +16,8 @@ from .counterparty_response import CounterpartyResponse
 from .ein import Ein
 from .entity_add_payees_request import EntityAddPayeesRequest
 from .entity_add_payors_request import EntityAddPayorsRequest
-from .entity_archive_payees_request import EntityArchivePayeesRequest
-from .entity_archive_payors_request import EntityArchivePayorsRequest
+from .entity_hide_payees_request import EntityHidePayeesRequest
+from .entity_hide_payors_request import EntityHidePayorsRequest
 from .entity_id import EntityId
 from .entity_metadata_response import EntityMetadataResponse
 from .entity_onboarding_link_type import EntityOnboardingLinkType
@@ -73,8 +73,8 @@ __all__ = [
     "Ein",
     "EntityAddPayeesRequest",
     "EntityAddPayorsRequest",
-    "EntityArchivePayeesRequest",
-    "EntityArchivePayorsRequest",
+    "EntityHidePayeesRequest",
+    "EntityHidePayorsRequest",
     "EntityId",
     "EntityMetadataResponse",
     "EntityOnboardingLinkType",

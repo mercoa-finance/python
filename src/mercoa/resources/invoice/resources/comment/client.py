@@ -101,8 +101,6 @@ class CommentClient:
 
     def get(self, invoice_id: InvoiceId, comment_id: CommentId) -> CommentResponse:
         """
-        Get a comment on this invoice
-
         Parameters:
             - invoice_id: InvoiceId.
 
@@ -294,8 +292,6 @@ class AsyncCommentClient:
 
     async def get(self, invoice_id: InvoiceId, comment_id: CommentId) -> CommentResponse:
         """
-        Get a comment on this invoice
-
         Parameters:
             - invoice_id: InvoiceId.
 
