@@ -16,7 +16,6 @@ from ....commons.errors.forbidden import Forbidden
 from ....commons.errors.not_found import NotFound
 from ....commons.errors.unauthorized import Unauthorized
 from ....commons.errors.unimplemented import Unimplemented
-from ....entity_types.types.counterparties_response import CounterpartiesResponse
 from ....entity_types.types.counterparty_network_type import CounterpartyNetworkType
 from ....entity_types.types.entity_add_payees_request import EntityAddPayeesRequest
 from ....entity_types.types.entity_add_payors_request import EntityAddPayorsRequest
@@ -33,51 +32,6 @@ class CounterpartyClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    def find(
-        self,
-        entity_id: EntityId,
-        *,
-        payment_methods: typing.Optional[bool] = None,
-        counterparty_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
-    ) -> CounterpartiesResponse:
-        """
-        Find counterparties. Deprecated. Use findPayees or findPayors instead.
-
-        Parameters:
-            - entity_id: EntityId.
-
-            - payment_methods: typing.Optional[bool]. If true, will include counterparty payment methods as part of the response
-
-            - counterparty_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter by counterparty ids
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/counterparties"),
-            params=remove_none_from_dict({"paymentMethods": payment_methods, "counterpartyId": counterparty_id}),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
-        )
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(CounterpartiesResponse, _response_json)  # type: ignore
-        if "errorName" in _response_json:
-            if _response_json["errorName"] == "AuthHeaderMissingError":
-                raise AuthHeaderMissingError()
-            if _response_json["errorName"] == "AuthHeaderMalformedError":
-                raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unauthorized":
-                raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Forbidden":
-                raise Forbidden(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "NotFound":
-                raise NotFound(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unimplemented":
-                raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
     def find_payees(
         self,
         entity_id: EntityId,
@@ -86,6 +40,8 @@ class CounterpartyClient:
         network_type: typing.Union[typing.Optional[CounterpartyNetworkType], typing.List[CounterpartyNetworkType]],
         payment_methods: typing.Optional[bool] = None,
         counterparty_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
+        limit: typing.Optional[int] = None,
+        starting_after: typing.Optional[EntityId] = None,
     ) -> FindCounterpartiesResponse:
         """
         Find payee counterparties. This endpoint lets you find vendors linked to the entity.
@@ -100,6 +56,10 @@ class CounterpartyClient:
             - payment_methods: typing.Optional[bool]. If true, will include counterparty payment methods as part of the response
 
             - counterparty_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter by counterparty ids
+
+            - limit: typing.Optional[int]. Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.
+
+            - starting_after: typing.Optional[EntityId]. The ID of the counterparties to start after. If not provided, the first page of counterparties will be returned.
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
@@ -112,6 +72,8 @@ class CounterpartyClient:
                     "networkType": network_type,
                     "paymentMethods": payment_methods,
                     "counterpartyId": counterparty_id,
+                    "limit": limit,
+                    "startingAfter": starting_after,
                 }
             ),
             headers=self._client_wrapper.get_headers(),
@@ -146,6 +108,8 @@ class CounterpartyClient:
         network_type: typing.Union[typing.Optional[CounterpartyNetworkType], typing.List[CounterpartyNetworkType]],
         payment_methods: typing.Optional[bool] = None,
         counterparty_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
+        limit: typing.Optional[int] = None,
+        starting_after: typing.Optional[EntityId] = None,
     ) -> FindCounterpartiesResponse:
         """
         Find payor counterparties. This endpoint lets you find customers linked to the entity.
@@ -160,6 +124,10 @@ class CounterpartyClient:
             - payment_methods: typing.Optional[bool]. If true, will include counterparty payment methods as part of the response
 
             - counterparty_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter by counterparty ids
+
+            - limit: typing.Optional[int]. Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.
+
+            - starting_after: typing.Optional[EntityId]. The ID of the counterparties to start after. If not provided, the first page of counterparties will be returned.
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
@@ -172,6 +140,8 @@ class CounterpartyClient:
                     "networkType": network_type,
                     "paymentMethods": payment_methods,
                     "counterpartyId": counterparty_id,
+                    "limit": limit,
+                    "startingAfter": starting_after,
                 }
             ),
             headers=self._client_wrapper.get_headers(),
@@ -351,51 +321,6 @@ class AsyncCounterpartyClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    async def find(
-        self,
-        entity_id: EntityId,
-        *,
-        payment_methods: typing.Optional[bool] = None,
-        counterparty_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
-    ) -> CounterpartiesResponse:
-        """
-        Find counterparties. Deprecated. Use findPayees or findPayors instead.
-
-        Parameters:
-            - entity_id: EntityId.
-
-            - payment_methods: typing.Optional[bool]. If true, will include counterparty payment methods as part of the response
-
-            - counterparty_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter by counterparty ids
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/counterparties"),
-            params=remove_none_from_dict({"paymentMethods": payment_methods, "counterpartyId": counterparty_id}),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
-        )
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(CounterpartiesResponse, _response_json)  # type: ignore
-        if "errorName" in _response_json:
-            if _response_json["errorName"] == "AuthHeaderMissingError":
-                raise AuthHeaderMissingError()
-            if _response_json["errorName"] == "AuthHeaderMalformedError":
-                raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unauthorized":
-                raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Forbidden":
-                raise Forbidden(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "NotFound":
-                raise NotFound(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unimplemented":
-                raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
     async def find_payees(
         self,
         entity_id: EntityId,
@@ -404,6 +329,8 @@ class AsyncCounterpartyClient:
         network_type: typing.Union[typing.Optional[CounterpartyNetworkType], typing.List[CounterpartyNetworkType]],
         payment_methods: typing.Optional[bool] = None,
         counterparty_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
+        limit: typing.Optional[int] = None,
+        starting_after: typing.Optional[EntityId] = None,
     ) -> FindCounterpartiesResponse:
         """
         Find payee counterparties. This endpoint lets you find vendors linked to the entity.
@@ -418,6 +345,10 @@ class AsyncCounterpartyClient:
             - payment_methods: typing.Optional[bool]. If true, will include counterparty payment methods as part of the response
 
             - counterparty_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter by counterparty ids
+
+            - limit: typing.Optional[int]. Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.
+
+            - starting_after: typing.Optional[EntityId]. The ID of the counterparties to start after. If not provided, the first page of counterparties will be returned.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
@@ -430,6 +361,8 @@ class AsyncCounterpartyClient:
                     "networkType": network_type,
                     "paymentMethods": payment_methods,
                     "counterpartyId": counterparty_id,
+                    "limit": limit,
+                    "startingAfter": starting_after,
                 }
             ),
             headers=self._client_wrapper.get_headers(),
@@ -464,6 +397,8 @@ class AsyncCounterpartyClient:
         network_type: typing.Union[typing.Optional[CounterpartyNetworkType], typing.List[CounterpartyNetworkType]],
         payment_methods: typing.Optional[bool] = None,
         counterparty_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
+        limit: typing.Optional[int] = None,
+        starting_after: typing.Optional[EntityId] = None,
     ) -> FindCounterpartiesResponse:
         """
         Find payor counterparties. This endpoint lets you find customers linked to the entity.
@@ -478,6 +413,10 @@ class AsyncCounterpartyClient:
             - payment_methods: typing.Optional[bool]. If true, will include counterparty payment methods as part of the response
 
             - counterparty_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter by counterparty ids
+
+            - limit: typing.Optional[int]. Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.
+
+            - starting_after: typing.Optional[EntityId]. The ID of the counterparties to start after. If not provided, the first page of counterparties will be returned.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
@@ -490,6 +429,8 @@ class AsyncCounterpartyClient:
                     "networkType": network_type,
                     "paymentMethods": payment_methods,
                     "counterpartyId": counterparty_id,
+                    "limit": limit,
+                    "startingAfter": starting_after,
                 }
             ),
             headers=self._client_wrapper.get_headers(),

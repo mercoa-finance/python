@@ -10,12 +10,22 @@ class PaymentMethodSchemaFieldType(str, enum.Enum):
     TEXT = "text"
     NUMBER = "number"
     SELECT = "select"
+    DATE = "date"
+    PHONE = "phone"
+    EMAIL = "email"
+    URL = "url"
+    ADDRESS = "address"
 
     def visit(
         self,
         text: typing.Callable[[], T_Result],
         number: typing.Callable[[], T_Result],
         select: typing.Callable[[], T_Result],
+        date: typing.Callable[[], T_Result],
+        phone: typing.Callable[[], T_Result],
+        email: typing.Callable[[], T_Result],
+        url: typing.Callable[[], T_Result],
+        address: typing.Callable[[], T_Result],
     ) -> T_Result:
         if self is PaymentMethodSchemaFieldType.TEXT:
             return text()
@@ -23,3 +33,13 @@ class PaymentMethodSchemaFieldType(str, enum.Enum):
             return number()
         if self is PaymentMethodSchemaFieldType.SELECT:
             return select()
+        if self is PaymentMethodSchemaFieldType.DATE:
+            return date()
+        if self is PaymentMethodSchemaFieldType.PHONE:
+            return phone()
+        if self is PaymentMethodSchemaFieldType.EMAIL:
+            return email()
+        if self is PaymentMethodSchemaFieldType.URL:
+            return url()
+        if self is PaymentMethodSchemaFieldType.ADDRESS:
+            return address()

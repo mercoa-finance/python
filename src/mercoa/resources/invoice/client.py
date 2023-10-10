@@ -320,16 +320,19 @@ class InvoiceClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def send_payer_email(self, invoice_id: InvoiceId) -> None:
+    def send_payer_email(self, invoice_id: InvoiceId, *, attach_invoice: typing.Optional[bool] = None) -> None:
         """
         Trigger email to payer inviting them to make payment
 
         Parameters:
             - invoice_id: InvoiceId.
+
+            - attach_invoice: typing.Optional[bool]. Whether to attach the invoice to the email
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/sendPayerEmail"),
+            params=remove_none_from_dict({"attachInvoice": attach_invoice}),
             headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
@@ -411,6 +414,42 @@ class InvoiceClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "InvoiceError":
+                raise InvoiceError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "AuthHeaderMissingError":
+                raise AuthHeaderMissingError()
+            if _response_json["errorName"] == "AuthHeaderMalformedError":
+                raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def generate_invoice_pdf(self, invoice_id: InvoiceId) -> str:
+        """
+        Generate a PDF of the invoice
+
+        Parameters:
+            - invoice_id: InvoiceId.
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "GET",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/pdf/generate"),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return pydantic.parse_obj_as(str, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "InvoiceError":
                 raise InvoiceError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
@@ -709,16 +748,19 @@ class AsyncInvoiceClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def send_payer_email(self, invoice_id: InvoiceId) -> None:
+    async def send_payer_email(self, invoice_id: InvoiceId, *, attach_invoice: typing.Optional[bool] = None) -> None:
         """
         Trigger email to payer inviting them to make payment
 
         Parameters:
             - invoice_id: InvoiceId.
+
+            - attach_invoice: typing.Optional[bool]. Whether to attach the invoice to the email
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/sendPayerEmail"),
+            params=remove_none_from_dict({"attachInvoice": attach_invoice}),
             headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
@@ -800,6 +842,42 @@ class AsyncInvoiceClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "InvoiceError":
+                raise InvoiceError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "AuthHeaderMissingError":
+                raise AuthHeaderMissingError()
+            if _response_json["errorName"] == "AuthHeaderMalformedError":
+                raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def generate_invoice_pdf(self, invoice_id: InvoiceId) -> str:
+        """
+        Generate a PDF of the invoice
+
+        Parameters:
+            - invoice_id: InvoiceId.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "GET",
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/pdf/generate"),
+            headers=self._client_wrapper.get_headers(),
+            timeout=60,
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return pydantic.parse_obj_as(str, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "InvoiceError":
                 raise InvoiceError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore

@@ -35,6 +35,7 @@ class EntityRequest(pydantic.BaseModel):
     is_payee: bool = pydantic.Field(
         alias="isPayee", description="If this entity will be receiving payments, set this to true."
     )
+    logo: typing.Optional[str] = pydantic.Field(description="Base64 encoded PNG image data for the entity logo.")
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

@@ -18,7 +18,7 @@ class Responsibilities(pydantic.BaseModel):
         alias="isOwner",
         description="Indicates whether this individual has an ownership stake of at least 25% in the business",
     )
-    ownership_percentage: typing.Optional[float] = pydantic.Field(
+    ownership_percentage: typing.Optional[int] = pydantic.Field(
         alias="ownershipPercentage", description="Percentage of ownership in the business. Must be between 0 and 100."
     )
 
