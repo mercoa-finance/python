@@ -46,6 +46,7 @@ from .representative_response import RepresentativeResponse
 from .responsibilities import Responsibilities
 from .rule import Rule, Rule_Approver
 from .tax_id import TaxId
+from .token_generation_entity_options import TokenGenerationEntityOptions
 from .token_generation_invoice_options import TokenGenerationInvoiceOptions
 from .token_generation_options import TokenGenerationOptions
 from .token_generation_pages_options import TokenGenerationPagesOptions
@@ -105,6 +106,7 @@ __all__ = [
     "Rule",
     "Rule_Approver",
     "TaxId",
+    "TokenGenerationEntityOptions",
     "TokenGenerationInvoiceOptions",
     "TokenGenerationOptions",
     "TokenGenerationPagesOptions",

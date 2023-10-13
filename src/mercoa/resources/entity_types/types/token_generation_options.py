@@ -6,6 +6,7 @@ import typing
 import pydantic
 
 from ....core.datetime_utils import serialize_datetime
+from .token_generation_entity_options import TokenGenerationEntityOptions
 from .token_generation_invoice_options import TokenGenerationInvoiceOptions
 from .token_generation_pages_options import TokenGenerationPagesOptions
 from .token_generation_style_options import TokenGenerationStyleOptions
@@ -20,6 +21,7 @@ class TokenGenerationOptions(pydantic.BaseModel):
     pages: typing.Optional[TokenGenerationPagesOptions]
     style: typing.Optional[TokenGenerationStyleOptions]
     vendors: typing.Optional[TokenGenerationVendorOptions]
+    entity: typing.Optional[TokenGenerationEntityOptions]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
