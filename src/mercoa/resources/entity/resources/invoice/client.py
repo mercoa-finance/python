@@ -47,11 +47,12 @@ class InvoiceClient:
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[InvoiceId] = None,
         search: typing.Optional[str] = None,
-        vendor_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
         payer_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
+        vendor_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
         approver_id: typing.Union[typing.Optional[EntityUserId], typing.List[EntityUserId]],
         invoice_id: typing.Union[typing.Optional[InvoiceId], typing.List[InvoiceId]],
         status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]],
+        include_fees: typing.Optional[bool] = None,
     ) -> FindInvoiceResponse:
         """
         Get invoices for an entity with the given filters.
@@ -77,15 +78,17 @@ class InvoiceClient:
 
             - search: typing.Optional[str]. Filter vendors by name. Partial matches are supported.
 
-            - vendor_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter invoices by vendor ID.
-
             - payer_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter invoices by payer ID.
+
+            - vendor_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter invoices by vendor ID.
 
             - approver_id: typing.Union[typing.Optional[EntityUserId], typing.List[EntityUserId]]. Filter invoices by assigned approver user ID.
 
             - invoice_id: typing.Union[typing.Optional[InvoiceId], typing.List[InvoiceId]]. Filter invoices by invoice ID.
 
-            - status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]]. Invoice status to filter on
+            - status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]]. Invoice status to filter on.
+
+            - include_fees: typing.Optional[bool]. If true, will include fees as part of the response.
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
@@ -101,11 +104,12 @@ class InvoiceClient:
                     "limit": limit,
                     "startingAfter": starting_after,
                     "search": search,
-                    "vendorId": vendor_id,
                     "payerId": payer_id,
+                    "vendorId": vendor_id,
                     "approverId": approver_id,
                     "invoiceId": invoice_id,
                     "status": status,
+                    "includeFees": include_fees,
                 }
             ),
             headers=self._client_wrapper.get_headers(),
@@ -134,16 +138,21 @@ class InvoiceClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def get(self, entity_id: EntityId, invoice_id: InvoiceId) -> InvoiceResponse:
+    def get(
+        self, entity_id: EntityId, invoice_id: InvoiceId, *, include_fees: typing.Optional[bool] = None
+    ) -> InvoiceResponse:
         """
         Parameters:
             - entity_id: EntityId.
 
             - invoice_id: InvoiceId. ID of the invoice to retrieve. This can be the full invoice ID (in_11aa2b77-6391-49e4-8c3f-b198009202c1) or the first 8 characters of the ID (11aa2b77).
+
+            - include_fees: typing.Optional[bool]. If true, will include fees as part of the response.
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/invoice/{invoice_id}"),
+            params=remove_none_from_dict({"includeFees": include_fees}),
             headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
@@ -284,11 +293,12 @@ class AsyncInvoiceClient:
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[InvoiceId] = None,
         search: typing.Optional[str] = None,
-        vendor_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
         payer_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
+        vendor_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
         approver_id: typing.Union[typing.Optional[EntityUserId], typing.List[EntityUserId]],
         invoice_id: typing.Union[typing.Optional[InvoiceId], typing.List[InvoiceId]],
         status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]],
+        include_fees: typing.Optional[bool] = None,
     ) -> FindInvoiceResponse:
         """
         Get invoices for an entity with the given filters.
@@ -314,15 +324,17 @@ class AsyncInvoiceClient:
 
             - search: typing.Optional[str]. Filter vendors by name. Partial matches are supported.
 
-            - vendor_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter invoices by vendor ID.
-
             - payer_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter invoices by payer ID.
+
+            - vendor_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter invoices by vendor ID.
 
             - approver_id: typing.Union[typing.Optional[EntityUserId], typing.List[EntityUserId]]. Filter invoices by assigned approver user ID.
 
             - invoice_id: typing.Union[typing.Optional[InvoiceId], typing.List[InvoiceId]]. Filter invoices by invoice ID.
 
-            - status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]]. Invoice status to filter on
+            - status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]]. Invoice status to filter on.
+
+            - include_fees: typing.Optional[bool]. If true, will include fees as part of the response.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
@@ -338,11 +350,12 @@ class AsyncInvoiceClient:
                     "limit": limit,
                     "startingAfter": starting_after,
                     "search": search,
-                    "vendorId": vendor_id,
                     "payerId": payer_id,
+                    "vendorId": vendor_id,
                     "approverId": approver_id,
                     "invoiceId": invoice_id,
                     "status": status,
+                    "includeFees": include_fees,
                 }
             ),
             headers=self._client_wrapper.get_headers(),
@@ -371,16 +384,21 @@ class AsyncInvoiceClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def get(self, entity_id: EntityId, invoice_id: InvoiceId) -> InvoiceResponse:
+    async def get(
+        self, entity_id: EntityId, invoice_id: InvoiceId, *, include_fees: typing.Optional[bool] = None
+    ) -> InvoiceResponse:
         """
         Parameters:
             - entity_id: EntityId.
 
             - invoice_id: InvoiceId. ID of the invoice to retrieve. This can be the full invoice ID (in_11aa2b77-6391-49e4-8c3f-b198009202c1) or the first 8 characters of the ID (11aa2b77).
+
+            - include_fees: typing.Optional[bool]. If true, will include fees as part of the response.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/invoice/{invoice_id}"),
+            params=remove_none_from_dict({"includeFees": include_fees}),
             headers=self._client_wrapper.get_headers(),
             timeout=60,
         )

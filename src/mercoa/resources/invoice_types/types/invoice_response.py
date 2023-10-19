@@ -16,6 +16,7 @@ from ...payment_method_types.types.payment_method_response import PaymentMethodR
 from .approval_slot import ApprovalSlot
 from .comment_response import CommentResponse
 from .invoice_failure_type import InvoiceFailureType
+from .invoice_fees_response import InvoiceFeesResponse
 from .invoice_id import InvoiceId
 from .invoice_line_item_response import InvoiceLineItemResponse
 from .invoice_status import InvoiceStatus
@@ -70,6 +71,7 @@ class InvoiceResponse(pydantic.BaseModel):
     processed_at: typing.Optional[dt.datetime] = pydantic.Field(alias="processedAt")
     created_at: dt.datetime = pydantic.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
+    fees: typing.Optional[InvoiceFeesResponse] = pydantic.Field(description="Fees associated with this invoice.")
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

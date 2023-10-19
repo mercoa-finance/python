@@ -63,6 +63,7 @@ class InvoiceClient:
         approver_id: typing.Union[typing.Optional[EntityUserId], typing.List[EntityUserId]],
         invoice_id: typing.Union[typing.Optional[InvoiceId], typing.List[InvoiceId]],
         status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]],
+        include_fees: typing.Optional[bool] = None,
     ) -> FindInvoiceResponse:
         """
         Search invoices for all entities in the organization
@@ -93,6 +94,8 @@ class InvoiceClient:
             - invoice_id: typing.Union[typing.Optional[InvoiceId], typing.List[InvoiceId]]. Filter invoices by invoice ID.
 
             - status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]]. Invoice status to filter on
+
+            - include_fees: typing.Optional[bool]. If true, will include fees as part of the response.
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
@@ -112,6 +115,7 @@ class InvoiceClient:
                     "approverId": approver_id,
                     "invoiceId": invoice_id,
                     "status": status,
+                    "includeFees": include_fees,
                 }
             ),
             headers=self._client_wrapper.get_headers(),
@@ -177,14 +181,17 @@ class InvoiceClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def get(self, invoice_id: InvoiceId) -> InvoiceResponse:
+    def get(self, invoice_id: InvoiceId, *, include_fees: typing.Optional[bool] = None) -> InvoiceResponse:
         """
         Parameters:
             - invoice_id: InvoiceId.
+
+            - include_fees: typing.Optional[bool]. If true, will include fees as part of the response.
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}"),
+            params=remove_none_from_dict({"includeFees": include_fees}),
             headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
@@ -491,6 +498,7 @@ class AsyncInvoiceClient:
         approver_id: typing.Union[typing.Optional[EntityUserId], typing.List[EntityUserId]],
         invoice_id: typing.Union[typing.Optional[InvoiceId], typing.List[InvoiceId]],
         status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]],
+        include_fees: typing.Optional[bool] = None,
     ) -> FindInvoiceResponse:
         """
         Search invoices for all entities in the organization
@@ -521,6 +529,8 @@ class AsyncInvoiceClient:
             - invoice_id: typing.Union[typing.Optional[InvoiceId], typing.List[InvoiceId]]. Filter invoices by invoice ID.
 
             - status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]]. Invoice status to filter on
+
+            - include_fees: typing.Optional[bool]. If true, will include fees as part of the response.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
@@ -540,6 +550,7 @@ class AsyncInvoiceClient:
                     "approverId": approver_id,
                     "invoiceId": invoice_id,
                     "status": status,
+                    "includeFees": include_fees,
                 }
             ),
             headers=self._client_wrapper.get_headers(),
@@ -605,14 +616,17 @@ class AsyncInvoiceClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def get(self, invoice_id: InvoiceId) -> InvoiceResponse:
+    async def get(self, invoice_id: InvoiceId, *, include_fees: typing.Optional[bool] = None) -> InvoiceResponse:
         """
         Parameters:
             - invoice_id: InvoiceId.
+
+            - include_fees: typing.Optional[bool]. If true, will include fees as part of the response.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}"),
+            params=remove_none_from_dict({"includeFees": include_fees}),
             headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
