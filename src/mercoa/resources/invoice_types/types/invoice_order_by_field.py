@@ -10,6 +10,7 @@ class InvoiceOrderByField(str, enum.Enum):
     AMOUNT = "AMOUNT"
     DUE_DATE = "DUE_DATE"
     CREATED_AT = "CREATED_AT"
+    UPDATED_AT = "UPDATED_AT"
     INVOICE_NUMBER = "INVOICE_NUMBER"
     VENDOR_NAME = "VENDOR_NAME"
     PAYER_NAME = "PAYER_NAME"
@@ -19,6 +20,7 @@ class InvoiceOrderByField(str, enum.Enum):
         amount: typing.Callable[[], T_Result],
         due_date: typing.Callable[[], T_Result],
         created_at: typing.Callable[[], T_Result],
+        updated_at: typing.Callable[[], T_Result],
         invoice_number: typing.Callable[[], T_Result],
         vendor_name: typing.Callable[[], T_Result],
         payer_name: typing.Callable[[], T_Result],
@@ -29,6 +31,8 @@ class InvoiceOrderByField(str, enum.Enum):
             return due_date()
         if self is InvoiceOrderByField.CREATED_AT:
             return created_at()
+        if self is InvoiceOrderByField.UPDATED_AT:
+            return updated_at()
         if self is InvoiceOrderByField.INVOICE_NUMBER:
             return invoice_number()
         if self is InvoiceOrderByField.VENDOR_NAME:

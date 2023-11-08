@@ -3,16 +3,19 @@
 import datetime as dt
 import typing
 
-import pydantic
-
 from ....core.datetime_utils import serialize_datetime
 from .approval_policy_id import ApprovalPolicyId
 from .rule import Rule
 from .trigger import Trigger
 
+try:
+    import pydantic.v1 as pydantic  # type: ignore
+except ImportError:
+    import pydantic  # type: ignore
+
 
 class ApprovalPolicyUpdateRequest(pydantic.BaseModel):
-    trigger: typing.Optional[Trigger]
+    trigger: typing.Optional[typing.List[Trigger]]
     rule: typing.Optional[Rule]
     upstream_policy_id: typing.Optional[ApprovalPolicyId] = pydantic.Field(alias="upstreamPolicyId")
 

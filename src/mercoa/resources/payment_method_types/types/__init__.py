@@ -2,6 +2,7 @@
 
 from .bank_account_request import BankAccountRequest
 from .bank_account_response import BankAccountResponse
+from .bank_account_update_request import BankAccountUpdateRequest
 from .bank_status import BankStatus
 from .bank_type import BankType
 from .card_brand import CardBrand
@@ -49,6 +50,7 @@ from .plaid_link_request import PlaidLinkRequest
 __all__ = [
     "BankAccountRequest",
     "BankAccountResponse",
+    "BankAccountUpdateRequest",
     "BankStatus",
     "BankType",
     "CardBrand",

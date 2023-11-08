@@ -3,16 +3,21 @@
 import datetime as dt
 import typing
 
-import pydantic
-
 from ....core.datetime_utils import serialize_datetime
 from .approval_policy_id import ApprovalPolicyId
 from .rule import Rule
 from .trigger import Trigger
 
+try:
+    import pydantic.v1 as pydantic  # type: ignore
+except ImportError:
+    import pydantic  # type: ignore
+
 
 class ApprovalPolicyRequest(pydantic.BaseModel):
-    trigger: Trigger
+    trigger: typing.List[Trigger] = pydantic.Field(
+        description="List of triggers that will cause this policy to be evaluated. If no triggers are provided, the policy will be evaluated for all invoices."
+    )
     rule: Rule
     upstream_policy_id: ApprovalPolicyId = pydantic.Field(
         alias="upstreamPolicyId",

@@ -4,8 +4,6 @@ import typing
 import urllib.parse
 from json.decoder import JSONDecodeError
 
-import pydantic
-
 from ...core.api_error import ApiError
 from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ...core.jsonable_encoder import jsonable_encoder
@@ -39,6 +37,11 @@ from .resources.payment_method.client import AsyncPaymentMethodClient, PaymentMe
 from .resources.representative.client import AsyncRepresentativeClient, RepresentativeClient
 from .resources.user.client import AsyncUserClient, UserClient
 
+try:
+    import pydantic.v1 as pydantic  # type: ignore
+except ImportError:
+    import pydantic  # type: ignore
+
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
 
@@ -59,8 +62,8 @@ class EntityClient:
         self,
         *,
         owned_by_org: typing.Optional[bool] = None,
-        foreign_id: typing.Union[typing.Optional[str], typing.List[str]],
-        status: typing.Union[typing.Optional[EntityStatus], typing.List[EntityStatus]],
+        foreign_id: typing.Optional[typing.Union[str, typing.List[str]]] = None,
+        status: typing.Optional[typing.Union[EntityStatus, typing.List[EntityStatus]]] = None,
         is_payee: typing.Optional[bool] = None,
         is_payor: typing.Optional[bool] = None,
         name: typing.Optional[str] = None,
@@ -73,9 +76,9 @@ class EntityClient:
         Parameters:
             - owned_by_org: typing.Optional[bool]. If true, only entities with a direct relationship to the requesting organization will be returned. If false or not provided, all entities will be returned.
 
-            - foreign_id: typing.Union[typing.Optional[str], typing.List[str]]. ID used to identify this entity in your system
+            - foreign_id: typing.Optional[typing.Union[str, typing.List[str]]]. ID used to identify this entity in your system
 
-            - status: typing.Union[typing.Optional[EntityStatus], typing.List[EntityStatus]].
+            - status: typing.Optional[typing.Union[EntityStatus, typing.List[EntityStatus]]].
 
             - is_payee: typing.Optional[bool]. If true, entities that are marked as payees will be returned.
                                                If false or not provided, entities that are marked as payees will not be returned.
@@ -366,6 +369,19 @@ class EntityClient:
             - entity_id: EntityId.
 
             - request: TokenGenerationOptions.
+        ---
+        from mercoa import TokenGenerationOptions
+        from mercoa.client import Mercoa
+
+        client = Mercoa(
+            token="YOUR_TOKEN",
+        )
+        client.entity.get_token(
+            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+            request=TokenGenerationOptions(
+                expires_in="1h",
+            ),
+        )
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
@@ -504,8 +520,8 @@ class AsyncEntityClient:
         self,
         *,
         owned_by_org: typing.Optional[bool] = None,
-        foreign_id: typing.Union[typing.Optional[str], typing.List[str]],
-        status: typing.Union[typing.Optional[EntityStatus], typing.List[EntityStatus]],
+        foreign_id: typing.Optional[typing.Union[str, typing.List[str]]] = None,
+        status: typing.Optional[typing.Union[EntityStatus, typing.List[EntityStatus]]] = None,
         is_payee: typing.Optional[bool] = None,
         is_payor: typing.Optional[bool] = None,
         name: typing.Optional[str] = None,
@@ -518,9 +534,9 @@ class AsyncEntityClient:
         Parameters:
             - owned_by_org: typing.Optional[bool]. If true, only entities with a direct relationship to the requesting organization will be returned. If false or not provided, all entities will be returned.
 
-            - foreign_id: typing.Union[typing.Optional[str], typing.List[str]]. ID used to identify this entity in your system
+            - foreign_id: typing.Optional[typing.Union[str, typing.List[str]]]. ID used to identify this entity in your system
 
-            - status: typing.Union[typing.Optional[EntityStatus], typing.List[EntityStatus]].
+            - status: typing.Optional[typing.Union[EntityStatus, typing.List[EntityStatus]]].
 
             - is_payee: typing.Optional[bool]. If true, entities that are marked as payees will be returned.
                                                If false or not provided, entities that are marked as payees will not be returned.
@@ -811,6 +827,19 @@ class AsyncEntityClient:
             - entity_id: EntityId.
 
             - request: TokenGenerationOptions.
+        ---
+        from mercoa import TokenGenerationOptions
+        from mercoa.client import AsyncMercoa
+
+        client = AsyncMercoa(
+            token="YOUR_TOKEN",
+        )
+        await client.entity.get_token(
+            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+            request=TokenGenerationOptions(
+                expires_in="1h",
+            ),
+        )
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",

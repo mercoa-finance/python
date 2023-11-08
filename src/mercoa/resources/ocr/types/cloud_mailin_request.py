@@ -4,6 +4,8 @@ import datetime as dt
 import typing
 
 from ....core.datetime_utils import serialize_datetime
+from .cloud_mailin_attachment import CloudMailinAttachment
+from .cloud_mailin_envelope import CloudMailinEnvelope
 
 try:
     import pydantic.v1 as pydantic  # type: ignore
@@ -11,10 +13,13 @@ except ImportError:
     import pydantic  # type: ignore
 
 
-class BirthDate(pydantic.BaseModel):
-    day: typing.Optional[str]
-    month: typing.Optional[str]
-    year: typing.Optional[str]
+class CloudMailinRequest(pydantic.BaseModel):
+    headers: typing.Any
+    envelope: CloudMailinEnvelope
+    plain: str
+    html: typing.Optional[str]
+    reply_plain: typing.Optional[str]
+    attachments: typing.List[CloudMailinAttachment]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

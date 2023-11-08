@@ -33,6 +33,7 @@ from .find_notification_response import FindNotificationResponse
 from .identifier_list import IdentifierList, IdentifierList_RolesList, IdentifierList_UserList
 from .individual_profile_request import IndividualProfileRequest
 from .individual_profile_response import IndividualProfileResponse
+from .metadata_trigger import MetadataTrigger
 from .notification_id import NotificationId
 from .notification_policy_request import NotificationPolicyRequest
 from .notification_policy_response import NotificationPolicyResponse
@@ -52,9 +53,10 @@ from .token_generation_options import TokenGenerationOptions
 from .token_generation_pages_options import TokenGenerationPagesOptions
 from .token_generation_style_options import TokenGenerationStyleOptions
 from .token_generation_vendor_options import TokenGenerationVendorOptions
-from .trigger import Trigger, Trigger_All, Trigger_Amount
+from .trigger import Trigger, Trigger_Amount, Trigger_Metadata, Trigger_Vendor
 from .user_notification_policy_response import UserNotificationPolicyResponse
 from .vendor_network import VendorNetwork
+from .vendor_trigger import VendorTrigger
 
 __all__ = [
     "AccountType",
@@ -92,6 +94,7 @@ __all__ = [
     "IdentifierList_UserList",
     "IndividualProfileRequest",
     "IndividualProfileResponse",
+    "MetadataTrigger",
     "NotificationId",
     "NotificationPolicyRequest",
     "NotificationPolicyResponse",
@@ -113,8 +116,10 @@ __all__ = [
     "TokenGenerationStyleOptions",
     "TokenGenerationVendorOptions",
     "Trigger",
-    "Trigger_All",
     "Trigger_Amount",
+    "Trigger_Metadata",
+    "Trigger_Vendor",
     "UserNotificationPolicyResponse",
     "VendorNetwork",
+    "VendorTrigger",
 ]

@@ -4,8 +4,6 @@ import typing
 import urllib.parse
 from json.decoder import JSONDecodeError
 
-import pydantic
-
 from ...core.api_error import ApiError
 from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ...core.jsonable_encoder import jsonable_encoder
@@ -18,6 +16,11 @@ from ..commons.errors.unimplemented import Unimplemented
 from ..payment_method_types.types.payment_method_schema_id import PaymentMethodSchemaId
 from ..payment_method_types.types.payment_method_schema_request import PaymentMethodSchemaRequest
 from ..payment_method_types.types.payment_method_schema_response import PaymentMethodSchemaResponse
+
+try:
+    import pydantic.v1 as pydantic  # type: ignore
+except ImportError:
+    import pydantic  # type: ignore
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)

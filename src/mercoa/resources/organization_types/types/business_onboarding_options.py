@@ -3,10 +3,13 @@
 import datetime as dt
 import typing
 
-import pydantic
-
 from ....core.datetime_utils import serialize_datetime
 from .onboarding_option import OnboardingOption
+
+try:
+    import pydantic.v1 as pydantic  # type: ignore
+except ImportError:
+    import pydantic  # type: ignore
 
 
 class BusinessOnboardingOptions(pydantic.BaseModel):
@@ -20,6 +23,7 @@ class BusinessOnboardingOptions(pydantic.BaseModel):
     formation_date: OnboardingOption = pydantic.Field(alias="formationDate")
     website: OnboardingOption
     description: OnboardingOption
+    representatives: OnboardingOption
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

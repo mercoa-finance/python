@@ -11,10 +11,9 @@ except ImportError:
     import pydantic  # type: ignore
 
 
-class BirthDate(pydantic.BaseModel):
-    day: typing.Optional[str]
-    month: typing.Optional[str]
-    year: typing.Optional[str]
+class MetadataTrigger(pydantic.BaseModel):
+    key: str = pydantic.Field(description="The metadata key to match")
+    value: str = pydantic.Field(description="The metadata value the invoice must have to trigger this policy")
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

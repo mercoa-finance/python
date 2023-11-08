@@ -3,14 +3,17 @@
 import datetime as dt
 import typing
 
-import pydantic
-
 from ....core.datetime_utils import serialize_datetime
 from .token_generation_entity_options import TokenGenerationEntityOptions
 from .token_generation_invoice_options import TokenGenerationInvoiceOptions
 from .token_generation_pages_options import TokenGenerationPagesOptions
 from .token_generation_style_options import TokenGenerationStyleOptions
 from .token_generation_vendor_options import TokenGenerationVendorOptions
+
+try:
+    import pydantic.v1 as pydantic  # type: ignore
+except ImportError:
+    import pydantic  # type: ignore
 
 
 class TokenGenerationOptions(pydantic.BaseModel):

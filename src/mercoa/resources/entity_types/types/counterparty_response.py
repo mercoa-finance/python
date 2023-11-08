@@ -3,12 +3,15 @@
 import datetime as dt
 import typing
 
-import pydantic
-
 from ....core.datetime_utils import serialize_datetime
 from ...payment_method_types.types.payment_method_response import PaymentMethodResponse
 from .counterparty_network_type import CounterpartyNetworkType
 from .entity_response import EntityResponse
+
+try:
+    import pydantic.v1 as pydantic  # type: ignore
+except ImportError:
+    import pydantic  # type: ignore
 
 
 class CounterpartyResponse(EntityResponse):

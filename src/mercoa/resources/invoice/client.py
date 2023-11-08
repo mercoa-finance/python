@@ -5,8 +5,6 @@ import typing
 import urllib.parse
 from json.decoder import JSONDecodeError
 
-import pydantic
-
 from ...core.api_error import ApiError
 from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ...core.datetime_utils import serialize_datetime
@@ -36,6 +34,11 @@ from .resources.approval.client import ApprovalClient, AsyncApprovalClient
 from .resources.comment.client import AsyncCommentClient, CommentClient
 from .resources.document.client import AsyncDocumentClient, DocumentClient
 
+try:
+    import pydantic.v1 as pydantic  # type: ignore
+except ImportError:
+    import pydantic  # type: ignore
+
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
 
@@ -50,7 +53,7 @@ class InvoiceClient:
     def find(
         self,
         *,
-        entity_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
+        entity_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]] = None,
         start_date: typing.Optional[dt.datetime] = None,
         end_date: typing.Optional[dt.datetime] = None,
         order_by: typing.Optional[InvoiceOrderByField] = None,
@@ -58,18 +61,18 @@ class InvoiceClient:
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[InvoiceId] = None,
         search: typing.Optional[str] = None,
-        payer_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
-        vendor_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
-        approver_id: typing.Union[typing.Optional[EntityUserId], typing.List[EntityUserId]],
-        invoice_id: typing.Union[typing.Optional[InvoiceId], typing.List[InvoiceId]],
-        status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]],
+        payer_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]] = None,
+        vendor_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]] = None,
+        approver_id: typing.Optional[typing.Union[EntityUserId, typing.List[EntityUserId]]] = None,
+        invoice_id: typing.Optional[typing.Union[InvoiceId, typing.List[InvoiceId]]] = None,
+        status: typing.Optional[typing.Union[InvoiceStatus, typing.List[InvoiceStatus]]] = None,
         include_fees: typing.Optional[bool] = None,
     ) -> FindInvoiceResponse:
         """
         Search invoices for all entities in the organization
 
         Parameters:
-            - entity_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter invoices by the ID of the entity that created the invoice.
+            - entity_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]]. Filter invoices by the ID of the entity that created the invoice.
 
             - start_date: typing.Optional[dt.datetime]. Start date for invoice created on date filter.
 
@@ -85,15 +88,15 @@ class InvoiceClient:
 
             - search: typing.Optional[str]. Filter vendors by name. Partial matches are supported.
 
-            - payer_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter invoices by payer ID.
+            - payer_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]]. Filter invoices by payer ID.
 
-            - vendor_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter invoices by vendor ID.
+            - vendor_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]]. Filter invoices by vendor ID.
 
-            - approver_id: typing.Union[typing.Optional[EntityUserId], typing.List[EntityUserId]]. Filter invoices by assigned approver user ID.
+            - approver_id: typing.Optional[typing.Union[EntityUserId, typing.List[EntityUserId]]]. Filter invoices by assigned approver user ID.
 
-            - invoice_id: typing.Union[typing.Optional[InvoiceId], typing.List[InvoiceId]]. Filter invoices by invoice ID.
+            - invoice_id: typing.Optional[typing.Union[InvoiceId, typing.List[InvoiceId]]]. Filter invoices by invoice ID.
 
-            - status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]]. Invoice status to filter on
+            - status: typing.Optional[typing.Union[InvoiceStatus, typing.List[InvoiceStatus]]]. Invoice status to filter on
 
             - include_fees: typing.Optional[bool]. If true, will include fees as part of the response.
         """
@@ -297,6 +300,15 @@ class InvoiceClient:
 
         Parameters:
             - invoice_id: InvoiceId.
+        ---
+        from mercoa.client import Mercoa
+
+        client = Mercoa(
+            token="YOUR_TOKEN",
+        )
+        client.invoice.get_payer_link(
+            invoice_id="inv_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+        )
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
@@ -372,6 +384,15 @@ class InvoiceClient:
 
         Parameters:
             - invoice_id: InvoiceId.
+        ---
+        from mercoa.client import Mercoa
+
+        client = Mercoa(
+            token="YOUR_TOKEN",
+        )
+        client.invoice.get_vendor_link(
+            invoice_id="inv_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+        )
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
@@ -485,7 +506,7 @@ class AsyncInvoiceClient:
     async def find(
         self,
         *,
-        entity_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
+        entity_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]] = None,
         start_date: typing.Optional[dt.datetime] = None,
         end_date: typing.Optional[dt.datetime] = None,
         order_by: typing.Optional[InvoiceOrderByField] = None,
@@ -493,18 +514,18 @@ class AsyncInvoiceClient:
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[InvoiceId] = None,
         search: typing.Optional[str] = None,
-        payer_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
-        vendor_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
-        approver_id: typing.Union[typing.Optional[EntityUserId], typing.List[EntityUserId]],
-        invoice_id: typing.Union[typing.Optional[InvoiceId], typing.List[InvoiceId]],
-        status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]],
+        payer_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]] = None,
+        vendor_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]] = None,
+        approver_id: typing.Optional[typing.Union[EntityUserId, typing.List[EntityUserId]]] = None,
+        invoice_id: typing.Optional[typing.Union[InvoiceId, typing.List[InvoiceId]]] = None,
+        status: typing.Optional[typing.Union[InvoiceStatus, typing.List[InvoiceStatus]]] = None,
         include_fees: typing.Optional[bool] = None,
     ) -> FindInvoiceResponse:
         """
         Search invoices for all entities in the organization
 
         Parameters:
-            - entity_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter invoices by the ID of the entity that created the invoice.
+            - entity_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]]. Filter invoices by the ID of the entity that created the invoice.
 
             - start_date: typing.Optional[dt.datetime]. Start date for invoice created on date filter.
 
@@ -520,15 +541,15 @@ class AsyncInvoiceClient:
 
             - search: typing.Optional[str]. Filter vendors by name. Partial matches are supported.
 
-            - payer_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter invoices by payer ID.
+            - payer_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]]. Filter invoices by payer ID.
 
-            - vendor_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter invoices by vendor ID.
+            - vendor_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]]. Filter invoices by vendor ID.
 
-            - approver_id: typing.Union[typing.Optional[EntityUserId], typing.List[EntityUserId]]. Filter invoices by assigned approver user ID.
+            - approver_id: typing.Optional[typing.Union[EntityUserId, typing.List[EntityUserId]]]. Filter invoices by assigned approver user ID.
 
-            - invoice_id: typing.Union[typing.Optional[InvoiceId], typing.List[InvoiceId]]. Filter invoices by invoice ID.
+            - invoice_id: typing.Optional[typing.Union[InvoiceId, typing.List[InvoiceId]]]. Filter invoices by invoice ID.
 
-            - status: typing.Union[typing.Optional[InvoiceStatus], typing.List[InvoiceStatus]]. Invoice status to filter on
+            - status: typing.Optional[typing.Union[InvoiceStatus, typing.List[InvoiceStatus]]]. Invoice status to filter on
 
             - include_fees: typing.Optional[bool]. If true, will include fees as part of the response.
         """
@@ -732,6 +753,15 @@ class AsyncInvoiceClient:
 
         Parameters:
             - invoice_id: InvoiceId.
+        ---
+        from mercoa.client import AsyncMercoa
+
+        client = AsyncMercoa(
+            token="YOUR_TOKEN",
+        )
+        await client.invoice.get_payer_link(
+            invoice_id="inv_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+        )
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
@@ -807,6 +837,15 @@ class AsyncInvoiceClient:
 
         Parameters:
             - invoice_id: InvoiceId.
+        ---
+        from mercoa.client import AsyncMercoa
+
+        client = AsyncMercoa(
+            token="YOUR_TOKEN",
+        )
+        await client.invoice.get_vendor_link(
+            invoice_id="inv_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+        )
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",

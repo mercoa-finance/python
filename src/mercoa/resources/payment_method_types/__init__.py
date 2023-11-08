@@ -3,6 +3,7 @@
 from .types import (
     BankAccountRequest,
     BankAccountResponse,
+    BankAccountUpdateRequest,
     BankStatus,
     BankType,
     CardBrand,
@@ -46,6 +47,7 @@ from .errors import PaymentMethodError
 __all__ = [
     "BankAccountRequest",
     "BankAccountResponse",
+    "BankAccountUpdateRequest",
     "BankStatus",
     "BankType",
     "CardBrand",

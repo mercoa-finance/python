@@ -3,14 +3,17 @@
 import datetime as dt
 import typing
 
-import pydantic
-
 from ....core.datetime_utils import serialize_datetime
 from .color_scheme_request import ColorSchemeRequest
 from .email_provider_request import EmailProviderRequest
 from .metadata_schema import MetadataSchema
 from .onboarding_options_request import OnboardingOptionsRequest
 from .payment_methods_request import PaymentMethodsRequest
+
+try:
+    import pydantic.v1 as pydantic  # type: ignore
+except ImportError:
+    import pydantic  # type: ignore
 
 
 class OrganizationRequest(pydantic.BaseModel):

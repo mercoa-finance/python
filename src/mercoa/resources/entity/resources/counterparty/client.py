@@ -4,8 +4,6 @@ import typing
 import urllib.parse
 from json.decoder import JSONDecodeError
 
-import pydantic
-
 from .....core.api_error import ApiError
 from .....core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from .....core.jsonable_encoder import jsonable_encoder
@@ -24,6 +22,11 @@ from ....entity_types.types.entity_hide_payors_request import EntityHidePayorsRe
 from ....entity_types.types.entity_id import EntityId
 from ....entity_types.types.find_counterparties_response import FindCounterpartiesResponse
 
+try:
+    import pydantic.v1 as pydantic  # type: ignore
+except ImportError:
+    import pydantic  # type: ignore
+
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
 
@@ -37,9 +40,11 @@ class CounterpartyClient:
         entity_id: EntityId,
         *,
         name: typing.Optional[str] = None,
-        network_type: typing.Union[typing.Optional[CounterpartyNetworkType], typing.List[CounterpartyNetworkType]],
+        network_type: typing.Optional[
+            typing.Union[CounterpartyNetworkType, typing.List[CounterpartyNetworkType]]
+        ] = None,
         payment_methods: typing.Optional[bool] = None,
-        counterparty_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
+        counterparty_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
     ) -> FindCounterpartiesResponse:
@@ -51,11 +56,11 @@ class CounterpartyClient:
 
             - name: typing.Optional[str]. Filter by counterparty name
 
-            - network_type: typing.Union[typing.Optional[CounterpartyNetworkType], typing.List[CounterpartyNetworkType]]. Filter by network type. By default, only ENTITY counterparties are returned.
+            - network_type: typing.Optional[typing.Union[CounterpartyNetworkType, typing.List[CounterpartyNetworkType]]]. Filter by network type. By default, only ENTITY counterparties are returned.
 
             - payment_methods: typing.Optional[bool]. If true, will include counterparty payment methods as part of the response
 
-            - counterparty_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter by counterparty ids
+            - counterparty_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]]. Filter by counterparty ids
 
             - limit: typing.Optional[int]. Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.
 
@@ -105,9 +110,11 @@ class CounterpartyClient:
         entity_id: EntityId,
         *,
         name: typing.Optional[str] = None,
-        network_type: typing.Union[typing.Optional[CounterpartyNetworkType], typing.List[CounterpartyNetworkType]],
+        network_type: typing.Optional[
+            typing.Union[CounterpartyNetworkType, typing.List[CounterpartyNetworkType]]
+        ] = None,
         payment_methods: typing.Optional[bool] = None,
-        counterparty_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
+        counterparty_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
     ) -> FindCounterpartiesResponse:
@@ -119,11 +126,11 @@ class CounterpartyClient:
 
             - name: typing.Optional[str]. Filter by counterparty name
 
-            - network_type: typing.Union[typing.Optional[CounterpartyNetworkType], typing.List[CounterpartyNetworkType]]. Filter by network type. By default, only ENTITY counterparties are returned.
+            - network_type: typing.Optional[typing.Union[CounterpartyNetworkType, typing.List[CounterpartyNetworkType]]]. Filter by network type. By default, only ENTITY counterparties are returned.
 
             - payment_methods: typing.Optional[bool]. If true, will include counterparty payment methods as part of the response
 
-            - counterparty_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter by counterparty ids
+            - counterparty_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]]. Filter by counterparty ids
 
             - limit: typing.Optional[int]. Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.
 
@@ -326,9 +333,11 @@ class AsyncCounterpartyClient:
         entity_id: EntityId,
         *,
         name: typing.Optional[str] = None,
-        network_type: typing.Union[typing.Optional[CounterpartyNetworkType], typing.List[CounterpartyNetworkType]],
+        network_type: typing.Optional[
+            typing.Union[CounterpartyNetworkType, typing.List[CounterpartyNetworkType]]
+        ] = None,
         payment_methods: typing.Optional[bool] = None,
-        counterparty_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
+        counterparty_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
     ) -> FindCounterpartiesResponse:
@@ -340,11 +349,11 @@ class AsyncCounterpartyClient:
 
             - name: typing.Optional[str]. Filter by counterparty name
 
-            - network_type: typing.Union[typing.Optional[CounterpartyNetworkType], typing.List[CounterpartyNetworkType]]. Filter by network type. By default, only ENTITY counterparties are returned.
+            - network_type: typing.Optional[typing.Union[CounterpartyNetworkType, typing.List[CounterpartyNetworkType]]]. Filter by network type. By default, only ENTITY counterparties are returned.
 
             - payment_methods: typing.Optional[bool]. If true, will include counterparty payment methods as part of the response
 
-            - counterparty_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter by counterparty ids
+            - counterparty_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]]. Filter by counterparty ids
 
             - limit: typing.Optional[int]. Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.
 
@@ -394,9 +403,11 @@ class AsyncCounterpartyClient:
         entity_id: EntityId,
         *,
         name: typing.Optional[str] = None,
-        network_type: typing.Union[typing.Optional[CounterpartyNetworkType], typing.List[CounterpartyNetworkType]],
+        network_type: typing.Optional[
+            typing.Union[CounterpartyNetworkType, typing.List[CounterpartyNetworkType]]
+        ] = None,
         payment_methods: typing.Optional[bool] = None,
-        counterparty_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]],
+        counterparty_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
     ) -> FindCounterpartiesResponse:
@@ -408,11 +419,11 @@ class AsyncCounterpartyClient:
 
             - name: typing.Optional[str]. Filter by counterparty name
 
-            - network_type: typing.Union[typing.Optional[CounterpartyNetworkType], typing.List[CounterpartyNetworkType]]. Filter by network type. By default, only ENTITY counterparties are returned.
+            - network_type: typing.Optional[typing.Union[CounterpartyNetworkType, typing.List[CounterpartyNetworkType]]]. Filter by network type. By default, only ENTITY counterparties are returned.
 
             - payment_methods: typing.Optional[bool]. If true, will include counterparty payment methods as part of the response
 
-            - counterparty_id: typing.Union[typing.Optional[EntityId], typing.List[EntityId]]. Filter by counterparty ids
+            - counterparty_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]]. Filter by counterparty ids
 
             - limit: typing.Optional[int]. Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.
 

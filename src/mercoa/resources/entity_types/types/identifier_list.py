@@ -4,10 +4,14 @@ from __future__ import annotations
 
 import typing
 
-import pydantic
 import typing_extensions
 
 from .entity_user_id import EntityUserId
+
+try:
+    import pydantic.v1 as pydantic  # type: ignore
+except ImportError:
+    import pydantic  # type: ignore
 
 
 class IdentifierList_RolesList(pydantic.BaseModel):

@@ -36,6 +36,7 @@ from .types import (
     IdentifierList_UserList,
     IndividualProfileRequest,
     IndividualProfileResponse,
+    MetadataTrigger,
     NotificationId,
     NotificationPolicyRequest,
     NotificationPolicyResponse,
@@ -57,10 +58,12 @@ from .types import (
     TokenGenerationStyleOptions,
     TokenGenerationVendorOptions,
     Trigger,
-    Trigger_All,
     Trigger_Amount,
+    Trigger_Metadata,
+    Trigger_Vendor,
     UserNotificationPolicyResponse,
     VendorNetwork,
+    VendorTrigger,
 )
 from .errors import EntityError, EntityForeignIdAlreadyExists, InvalidTaxId, TokenGenerationFailed
 
@@ -103,6 +106,7 @@ __all__ = [
     "IndividualProfileRequest",
     "IndividualProfileResponse",
     "InvalidTaxId",
+    "MetadataTrigger",
     "NotificationId",
     "NotificationPolicyRequest",
     "NotificationPolicyResponse",
@@ -125,8 +129,10 @@ __all__ = [
     "TokenGenerationStyleOptions",
     "TokenGenerationVendorOptions",
     "Trigger",
-    "Trigger_All",
     "Trigger_Amount",
+    "Trigger_Metadata",
+    "Trigger_Vendor",
     "UserNotificationPolicyResponse",
     "VendorNetwork",
+    "VendorTrigger",
 ]

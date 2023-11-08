@@ -3,12 +3,15 @@
 import datetime as dt
 import typing
 
-import pydantic
-
 from ....core.datetime_utils import serialize_datetime
 from .currency_code import CurrencyCode
 from .payment_method_schema_field import PaymentMethodSchemaField
 from .payment_method_schema_id import PaymentMethodSchemaId
+
+try:
+    import pydantic.v1 as pydantic  # type: ignore
+except ImportError:
+    import pydantic  # type: ignore
 
 
 class PaymentMethodSchemaResponse(pydantic.BaseModel):

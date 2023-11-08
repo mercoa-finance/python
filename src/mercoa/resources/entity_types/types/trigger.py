@@ -4,10 +4,11 @@ from __future__ import annotations
 
 import typing
 
-import pydantic
 import typing_extensions
 
 from .amount_trigger import AmountTrigger
+from .metadata_trigger import MetadataTrigger
+from .vendor_trigger import VendorTrigger
 
 
 class Trigger_Amount(AmountTrigger):
@@ -19,13 +20,22 @@ class Trigger_Amount(AmountTrigger):
         allow_population_by_field_name = True
 
 
-class Trigger_All(pydantic.BaseModel):
-    type: typing_extensions.Literal["all"]
-    value: typing.Any
+class Trigger_Vendor(VendorTrigger):
+    type: typing_extensions.Literal["vendor"]
 
     class Config:
         frozen = True
         smart_union = True
+        allow_population_by_field_name = True
 
 
-Trigger = typing.Union[Trigger_Amount, Trigger_All]
+class Trigger_Metadata(MetadataTrigger):
+    type: typing_extensions.Literal["metadata"]
+
+    class Config:
+        frozen = True
+        smart_union = True
+        allow_population_by_field_name = True
+
+
+Trigger = typing.Union[Trigger_Amount, Trigger_Vendor, Trigger_Metadata]

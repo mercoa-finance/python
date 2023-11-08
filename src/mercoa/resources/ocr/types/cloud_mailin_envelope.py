@@ -11,10 +11,16 @@ except ImportError:
     import pydantic  # type: ignore
 
 
-class BirthDate(pydantic.BaseModel):
-    day: typing.Optional[str]
-    month: typing.Optional[str]
-    year: typing.Optional[str]
+class CloudMailinEnvelope(pydantic.BaseModel):
+    to: str
+    recipients: typing.List[str]
+    from_: str = pydantic.Field(alias="from")
+    helo_domain: str
+    remote_ip: str
+    spf: typing.Any
+    tls: bool
+    tls_cipher: typing.Optional[str]
+    md_5: typing.Optional[str] = pydantic.Field(alias="md5")
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
@@ -27,4 +33,5 @@ class BirthDate(pydantic.BaseModel):
     class Config:
         frozen = True
         smart_union = True
+        allow_population_by_field_name = True
         json_encoders = {dt.datetime: serialize_datetime}

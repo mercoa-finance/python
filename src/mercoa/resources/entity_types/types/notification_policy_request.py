@@ -3,12 +3,18 @@
 import datetime as dt
 import typing
 
-import pydantic
-
 from ....core.datetime_utils import serialize_datetime
+
+try:
+    import pydantic.v1 as pydantic  # type: ignore
+except ImportError:
+    import pydantic  # type: ignore
 
 
 class NotificationPolicyRequest(pydantic.BaseModel):
+    disabled: typing.Optional[bool] = pydantic.Field(
+        description="Set to true if the selected notification type should be disabled for this entity"
+    )
     additional_roles: typing.List[str] = pydantic.Field(
         alias="additionalRoles",
         description="List of user roles that should receive notifications in addition to the default users for this notification type",

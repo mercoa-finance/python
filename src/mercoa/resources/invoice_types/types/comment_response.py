@@ -3,11 +3,14 @@
 import datetime as dt
 import typing
 
-import pydantic
-
 from ....core.datetime_utils import serialize_datetime
 from ...entity_types.types.entity_user_response import EntityUserResponse
 from .associated_approval_action import AssociatedApprovalAction
+
+try:
+    import pydantic.v1 as pydantic  # type: ignore
+except ImportError:
+    import pydantic  # type: ignore
 
 
 class CommentResponse(pydantic.BaseModel):

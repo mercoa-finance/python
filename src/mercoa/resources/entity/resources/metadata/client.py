@@ -4,8 +4,6 @@ import typing
 import urllib.parse
 from json.decoder import JSONDecodeError
 
-import pydantic
-
 from .....core.api_error import ApiError
 from .....core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from .....core.jsonable_encoder import jsonable_encoder
@@ -17,6 +15,11 @@ from ....commons.errors.unauthorized import Unauthorized
 from ....commons.errors.unimplemented import Unimplemented
 from ....entity_types.types.entity_id import EntityId
 from ....entity_types.types.entity_metadata_response import EntityMetadataResponse
+
+try:
+    import pydantic.v1 as pydantic  # type: ignore
+except ImportError:
+    import pydantic  # type: ignore
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -106,6 +109,17 @@ class MetadataClient:
             - key: str.
 
             - request: typing.List[str].
+        ---
+        from mercoa.client import Mercoa
+
+        client = Mercoa(
+            token="YOUR_TOKEN",
+        )
+        client.entity.update(
+            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+            key="propertyId",
+            request=["prop_123", "prop_456"],
+        )
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
@@ -256,6 +270,17 @@ class AsyncMetadataClient:
             - key: str.
 
             - request: typing.List[str].
+        ---
+        from mercoa.client import AsyncMercoa
+
+        client = AsyncMercoa(
+            token="YOUR_TOKEN",
+        )
+        await client.entity.update(
+            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+            key="propertyId",
+            request=["prop_123", "prop_456"],
+        )
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",

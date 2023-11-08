@@ -3,8 +3,6 @@
 import datetime as dt
 import typing
 
-import pydantic
-
 from ....core.datetime_utils import serialize_datetime
 from ...entity_types.types.approval_policy_response import ApprovalPolicyResponse
 from ...entity_types.types.entity_id import EntityId
@@ -20,6 +18,11 @@ from .invoice_fees_response import InvoiceFeesResponse
 from .invoice_id import InvoiceId
 from .invoice_line_item_response import InvoiceLineItemResponse
 from .invoice_status import InvoiceStatus
+
+try:
+    import pydantic.v1 as pydantic  # type: ignore
+except ImportError:
+    import pydantic  # type: ignore
 
 
 class InvoiceResponse(pydantic.BaseModel):

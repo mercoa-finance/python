@@ -16,6 +16,7 @@ class NotificationType(str, enum.Enum):
     INVOICE_CANCELED = "INVOICE_CANCELED"
     INVOICE_CREATED = "INVOICE_CREATED"
     INVOICE_EMAILED = "INVOICE_EMAILED"
+    INVOICE_FAILED = "INVOICE_FAILED"
 
     def visit(
         self,
@@ -28,6 +29,7 @@ class NotificationType(str, enum.Enum):
         invoice_canceled: typing.Callable[[], T_Result],
         invoice_created: typing.Callable[[], T_Result],
         invoice_emailed: typing.Callable[[], T_Result],
+        invoice_failed: typing.Callable[[], T_Result],
     ) -> T_Result:
         if self is NotificationType.INVOICE_APPROVAL_NEEDED:
             return invoice_approval_needed()
@@ -47,3 +49,5 @@ class NotificationType(str, enum.Enum):
             return invoice_created()
         if self is NotificationType.INVOICE_EMAILED:
             return invoice_emailed()
+        if self is NotificationType.INVOICE_FAILED:
+            return invoice_failed()

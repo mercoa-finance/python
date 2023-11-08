@@ -3,15 +3,19 @@
 import datetime as dt
 import typing
 
-import pydantic
-
 from ....core.datetime_utils import serialize_datetime
 from .bank_status import BankStatus
 from .bank_type import BankType
 from .payment_method_base_response import PaymentMethodBaseResponse
 
+try:
+    import pydantic.v1 as pydantic  # type: ignore
+except ImportError:
+    import pydantic  # type: ignore
+
 
 class BankAccountResponse(PaymentMethodBaseResponse):
+    account_name: str = pydantic.Field(alias="accountName")
     bank_name: str = pydantic.Field(alias="bankName")
     routing_number: str = pydantic.Field(alias="routingNumber")
     account_number: str = pydantic.Field(alias="accountNumber")

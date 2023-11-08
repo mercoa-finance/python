@@ -4,8 +4,6 @@ import typing
 import urllib.parse
 from json.decoder import JSONDecodeError
 
-import pydantic
-
 from .....core.api_error import ApiError
 from .....core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ....commons.errors.auth_header_malformed_error import AuthHeaderMalformedError
@@ -16,6 +14,11 @@ from ....commons.errors.unauthorized import Unauthorized
 from ....commons.errors.unimplemented import Unimplemented
 from ....invoice_types.types.document_response import DocumentResponse
 from ....invoice_types.types.invoice_id import InvoiceId
+
+try:
+    import pydantic.v1 as pydantic  # type: ignore
+except ImportError:
+    import pydantic  # type: ignore
 
 
 class DocumentClient:

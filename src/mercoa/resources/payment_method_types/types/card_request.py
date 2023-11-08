@@ -3,12 +3,15 @@
 import datetime as dt
 import typing
 
-import pydantic
-
 from ....core.datetime_utils import serialize_datetime
 from .card_brand import CardBrand
 from .card_type import CardType
 from .payment_method_base_request import PaymentMethodBaseRequest
+
+try:
+    import pydantic.v1 as pydantic  # type: ignore
+except ImportError:
+    import pydantic  # type: ignore
 
 
 class CardRequest(PaymentMethodBaseRequest):

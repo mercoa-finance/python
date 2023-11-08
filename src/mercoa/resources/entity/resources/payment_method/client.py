@@ -4,8 +4,6 @@ import typing
 import urllib.parse
 from json.decoder import JSONDecodeError
 
-import pydantic
-
 from .....core.api_error import ApiError
 from .....core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from .....core.jsonable_encoder import jsonable_encoder
@@ -24,6 +22,11 @@ from ....payment_method_types.types.payment_method_response import PaymentMethod
 from ....payment_method_types.types.payment_method_type import PaymentMethodType
 from ....payment_method_types.types.payment_method_update_request import PaymentMethodUpdateRequest
 
+try:
+    import pydantic.v1 as pydantic  # type: ignore
+except ImportError:
+    import pydantic  # type: ignore
+
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
 
@@ -36,13 +39,13 @@ class PaymentMethodClient:
         self,
         entity_id: EntityId,
         *,
-        type: typing.Union[typing.Optional[PaymentMethodType], typing.List[PaymentMethodType]],
+        type: typing.Optional[typing.Union[PaymentMethodType, typing.List[PaymentMethodType]]] = None,
     ) -> typing.List[PaymentMethodResponse]:
         """
         Parameters:
             - entity_id: EntityId.
 
-            - type: typing.Union[typing.Optional[PaymentMethodType], typing.List[PaymentMethodType]]. Type of payment method to filter
+            - type: typing.Optional[typing.Union[PaymentMethodType, typing.List[PaymentMethodType]]]. Type of payment method to filter
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
@@ -328,13 +331,13 @@ class AsyncPaymentMethodClient:
         self,
         entity_id: EntityId,
         *,
-        type: typing.Union[typing.Optional[PaymentMethodType], typing.List[PaymentMethodType]],
+        type: typing.Optional[typing.Union[PaymentMethodType, typing.List[PaymentMethodType]]] = None,
     ) -> typing.List[PaymentMethodResponse]:
         """
         Parameters:
             - entity_id: EntityId.
 
-            - type: typing.Union[typing.Optional[PaymentMethodType], typing.List[PaymentMethodType]]. Type of payment method to filter
+            - type: typing.Optional[typing.Union[PaymentMethodType, typing.List[PaymentMethodType]]]. Type of payment method to filter
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",

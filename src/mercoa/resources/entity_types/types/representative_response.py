@@ -3,14 +3,17 @@
 import datetime as dt
 import typing
 
-import pydantic
-
 from ....core.datetime_utils import serialize_datetime
 from ...commons.types.address import Address
 from ...commons.types.full_name import FullName
 from ...commons.types.phone_number import PhoneNumber
 from .representative_id import RepresentativeId
 from .responsibilities import Responsibilities
+
+try:
+    import pydantic.v1 as pydantic  # type: ignore
+except ImportError:
+    import pydantic  # type: ignore
 
 
 class RepresentativeResponse(pydantic.BaseModel):

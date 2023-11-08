@@ -5,8 +5,6 @@ import typing
 import urllib.parse
 from json.decoder import JSONDecodeError
 
-import pydantic
-
 from .......core.api_error import ApiError
 from .......core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from .......core.datetime_utils import serialize_datetime
@@ -25,6 +23,11 @@ from ......entity_types.types.notification_id import NotificationId
 from ......entity_types.types.notification_response import NotificationResponse
 from ......entity_types.types.notification_type import NotificationType
 
+try:
+    import pydantic.v1 as pydantic  # type: ignore
+except ImportError:
+    import pydantic  # type: ignore
+
 
 class NotificationsClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
@@ -40,7 +43,7 @@ class NotificationsClient:
         order_direction: typing.Optional[OrderDirection] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[NotificationId] = None,
-        notification_type: typing.Union[typing.Optional[NotificationType], typing.List[NotificationType]],
+        notification_type: typing.Optional[typing.Union[NotificationType, typing.List[NotificationType]]] = None,
     ) -> FindNotificationResponse:
         """
         Parameters:
@@ -58,7 +61,7 @@ class NotificationsClient:
 
             - starting_after: typing.Optional[NotificationId]. The ID of the notification to start after. If not provided, the first page of invoices will be returned.
 
-            - notification_type: typing.Union[typing.Optional[NotificationType], typing.List[NotificationType]]. The type of notification to filter by.
+            - notification_type: typing.Optional[typing.Union[NotificationType, typing.List[NotificationType]]]. The type of notification to filter by.
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
@@ -153,7 +156,7 @@ class AsyncNotificationsClient:
         order_direction: typing.Optional[OrderDirection] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[NotificationId] = None,
-        notification_type: typing.Union[typing.Optional[NotificationType], typing.List[NotificationType]],
+        notification_type: typing.Optional[typing.Union[NotificationType, typing.List[NotificationType]]] = None,
     ) -> FindNotificationResponse:
         """
         Parameters:
@@ -171,7 +174,7 @@ class AsyncNotificationsClient:
 
             - starting_after: typing.Optional[NotificationId]. The ID of the notification to start after. If not provided, the first page of invoices will be returned.
 
-            - notification_type: typing.Union[typing.Optional[NotificationType], typing.List[NotificationType]]. The type of notification to filter by.
+            - notification_type: typing.Optional[typing.Union[NotificationType, typing.List[NotificationType]]]. The type of notification to filter by.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",

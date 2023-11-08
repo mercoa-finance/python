@@ -3,8 +3,6 @@
 import urllib.parse
 from json.decoder import JSONDecodeError
 
-import pydantic
-
 from ...core.api_error import ApiError
 from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ...core.remove_none_from_dict import remove_none_from_dict
@@ -15,6 +13,11 @@ from ..commons.errors.not_found import NotFound
 from ..commons.errors.unauthorized import Unauthorized
 from ..commons.errors.unimplemented import Unimplemented
 from .types.bank_lookup_response import BankLookupResponse
+
+try:
+    import pydantic.v1 as pydantic  # type: ignore
+except ImportError:
+    import pydantic  # type: ignore
 
 
 class BankLookupClient:

@@ -4,8 +4,6 @@ import typing
 import urllib.parse
 from json.decoder import JSONDecodeError
 
-import pydantic
-
 from .....core.api_error import ApiError
 from .....core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from .....core.jsonable_encoder import jsonable_encoder
@@ -23,6 +21,11 @@ from ....entity_types.types.entity_user_response import EntityUserResponse
 from ....entity_types.types.token_generation_options import TokenGenerationOptions
 from .resources.notification_policy.client import AsyncNotificationPolicyClient, NotificationPolicyClient
 from .resources.notifications.client import AsyncNotificationsClient, NotificationsClient
+
+try:
+    import pydantic.v1 as pydantic  # type: ignore
+except ImportError:
+    import pydantic  # type: ignore
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -224,6 +227,20 @@ class UserClient:
             - user_id: EntityUserId.
 
             - request: TokenGenerationOptions.
+        ---
+        from mercoa import TokenGenerationOptions
+        from mercoa.client import Mercoa
+
+        client = Mercoa(
+            token="YOUR_TOKEN",
+        )
+        client.entity.user.get_token(
+            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+            user_id="user_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+            request=TokenGenerationOptions(
+                expires_in="1h",
+            ),
+        )
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
@@ -454,6 +471,20 @@ class AsyncUserClient:
             - user_id: EntityUserId.
 
             - request: TokenGenerationOptions.
+        ---
+        from mercoa import TokenGenerationOptions
+        from mercoa.client import AsyncMercoa
+
+        client = AsyncMercoa(
+            token="YOUR_TOKEN",
+        )
+        await client.entity.user.get_token(
+            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+            user_id="user_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+            request=TokenGenerationOptions(
+                expires_in="1h",
+            ),
+        )
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",

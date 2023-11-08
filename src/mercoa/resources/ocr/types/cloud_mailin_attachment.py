@@ -11,10 +11,14 @@ except ImportError:
     import pydantic  # type: ignore
 
 
-class BirthDate(pydantic.BaseModel):
-    day: typing.Optional[str]
-    month: typing.Optional[str]
-    year: typing.Optional[str]
+class CloudMailinAttachment(pydantic.BaseModel):
+    content: typing.Optional[str]
+    url: typing.Optional[str]
+    file_name: str
+    content_type: str
+    size: typing.Any
+    disposition: typing.Any
+    content_id: typing.Any
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

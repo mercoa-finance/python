@@ -4,10 +4,14 @@ from __future__ import annotations
 
 import typing
 
-import pydantic
 import typing_extensions
 
 from .invoice_notification_configuration_request import InvoiceNotificationConfigurationRequest
+
+try:
+    import pydantic.v1 as pydantic  # type: ignore
+except ImportError:
+    import pydantic  # type: ignore
 
 
 class NotificationConfigurationRequest_Invoice(InvoiceNotificationConfigurationRequest):

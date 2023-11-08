@@ -6,6 +6,7 @@ import typing
 
 import typing_extensions
 
+from .bank_account_update_request import BankAccountUpdateRequest
 from .custom_payment_method_update_request import CustomPaymentMethodUpdateRequest
 from .payment_method_base_request import PaymentMethodBaseRequest
 
@@ -19,7 +20,7 @@ class PaymentMethodUpdateRequest_Custom(CustomPaymentMethodUpdateRequest):
         allow_population_by_field_name = True
 
 
-class PaymentMethodUpdateRequest_BankAccount(PaymentMethodBaseRequest):
+class PaymentMethodUpdateRequest_BankAccount(BankAccountUpdateRequest):
     type: typing_extensions.Literal["bankAccount"]
 
     class Config:
