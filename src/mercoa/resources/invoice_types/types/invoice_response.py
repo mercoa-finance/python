@@ -31,7 +31,7 @@ class InvoiceResponse(pydantic.BaseModel):
     amount: typing.Optional[float] = pydantic.Field(description="Total amount of invoice in major units")
     currency: typing.Optional[CurrencyCode]
     invoice_date: typing.Optional[dt.datetime] = pydantic.Field(
-        alias="invoiceDate", description="Date the invoice was created."
+        alias="invoiceDate", description="Date the invoice was issued."
     )
     deduction_date: typing.Optional[dt.datetime] = pydantic.Field(
         alias="deductionDate", description="Date when funds will be deducted from payer's account."
@@ -64,8 +64,12 @@ class InvoiceResponse(pydantic.BaseModel):
     approvers: typing.List[ApprovalSlot]
     approval_policy: typing.List[ApprovalPolicyResponse] = pydantic.Field(alias="approvalPolicy")
     metadata: typing.Dict[str, str] = pydantic.Field(description="Metadata associated with this invoice.")
-    created_by: typing.Optional[EntityUserResponse] = pydantic.Field(
-        alias="createdBy", description="Entity user who created this invoice."
+    foreign_id: typing.Optional[str] = pydantic.Field(
+        alias="foreignId",
+        description="The ID used to identify this invoice in your system. This ID must be unique within each creatorEntity in your system, e.g. two invoices with the same creatorEntity may not have the same foreign ID.",
+    )
+    creator_user: typing.Optional[EntityUserResponse] = pydantic.Field(
+        alias="creatorUser", description="Entity user who created this invoice."
     )
     failure_type: typing.Optional[InvoiceFailureType] = pydantic.Field(
         alias="failureType",

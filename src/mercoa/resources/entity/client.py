@@ -61,7 +61,8 @@ class EntityClient:
     def find(
         self,
         *,
-        owned_by_org: typing.Optional[bool] = None,
+        payment_methods: typing.Optional[bool] = None,
+        is_customer: typing.Optional[bool] = None,
         foreign_id: typing.Optional[typing.Union[str, typing.List[str]]] = None,
         status: typing.Optional[typing.Union[EntityStatus, typing.List[EntityStatus]]] = None,
         is_payee: typing.Optional[bool] = None,
@@ -69,12 +70,15 @@ class EntityClient:
         name: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
+        owned_by_org: typing.Optional[bool] = None,
     ) -> FindEntityResponse:
         """
         Search all entities with the given filters. If no filters are provided, all entities will be returned.
 
         Parameters:
-            - owned_by_org: typing.Optional[bool]. If true, only entities with a direct relationship to the requesting organization will be returned. If false or not provided, all entities will be returned.
+            - payment_methods: typing.Optional[bool]. If true, will include entity payment methods as part of the response
+
+            - is_customer: typing.Optional[bool]. If true, only entities with a direct relationship to the requesting organization will be returned. If false or not provided, all entities will be returned.
 
             - foreign_id: typing.Optional[typing.Union[str, typing.List[str]]]. ID used to identify this entity in your system
 
@@ -91,13 +95,16 @@ class EntityClient:
             - limit: typing.Optional[int]. Number of entities to return. Limit can range between 1 and 100, and the default is 10.
 
             - starting_after: typing.Optional[EntityId]. The ID of the entity to start after. If not provided, the first page of entities will be returned.
+
+            - owned_by_org: typing.Optional[bool]. [DEPRECATED - use isCustomer] If true, only entities with a direct relationship to the requesting organization will be returned. If false or not provided, all entities will be returned.
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "entity"),
             params=remove_none_from_dict(
                 {
-                    "ownedByOrg": owned_by_org,
+                    "paymentMethods": payment_methods,
+                    "isCustomer": is_customer,
                     "foreignId": foreign_id,
                     "status": status,
                     "isPayee": is_payee,
@@ -105,6 +112,7 @@ class EntityClient:
                     "name": name,
                     "limit": limit,
                     "startingAfter": starting_after,
+                    "ownedByOrg": owned_by_org,
                 }
             ),
             headers=self._client_wrapper.get_headers(),
@@ -418,22 +426,27 @@ class EntityClient:
         entity_id: EntityId,
         *,
         type: EntityOnboardingLinkType,
+        expires_in: typing.Optional[str] = None,
         connected_entity_id: typing.Optional[EntityId] = None,
     ) -> str:
         """
-        Generate an onboarding link for the entity. The onboarding link will be valid for 24 hours.
+        Generate an onboarding link for the entity.
 
         Parameters:
             - entity_id: EntityId.
 
             - type: EntityOnboardingLinkType. The type of onboarding link to generate. If not provided, the default is payee. The onboarding options are determined by your organization's onboarding configuration.
 
+            - expires_in: typing.Optional[str]. Expressed in seconds or a string describing a time span. The default is 24h.
+
             - connected_entity_id: typing.Optional[EntityId]. The ID of the entity to connect to. If onboarding a payee, this should be the payor entity ID. If onboarding a payor, this should be the payee entity ID. If no connected entity ID is provided, the onboarding link will be for a standalone entity.
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/onboarding"),
-            params=remove_none_from_dict({"type": type, "connectedEntityId": connected_entity_id}),
+            params=remove_none_from_dict(
+                {"type": type, "expiresIn": expires_in, "connectedEntityId": connected_entity_id}
+            ),
             headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
@@ -463,22 +476,27 @@ class EntityClient:
         entity_id: EntityId,
         *,
         type: EntityOnboardingLinkType,
+        expires_in: typing.Optional[str] = None,
         connected_entity_id: typing.Optional[EntityId] = None,
     ) -> None:
         """
-        Send an email with a onboarding link to the entity. The email will be sent to the email address associated with the entity. The onboarding link will be valid for 7 days.
+        Send an email with a onboarding link to the entity. The email will be sent to the email address associated with the entity.
 
         Parameters:
             - entity_id: EntityId.
 
             - type: EntityOnboardingLinkType. The type of onboarding link to generate. If not provided, the default is payee. The onboarding options are determined by your organization's onboarding configuration.
 
+            - expires_in: typing.Optional[str]. Expressed in seconds or a string describing a time span. The default is 7 days.
+
             - connected_entity_id: typing.Optional[EntityId]. The ID of the entity to connect to. If onboarding a payee, this should be the payor entity ID. If onboarding a payor, this should be the payee entity ID. If no connected entity ID is provided, the onboarding link will be for a standalone entity.
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/onboarding"),
-            params=remove_none_from_dict({"type": type, "connectedEntityId": connected_entity_id}),
+            params=remove_none_from_dict(
+                {"type": type, "expiresIn": expires_in, "connectedEntityId": connected_entity_id}
+            ),
             headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
@@ -519,7 +537,8 @@ class AsyncEntityClient:
     async def find(
         self,
         *,
-        owned_by_org: typing.Optional[bool] = None,
+        payment_methods: typing.Optional[bool] = None,
+        is_customer: typing.Optional[bool] = None,
         foreign_id: typing.Optional[typing.Union[str, typing.List[str]]] = None,
         status: typing.Optional[typing.Union[EntityStatus, typing.List[EntityStatus]]] = None,
         is_payee: typing.Optional[bool] = None,
@@ -527,12 +546,15 @@ class AsyncEntityClient:
         name: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
+        owned_by_org: typing.Optional[bool] = None,
     ) -> FindEntityResponse:
         """
         Search all entities with the given filters. If no filters are provided, all entities will be returned.
 
         Parameters:
-            - owned_by_org: typing.Optional[bool]. If true, only entities with a direct relationship to the requesting organization will be returned. If false or not provided, all entities will be returned.
+            - payment_methods: typing.Optional[bool]. If true, will include entity payment methods as part of the response
+
+            - is_customer: typing.Optional[bool]. If true, only entities with a direct relationship to the requesting organization will be returned. If false or not provided, all entities will be returned.
 
             - foreign_id: typing.Optional[typing.Union[str, typing.List[str]]]. ID used to identify this entity in your system
 
@@ -549,13 +571,16 @@ class AsyncEntityClient:
             - limit: typing.Optional[int]. Number of entities to return. Limit can range between 1 and 100, and the default is 10.
 
             - starting_after: typing.Optional[EntityId]. The ID of the entity to start after. If not provided, the first page of entities will be returned.
+
+            - owned_by_org: typing.Optional[bool]. [DEPRECATED - use isCustomer] If true, only entities with a direct relationship to the requesting organization will be returned. If false or not provided, all entities will be returned.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "entity"),
             params=remove_none_from_dict(
                 {
-                    "ownedByOrg": owned_by_org,
+                    "paymentMethods": payment_methods,
+                    "isCustomer": is_customer,
                     "foreignId": foreign_id,
                     "status": status,
                     "isPayee": is_payee,
@@ -563,6 +588,7 @@ class AsyncEntityClient:
                     "name": name,
                     "limit": limit,
                     "startingAfter": starting_after,
+                    "ownedByOrg": owned_by_org,
                 }
             ),
             headers=self._client_wrapper.get_headers(),
@@ -876,22 +902,27 @@ class AsyncEntityClient:
         entity_id: EntityId,
         *,
         type: EntityOnboardingLinkType,
+        expires_in: typing.Optional[str] = None,
         connected_entity_id: typing.Optional[EntityId] = None,
     ) -> str:
         """
-        Generate an onboarding link for the entity. The onboarding link will be valid for 24 hours.
+        Generate an onboarding link for the entity.
 
         Parameters:
             - entity_id: EntityId.
 
             - type: EntityOnboardingLinkType. The type of onboarding link to generate. If not provided, the default is payee. The onboarding options are determined by your organization's onboarding configuration.
 
+            - expires_in: typing.Optional[str]. Expressed in seconds or a string describing a time span. The default is 24h.
+
             - connected_entity_id: typing.Optional[EntityId]. The ID of the entity to connect to. If onboarding a payee, this should be the payor entity ID. If onboarding a payor, this should be the payee entity ID. If no connected entity ID is provided, the onboarding link will be for a standalone entity.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/onboarding"),
-            params=remove_none_from_dict({"type": type, "connectedEntityId": connected_entity_id}),
+            params=remove_none_from_dict(
+                {"type": type, "expiresIn": expires_in, "connectedEntityId": connected_entity_id}
+            ),
             headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
@@ -921,22 +952,27 @@ class AsyncEntityClient:
         entity_id: EntityId,
         *,
         type: EntityOnboardingLinkType,
+        expires_in: typing.Optional[str] = None,
         connected_entity_id: typing.Optional[EntityId] = None,
     ) -> None:
         """
-        Send an email with a onboarding link to the entity. The email will be sent to the email address associated with the entity. The onboarding link will be valid for 7 days.
+        Send an email with a onboarding link to the entity. The email will be sent to the email address associated with the entity.
 
         Parameters:
             - entity_id: EntityId.
 
             - type: EntityOnboardingLinkType. The type of onboarding link to generate. If not provided, the default is payee. The onboarding options are determined by your organization's onboarding configuration.
 
+            - expires_in: typing.Optional[str]. Expressed in seconds or a string describing a time span. The default is 7 days.
+
             - connected_entity_id: typing.Optional[EntityId]. The ID of the entity to connect to. If onboarding a payee, this should be the payor entity ID. If onboarding a payor, this should be the payee entity ID. If no connected entity ID is provided, the onboarding link will be for a standalone entity.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/onboarding"),
-            params=remove_none_from_dict({"type": type, "connectedEntityId": connected_entity_id}),
+            params=remove_none_from_dict(
+                {"type": type, "expiresIn": expires_in, "connectedEntityId": connected_entity_id}
+            ),
             headers=self._client_wrapper.get_headers(),
             timeout=60,
         )

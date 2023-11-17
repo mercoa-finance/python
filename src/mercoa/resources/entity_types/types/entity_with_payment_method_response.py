@@ -4,7 +4,8 @@ import datetime as dt
 import typing
 
 from ....core.datetime_utils import serialize_datetime
-from .entity_with_payment_method_response import EntityWithPaymentMethodResponse
+from ...payment_method_types.types.payment_method_response import PaymentMethodResponse
+from .entity_response import EntityResponse
 
 try:
     import pydantic.v1 as pydantic  # type: ignore
@@ -12,14 +13,8 @@ except ImportError:
     import pydantic  # type: ignore
 
 
-class FindEntityResponse(pydantic.BaseModel):
-    count: int = pydantic.Field(
-        description="Total number of entities for the given filters. This value is not limited by the limit parameter. It is provided so that you can determine how many pages of results are available."
-    )
-    has_more: bool = pydantic.Field(
-        alias="hasMore", description="True if there are more entities available for the given filters."
-    )
-    data: typing.List[EntityWithPaymentMethodResponse]
+class EntityWithPaymentMethodResponse(EntityResponse):
+    payment_methods: typing.Optional[typing.List[PaymentMethodResponse]] = pydantic.Field(alias="paymentMethods")
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

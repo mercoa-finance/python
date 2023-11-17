@@ -25,7 +25,7 @@ class InvoiceRequest(pydantic.BaseModel):
     )
     currency: typing.Optional[CurrencyCode]
     invoice_date: typing.Optional[dt.datetime] = pydantic.Field(
-        alias="invoiceDate", description="Date the invoice was created."
+        alias="invoiceDate", description="Date the invoice was issued."
     )
     deduction_date: typing.Optional[dt.datetime] = pydantic.Field(
         alias="deductionDate", description="Date when funds will be deducted from payer's account."
@@ -57,16 +57,25 @@ class InvoiceRequest(pydantic.BaseModel):
     metadata: typing.Optional[typing.Dict[str, str]] = pydantic.Field(
         description="Metadata associated with this invoice. You can specify up to 10 keys, with key names up to 40 characters long and values up to 200 characters long."
     )
+    foreign_id: typing.Optional[str] = pydantic.Field(
+        alias="foreignId",
+        description="The ID used to identify this invoice in your system. This ID must be unique within each creatorEntity in your system, e.g. two invoices with the same creatorEntity may not have the same foreign ID.",
+    )
     uploaded_image: typing.Optional[str] = pydantic.Field(
         alias="uploadedImage",
         description="Base64 encoded image or PDF of invoice. PNG, JPG, and PDF are supported. 10MB max.",
     )
-    created_by_id: typing.Optional[EntityUserId] = pydantic.Field(
-        alias="createdById", description="ID of entity user who created this invoice."
+    creator_entity_id: typing.Optional[EntityId] = pydantic.Field(
+        alias="creatorEntityId", description="ID of entity who created this invoice."
+    )
+    creator_user_id: typing.Optional[EntityUserId] = pydantic.Field(
+        alias="creatorUserId", description="ID of entity user who created this invoice."
     )
     creator_id: typing.Optional[EntityId] = pydantic.Field(
-        alias="creatorId",
-        description="ID of entity who created this invoice. If not provided, will default to the payerId. If payerId is not provided, will default to the vendorId.",
+        alias="creatorId", description="[DEPRECATED - use creatorEntityId] ID of entity who created this invoice."
+    )
+    created_by_id: typing.Optional[EntityUserId] = pydantic.Field(
+        alias="createdById", description="[DEPRECATED - use creatorUserId] ID of entity user who created this invoice."
     )
 
     def json(self, **kwargs: typing.Any) -> str:

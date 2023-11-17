@@ -27,6 +27,7 @@ from .entity_update_request import EntityUpdateRequest
 from .entity_user_id import EntityUserId
 from .entity_user_request import EntityUserRequest
 from .entity_user_response import EntityUserResponse
+from .entity_with_payment_method_response import EntityWithPaymentMethodResponse
 from .find_counterparties_response import FindCounterpartiesResponse
 from .find_entity_response import FindEntityResponse
 from .find_notification_response import FindNotificationResponse
@@ -86,6 +87,7 @@ __all__ = [
     "EntityUserId",
     "EntityUserRequest",
     "EntityUserResponse",
+    "EntityWithPaymentMethodResponse",
     "FindCounterpartiesResponse",
     "FindEntityResponse",
     "FindNotificationResponse",
