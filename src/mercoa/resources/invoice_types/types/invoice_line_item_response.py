@@ -25,6 +25,9 @@ class InvoiceLineItemResponse(pydantic.BaseModel):
     service_start_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceStartDate")
     service_end_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceEndDate")
     metadata: typing.Optional[typing.Dict[str, str]]
+    gl_account_id: typing.Optional[str] = pydantic.Field(
+        alias="glAccountId", description="ID of general ledger account associated with this line item."
+    )
     created_at: dt.datetime = pydantic.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
 

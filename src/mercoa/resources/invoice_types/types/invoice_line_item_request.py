@@ -30,6 +30,9 @@ class InvoiceLineItemRequest(pydantic.BaseModel):
     service_start_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceStartDate")
     service_end_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceEndDate")
     metadata: typing.Optional[typing.Dict[str, str]]
+    gl_account_id: typing.Optional[str] = pydantic.Field(
+        alias="glAccountId", description="ID of general ledger account associated with this line item."
+    )
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

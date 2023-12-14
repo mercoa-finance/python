@@ -21,12 +21,13 @@ class Mercoa:
         base_url: typing.Optional[str] = None,
         environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION,
         token: typing.Union[str, typing.Callable[[], str]],
-        timeout: typing.Optional[float] = 60
+        timeout: typing.Optional[float] = 60,
+        httpx_client: typing.Optional[httpx.Client] = None
     ):
         self._client_wrapper = SyncClientWrapper(
             base_url=_get_base_url(base_url=base_url, environment=environment),
             token=token,
-            httpx_client=httpx.Client(timeout=timeout),
+            httpx_client=httpx.Client(timeout=timeout) if httpx_client is None else httpx_client,
         )
         self.entity = EntityClient(client_wrapper=self._client_wrapper)
         self.invoice = InvoiceClient(client_wrapper=self._client_wrapper)
@@ -43,12 +44,13 @@ class AsyncMercoa:
         base_url: typing.Optional[str] = None,
         environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION,
         token: typing.Union[str, typing.Callable[[], str]],
-        timeout: typing.Optional[float] = 60
+        timeout: typing.Optional[float] = 60,
+        httpx_client: typing.Optional[httpx.AsyncClient] = None
     ):
         self._client_wrapper = AsyncClientWrapper(
             base_url=_get_base_url(base_url=base_url, environment=environment),
             token=token,
-            httpx_client=httpx.AsyncClient(timeout=timeout),
+            httpx_client=httpx.AsyncClient(timeout=timeout) if httpx_client is None else httpx_client,
         )
         self.entity = AsyncEntityClient(client_wrapper=self._client_wrapper)
         self.invoice = AsyncInvoiceClient(client_wrapper=self._client_wrapper)

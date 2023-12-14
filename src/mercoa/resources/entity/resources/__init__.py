@@ -3,6 +3,7 @@
 from . import (
     approval_policy,
     counterparty,
+    external_accounting_system,
     invoice,
     metadata,
     notification_policy,
@@ -11,12 +12,27 @@ from . import (
     user,
 )
 from .approval_policy import NumApproverLessThanOneError, NumApproversUserListMismatchError
+from .external_accounting_system import (
+    CodatCompanyCreationRequest,
+    CodatCompanyResponse,
+    ExternalAccountingSystemCompanyCreationRequest,
+    ExternalAccountingSystemCompanyCreationRequest_Codat,
+    ExternalAccountingSystemCompanyResponse,
+    ExternalAccountingSystemCompanyResponse_Codat,
+)
 
 __all__ = [
+    "CodatCompanyCreationRequest",
+    "CodatCompanyResponse",
+    "ExternalAccountingSystemCompanyCreationRequest",
+    "ExternalAccountingSystemCompanyCreationRequest_Codat",
+    "ExternalAccountingSystemCompanyResponse",
+    "ExternalAccountingSystemCompanyResponse_Codat",
     "NumApproverLessThanOneError",
     "NumApproversUserListMismatchError",
     "approval_policy",
     "counterparty",
+    "external_accounting_system",
     "invoice",
     "metadata",
     "notification_policy",

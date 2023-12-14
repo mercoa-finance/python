@@ -3,8 +3,7 @@
 import datetime as dt
 import typing
 
-from ....core.datetime_utils import serialize_datetime
-from .onboarding_option import OnboardingOption
+from ......core.datetime_utils import serialize_datetime
 
 try:
     import pydantic.v1 as pydantic  # type: ignore
@@ -12,14 +11,8 @@ except ImportError:
     import pydantic  # type: ignore
 
 
-class IndividualOnboardingOptions(pydantic.BaseModel):
-    terms_of_service: OnboardingOption = pydantic.Field(alias="termsOfService")
-    email: OnboardingOption
-    name: OnboardingOption
-    date_of_birth: OnboardingOption = pydantic.Field(alias="dateOfBirth")
-    ssn_last_4: OnboardingOption = pydantic.Field(alias="ssnLast4")
-    address: OnboardingOption
-    phone: OnboardingOption
+class CodatCompanyResponse(pydantic.BaseModel):
+    company_id: str = pydantic.Field(alias="companyId")
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

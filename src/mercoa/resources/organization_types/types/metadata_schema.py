@@ -17,6 +17,10 @@ class MetadataSchema(pydantic.BaseModel):
     key: str
     display_name: str = pydantic.Field(alias="displayName")
     description: typing.Optional[str]
+    line_item: typing.Optional[bool] = pydantic.Field(
+        alias="lineItem",
+        description="Whether or not this field should be shown on line items. If true, this field will be shown on each line item. If false, the field will be shown on the invoice level. Defaults to false.",
+    )
     type: MetadataType
     allow_multiple: typing.Optional[bool] = pydantic.Field(
         alias="allowMultiple",

@@ -71,12 +71,6 @@ class InvoiceRequest(pydantic.BaseModel):
     creator_user_id: typing.Optional[EntityUserId] = pydantic.Field(
         alias="creatorUserId", description="ID of entity user who created this invoice."
     )
-    creator_id: typing.Optional[EntityId] = pydantic.Field(
-        alias="creatorId", description="[DEPRECATED - use creatorEntityId] ID of entity who created this invoice."
-    )
-    created_by_id: typing.Optional[EntityUserId] = pydantic.Field(
-        alias="createdById", description="[DEPRECATED - use creatorUserId] ID of entity user who created this invoice."
-    )
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

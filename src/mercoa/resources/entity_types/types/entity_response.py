@@ -41,10 +41,6 @@ class EntityResponse(pydantic.BaseModel):
     )
     is_payor: bool = pydantic.Field(alias="isPayor", description="True if this entity can pay invoices.")
     is_payee: bool = pydantic.Field(alias="isPayee", description="True if this entity can receive payments.")
-    owned_by_org: bool = pydantic.Field(
-        alias="ownedByOrg",
-        description="[DEPRECATED - use isCustomer] - True if this entity has a direct relationship with your organization.",
-    )
     created_at: dt.datetime = pydantic.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
 

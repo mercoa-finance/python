@@ -30,6 +30,10 @@ from ..entity_types.types.find_entity_response import FindEntityResponse
 from ..entity_types.types.token_generation_options import TokenGenerationOptions
 from .resources.approval_policy.client import ApprovalPolicyClient, AsyncApprovalPolicyClient
 from .resources.counterparty.client import AsyncCounterpartyClient, CounterpartyClient
+from .resources.external_accounting_system.client import (
+    AsyncExternalAccountingSystemClient,
+    ExternalAccountingSystemClient,
+)
 from .resources.invoice.client import AsyncInvoiceClient, InvoiceClient
 from .resources.metadata.client import AsyncMetadataClient, MetadataClient
 from .resources.notification_policy.client import AsyncNotificationPolicyClient, NotificationPolicyClient
@@ -52,6 +56,7 @@ class EntityClient:
         self.user = UserClient(client_wrapper=self._client_wrapper)
         self.approval_policy = ApprovalPolicyClient(client_wrapper=self._client_wrapper)
         self.counterparty = CounterpartyClient(client_wrapper=self._client_wrapper)
+        self.external_accounting_system = ExternalAccountingSystemClient(client_wrapper=self._client_wrapper)
         self.invoice = InvoiceClient(client_wrapper=self._client_wrapper)
         self.metadata = MetadataClient(client_wrapper=self._client_wrapper)
         self.notification_policy = NotificationPolicyClient(client_wrapper=self._client_wrapper)
@@ -70,7 +75,6 @@ class EntityClient:
         name: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
-        owned_by_org: typing.Optional[bool] = None,
     ) -> FindEntityResponse:
         """
         Search all entities with the given filters. If no filters are provided, all entities will be returned.
@@ -95,8 +99,6 @@ class EntityClient:
             - limit: typing.Optional[int]. Number of entities to return. Limit can range between 1 and 100, and the default is 10.
 
             - starting_after: typing.Optional[EntityId]. The ID of the entity to start after. If not provided, the first page of entities will be returned.
-
-            - owned_by_org: typing.Optional[bool]. [DEPRECATED - use isCustomer] If true, only entities with a direct relationship to the requesting organization will be returned. If false or not provided, all entities will be returned.
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
@@ -112,7 +114,6 @@ class EntityClient:
                     "name": name,
                     "limit": limit,
                     "startingAfter": starting_after,
-                    "ownedByOrg": owned_by_org,
                 }
             ),
             headers=self._client_wrapper.get_headers(),
@@ -528,6 +529,7 @@ class AsyncEntityClient:
         self.user = AsyncUserClient(client_wrapper=self._client_wrapper)
         self.approval_policy = AsyncApprovalPolicyClient(client_wrapper=self._client_wrapper)
         self.counterparty = AsyncCounterpartyClient(client_wrapper=self._client_wrapper)
+        self.external_accounting_system = AsyncExternalAccountingSystemClient(client_wrapper=self._client_wrapper)
         self.invoice = AsyncInvoiceClient(client_wrapper=self._client_wrapper)
         self.metadata = AsyncMetadataClient(client_wrapper=self._client_wrapper)
         self.notification_policy = AsyncNotificationPolicyClient(client_wrapper=self._client_wrapper)
@@ -546,7 +548,6 @@ class AsyncEntityClient:
         name: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
-        owned_by_org: typing.Optional[bool] = None,
     ) -> FindEntityResponse:
         """
         Search all entities with the given filters. If no filters are provided, all entities will be returned.
@@ -571,8 +572,6 @@ class AsyncEntityClient:
             - limit: typing.Optional[int]. Number of entities to return. Limit can range between 1 and 100, and the default is 10.
 
             - starting_after: typing.Optional[EntityId]. The ID of the entity to start after. If not provided, the first page of entities will be returned.
-
-            - owned_by_org: typing.Optional[bool]. [DEPRECATED - use isCustomer] If true, only entities with a direct relationship to the requesting organization will be returned. If false or not provided, all entities will be returned.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
@@ -588,7 +587,6 @@ class AsyncEntityClient:
                     "name": name,
                     "limit": limit,
                     "startingAfter": starting_after,
-                    "ownedByOrg": owned_by_org,
                 }
             ),
             headers=self._client_wrapper.get_headers(),

@@ -2,6 +2,7 @@
 
 from .types import (
     BusinessOnboardingOptions,
+    CodatProviderRequest,
     ColorSchemeRequest,
     ColorSchemeResponse,
     EmailLogResponse,
@@ -10,6 +11,8 @@ from .types import (
     EmailSenderProvider,
     EmailSenderRequest,
     EmailSenderResponse,
+    ExternalAccountingSystemProviderRequest,
+    ExternalAccountingSystemProviderRequest_Codat,
     IndividualOnboardingOptions,
     InvoiceNotificationConfigurationRequest,
     InvoiceNotificationConfigurationResponse,
@@ -36,6 +39,7 @@ from .types import (
 
 __all__ = [
     "BusinessOnboardingOptions",
+    "CodatProviderRequest",
     "ColorSchemeRequest",
     "ColorSchemeResponse",
     "EmailLogResponse",
@@ -44,6 +48,8 @@ __all__ = [
     "EmailSenderProvider",
     "EmailSenderRequest",
     "EmailSenderResponse",
+    "ExternalAccountingSystemProviderRequest",
+    "ExternalAccountingSystemProviderRequest_Codat",
     "IndividualOnboardingOptions",
     "InvoiceNotificationConfigurationRequest",
     "InvoiceNotificationConfigurationResponse",

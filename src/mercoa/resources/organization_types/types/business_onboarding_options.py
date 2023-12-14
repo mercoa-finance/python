@@ -13,6 +13,7 @@ except ImportError:
 
 
 class BusinessOnboardingOptions(pydantic.BaseModel):
+    terms_of_service: OnboardingOption = pydantic.Field(alias="termsOfService")
     email: OnboardingOption
     name: OnboardingOption
     type: OnboardingOption

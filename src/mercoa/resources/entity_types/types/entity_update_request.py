@@ -39,10 +39,6 @@ class EntityUpdateRequest(pydantic.BaseModel):
         alias="isPayee", description="If this entity will be receiving payments, set this to true."
     )
     logo: typing.Optional[str] = pydantic.Field(description="Base64 encoded PNG image data for the entity logo.")
-    owned_by_org: typing.Optional[bool] = pydantic.Field(
-        alias="ownedByOrg",
-        description="[DEPRECATED - use isCustomer] - If this entity has a direct relationship with your organization, set this to true. Otherwise, set to false.",
-    )
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

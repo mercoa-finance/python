@@ -133,6 +133,7 @@ from .invoice_types import (
 from .ocr import CloudMailinAttachment, CloudMailinEnvelope, CloudMailinRequest, OcrFailure, OcrResponse
 from .organization_types import (
     BusinessOnboardingOptions,
+    CodatProviderRequest,
     ColorSchemeRequest,
     ColorSchemeResponse,
     EmailLogResponse,
@@ -141,6 +142,8 @@ from .organization_types import (
     EmailSenderProvider,
     EmailSenderRequest,
     EmailSenderResponse,
+    ExternalAccountingSystemProviderRequest,
+    ExternalAccountingSystemProviderRequest_Codat,
     IndividualOnboardingOptions,
     InvoiceNotificationConfigurationRequest,
     InvoiceNotificationConfigurationResponse,
@@ -246,6 +249,7 @@ __all__ = [
     "CloudMailinAttachment",
     "CloudMailinEnvelope",
     "CloudMailinRequest",
+    "CodatProviderRequest",
     "ColorSchemeRequest",
     "ColorSchemeResponse",
     "CommentId",
@@ -283,6 +287,8 @@ __all__ = [
     "EntityUserRequest",
     "EntityUserResponse",
     "EntityWithPaymentMethodResponse",
+    "ExternalAccountingSystemProviderRequest",
+    "ExternalAccountingSystemProviderRequest_Codat",
     "FindCounterpartiesResponse",
     "FindEntityResponse",
     "FindInvoiceResponse",

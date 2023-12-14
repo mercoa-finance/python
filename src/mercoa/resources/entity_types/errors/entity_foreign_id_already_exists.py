@@ -5,4 +5,4 @@ from ....core.api_error import ApiError
 
 class EntityForeignIdAlreadyExists(ApiError):
     def __init__(self, body: str):
-        super().__init__(status_code=400, body=body)
+        super().__init__(status_code=409, body=body)

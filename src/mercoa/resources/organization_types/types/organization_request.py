@@ -6,6 +6,7 @@ import typing
 from ....core.datetime_utils import serialize_datetime
 from .color_scheme_request import ColorSchemeRequest
 from .email_provider_request import EmailProviderRequest
+from .external_accounting_system_provider_request import ExternalAccountingSystemProviderRequest
 from .metadata_schema import MetadataSchema
 from .onboarding_options_request import OnboardingOptionsRequest
 from .payment_methods_request import PaymentMethodsRequest
@@ -23,6 +24,9 @@ class OrganizationRequest(pydantic.BaseModel):
     support_email: typing.Optional[str] = pydantic.Field(alias="supportEmail")
     payment_methods: typing.Optional[PaymentMethodsRequest] = pydantic.Field(alias="paymentMethods")
     email_provider: typing.Optional[EmailProviderRequest] = pydantic.Field(alias="emailProvider")
+    external_accounting_system_provider: typing.Optional[ExternalAccountingSystemProviderRequest] = pydantic.Field(
+        alias="externalAccountingSystemProvider"
+    )
     color_scheme: typing.Optional[ColorSchemeRequest] = pydantic.Field(alias="colorScheme")
     payee_onboarding_options: typing.Optional[OnboardingOptionsRequest] = pydantic.Field(alias="payeeOnboardingOptions")
     payor_onboarding_options: typing.Optional[OnboardingOptionsRequest] = pydantic.Field(alias="payorOnboardingOptions")
