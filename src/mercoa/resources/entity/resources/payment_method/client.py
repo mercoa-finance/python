@@ -199,6 +199,8 @@ class PaymentMethodClient:
 
     def delete(self, entity_id: EntityId, payment_method_id: PaymentMethodId) -> None:
         """
+        Mark a payment method as inactive. This will not remove the payment method from the system, but will prevent it from being used in the future.
+
         Parameters:
             - entity_id: EntityId.
 
@@ -491,6 +493,8 @@ class AsyncPaymentMethodClient:
 
     async def delete(self, entity_id: EntityId, payment_method_id: PaymentMethodId) -> None:
         """
+        Mark a payment method as inactive. This will not remove the payment method from the system, but will prevent it from being used in the future.
+
         Parameters:
             - entity_id: EntityId.
 
