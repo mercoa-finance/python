@@ -10,6 +10,7 @@ from .bank_account_response import BankAccountResponse
 from .card_response import CardResponse
 from .check_response import CheckResponse
 from .custom_payment_method_response import CustomPaymentMethodResponse
+from .payment_method_base_response import PaymentMethodBaseResponse
 
 
 class PaymentMethodResponse_BankAccount(BankAccountResponse):
@@ -48,9 +49,19 @@ class PaymentMethodResponse_Custom(CustomPaymentMethodResponse):
         allow_population_by_field_name = True
 
 
+class PaymentMethodResponse_OffPlatform(PaymentMethodBaseResponse):
+    type: typing_extensions.Literal["offPlatform"]
+
+    class Config:
+        frozen = True
+        smart_union = True
+        allow_population_by_field_name = True
+
+
 PaymentMethodResponse = typing.Union[
     PaymentMethodResponse_BankAccount,
     PaymentMethodResponse_Card,
     PaymentMethodResponse_Check,
     PaymentMethodResponse_Custom,
+    PaymentMethodResponse_OffPlatform,
 ]

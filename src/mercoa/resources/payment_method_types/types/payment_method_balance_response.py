@@ -4,7 +4,7 @@ import datetime as dt
 import typing
 
 from ....core.datetime_utils import serialize_datetime
-from ...invoice_types.types.invoice_status import InvoiceStatus
+from .currency_code import CurrencyCode
 
 try:
     import pydantic.v1 as pydantic  # type: ignore
@@ -12,8 +12,9 @@ except ImportError:
     import pydantic  # type: ignore
 
 
-class TokenGenerationInvoiceOptions(pydantic.BaseModel):
-    status: typing.List[InvoiceStatus]
+class PaymentMethodBalanceResponse(pydantic.BaseModel):
+    available_balance: float = pydantic.Field(alias="availableBalance")
+    currency: CurrencyCode
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
@@ -26,4 +27,5 @@ class TokenGenerationInvoiceOptions(pydantic.BaseModel):
     class Config:
         frozen = True
         smart_union = True
+        allow_population_by_field_name = True
         json_encoders = {dt.datetime: serialize_datetime}

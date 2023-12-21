@@ -47,9 +47,19 @@ class PaymentMethodUpdateRequest_Check(PaymentMethodBaseRequest):
         allow_population_by_field_name = True
 
 
+class PaymentMethodUpdateRequest_OffPlatform(PaymentMethodBaseRequest):
+    type: typing_extensions.Literal["offPlatform"]
+
+    class Config:
+        frozen = True
+        smart_union = True
+        allow_population_by_field_name = True
+
+
 PaymentMethodUpdateRequest = typing.Union[
     PaymentMethodUpdateRequest_Custom,
     PaymentMethodUpdateRequest_BankAccount,
     PaymentMethodUpdateRequest_Card,
     PaymentMethodUpdateRequest_Check,
+    PaymentMethodUpdateRequest_OffPlatform,
 ]

@@ -15,6 +15,7 @@ from .currency_code import CurrencyCode
 from .custom_payment_method_request import CustomPaymentMethodRequest
 from .custom_payment_method_response import CustomPaymentMethodResponse
 from .custom_payment_method_update_request import CustomPaymentMethodUpdateRequest
+from .payment_method_balance_response import PaymentMethodBalanceResponse
 from .payment_method_base_request import PaymentMethodBaseRequest
 from .payment_method_base_response import PaymentMethodBaseResponse
 from .payment_method_id import PaymentMethodId
@@ -24,6 +25,7 @@ from .payment_method_request import (
     PaymentMethodRequest_Card,
     PaymentMethodRequest_Check,
     PaymentMethodRequest_Custom,
+    PaymentMethodRequest_OffPlatform,
 )
 from .payment_method_response import (
     PaymentMethodResponse,
@@ -31,6 +33,7 @@ from .payment_method_response import (
     PaymentMethodResponse_Card,
     PaymentMethodResponse_Check,
     PaymentMethodResponse_Custom,
+    PaymentMethodResponse_OffPlatform,
 )
 from .payment_method_schema_field import PaymentMethodSchemaField
 from .payment_method_schema_field_type import PaymentMethodSchemaFieldType
@@ -44,6 +47,7 @@ from .payment_method_update_request import (
     PaymentMethodUpdateRequest_Card,
     PaymentMethodUpdateRequest_Check,
     PaymentMethodUpdateRequest_Custom,
+    PaymentMethodUpdateRequest_OffPlatform,
 )
 from .plaid_link_request import PlaidLinkRequest
 
@@ -63,6 +67,7 @@ __all__ = [
     "CustomPaymentMethodRequest",
     "CustomPaymentMethodResponse",
     "CustomPaymentMethodUpdateRequest",
+    "PaymentMethodBalanceResponse",
     "PaymentMethodBaseRequest",
     "PaymentMethodBaseResponse",
     "PaymentMethodId",
@@ -71,11 +76,13 @@ __all__ = [
     "PaymentMethodRequest_Card",
     "PaymentMethodRequest_Check",
     "PaymentMethodRequest_Custom",
+    "PaymentMethodRequest_OffPlatform",
     "PaymentMethodResponse",
     "PaymentMethodResponse_BankAccount",
     "PaymentMethodResponse_Card",
     "PaymentMethodResponse_Check",
     "PaymentMethodResponse_Custom",
+    "PaymentMethodResponse_OffPlatform",
     "PaymentMethodSchemaField",
     "PaymentMethodSchemaFieldType",
     "PaymentMethodSchemaId",
@@ -87,5 +94,6 @@ __all__ = [
     "PaymentMethodUpdateRequest_Card",
     "PaymentMethodUpdateRequest_Check",
     "PaymentMethodUpdateRequest_Custom",
+    "PaymentMethodUpdateRequest_OffPlatform",
     "PlaidLinkRequest",
 ]

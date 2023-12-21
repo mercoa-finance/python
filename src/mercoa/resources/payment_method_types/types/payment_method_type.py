@@ -14,6 +14,7 @@ class PaymentMethodType(str, enum.Enum):
     CARD = "card"
     BNPL = "bnpl"
     VIRTUAL_CARD = "virtualCard"
+    OFF_PLATFORM = "offPlatform"
 
     def visit(
         self,
@@ -24,6 +25,7 @@ class PaymentMethodType(str, enum.Enum):
         card: typing.Callable[[], T_Result],
         bnpl: typing.Callable[[], T_Result],
         virtual_card: typing.Callable[[], T_Result],
+        off_platform: typing.Callable[[], T_Result],
     ) -> T_Result:
         if self is PaymentMethodType.CUSTOM:
             return custom()
@@ -39,3 +41,5 @@ class PaymentMethodType(str, enum.Enum):
             return bnpl()
         if self is PaymentMethodType.VIRTUAL_CARD:
             return virtual_card()
+        if self is PaymentMethodType.OFF_PLATFORM:
+            return off_platform()

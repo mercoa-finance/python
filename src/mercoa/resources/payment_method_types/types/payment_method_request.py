@@ -10,6 +10,7 @@ from .bank_account_request import BankAccountRequest
 from .card_request import CardRequest
 from .check_request import CheckRequest
 from .custom_payment_method_request import CustomPaymentMethodRequest
+from .payment_method_base_request import PaymentMethodBaseRequest
 
 
 class PaymentMethodRequest_BankAccount(BankAccountRequest):
@@ -48,6 +49,19 @@ class PaymentMethodRequest_Custom(CustomPaymentMethodRequest):
         allow_population_by_field_name = True
 
 
+class PaymentMethodRequest_OffPlatform(PaymentMethodBaseRequest):
+    type: typing_extensions.Literal["offPlatform"]
+
+    class Config:
+        frozen = True
+        smart_union = True
+        allow_population_by_field_name = True
+
+
 PaymentMethodRequest = typing.Union[
-    PaymentMethodRequest_BankAccount, PaymentMethodRequest_Card, PaymentMethodRequest_Check, PaymentMethodRequest_Custom
+    PaymentMethodRequest_BankAccount,
+    PaymentMethodRequest_Card,
+    PaymentMethodRequest_Check,
+    PaymentMethodRequest_Custom,
+    PaymentMethodRequest_OffPlatform,
 ]
