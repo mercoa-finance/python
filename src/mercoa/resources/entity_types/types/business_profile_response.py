@@ -15,6 +15,29 @@ except ImportError:
 
 
 class BusinessProfileResponse(pydantic.BaseModel):
+    """
+    from mercoa import Address, BusinessProfileResponse, BusinessType, PhoneNumber
+
+    BusinessProfileResponse(
+        email="customer@acme.com",
+        legal_business_name="Acme Inc.",
+        business_type=BusinessType.LLC,
+        phone=PhoneNumber(
+            country_code="1",
+            number="4155551234",
+        ),
+        address=Address(
+            address_line_1="123 Main St",
+            city="San Francisco",
+            state_or_province="CA",
+            postal_code="94105",
+            country="US",
+        ),
+        tax_id_provided=True,
+        owners_provided=True,
+    )
+    """
+
     email: typing.Optional[str]
     legal_business_name: str = pydantic.Field(alias="legalBusinessName")
     business_type: typing.Optional[BusinessType] = pydantic.Field(alias="businessType")

@@ -16,6 +16,40 @@ except ImportError:
 
 
 class BusinessProfileRequest(pydantic.BaseModel):
+    """
+    from mercoa import (
+        Address,
+        BusinessProfileRequest,
+        BusinessType,
+        Ein,
+        PhoneNumber,
+        TaxId,
+    )
+
+    BusinessProfileRequest(
+        email="customer@acme.com",
+        legal_business_name="Acme Inc.",
+        website="http://www.acme.com",
+        business_type=BusinessType.LLC,
+        phone=PhoneNumber(
+            country_code="1",
+            number="4155551234",
+        ),
+        address=Address(
+            address_line_1="123 Main St",
+            city="San Francisco",
+            state_or_province="CA",
+            postal_code="94105",
+            country="US",
+        ),
+        tax_id=TaxId(
+            ein=Ein(
+                number="12-3456789",
+            ),
+        ),
+    )
+    """
+
     email: typing.Optional[str] = pydantic.Field(description="Email address for the business. Required for KYB.")
     legal_business_name: str = pydantic.Field(alias="legalBusinessName")
     business_type: typing.Optional[BusinessType] = pydantic.Field(alias="businessType")

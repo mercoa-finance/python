@@ -90,10 +90,8 @@ class EntityClient:
 
             - is_payee: typing.Optional[bool]. If true, entities that are marked as payees will be returned.
                                                If false or not provided, entities that are marked as payees will not be returned.
-
             - is_payor: typing.Optional[bool]. If true or not provided, entities that are marked as payors will be returned.
                                                If false, entities that are marked as payors will not be returned.
-
             - name: typing.Optional[str]. Filter entities by name. Partial matches are supported.
 
             - limit: typing.Optional[int]. Number of entities to return. Limit can range between 1 and 100, and the default is 10.
@@ -144,6 +142,55 @@ class EntityClient:
         """
         Parameters:
             - request: EntityRequest.
+        ---
+        from mercoa import (
+            AccountType,
+            Address,
+            BusinessProfileRequest,
+            BusinessType,
+            Ein,
+            EntityRequest,
+            PhoneNumber,
+            ProfileRequest,
+            TaxId,
+        )
+        from mercoa.client import Mercoa
+
+        client = Mercoa(
+            token="YOUR_TOKEN",
+        )
+        client.entity.create(
+            request=EntityRequest(
+                is_customer=True,
+                is_payor=True,
+                is_payee=False,
+                account_type=AccountType.BUSINESS,
+                profile=ProfileRequest(
+                    business=BusinessProfileRequest(
+                        email="customer@acme.com",
+                        legal_business_name="Acme Inc.",
+                        website="http://www.acme.com",
+                        business_type=BusinessType.LLC,
+                        phone=PhoneNumber(
+                            country_code="1",
+                            number="4155551234",
+                        ),
+                        address=Address(
+                            address_line_1="123 Main St",
+                            city="San Francisco",
+                            state_or_province="CA",
+                            postal_code="94105",
+                            country="US",
+                        ),
+                        tax_id=TaxId(
+                            ein=Ein(
+                                number="12-3456789",
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        )
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
@@ -599,10 +646,8 @@ class AsyncEntityClient:
 
             - is_payee: typing.Optional[bool]. If true, entities that are marked as payees will be returned.
                                                If false or not provided, entities that are marked as payees will not be returned.
-
             - is_payor: typing.Optional[bool]. If true or not provided, entities that are marked as payors will be returned.
                                                If false, entities that are marked as payors will not be returned.
-
             - name: typing.Optional[str]. Filter entities by name. Partial matches are supported.
 
             - limit: typing.Optional[int]. Number of entities to return. Limit can range between 1 and 100, and the default is 10.
@@ -653,6 +698,55 @@ class AsyncEntityClient:
         """
         Parameters:
             - request: EntityRequest.
+        ---
+        from mercoa import (
+            AccountType,
+            Address,
+            BusinessProfileRequest,
+            BusinessType,
+            Ein,
+            EntityRequest,
+            PhoneNumber,
+            ProfileRequest,
+            TaxId,
+        )
+        from mercoa.client import AsyncMercoa
+
+        client = AsyncMercoa(
+            token="YOUR_TOKEN",
+        )
+        await client.entity.create(
+            request=EntityRequest(
+                is_customer=True,
+                is_payor=True,
+                is_payee=False,
+                account_type=AccountType.BUSINESS,
+                profile=ProfileRequest(
+                    business=BusinessProfileRequest(
+                        email="customer@acme.com",
+                        legal_business_name="Acme Inc.",
+                        website="http://www.acme.com",
+                        business_type=BusinessType.LLC,
+                        phone=PhoneNumber(
+                            country_code="1",
+                            number="4155551234",
+                        ),
+                        address=Address(
+                            address_line_1="123 Main St",
+                            city="San Francisco",
+                            state_or_province="CA",
+                            postal_code="94105",
+                            country="US",
+                        ),
+                        tax_id=TaxId(
+                            ein=Ein(
+                                number="12-3456789",
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        )
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",

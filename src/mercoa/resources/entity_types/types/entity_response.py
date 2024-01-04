@@ -16,6 +16,59 @@ except ImportError:
 
 
 class EntityResponse(pydantic.BaseModel):
+    """
+    import datetime
+
+    from mercoa import (
+        AccountType,
+        Address,
+        BusinessProfileResponse,
+        BusinessType,
+        EntityResponse,
+        EntityStatus,
+        PhoneNumber,
+        ProfileResponse,
+    )
+
+    EntityResponse(
+        id="ent_123",
+        name="Acme Inc.",
+        email="customer@acme.com",
+        accepted_tos=True,
+        status=EntityStatus.VERIFIED,
+        is_customer=True,
+        is_payor=True,
+        is_payee=False,
+        account_type=AccountType.BUSINESS,
+        updated_at=datetime.datetime.fromisoformat(
+            "2024-01-02 00:00:00+00:00",
+        ),
+        created_at=datetime.datetime.fromisoformat(
+            "2024-01-01 00:00:00+00:00",
+        ),
+        profile=ProfileResponse(
+            business=BusinessProfileResponse(
+                email="customer@acme.com",
+                legal_business_name="Acme Inc.",
+                business_type=BusinessType.LLC,
+                phone=PhoneNumber(
+                    country_code="1",
+                    number="4155551234",
+                ),
+                address=Address(
+                    address_line_1="123 Main St",
+                    city="San Francisco",
+                    state_or_province="CA",
+                    postal_code="94105",
+                    country="US",
+                ),
+                tax_id_provided=True,
+                owners_provided=True,
+            ),
+        ),
+    )
+    """
+
     id: EntityId
     name: str
     email: str

@@ -24,11 +24,9 @@ from .commons import (
     IndividualGovernmentId,
     InvalidPostalCode,
     InvalidStateOrProvince,
-    Itin,
     NotFound,
     OrderDirection,
     PhoneNumber,
-    Ssn,
     Unauthorized,
     Unimplemented,
 )
@@ -130,7 +128,7 @@ from .invoice_types import (
     InvoiceStatusError,
     VendorNotFound,
 )
-from .ocr import CloudMailinAttachment, CloudMailinEnvelope, CloudMailinRequest, OcrFailure, OcrResponse
+from .ocr import OcrFailure, OcrResponse
 from .organization_types import (
     BusinessOnboardingOptions,
     CodatProviderRequest,
@@ -250,9 +248,6 @@ __all__ = [
     "CardType",
     "CheckRequest",
     "CheckResponse",
-    "CloudMailinAttachment",
-    "CloudMailinEnvelope",
-    "CloudMailinRequest",
     "CodatProviderRequest",
     "ColorSchemeRequest",
     "ColorSchemeResponse",
@@ -324,7 +319,6 @@ __all__ = [
     "InvoiceResponse",
     "InvoiceStatus",
     "InvoiceStatusError",
-    "Itin",
     "MetadataSchema",
     "MetadataShowConditions",
     "MetadataTrigger",
@@ -393,7 +387,6 @@ __all__ = [
     "Responsibilities",
     "Rule",
     "Rule_Approver",
-    "Ssn",
     "TaxId",
     "TokenGenerationEntityOptions",
     "TokenGenerationFailed",

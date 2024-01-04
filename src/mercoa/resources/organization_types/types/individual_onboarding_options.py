@@ -17,7 +17,7 @@ class IndividualOnboardingOptions(pydantic.BaseModel):
     email: OnboardingOption
     name: OnboardingOption
     date_of_birth: OnboardingOption = pydantic.Field(alias="dateOfBirth")
-    ssn_last_4: OnboardingOption = pydantic.Field(alias="ssnLast4")
+    ssn: OnboardingOption
     address: OnboardingOption
     phone: OnboardingOption
 

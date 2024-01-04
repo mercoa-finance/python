@@ -4,9 +4,7 @@ from .address import Address
 from .birth_date import BirthDate
 from .full_name import FullName
 from .individual_government_id import IndividualGovernmentId
-from .itin import Itin
 from .order_direction import OrderDirection
 from .phone_number import PhoneNumber
-from .ssn import Ssn
 
-__all__ = ["Address", "BirthDate", "FullName", "IndividualGovernmentId", "Itin", "OrderDirection", "PhoneNumber", "Ssn"]
+__all__ = ["Address", "BirthDate", "FullName", "IndividualGovernmentId", "OrderDirection", "PhoneNumber"]
