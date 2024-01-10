@@ -6,7 +6,7 @@ import typing
 T_Result = typing.TypeVar("T_Result")
 
 
-class PaymentMethodSchemaFieldType(str, enum.Enum):
+class CustomPaymentMethodSchemaFieldType(str, enum.Enum):
     TEXT = "text"
     NUMBER = "number"
     SELECT = "select"
@@ -27,19 +27,19 @@ class PaymentMethodSchemaFieldType(str, enum.Enum):
         url: typing.Callable[[], T_Result],
         address: typing.Callable[[], T_Result],
     ) -> T_Result:
-        if self is PaymentMethodSchemaFieldType.TEXT:
+        if self is CustomPaymentMethodSchemaFieldType.TEXT:
             return text()
-        if self is PaymentMethodSchemaFieldType.NUMBER:
+        if self is CustomPaymentMethodSchemaFieldType.NUMBER:
             return number()
-        if self is PaymentMethodSchemaFieldType.SELECT:
+        if self is CustomPaymentMethodSchemaFieldType.SELECT:
             return select()
-        if self is PaymentMethodSchemaFieldType.DATE:
+        if self is CustomPaymentMethodSchemaFieldType.DATE:
             return date()
-        if self is PaymentMethodSchemaFieldType.PHONE:
+        if self is CustomPaymentMethodSchemaFieldType.PHONE:
             return phone()
-        if self is PaymentMethodSchemaFieldType.EMAIL:
+        if self is CustomPaymentMethodSchemaFieldType.EMAIL:
             return email()
-        if self is PaymentMethodSchemaFieldType.URL:
+        if self is CustomPaymentMethodSchemaFieldType.URL:
             return url()
-        if self is PaymentMethodSchemaFieldType.ADDRESS:
+        if self is CustomPaymentMethodSchemaFieldType.ADDRESS:
             return address()

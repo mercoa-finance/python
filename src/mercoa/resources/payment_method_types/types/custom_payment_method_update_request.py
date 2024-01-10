@@ -4,8 +4,8 @@ import datetime as dt
 import typing
 
 from ....core.datetime_utils import serialize_datetime
+from .custom_payment_method_schema_id import CustomPaymentMethodSchemaId
 from .payment_method_base_request import PaymentMethodBaseRequest
-from .payment_method_schema_id import PaymentMethodSchemaId
 
 try:
     import pydantic.v1 as pydantic  # type: ignore
@@ -19,7 +19,7 @@ class CustomPaymentMethodUpdateRequest(PaymentMethodBaseRequest):
     )
     account_name: typing.Optional[str] = pydantic.Field(alias="accountName")
     account_number: typing.Optional[str] = pydantic.Field(alias="accountNumber")
-    schema_id: typing.Optional[PaymentMethodSchemaId] = pydantic.Field(
+    schema_id: typing.Optional[CustomPaymentMethodSchemaId] = pydantic.Field(
         alias="schemaId",
         description="Payment method schema used for this payment method. Defines the fields that this payment method contains.",
     )

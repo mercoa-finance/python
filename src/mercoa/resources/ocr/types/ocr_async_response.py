@@ -4,8 +4,6 @@ import datetime as dt
 import typing
 
 from ....core.datetime_utils import serialize_datetime
-from .custom_payment_method_schema_id import CustomPaymentMethodSchemaId
-from .payment_method_base_request import PaymentMethodBaseRequest
 
 try:
     import pydantic.v1 as pydantic  # type: ignore
@@ -13,17 +11,8 @@ except ImportError:
     import pydantic  # type: ignore
 
 
-class CustomPaymentMethodRequest(PaymentMethodBaseRequest):
-    foreign_id: str = pydantic.Field(alias="foreignId", description="ID for this payment method in your system")
-    account_name: typing.Optional[str] = pydantic.Field(alias="accountName")
-    account_number: typing.Optional[str] = pydantic.Field(alias="accountNumber")
-    schema_id: CustomPaymentMethodSchemaId = pydantic.Field(
-        alias="schemaId",
-        description="Payment method schema used for this payment method. Defines the fields that this payment method contains.",
-    )
-    data: typing.Dict[str, str] = pydantic.Field(
-        description="Object of key/value pairs that matches the keys in the linked payment method schema."
-    )
+class OcrAsyncResponse(pydantic.BaseModel):
+    job_id: str = pydantic.Field(alias="jobId")
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

@@ -4,7 +4,7 @@ import datetime as dt
 import typing
 
 from ....core.datetime_utils import serialize_datetime
-from .payment_method_schema_field_type import PaymentMethodSchemaFieldType
+from .custom_payment_method_schema_field_type import CustomPaymentMethodSchemaFieldType
 
 try:
     import pydantic.v1 as pydantic  # type: ignore
@@ -12,10 +12,10 @@ except ImportError:
     import pydantic  # type: ignore
 
 
-class PaymentMethodSchemaField(pydantic.BaseModel):
+class CustomPaymentMethodSchemaField(pydantic.BaseModel):
     name: str
     display_name: typing.Optional[str] = pydantic.Field(alias="displayName")
-    type: PaymentMethodSchemaFieldType
+    type: CustomPaymentMethodSchemaFieldType
     optional: bool = pydantic.Field(description="Indicates whether this field is optional")
     use_as_account_name: typing.Optional[bool] = pydantic.Field(
         alias="useAsAccountName",

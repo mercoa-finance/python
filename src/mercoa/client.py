@@ -7,11 +7,14 @@ import httpx
 from .core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from .environment import MercoaEnvironment
 from .resources.bank_lookup.client import AsyncBankLookupClient, BankLookupClient
+from .resources.custom_payment_method_schema.client import (
+    AsyncCustomPaymentMethodSchemaClient,
+    CustomPaymentMethodSchemaClient,
+)
 from .resources.entity.client import AsyncEntityClient, EntityClient
 from .resources.invoice.client import AsyncInvoiceClient, InvoiceClient
 from .resources.ocr.client import AsyncOcrClient, OcrClient
 from .resources.organization.client import AsyncOrganizationClient, OrganizationClient
-from .resources.payment_method_schema.client import AsyncPaymentMethodSchemaClient, PaymentMethodSchemaClient
 
 
 class Mercoa:
@@ -33,8 +36,8 @@ class Mercoa:
         self.invoice = InvoiceClient(client_wrapper=self._client_wrapper)
         self.organization = OrganizationClient(client_wrapper=self._client_wrapper)
         self.bank_lookup = BankLookupClient(client_wrapper=self._client_wrapper)
+        self.custom_payment_method_schema = CustomPaymentMethodSchemaClient(client_wrapper=self._client_wrapper)
         self.ocr = OcrClient(client_wrapper=self._client_wrapper)
-        self.payment_method_schema = PaymentMethodSchemaClient(client_wrapper=self._client_wrapper)
 
 
 class AsyncMercoa:
@@ -56,8 +59,8 @@ class AsyncMercoa:
         self.invoice = AsyncInvoiceClient(client_wrapper=self._client_wrapper)
         self.organization = AsyncOrganizationClient(client_wrapper=self._client_wrapper)
         self.bank_lookup = AsyncBankLookupClient(client_wrapper=self._client_wrapper)
+        self.custom_payment_method_schema = AsyncCustomPaymentMethodSchemaClient(client_wrapper=self._client_wrapper)
         self.ocr = AsyncOcrClient(client_wrapper=self._client_wrapper)
-        self.payment_method_schema = AsyncPaymentMethodSchemaClient(client_wrapper=self._client_wrapper)
 
 
 def _get_base_url(*, base_url: typing.Optional[str] = None, environment: MercoaEnvironment) -> str:

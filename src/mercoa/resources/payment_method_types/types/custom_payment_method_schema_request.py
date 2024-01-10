@@ -5,8 +5,7 @@ import typing
 
 from ....core.datetime_utils import serialize_datetime
 from .currency_code import CurrencyCode
-from .payment_method_schema_field import PaymentMethodSchemaField
-from .payment_method_schema_id import PaymentMethodSchemaId
+from .custom_payment_method_schema_field import CustomPaymentMethodSchemaField
 
 try:
     import pydantic.v1 as pydantic  # type: ignore
@@ -14,8 +13,7 @@ except ImportError:
     import pydantic  # type: ignore
 
 
-class PaymentMethodSchemaResponse(pydantic.BaseModel):
-    id: PaymentMethodSchemaId
+class CustomPaymentMethodSchemaRequest(pydantic.BaseModel):
     name: str
     is_source: bool = pydantic.Field(
         alias="isSource", description="This payment method can be used as a payment source for an invoice"
@@ -23,12 +21,11 @@ class PaymentMethodSchemaResponse(pydantic.BaseModel):
     is_destination: bool = pydantic.Field(
         alias="isDestination", description="This payment method can be used as a payment destination for an invoice"
     )
-    supported_currencies: typing.List[CurrencyCode] = pydantic.Field(
-        alias="supportedCurrencies", description="List of currencies that this payment method supports."
+    supported_currencies: typing.Optional[typing.List[CurrencyCode]] = pydantic.Field(
+        alias="supportedCurrencies",
+        description="List of currencies that this payment method supports. If not provided, the payment method will support only USD.",
     )
-    fields: typing.List[PaymentMethodSchemaField]
-    created_at: dt.datetime = pydantic.Field(alias="createdAt")
-    updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
+    fields: typing.List[CustomPaymentMethodSchemaField]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

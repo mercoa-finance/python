@@ -4,9 +4,9 @@ import datetime as dt
 import typing
 
 from ....core.datetime_utils import serialize_datetime
+from .custom_payment_method_schema_id import CustomPaymentMethodSchemaId
+from .custom_payment_method_schema_response import CustomPaymentMethodSchemaResponse
 from .payment_method_base_response import PaymentMethodBaseResponse
-from .payment_method_schema_id import PaymentMethodSchemaId
-from .payment_method_schema_response import PaymentMethodSchemaResponse
 
 try:
     import pydantic.v1 as pydantic  # type: ignore
@@ -18,11 +18,11 @@ class CustomPaymentMethodResponse(PaymentMethodBaseResponse):
     foreign_id: str = pydantic.Field(alias="foreignId", description="ID for this payment method in your system")
     account_name: typing.Optional[str] = pydantic.Field(alias="accountName")
     account_number: typing.Optional[str] = pydantic.Field(alias="accountNumber")
-    schema_id: PaymentMethodSchemaId = pydantic.Field(
+    schema_id: CustomPaymentMethodSchemaId = pydantic.Field(
         alias="schemaId",
         description="Payment method schema used for this payment method. Defines the fields that this payment method contains.",
     )
-    schema_: PaymentMethodSchemaResponse = pydantic.Field(alias="schema")
+    schema_: CustomPaymentMethodSchemaResponse = pydantic.Field(alias="schema")
     data: typing.Dict[str, str] = pydantic.Field(
         description="Object of key/value pairs that matches the keys in the linked payment method schema."
     )

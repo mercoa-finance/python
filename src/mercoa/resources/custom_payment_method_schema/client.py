@@ -13,9 +13,9 @@ from ..commons.errors.forbidden import Forbidden
 from ..commons.errors.not_found import NotFound
 from ..commons.errors.unauthorized import Unauthorized
 from ..commons.errors.unimplemented import Unimplemented
-from ..payment_method_types.types.payment_method_schema_id import PaymentMethodSchemaId
-from ..payment_method_types.types.payment_method_schema_request import PaymentMethodSchemaRequest
-from ..payment_method_types.types.payment_method_schema_response import PaymentMethodSchemaResponse
+from ..payment_method_types.types.custom_payment_method_schema_id import CustomPaymentMethodSchemaId
+from ..payment_method_types.types.custom_payment_method_schema_request import CustomPaymentMethodSchemaRequest
+from ..payment_method_types.types.custom_payment_method_schema_response import CustomPaymentMethodSchemaResponse
 
 try:
     import pydantic.v1 as pydantic  # type: ignore
@@ -26,11 +26,11 @@ except ImportError:
 OMIT = typing.cast(typing.Any, ...)
 
 
-class PaymentMethodSchemaClient:
+class CustomPaymentMethodSchemaClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    def get_all(self) -> typing.List[PaymentMethodSchemaResponse]:
+    def get_all(self) -> typing.List[CustomPaymentMethodSchemaResponse]:
         """
         Get all custom payment method schemas
         """
@@ -45,7 +45,7 @@ class PaymentMethodSchemaClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(typing.List[PaymentMethodSchemaResponse], _response_json)  # type: ignore
+            return pydantic.parse_obj_as(typing.List[CustomPaymentMethodSchemaResponse], _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "AuthHeaderMissingError":
                 raise AuthHeaderMissingError()
@@ -61,12 +61,12 @@ class PaymentMethodSchemaClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def create(self, *, request: PaymentMethodSchemaRequest) -> PaymentMethodSchemaResponse:
+    def create(self, *, request: CustomPaymentMethodSchemaRequest) -> CustomPaymentMethodSchemaResponse:
         """
         Create custom payment method schema
 
         Parameters:
-            - request: PaymentMethodSchemaRequest.
+            - request: CustomPaymentMethodSchemaRequest.
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
@@ -80,7 +80,7 @@ class PaymentMethodSchemaClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(PaymentMethodSchemaResponse, _response_json)  # type: ignore
+            return pydantic.parse_obj_as(CustomPaymentMethodSchemaResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "AuthHeaderMissingError":
                 raise AuthHeaderMissingError()
@@ -97,15 +97,15 @@ class PaymentMethodSchemaClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def update(
-        self, schema_id: PaymentMethodSchemaId, *, request: PaymentMethodSchemaRequest
-    ) -> PaymentMethodSchemaResponse:
+        self, schema_id: CustomPaymentMethodSchemaId, *, request: CustomPaymentMethodSchemaRequest
+    ) -> CustomPaymentMethodSchemaResponse:
         """
         Update custom payment method schema
 
         Parameters:
-            - schema_id: PaymentMethodSchemaId.
+            - schema_id: CustomPaymentMethodSchemaId.
 
-            - request: PaymentMethodSchemaRequest.
+            - request: CustomPaymentMethodSchemaRequest.
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
@@ -119,7 +119,7 @@ class PaymentMethodSchemaClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(PaymentMethodSchemaResponse, _response_json)  # type: ignore
+            return pydantic.parse_obj_as(CustomPaymentMethodSchemaResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "AuthHeaderMissingError":
                 raise AuthHeaderMissingError()
@@ -135,12 +135,12 @@ class PaymentMethodSchemaClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def get(self, schema_id: PaymentMethodSchemaId) -> PaymentMethodSchemaResponse:
+    def get(self, schema_id: CustomPaymentMethodSchemaId) -> CustomPaymentMethodSchemaResponse:
         """
         Get custom payment method schema
 
         Parameters:
-            - schema_id: PaymentMethodSchemaId.
+            - schema_id: CustomPaymentMethodSchemaId.
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
@@ -153,7 +153,7 @@ class PaymentMethodSchemaClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(PaymentMethodSchemaResponse, _response_json)  # type: ignore
+            return pydantic.parse_obj_as(CustomPaymentMethodSchemaResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "AuthHeaderMissingError":
                 raise AuthHeaderMissingError()
@@ -169,12 +169,12 @@ class PaymentMethodSchemaClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def delete(self, schema_id: PaymentMethodSchemaId) -> None:
+    def delete(self, schema_id: CustomPaymentMethodSchemaId) -> None:
         """
         Delete custom payment method schema. Schema that have been used in an invoice cannot be deleted.
 
         Parameters:
-            - schema_id: PaymentMethodSchemaId.
+            - schema_id: CustomPaymentMethodSchemaId.
         """
         _response = self._client_wrapper.httpx_client.request(
             "DELETE",
@@ -204,11 +204,11 @@ class PaymentMethodSchemaClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
 
-class AsyncPaymentMethodSchemaClient:
+class AsyncCustomPaymentMethodSchemaClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    async def get_all(self) -> typing.List[PaymentMethodSchemaResponse]:
+    async def get_all(self) -> typing.List[CustomPaymentMethodSchemaResponse]:
         """
         Get all custom payment method schemas
         """
@@ -223,7 +223,7 @@ class AsyncPaymentMethodSchemaClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(typing.List[PaymentMethodSchemaResponse], _response_json)  # type: ignore
+            return pydantic.parse_obj_as(typing.List[CustomPaymentMethodSchemaResponse], _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "AuthHeaderMissingError":
                 raise AuthHeaderMissingError()
@@ -239,12 +239,12 @@ class AsyncPaymentMethodSchemaClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def create(self, *, request: PaymentMethodSchemaRequest) -> PaymentMethodSchemaResponse:
+    async def create(self, *, request: CustomPaymentMethodSchemaRequest) -> CustomPaymentMethodSchemaResponse:
         """
         Create custom payment method schema
 
         Parameters:
-            - request: PaymentMethodSchemaRequest.
+            - request: CustomPaymentMethodSchemaRequest.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
@@ -258,7 +258,7 @@ class AsyncPaymentMethodSchemaClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(PaymentMethodSchemaResponse, _response_json)  # type: ignore
+            return pydantic.parse_obj_as(CustomPaymentMethodSchemaResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "AuthHeaderMissingError":
                 raise AuthHeaderMissingError()
@@ -275,15 +275,15 @@ class AsyncPaymentMethodSchemaClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def update(
-        self, schema_id: PaymentMethodSchemaId, *, request: PaymentMethodSchemaRequest
-    ) -> PaymentMethodSchemaResponse:
+        self, schema_id: CustomPaymentMethodSchemaId, *, request: CustomPaymentMethodSchemaRequest
+    ) -> CustomPaymentMethodSchemaResponse:
         """
         Update custom payment method schema
 
         Parameters:
-            - schema_id: PaymentMethodSchemaId.
+            - schema_id: CustomPaymentMethodSchemaId.
 
-            - request: PaymentMethodSchemaRequest.
+            - request: CustomPaymentMethodSchemaRequest.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
@@ -297,7 +297,7 @@ class AsyncPaymentMethodSchemaClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(PaymentMethodSchemaResponse, _response_json)  # type: ignore
+            return pydantic.parse_obj_as(CustomPaymentMethodSchemaResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "AuthHeaderMissingError":
                 raise AuthHeaderMissingError()
@@ -313,12 +313,12 @@ class AsyncPaymentMethodSchemaClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def get(self, schema_id: PaymentMethodSchemaId) -> PaymentMethodSchemaResponse:
+    async def get(self, schema_id: CustomPaymentMethodSchemaId) -> CustomPaymentMethodSchemaResponse:
         """
         Get custom payment method schema
 
         Parameters:
-            - schema_id: PaymentMethodSchemaId.
+            - schema_id: CustomPaymentMethodSchemaId.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
@@ -331,7 +331,7 @@ class AsyncPaymentMethodSchemaClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(PaymentMethodSchemaResponse, _response_json)  # type: ignore
+            return pydantic.parse_obj_as(CustomPaymentMethodSchemaResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "AuthHeaderMissingError":
                 raise AuthHeaderMissingError()
@@ -347,12 +347,12 @@ class AsyncPaymentMethodSchemaClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def delete(self, schema_id: PaymentMethodSchemaId) -> None:
+    async def delete(self, schema_id: CustomPaymentMethodSchemaId) -> None:
         """
         Delete custom payment method schema. Schema that have been used in an invoice cannot be deleted.
 
         Parameters:
-            - schema_id: PaymentMethodSchemaId.
+            - schema_id: CustomPaymentMethodSchemaId.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "DELETE",
