@@ -16,6 +16,7 @@ class TokenGenerationPagesOptions(pydantic.BaseModel):
     representatives: typing.Optional[bool]
     notifications: typing.Optional[bool]
     counterparties: typing.Optional[bool]
+    approvals: typing.Optional[bool]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

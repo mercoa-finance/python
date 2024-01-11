@@ -16,6 +16,7 @@ except ImportError:
 class OnboardingOptionsResponse(pydantic.BaseModel):
     enable_business: bool = pydantic.Field(alias="enableBusiness")
     enable_individual: bool = pydantic.Field(alias="enableIndividual")
+    payment_method: bool = pydantic.Field(alias="paymentMethod")
     business: BusinessOnboardingOptions
     individual: IndividualOnboardingOptions
 
