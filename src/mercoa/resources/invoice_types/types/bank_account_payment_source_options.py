@@ -4,6 +4,7 @@ import datetime as dt
 import typing
 
 from ....core.datetime_utils import serialize_datetime
+from .bank_delivery_method import BankDeliveryMethod
 
 try:
     import pydantic.v1 as pydantic  # type: ignore
@@ -11,15 +12,10 @@ except ImportError:
     import pydantic  # type: ignore
 
 
-class Address(pydantic.BaseModel):
-    address_line_1: str = pydantic.Field(alias="addressLine1")
-    address_line_2: typing.Optional[str] = pydantic.Field(alias="addressLine2")
-    city: str
-    state_or_province: str = pydantic.Field(
-        alias="stateOrProvince", description="State or province code. Must be in the format XX."
+class BankAccountPaymentSourceOptions(pydantic.BaseModel):
+    delivery: typing.Optional[BankDeliveryMethod] = pydantic.Field(
+        description="Delivery method for ACH payments. Defaults to ACH_STANDARD."
     )
-    postal_code: str = pydantic.Field(alias="postalCode")
-    country: typing.Optional[str]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
@@ -32,5 +28,4 @@ class Address(pydantic.BaseModel):
     class Config:
         frozen = True
         smart_union = True
-        allow_population_by_field_name = True
         json_encoders = {dt.datetime: serialize_datetime}

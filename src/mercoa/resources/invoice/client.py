@@ -24,6 +24,7 @@ from ..invoice_types.errors.invoice_error import InvoiceError
 from ..invoice_types.errors.invoice_query_error import InvoiceQueryError
 from ..invoice_types.errors.invoice_status_error import InvoiceStatusError
 from ..invoice_types.errors.vendor_not_found import VendorNotFound
+from ..invoice_types.types.document_response import DocumentResponse
 from ..invoice_types.types.find_invoice_response import FindInvoiceResponse
 from ..invoice_types.types.invoice_id import InvoiceId
 from ..invoice_types.types.invoice_order_by_field import InvoiceOrderByField
@@ -459,7 +460,7 @@ class InvoiceClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def generate_invoice_pdf(self, invoice_id: InvoiceId) -> str:
+    def generate_invoice_pdf(self, invoice_id: InvoiceId) -> DocumentResponse:
         """
         Generate a PDF of the invoice
 
@@ -477,7 +478,7 @@ class InvoiceClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(str, _response_json)  # type: ignore
+            return pydantic.parse_obj_as(DocumentResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "InvoiceError":
                 raise InvoiceError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
@@ -495,9 +496,9 @@ class InvoiceClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def generate_check_pdf(self, invoice_id: InvoiceId) -> str:
+    def generate_check_pdf(self, invoice_id: InvoiceId) -> DocumentResponse:
         """
-        Generate a printable PDF of the check. This will only work for invoices that have a check as the disbursement method.
+        Get a printable PDF of the check. This will only work for SCHEDULED invoices that have a check as the disbursement method. Once the PDF has been generated, it will no longer be possible to mail the check. The invoice will be marked as PAID as soon as the check is generated.
 
         Parameters:
             - invoice_id: InvoiceId.
@@ -513,7 +514,7 @@ class InvoiceClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(str, _response_json)  # type: ignore
+            return pydantic.parse_obj_as(DocumentResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "InvoiceError":
                 raise InvoiceError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
@@ -948,7 +949,7 @@ class AsyncInvoiceClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def generate_invoice_pdf(self, invoice_id: InvoiceId) -> str:
+    async def generate_invoice_pdf(self, invoice_id: InvoiceId) -> DocumentResponse:
         """
         Generate a PDF of the invoice
 
@@ -966,7 +967,7 @@ class AsyncInvoiceClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(str, _response_json)  # type: ignore
+            return pydantic.parse_obj_as(DocumentResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "InvoiceError":
                 raise InvoiceError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
@@ -984,9 +985,9 @@ class AsyncInvoiceClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def generate_check_pdf(self, invoice_id: InvoiceId) -> str:
+    async def generate_check_pdf(self, invoice_id: InvoiceId) -> DocumentResponse:
         """
-        Generate a printable PDF of the check. This will only work for invoices that have a check as the disbursement method.
+        Get a printable PDF of the check. This will only work for SCHEDULED invoices that have a check as the disbursement method. Once the PDF has been generated, it will no longer be possible to mail the check. The invoice will be marked as PAID as soon as the check is generated.
 
         Parameters:
             - invoice_id: InvoiceId.
@@ -1002,7 +1003,7 @@ class AsyncInvoiceClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(str, _response_json)  # type: ignore
+            return pydantic.parse_obj_as(DocumentResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "InvoiceError":
                 raise InvoiceError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore

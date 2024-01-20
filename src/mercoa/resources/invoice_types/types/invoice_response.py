@@ -18,6 +18,8 @@ from .invoice_fees_response import InvoiceFeesResponse
 from .invoice_id import InvoiceId
 from .invoice_line_item_response import InvoiceLineItemResponse
 from .invoice_status import InvoiceStatus
+from .payment_destination_options import PaymentDestinationOptions
+from .payment_source_options import PaymentSourceOptions
 
 try:
     import pydantic.v1 as pydantic  # type: ignore
@@ -48,10 +50,14 @@ class InvoiceResponse(pydantic.BaseModel):
     payer: typing.Optional[EntityResponse]
     payment_source: typing.Optional[PaymentMethodResponse] = pydantic.Field(alias="paymentSource")
     payment_source_id: typing.Optional[PaymentMethodId] = pydantic.Field(alias="paymentSourceId")
+    payment_source_options: typing.Optional[PaymentSourceOptions] = pydantic.Field(alias="paymentSourceOptions")
     vendor_id: typing.Optional[EntityId] = pydantic.Field(alias="vendorId")
     vendor: typing.Optional[EntityResponse]
     payment_destination: typing.Optional[PaymentMethodResponse] = pydantic.Field(alias="paymentDestination")
     payment_destination_id: typing.Optional[PaymentMethodId] = pydantic.Field(alias="paymentDestinationId")
+    payment_destination_options: typing.Optional[PaymentDestinationOptions] = pydantic.Field(
+        alias="paymentDestinationOptions"
+    )
     payment_destination_confirmed: bool = pydantic.Field(
         alias="paymentDestinationConfirmed",
         description="True if the payment destination has been confirmed by the vendor. False if the payment destination has been set (for example, a check to an address) but has not been confirmed by the vendor.",

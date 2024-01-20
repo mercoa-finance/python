@@ -4,6 +4,7 @@ import datetime as dt
 import typing
 
 from ....core.datetime_utils import serialize_datetime
+from .bank_account_check_options import BankAccountCheckOptions
 from .bank_type import BankType
 from .payment_method_base_request import PaymentMethodBaseRequest
 from .plaid_link_request import PlaidLinkRequest
@@ -22,6 +23,10 @@ class BankAccountRequest(PaymentMethodBaseRequest):
     account_type: BankType = pydantic.Field(alias="accountType")
     plaid: typing.Optional[PlaidLinkRequest] = pydantic.Field(
         description="If provided, will link a bank account using Plaid Link"
+    )
+    check_options: typing.Optional[BankAccountCheckOptions] = pydantic.Field(
+        alias="checkOptions",
+        description="If this bank account supports check printing, use this to enable check printing and set the check options. Checks will be printed directly from the bank account.",
     )
 
     def json(self, **kwargs: typing.Any) -> str:

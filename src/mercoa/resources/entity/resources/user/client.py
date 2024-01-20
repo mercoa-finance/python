@@ -183,7 +183,7 @@ class UserClient:
 
     def delete(self, entity_id: EntityId, user_id: EntityUserId) -> None:
         """
-        Delete entity user
+        Delete entity user. This will also remove the user from all approval policies. If an approval policy will break as a result of this operation, this request will fail.
 
         Parameters:
             - entity_id: EntityId.
@@ -427,7 +427,7 @@ class AsyncUserClient:
 
     async def delete(self, entity_id: EntityId, user_id: EntityUserId) -> None:
         """
-        Delete entity user
+        Delete entity user. This will also remove the user from all approval policies. If an approval policy will break as a result of this operation, this request will fail.
 
         Parameters:
             - entity_id: EntityId.

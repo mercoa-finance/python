@@ -6,6 +6,10 @@ from .approval_slot_assignment import ApprovalSlotAssignment
 from .approval_slot_id import ApprovalSlotId
 from .approver_action import ApproverAction
 from .associated_approval_action import AssociatedApprovalAction
+from .bank_account_payment_source_options import BankAccountPaymentSourceOptions
+from .bank_delivery_method import BankDeliveryMethod
+from .check_delivery_method import CheckDeliveryMethod
+from .check_payment_destination_options import CheckPaymentDestinationOptions
 from .comment_id import CommentId
 from .comment_request import CommentRequest
 from .comment_response import CommentResponse
@@ -21,6 +25,8 @@ from .invoice_order_by_field import InvoiceOrderByField
 from .invoice_request import InvoiceRequest
 from .invoice_response import InvoiceResponse
 from .invoice_status import InvoiceStatus
+from .payment_destination_options import PaymentDestinationOptions, PaymentDestinationOptions_Check
+from .payment_source_options import PaymentSourceOptions, PaymentSourceOptions_BankAccount
 
 __all__ = [
     "ApprovalRequest",
@@ -29,6 +35,10 @@ __all__ = [
     "ApprovalSlotId",
     "ApproverAction",
     "AssociatedApprovalAction",
+    "BankAccountPaymentSourceOptions",
+    "BankDeliveryMethod",
+    "CheckDeliveryMethod",
+    "CheckPaymentDestinationOptions",
     "CommentId",
     "CommentRequest",
     "CommentResponse",
@@ -44,4 +54,8 @@ __all__ = [
     "InvoiceRequest",
     "InvoiceResponse",
     "InvoiceStatus",
+    "PaymentDestinationOptions",
+    "PaymentDestinationOptions_Check",
+    "PaymentSourceOptions",
+    "PaymentSourceOptions_BankAccount",
 ]

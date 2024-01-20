@@ -4,6 +4,7 @@ import datetime as dt
 import typing
 
 from ....core.datetime_utils import serialize_datetime
+from .bank_account_check_options import BankAccountCheckOptions
 from .payment_method_base_request import PaymentMethodBaseRequest
 
 try:
@@ -14,6 +15,10 @@ except ImportError:
 
 class BankAccountUpdateRequest(PaymentMethodBaseRequest):
     account_name: typing.Optional[str] = pydantic.Field(alias="accountName")
+    check_options: typing.Optional[BankAccountCheckOptions] = pydantic.Field(
+        alias="checkOptions",
+        description="If this bank account supports check printing, use this to enable check printing and set the check options. Checks will be printed directly from the bank account.",
+    )
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
