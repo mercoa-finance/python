@@ -31,6 +31,10 @@ class BankAccountCheckOptions(pydantic.BaseModel):
         alias="signatoryName",
         description="If provided, will print a check with a generated signature from the provided name",
     )
+    signature_image: typing.Optional[str] = pydantic.Field(
+        alias="signatureImage",
+        description="Base64 encoded PNG of the signature. If provided, will print a check with the provided image as the signature. Will override signatoryName.",
+    )
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

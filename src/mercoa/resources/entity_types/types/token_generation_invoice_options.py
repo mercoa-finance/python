@@ -13,6 +13,7 @@ except ImportError:
 
 
 class TokenGenerationInvoiceOptions(pydantic.BaseModel):
+    disable_line_items: typing.Optional[bool] = pydantic.Field(alias="disableLineItems")
     status: typing.List[InvoiceStatus]
 
     def json(self, **kwargs: typing.Any) -> str:
@@ -26,4 +27,5 @@ class TokenGenerationInvoiceOptions(pydantic.BaseModel):
     class Config:
         frozen = True
         smart_union = True
+        allow_population_by_field_name = True
         json_encoders = {dt.datetime: serialize_datetime}
