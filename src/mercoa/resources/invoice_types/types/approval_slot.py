@@ -4,6 +4,7 @@ import datetime as dt
 import typing
 
 from ....core.datetime_utils import serialize_datetime
+from ...entity_types.types.approval_policy_id import ApprovalPolicyId
 from ...entity_types.types.entity_user_id import EntityUserId
 from .approval_slot_id import ApprovalSlotId
 from .approver_action import ApproverAction
@@ -15,6 +16,9 @@ except ImportError:
 
 
 class ApprovalSlot(pydantic.BaseModel):
+    approval_policy_id: ApprovalPolicyId = pydantic.Field(
+        alias="approvalPolicyId", description="The identifier for the approval policy this slot is associated with."
+    )
     approval_slot_id: ApprovalSlotId = pydantic.Field(
         alias="approvalSlotId", description="The identifier for this approval slot"
     )
