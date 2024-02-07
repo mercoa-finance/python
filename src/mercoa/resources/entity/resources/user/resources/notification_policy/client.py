@@ -16,6 +16,7 @@ from ......commons.errors.unimplemented import Unimplemented
 from ......entity_types.types.entity_id import EntityId
 from ......entity_types.types.entity_user_id import EntityUserId
 from ......entity_types.types.notification_type import NotificationType
+from ......entity_types.types.user_notification_policy_request import UserNotificationPolicyRequest
 from ......entity_types.types.user_notification_policy_response import UserNotificationPolicyResponse
 
 try:
@@ -113,7 +114,12 @@ class NotificationPolicyClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def update(
-        self, entity_id: EntityId, user_id: EntityUserId, notification_type: NotificationType, *, disabled: bool
+        self,
+        entity_id: EntityId,
+        user_id: EntityUserId,
+        notification_type: NotificationType,
+        *,
+        request: UserNotificationPolicyRequest,
     ) -> UserNotificationPolicyResponse:
         """
         Update notification policy associated with this entity user
@@ -125,7 +131,7 @@ class NotificationPolicyClient:
 
             - notification_type: NotificationType.
 
-            - disabled: bool.
+            - request: UserNotificationPolicyRequest.
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
@@ -133,7 +139,7 @@ class NotificationPolicyClient:
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{entity_id}/user/{user_id}/notification-policy/{notification_type}",
             ),
-            json=jsonable_encoder({"disabled": disabled}),
+            json=jsonable_encoder(request),
             headers=self._client_wrapper.get_headers(),
             timeout=60,
         )
@@ -245,7 +251,12 @@ class AsyncNotificationPolicyClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def update(
-        self, entity_id: EntityId, user_id: EntityUserId, notification_type: NotificationType, *, disabled: bool
+        self,
+        entity_id: EntityId,
+        user_id: EntityUserId,
+        notification_type: NotificationType,
+        *,
+        request: UserNotificationPolicyRequest,
     ) -> UserNotificationPolicyResponse:
         """
         Update notification policy associated with this entity user
@@ -257,7 +268,7 @@ class AsyncNotificationPolicyClient:
 
             - notification_type: NotificationType.
 
-            - disabled: bool.
+            - request: UserNotificationPolicyRequest.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
@@ -265,7 +276,7 @@ class AsyncNotificationPolicyClient:
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{entity_id}/user/{user_id}/notification-policy/{notification_type}",
             ),
-            json=jsonable_encoder({"disabled": disabled}),
+            json=jsonable_encoder(request),
             headers=self._client_wrapper.get_headers(),
             timeout=60,
         )

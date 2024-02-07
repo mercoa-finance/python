@@ -55,6 +55,7 @@ from .token_generation_pages_options import TokenGenerationPagesOptions
 from .token_generation_style_options import TokenGenerationStyleOptions
 from .token_generation_vendor_options import TokenGenerationVendorOptions
 from .trigger import Trigger, Trigger_Amount, Trigger_Metadata, Trigger_Vendor
+from .user_notification_policy_request import UserNotificationPolicyRequest
 from .user_notification_policy_response import UserNotificationPolicyResponse
 from .vendor_network import VendorNetwork
 from .vendor_trigger import VendorTrigger
@@ -121,6 +122,7 @@ __all__ = [
     "Trigger_Amount",
     "Trigger_Metadata",
     "Trigger_Vendor",
+    "UserNotificationPolicyRequest",
     "UserNotificationPolicyResponse",
     "VendorNetwork",
     "VendorTrigger",

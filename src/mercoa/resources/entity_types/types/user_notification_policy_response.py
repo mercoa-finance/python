@@ -14,6 +14,9 @@ except ImportError:
 
 class UserNotificationPolicyResponse(pydantic.BaseModel):
     disabled: bool = pydantic.Field(description="True if the selected notification type is disabled for this user")
+    digest: bool = pydantic.Field(
+        description="True if the selected notification type is sent as a digest. If false, notifications will be sent immediately."
+    )
     type: NotificationType
 
     def json(self, **kwargs: typing.Any) -> str:

@@ -11,10 +11,13 @@ except ImportError:
     import pydantic  # type: ignore
 
 
-class ColorSchemeRequest(pydantic.BaseModel):
-    primary_color: typing.Optional[str] = pydantic.Field(alias="primaryColor")
-    secondary_color: typing.Optional[str] = pydantic.Field(alias="secondaryColor")
-    logo_background_color: typing.Optional[str] = pydantic.Field(alias="logoBackgroundColor")
+class UserNotificationPolicyRequest(pydantic.BaseModel):
+    disabled: typing.Optional[bool] = pydantic.Field(
+        description="Set to true if the selected notification type should be disabled for this user"
+    )
+    digest: typing.Optional[bool] = pydantic.Field(
+        description="Set to true if the selected notification type should be sent as a digest. If false, the notification will be sent immediately."
+    )
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
@@ -27,5 +30,4 @@ class ColorSchemeRequest(pydantic.BaseModel):
     class Config:
         frozen = True
         smart_union = True
-        allow_population_by_field_name = True
         json_encoders = {dt.datetime: serialize_datetime}
