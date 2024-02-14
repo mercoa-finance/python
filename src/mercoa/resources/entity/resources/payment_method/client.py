@@ -327,7 +327,7 @@ class PaymentMethodClient:
 
     def get_balance(self, entity_id: EntityId, payment_method_id: PaymentMethodId) -> PaymentMethodBalanceResponse:
         """
-        Get the available balance of a payment method. Only bank accounts added with Plaid are supported.
+        Get the available balance of a payment method. Only bank accounts added with Plaid are supported. This endpoint will return a cached value and will refresh the balance when called.
 
         Parameters:
             - entity_id: EntityId.
@@ -666,7 +666,7 @@ class AsyncPaymentMethodClient:
         self, entity_id: EntityId, payment_method_id: PaymentMethodId
     ) -> PaymentMethodBalanceResponse:
         """
-        Get the available balance of a payment method. Only bank accounts added with Plaid are supported.
+        Get the available balance of a payment method. Only bank accounts added with Plaid are supported. This endpoint will return a cached value and will refresh the balance when called.
 
         Parameters:
             - entity_id: EntityId.

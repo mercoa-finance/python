@@ -19,6 +19,10 @@ class MetadataShowConditions(pydantic.BaseModel):
     has_document: typing.Optional[bool] = pydantic.Field(
         alias="hasDocument", description="Show this field only if a document has been attached."
     )
+    has_no_line_items: typing.Optional[bool] = pydantic.Field(
+        alias="hasNoLineItems",
+        description="Show this field only if the invoice has no line items. Useful for showing a field that applies to the entire invoice but overridden by line items if present.",
+    )
     payment_source_types: typing.Optional[typing.List[PaymentMethodType]] = pydantic.Field(
         alias="paymentSourceTypes", description="Show this field only if the payment source type is in this list."
     )

@@ -15,6 +15,10 @@ except ImportError:
 class PaymentMethodBalanceResponse(pydantic.BaseModel):
     available_balance: float = pydantic.Field(alias="availableBalance")
     currency: CurrencyCode
+    updated_at: typing.Optional[dt.datetime] = pydantic.Field(
+        alias="updatedAt",
+        description="The time the balance was last updated. Will be null if the balance has never been updated.",
+    )
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
