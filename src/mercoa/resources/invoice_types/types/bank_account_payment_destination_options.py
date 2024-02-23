@@ -12,9 +12,9 @@ except ImportError:
     import pydantic  # type: ignore
 
 
-class BankAccountPaymentSourceOptions(pydantic.BaseModel):
+class BankAccountPaymentDestinationOptions(pydantic.BaseModel):
     delivery: typing.Optional[BankDeliveryMethod] = pydantic.Field(
-        description="Delivery method for ACH payments. Defaults to ACH_STANDARD."
+        description="Delivery method for ACH payments. Defaults to ACH_SAME_DAY."
     )
 
     def json(self, **kwargs: typing.Any) -> str:

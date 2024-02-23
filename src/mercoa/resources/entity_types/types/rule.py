@@ -4,13 +4,11 @@ from __future__ import annotations
 
 import typing
 
-import typing_extensions
-
 from .approver_rule import ApproverRule
 
 
 class Rule_Approver(ApproverRule):
-    type: typing_extensions.Literal["approver"]
+    type: typing.Literal["approver"]
 
     class Config:
         frozen = True

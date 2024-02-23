@@ -19,7 +19,9 @@ class InvoiceLineItemRequest(pydantic.BaseModel):
     amount: float = pydantic.Field(
         description="Total amount of line item in major units. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated."
     )
-    currency: typing.Optional[CurrencyCode]
+    currency: typing.Optional[CurrencyCode] = pydantic.Field(
+        description="Currency code for the amount. Defaults to USD."
+    )
     description: str
     name: typing.Optional[str]
     quantity: typing.Optional[int]

@@ -19,7 +19,6 @@ from .invoice_id import InvoiceId
 from .invoice_line_item_response import InvoiceLineItemResponse
 from .invoice_status import InvoiceStatus
 from .payment_destination_options import PaymentDestinationOptions
-from .payment_source_options import PaymentSourceOptions
 
 try:
     import pydantic.v1 as pydantic  # type: ignore
@@ -31,7 +30,9 @@ class InvoiceResponse(pydantic.BaseModel):
     id: InvoiceId
     status: InvoiceStatus
     amount: typing.Optional[float] = pydantic.Field(description="Total amount of invoice in major units")
-    currency: typing.Optional[CurrencyCode]
+    currency: typing.Optional[CurrencyCode] = pydantic.Field(
+        description="Currency code for the amount. Defaults to USD."
+    )
     invoice_date: typing.Optional[dt.datetime] = pydantic.Field(
         alias="invoiceDate", description="Date the invoice was issued."
     )
@@ -50,7 +51,6 @@ class InvoiceResponse(pydantic.BaseModel):
     payer: typing.Optional[EntityResponse]
     payment_source: typing.Optional[PaymentMethodResponse] = pydantic.Field(alias="paymentSource")
     payment_source_id: typing.Optional[PaymentMethodId] = pydantic.Field(alias="paymentSourceId")
-    payment_source_options: typing.Optional[PaymentSourceOptions] = pydantic.Field(alias="paymentSourceOptions")
     vendor_id: typing.Optional[EntityId] = pydantic.Field(alias="vendorId")
     vendor: typing.Optional[EntityResponse]
     payment_destination: typing.Optional[PaymentMethodResponse] = pydantic.Field(alias="paymentDestination")

@@ -4,13 +4,12 @@ from __future__ import annotations
 
 import typing
 
-import typing_extensions
-
+from .bank_account_payment_destination_options import BankAccountPaymentDestinationOptions
 from .check_payment_destination_options import CheckPaymentDestinationOptions
 
 
 class PaymentDestinationOptions_Check(CheckPaymentDestinationOptions):
-    type: typing_extensions.Literal["check"]
+    type: typing.Literal["check"]
 
     class Config:
         frozen = True
@@ -18,4 +17,13 @@ class PaymentDestinationOptions_Check(CheckPaymentDestinationOptions):
         allow_population_by_field_name = True
 
 
-PaymentDestinationOptions = typing.Union[PaymentDestinationOptions_Check]
+class PaymentDestinationOptions_BankAccount(BankAccountPaymentDestinationOptions):
+    type: typing.Literal["bankAccount"]
+
+    class Config:
+        frozen = True
+        smart_union = True
+        allow_population_by_field_name = True
+
+
+PaymentDestinationOptions = typing.Union[PaymentDestinationOptions_Check, PaymentDestinationOptions_BankAccount]

@@ -4,15 +4,13 @@ from __future__ import annotations
 
 import typing
 
-import typing_extensions
-
 from .bank_account_update_request import BankAccountUpdateRequest
 from .custom_payment_method_update_request import CustomPaymentMethodUpdateRequest
 from .payment_method_base_request import PaymentMethodBaseRequest
 
 
 class PaymentMethodUpdateRequest_Custom(CustomPaymentMethodUpdateRequest):
-    type: typing_extensions.Literal["custom"]
+    type: typing.Literal["custom"]
 
     class Config:
         frozen = True
@@ -21,7 +19,7 @@ class PaymentMethodUpdateRequest_Custom(CustomPaymentMethodUpdateRequest):
 
 
 class PaymentMethodUpdateRequest_BankAccount(BankAccountUpdateRequest):
-    type: typing_extensions.Literal["bankAccount"]
+    type: typing.Literal["bankAccount"]
 
     class Config:
         frozen = True
@@ -30,7 +28,7 @@ class PaymentMethodUpdateRequest_BankAccount(BankAccountUpdateRequest):
 
 
 class PaymentMethodUpdateRequest_Card(PaymentMethodBaseRequest):
-    type: typing_extensions.Literal["card"]
+    type: typing.Literal["card"]
 
     class Config:
         frozen = True
@@ -39,7 +37,7 @@ class PaymentMethodUpdateRequest_Card(PaymentMethodBaseRequest):
 
 
 class PaymentMethodUpdateRequest_Check(PaymentMethodBaseRequest):
-    type: typing_extensions.Literal["check"]
+    type: typing.Literal["check"]
 
     class Config:
         frozen = True
@@ -48,7 +46,7 @@ class PaymentMethodUpdateRequest_Check(PaymentMethodBaseRequest):
 
 
 class PaymentMethodUpdateRequest_OffPlatform(PaymentMethodBaseRequest):
-    type: typing_extensions.Literal["offPlatform"]
+    type: typing.Literal["offPlatform"]
 
     class Config:
         frozen = True

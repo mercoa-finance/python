@@ -15,7 +15,7 @@ except ImportError:
 class InvoiceLineItemResponse(pydantic.BaseModel):
     id: str
     amount: typing.Optional[float] = pydantic.Field(description="Total amount of line item in major units.")
-    currency: typing.Optional[CurrencyCode]
+    currency: CurrencyCode
     description: typing.Optional[str]
     name: typing.Optional[str]
     quantity: typing.Optional[int]

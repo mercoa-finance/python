@@ -16,7 +16,10 @@ class UserNotificationPolicyRequest(pydantic.BaseModel):
         description="Set to true if the selected notification type should be disabled for this user"
     )
     digest: typing.Optional[bool] = pydantic.Field(
-        description="Set to true if the selected notification type should be sent as a digest. If false, the notification will be sent immediately."
+        description="Set to true if the selected notification type should be sent as a digest. Default is false."
+    )
+    immediate: typing.Optional[bool] = pydantic.Field(
+        description="Set to true if the selected notification type should be sent immediately. Default is true."
     )
 
     def json(self, **kwargs: typing.Any) -> str:

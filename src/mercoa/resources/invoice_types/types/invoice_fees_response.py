@@ -14,17 +14,17 @@ except ImportError:
 class InvoiceFeesResponse(pydantic.BaseModel):
     source_payment_method_fee: float = pydantic.Field(
         alias="sourcePaymentMethodFee",
-        description="Fee charged for processing the source payment method. For example, credit card interchange and acquiring fees.",
+        description="Fee charged to the platform (C1) for processing the source payment method. For example, credit card interchange and acquiring fees.",
     )
     source_platform_markup_fee: float = pydantic.Field(
-        alias="sourcePlatformMarkupFee", description="Additional fee charged to the payer."
+        alias="sourcePlatformMarkupFee", description="Fee charged to the payer (C2)."
     )
     destination_payment_method_fee: float = pydantic.Field(
         alias="destinationPaymentMethodFee",
-        description="Fee charged for processing the destination payment method. For example, postage for a check payment.",
+        description="Fee charged to the platform (C1) for processing the destination payment method. For example, postage for a check payment.",
     )
     destination_platform_markup_fee: float = pydantic.Field(
-        alias="destinationPlatformMarkupFee", description="Additional fee charged to the payee."
+        alias="destinationPlatformMarkupFee", description="Fee charged to the payee (C3)."
     )
 
     def json(self, **kwargs: typing.Any) -> str:

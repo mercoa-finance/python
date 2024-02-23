@@ -4,8 +4,6 @@ from __future__ import annotations
 
 import typing
 
-import typing_extensions
-
 from .bank_account_request import BankAccountRequest
 from .card_request import CardRequest
 from .check_request import CheckRequest
@@ -14,7 +12,7 @@ from .payment_method_base_request import PaymentMethodBaseRequest
 
 
 class PaymentMethodRequest_BankAccount(BankAccountRequest):
-    type: typing_extensions.Literal["bankAccount"]
+    type: typing.Literal["bankAccount"]
 
     class Config:
         frozen = True
@@ -23,7 +21,7 @@ class PaymentMethodRequest_BankAccount(BankAccountRequest):
 
 
 class PaymentMethodRequest_Card(CardRequest):
-    type: typing_extensions.Literal["card"]
+    type: typing.Literal["card"]
 
     class Config:
         frozen = True
@@ -32,7 +30,7 @@ class PaymentMethodRequest_Card(CardRequest):
 
 
 class PaymentMethodRequest_Check(CheckRequest):
-    type: typing_extensions.Literal["check"]
+    type: typing.Literal["check"]
 
     class Config:
         frozen = True
@@ -41,7 +39,7 @@ class PaymentMethodRequest_Check(CheckRequest):
 
 
 class PaymentMethodRequest_Custom(CustomPaymentMethodRequest):
-    type: typing_extensions.Literal["custom"]
+    type: typing.Literal["custom"]
 
     class Config:
         frozen = True
@@ -50,7 +48,7 @@ class PaymentMethodRequest_Custom(CustomPaymentMethodRequest):
 
 
 class PaymentMethodRequest_OffPlatform(PaymentMethodBaseRequest):
-    type: typing_extensions.Literal["offPlatform"]
+    type: typing.Literal["offPlatform"]
 
     class Config:
         frozen = True

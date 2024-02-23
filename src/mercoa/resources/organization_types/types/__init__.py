@@ -4,6 +4,7 @@ from .business_onboarding_options import BusinessOnboardingOptions
 from .codat_provider_request import CodatProviderRequest
 from .color_scheme_request import ColorSchemeRequest
 from .color_scheme_response import ColorSchemeResponse
+from .email_log import EmailLog
 from .email_log_response import EmailLogResponse
 from .email_provider_request import EmailProviderRequest
 from .email_provider_response import EmailProviderResponse
@@ -46,6 +47,7 @@ __all__ = [
     "CodatProviderRequest",
     "ColorSchemeRequest",
     "ColorSchemeResponse",
+    "EmailLog",
     "EmailLogResponse",
     "EmailProviderRequest",
     "EmailProviderResponse",

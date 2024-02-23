@@ -4,8 +4,6 @@ from __future__ import annotations
 
 import typing
 
-import typing_extensions
-
 from .bank_account_response import BankAccountResponse
 from .card_response import CardResponse
 from .check_response import CheckResponse
@@ -14,7 +12,7 @@ from .payment_method_base_response import PaymentMethodBaseResponse
 
 
 class PaymentMethodResponse_BankAccount(BankAccountResponse):
-    type: typing_extensions.Literal["bankAccount"]
+    type: typing.Literal["bankAccount"]
 
     class Config:
         frozen = True
@@ -23,7 +21,7 @@ class PaymentMethodResponse_BankAccount(BankAccountResponse):
 
 
 class PaymentMethodResponse_Card(CardResponse):
-    type: typing_extensions.Literal["card"]
+    type: typing.Literal["card"]
 
     class Config:
         frozen = True
@@ -32,7 +30,7 @@ class PaymentMethodResponse_Card(CardResponse):
 
 
 class PaymentMethodResponse_Check(CheckResponse):
-    type: typing_extensions.Literal["check"]
+    type: typing.Literal["check"]
 
     class Config:
         frozen = True
@@ -41,7 +39,7 @@ class PaymentMethodResponse_Check(CheckResponse):
 
 
 class PaymentMethodResponse_Custom(CustomPaymentMethodResponse):
-    type: typing_extensions.Literal["custom"]
+    type: typing.Literal["custom"]
 
     class Config:
         frozen = True
@@ -50,7 +48,7 @@ class PaymentMethodResponse_Custom(CustomPaymentMethodResponse):
 
 
 class PaymentMethodResponse_OffPlatform(PaymentMethodBaseResponse):
-    type: typing_extensions.Literal["offPlatform"]
+    type: typing.Literal["offPlatform"]
 
     class Config:
         frozen = True

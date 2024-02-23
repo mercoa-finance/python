@@ -8,7 +8,9 @@ from json.decoder import JSONDecodeError
 from .....core.api_error import ApiError
 from .....core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from .....core.datetime_utils import serialize_datetime
+from .....core.jsonable_encoder import jsonable_encoder
 from .....core.remove_none_from_dict import remove_none_from_dict
+from .....core.request_options import RequestOptions
 from ....commons.errors.auth_header_malformed_error import AuthHeaderMalformedError
 from ....commons.errors.auth_header_missing_error import AuthHeaderMissingError
 from ....commons.errors.forbidden import Forbidden
@@ -56,6 +58,7 @@ class InvoiceClient:
         invoice_id: typing.Optional[typing.Union[InvoiceId, typing.List[InvoiceId]]] = None,
         status: typing.Optional[typing.Union[InvoiceStatus, typing.List[InvoiceStatus]]] = None,
         include_fees: typing.Optional[bool] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> FindInvoiceResponse:
         """
         Get invoices for an entity with the given filters.
@@ -92,31 +95,49 @@ class InvoiceClient:
             - status: typing.Optional[typing.Union[InvoiceStatus, typing.List[InvoiceStatus]]]. Invoice status to filter on.
 
             - include_fees: typing.Optional[bool]. If true, will include fees as part of the response.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/invoices"),
-            params=remove_none_from_dict(
-                {
-                    "excludePayables": exclude_payables,
-                    "excludeReceivables": exclude_receivables,
-                    "startDate": serialize_datetime(start_date) if start_date is not None else None,
-                    "endDate": serialize_datetime(end_date) if end_date is not None else None,
-                    "orderBy": order_by,
-                    "orderDirection": order_direction,
-                    "limit": limit,
-                    "startingAfter": starting_after,
-                    "search": search,
-                    "payerId": payer_id,
-                    "vendorId": vendor_id,
-                    "approverId": approver_id,
-                    "invoiceId": invoice_id,
-                    "status": status,
-                    "includeFees": include_fees,
-                }
+            params=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        "excludePayables": exclude_payables,
+                        "excludeReceivables": exclude_receivables,
+                        "startDate": serialize_datetime(start_date) if start_date is not None else None,
+                        "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                        "orderBy": order_by.value if order_by is not None else None,
+                        "orderDirection": order_direction.value if order_direction is not None else None,
+                        "limit": limit,
+                        "startingAfter": starting_after,
+                        "search": search,
+                        "payerId": payer_id,
+                        "vendorId": vendor_id,
+                        "approverId": approver_id,
+                        "invoiceId": invoice_id,
+                        "status": status.value if status is not None else None,
+                        "includeFees": include_fees,
+                        **(
+                            request_options.get("additional_query_parameters", {})
+                            if request_options is not None
+                            else {}
+                        ),
+                    }
+                )
             ),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -142,7 +163,12 @@ class InvoiceClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get(
-        self, entity_id: EntityId, invoice_id: InvoiceId, *, include_fees: typing.Optional[bool] = None
+        self,
+        entity_id: EntityId,
+        invoice_id: InvoiceId,
+        *,
+        include_fees: typing.Optional[bool] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> InvoiceResponse:
         """
         Parameters:
@@ -151,13 +177,35 @@ class InvoiceClient:
             - invoice_id: InvoiceId. ID of the invoice to retrieve. This can be the full invoice ID (in_11aa2b77-6391-49e4-8c3f-b198009202c1) or the first 8 characters of the ID (11aa2b77).
 
             - include_fees: typing.Optional[bool]. If true, will include fees as part of the response.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/invoice/{invoice_id}"),
-            params=remove_none_from_dict({"includeFees": include_fees}),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        "includeFees": include_fees,
+                        **(
+                            request_options.get("additional_query_parameters", {})
+                            if request_options is not None
+                            else {}
+                        ),
+                    }
+                )
+            ),
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -197,6 +245,7 @@ class InvoiceClient:
         created_date_start: typing.Optional[dt.datetime] = None,
         created_date_end: typing.Optional[dt.datetime] = None,
         currency: typing.Optional[typing.Union[CurrencyCode, typing.List[CurrencyCode]]] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.List[InvoiceMetricsResponse]:
         """
         Get invoice metrics for an entity with the given filters.
@@ -229,31 +278,51 @@ class InvoiceClient:
             - created_date_end: typing.Optional[dt.datetime]. End date for invoice created date filter.
 
             - currency: typing.Optional[typing.Union[CurrencyCode, typing.List[CurrencyCode]]]. Currency to filter on
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/invoice-metrics"),
-            params=remove_none_from_dict(
-                {
-                    "search": search,
-                    "excludePayables": exclude_payables,
-                    "excludeReceivables": exclude_receivables,
-                    "payerId": payer_id,
-                    "vendorId": vendor_id,
-                    "approverId": approver_id,
-                    "invoiceId": invoice_id,
-                    "status": status,
-                    "dueDateStart": serialize_datetime(due_date_start) if due_date_start is not None else None,
-                    "dueDateEnd": serialize_datetime(due_date_end) if due_date_end is not None else None,
-                    "createdDateStart": serialize_datetime(created_date_start)
-                    if created_date_start is not None
-                    else None,
-                    "createdDateEnd": serialize_datetime(created_date_end) if created_date_end is not None else None,
-                    "currency": currency,
-                }
+            params=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        "search": search,
+                        "excludePayables": exclude_payables,
+                        "excludeReceivables": exclude_receivables,
+                        "payerId": payer_id,
+                        "vendorId": vendor_id,
+                        "approverId": approver_id,
+                        "invoiceId": invoice_id,
+                        "status": status.value if status is not None else None,
+                        "dueDateStart": serialize_datetime(due_date_start) if due_date_start is not None else None,
+                        "dueDateEnd": serialize_datetime(due_date_end) if due_date_end is not None else None,
+                        "createdDateStart": serialize_datetime(created_date_start)
+                        if created_date_start is not None
+                        else None,
+                        "createdDateEnd": serialize_datetime(created_date_end)
+                        if created_date_end is not None
+                        else None,
+                        "currency": currency.value if currency is not None else None,
+                        **(
+                            request_options.get("additional_query_parameters", {})
+                            if request_options is not None
+                            else {}
+                        ),
+                    }
+                )
             ),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -302,6 +371,7 @@ class AsyncInvoiceClient:
         invoice_id: typing.Optional[typing.Union[InvoiceId, typing.List[InvoiceId]]] = None,
         status: typing.Optional[typing.Union[InvoiceStatus, typing.List[InvoiceStatus]]] = None,
         include_fees: typing.Optional[bool] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> FindInvoiceResponse:
         """
         Get invoices for an entity with the given filters.
@@ -338,31 +408,49 @@ class AsyncInvoiceClient:
             - status: typing.Optional[typing.Union[InvoiceStatus, typing.List[InvoiceStatus]]]. Invoice status to filter on.
 
             - include_fees: typing.Optional[bool]. If true, will include fees as part of the response.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/invoices"),
-            params=remove_none_from_dict(
-                {
-                    "excludePayables": exclude_payables,
-                    "excludeReceivables": exclude_receivables,
-                    "startDate": serialize_datetime(start_date) if start_date is not None else None,
-                    "endDate": serialize_datetime(end_date) if end_date is not None else None,
-                    "orderBy": order_by,
-                    "orderDirection": order_direction,
-                    "limit": limit,
-                    "startingAfter": starting_after,
-                    "search": search,
-                    "payerId": payer_id,
-                    "vendorId": vendor_id,
-                    "approverId": approver_id,
-                    "invoiceId": invoice_id,
-                    "status": status,
-                    "includeFees": include_fees,
-                }
+            params=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        "excludePayables": exclude_payables,
+                        "excludeReceivables": exclude_receivables,
+                        "startDate": serialize_datetime(start_date) if start_date is not None else None,
+                        "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                        "orderBy": order_by.value if order_by is not None else None,
+                        "orderDirection": order_direction.value if order_direction is not None else None,
+                        "limit": limit,
+                        "startingAfter": starting_after,
+                        "search": search,
+                        "payerId": payer_id,
+                        "vendorId": vendor_id,
+                        "approverId": approver_id,
+                        "invoiceId": invoice_id,
+                        "status": status.value if status is not None else None,
+                        "includeFees": include_fees,
+                        **(
+                            request_options.get("additional_query_parameters", {})
+                            if request_options is not None
+                            else {}
+                        ),
+                    }
+                )
             ),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -388,7 +476,12 @@ class AsyncInvoiceClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get(
-        self, entity_id: EntityId, invoice_id: InvoiceId, *, include_fees: typing.Optional[bool] = None
+        self,
+        entity_id: EntityId,
+        invoice_id: InvoiceId,
+        *,
+        include_fees: typing.Optional[bool] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> InvoiceResponse:
         """
         Parameters:
@@ -397,13 +490,35 @@ class AsyncInvoiceClient:
             - invoice_id: InvoiceId. ID of the invoice to retrieve. This can be the full invoice ID (in_11aa2b77-6391-49e4-8c3f-b198009202c1) or the first 8 characters of the ID (11aa2b77).
 
             - include_fees: typing.Optional[bool]. If true, will include fees as part of the response.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/invoice/{invoice_id}"),
-            params=remove_none_from_dict({"includeFees": include_fees}),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        "includeFees": include_fees,
+                        **(
+                            request_options.get("additional_query_parameters", {})
+                            if request_options is not None
+                            else {}
+                        ),
+                    }
+                )
+            ),
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -443,6 +558,7 @@ class AsyncInvoiceClient:
         created_date_start: typing.Optional[dt.datetime] = None,
         created_date_end: typing.Optional[dt.datetime] = None,
         currency: typing.Optional[typing.Union[CurrencyCode, typing.List[CurrencyCode]]] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.List[InvoiceMetricsResponse]:
         """
         Get invoice metrics for an entity with the given filters.
@@ -475,31 +591,51 @@ class AsyncInvoiceClient:
             - created_date_end: typing.Optional[dt.datetime]. End date for invoice created date filter.
 
             - currency: typing.Optional[typing.Union[CurrencyCode, typing.List[CurrencyCode]]]. Currency to filter on
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/invoice-metrics"),
-            params=remove_none_from_dict(
-                {
-                    "search": search,
-                    "excludePayables": exclude_payables,
-                    "excludeReceivables": exclude_receivables,
-                    "payerId": payer_id,
-                    "vendorId": vendor_id,
-                    "approverId": approver_id,
-                    "invoiceId": invoice_id,
-                    "status": status,
-                    "dueDateStart": serialize_datetime(due_date_start) if due_date_start is not None else None,
-                    "dueDateEnd": serialize_datetime(due_date_end) if due_date_end is not None else None,
-                    "createdDateStart": serialize_datetime(created_date_start)
-                    if created_date_start is not None
-                    else None,
-                    "createdDateEnd": serialize_datetime(created_date_end) if created_date_end is not None else None,
-                    "currency": currency,
-                }
+            params=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        "search": search,
+                        "excludePayables": exclude_payables,
+                        "excludeReceivables": exclude_receivables,
+                        "payerId": payer_id,
+                        "vendorId": vendor_id,
+                        "approverId": approver_id,
+                        "invoiceId": invoice_id,
+                        "status": status.value if status is not None else None,
+                        "dueDateStart": serialize_datetime(due_date_start) if due_date_start is not None else None,
+                        "dueDateEnd": serialize_datetime(due_date_end) if due_date_end is not None else None,
+                        "createdDateStart": serialize_datetime(created_date_start)
+                        if created_date_start is not None
+                        else None,
+                        "createdDateEnd": serialize_datetime(created_date_end)
+                        if created_date_end is not None
+                        else None,
+                        "currency": currency.value if currency is not None else None,
+                        **(
+                            request_options.get("additional_query_parameters", {})
+                            if request_options is not None
+                            else {}
+                        ),
+                    }
+                )
             ),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()

@@ -4,13 +4,11 @@ from __future__ import annotations
 
 import typing
 
-import typing_extensions
-
 from .codat_provider_request import CodatProviderRequest
 
 
 class ExternalAccountingSystemProviderRequest_Codat(CodatProviderRequest):
-    type: typing_extensions.Literal["codat"]
+    type: typing.Literal["codat"]
 
     class Config:
         frozen = True

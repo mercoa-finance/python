@@ -7,6 +7,8 @@ from json.decoder import JSONDecodeError
 from ...core.api_error import ApiError
 from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ...core.jsonable_encoder import jsonable_encoder
+from ...core.remove_none_from_dict import remove_none_from_dict
+from ...core.request_options import RequestOptions
 from ..commons.errors.auth_header_malformed_error import AuthHeaderMalformedError
 from ..commons.errors.auth_header_missing_error import AuthHeaderMissingError
 from ..commons.errors.forbidden import Forbidden
@@ -30,15 +32,32 @@ class CustomPaymentMethodSchemaClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    def get_all(self) -> typing.List[CustomPaymentMethodSchemaResponse]:
+    def get_all(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> typing.List[CustomPaymentMethodSchemaResponse]:
         """
         Get all custom payment method schemas
+
+        Parameters:
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "paymentMethod/schema"),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -61,19 +80,40 @@ class CustomPaymentMethodSchemaClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def create(self, *, request: CustomPaymentMethodSchemaRequest) -> CustomPaymentMethodSchemaResponse:
+    def create(
+        self, *, request: CustomPaymentMethodSchemaRequest, request_options: typing.Optional[RequestOptions] = None
+    ) -> CustomPaymentMethodSchemaResponse:
         """
         Create custom payment method schema
 
         Parameters:
             - request: CustomPaymentMethodSchemaRequest.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "paymentMethod/schema"),
-            json=jsonable_encoder(request),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            json=jsonable_encoder(request)
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder(request),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -97,7 +137,11 @@ class CustomPaymentMethodSchemaClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def update(
-        self, schema_id: CustomPaymentMethodSchemaId, *, request: CustomPaymentMethodSchemaRequest
+        self,
+        schema_id: CustomPaymentMethodSchemaId,
+        *,
+        request: CustomPaymentMethodSchemaRequest,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> CustomPaymentMethodSchemaResponse:
         """
         Update custom payment method schema
@@ -106,13 +150,32 @@ class CustomPaymentMethodSchemaClient:
             - schema_id: CustomPaymentMethodSchemaId.
 
             - request: CustomPaymentMethodSchemaRequest.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"paymentMethod/schema/{schema_id}"),
-            json=jsonable_encoder(request),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            json=jsonable_encoder(request)
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder(request),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -135,18 +198,34 @@ class CustomPaymentMethodSchemaClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def get(self, schema_id: CustomPaymentMethodSchemaId) -> CustomPaymentMethodSchemaResponse:
+    def get(
+        self, schema_id: CustomPaymentMethodSchemaId, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> CustomPaymentMethodSchemaResponse:
         """
         Get custom payment method schema
 
         Parameters:
             - schema_id: CustomPaymentMethodSchemaId.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"paymentMethod/schema/{schema_id}"),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -169,18 +248,34 @@ class CustomPaymentMethodSchemaClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def delete(self, schema_id: CustomPaymentMethodSchemaId) -> None:
+    def delete(
+        self, schema_id: CustomPaymentMethodSchemaId, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> None:
         """
         Delete custom payment method schema. Schema that have been used in an invoice cannot be deleted.
 
         Parameters:
             - schema_id: CustomPaymentMethodSchemaId.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "DELETE",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"paymentMethod/schema/{schema_id}"),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         if 200 <= _response.status_code < 300:
             return
@@ -208,15 +303,32 @@ class AsyncCustomPaymentMethodSchemaClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    async def get_all(self) -> typing.List[CustomPaymentMethodSchemaResponse]:
+    async def get_all(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> typing.List[CustomPaymentMethodSchemaResponse]:
         """
         Get all custom payment method schemas
+
+        Parameters:
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "paymentMethod/schema"),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -239,19 +351,40 @@ class AsyncCustomPaymentMethodSchemaClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def create(self, *, request: CustomPaymentMethodSchemaRequest) -> CustomPaymentMethodSchemaResponse:
+    async def create(
+        self, *, request: CustomPaymentMethodSchemaRequest, request_options: typing.Optional[RequestOptions] = None
+    ) -> CustomPaymentMethodSchemaResponse:
         """
         Create custom payment method schema
 
         Parameters:
             - request: CustomPaymentMethodSchemaRequest.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "paymentMethod/schema"),
-            json=jsonable_encoder(request),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            json=jsonable_encoder(request)
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder(request),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -275,7 +408,11 @@ class AsyncCustomPaymentMethodSchemaClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def update(
-        self, schema_id: CustomPaymentMethodSchemaId, *, request: CustomPaymentMethodSchemaRequest
+        self,
+        schema_id: CustomPaymentMethodSchemaId,
+        *,
+        request: CustomPaymentMethodSchemaRequest,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> CustomPaymentMethodSchemaResponse:
         """
         Update custom payment method schema
@@ -284,13 +421,32 @@ class AsyncCustomPaymentMethodSchemaClient:
             - schema_id: CustomPaymentMethodSchemaId.
 
             - request: CustomPaymentMethodSchemaRequest.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"paymentMethod/schema/{schema_id}"),
-            json=jsonable_encoder(request),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            json=jsonable_encoder(request)
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder(request),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -313,18 +469,34 @@ class AsyncCustomPaymentMethodSchemaClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def get(self, schema_id: CustomPaymentMethodSchemaId) -> CustomPaymentMethodSchemaResponse:
+    async def get(
+        self, schema_id: CustomPaymentMethodSchemaId, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> CustomPaymentMethodSchemaResponse:
         """
         Get custom payment method schema
 
         Parameters:
             - schema_id: CustomPaymentMethodSchemaId.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"paymentMethod/schema/{schema_id}"),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -347,18 +519,34 @@ class AsyncCustomPaymentMethodSchemaClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def delete(self, schema_id: CustomPaymentMethodSchemaId) -> None:
+    async def delete(
+        self, schema_id: CustomPaymentMethodSchemaId, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> None:
         """
         Delete custom payment method schema. Schema that have been used in an invoice cannot be deleted.
 
         Parameters:
             - schema_id: CustomPaymentMethodSchemaId.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "DELETE",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"paymentMethod/schema/{schema_id}"),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         if 200 <= _response.status_code < 300:
             return

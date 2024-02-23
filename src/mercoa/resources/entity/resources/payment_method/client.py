@@ -8,6 +8,7 @@ from .....core.api_error import ApiError
 from .....core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from .....core.jsonable_encoder import jsonable_encoder
 from .....core.remove_none_from_dict import remove_none_from_dict
+from .....core.request_options import RequestOptions
 from ....commons.errors.auth_header_malformed_error import AuthHeaderMalformedError
 from ....commons.errors.auth_header_missing_error import AuthHeaderMissingError
 from ....commons.errors.forbidden import Forbidden
@@ -41,19 +42,42 @@ class PaymentMethodClient:
         entity_id: EntityId,
         *,
         type: typing.Optional[typing.Union[PaymentMethodType, typing.List[PaymentMethodType]]] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.List[PaymentMethodResponse]:
         """
         Parameters:
             - entity_id: EntityId.
 
             - type: typing.Optional[typing.Union[PaymentMethodType, typing.List[PaymentMethodType]]]. Type of payment method to filter
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/paymentMethods"),
-            params=remove_none_from_dict({"type": type}),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        "type": type.value if type is not None else None,
+                        **(
+                            request_options.get("additional_query_parameters", {})
+                            if request_options is not None
+                            else {}
+                        ),
+                    }
+                )
+            ),
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -78,19 +102,44 @@ class PaymentMethodClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def create(self, entity_id: EntityId, *, request: PaymentMethodRequest) -> PaymentMethodResponse:
+    def create(
+        self,
+        entity_id: EntityId,
+        *,
+        request: PaymentMethodRequest,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> PaymentMethodResponse:
         """
         Parameters:
             - entity_id: EntityId.
 
             - request: PaymentMethodRequest.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/paymentMethod"),
-            json=jsonable_encoder(request),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            json=jsonable_encoder(request)
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder(request),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -115,20 +164,40 @@ class PaymentMethodClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def get(self, entity_id: EntityId, payment_method_id: PaymentMethodId) -> PaymentMethodResponse:
+    def get(
+        self,
+        entity_id: EntityId,
+        payment_method_id: PaymentMethodId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> PaymentMethodResponse:
         """
         Parameters:
             - entity_id: EntityId.
 
             - payment_method_id: PaymentMethodId.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/paymentMethod/{payment_method_id}"
             ),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -154,7 +223,12 @@ class PaymentMethodClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def update(
-        self, entity_id: EntityId, payment_method_id: PaymentMethodId, *, request: PaymentMethodUpdateRequest
+        self,
+        entity_id: EntityId,
+        payment_method_id: PaymentMethodId,
+        *,
+        request: PaymentMethodUpdateRequest,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> PaymentMethodResponse:
         """
         Only custom payment methods can be updated.
@@ -165,15 +239,34 @@ class PaymentMethodClient:
             - payment_method_id: PaymentMethodId.
 
             - request: PaymentMethodUpdateRequest.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "PUT",
             urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/paymentMethod/{payment_method_id}"
             ),
-            json=jsonable_encoder(request),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            json=jsonable_encoder(request)
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder(request),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -198,7 +291,13 @@ class PaymentMethodClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def delete(self, entity_id: EntityId, payment_method_id: PaymentMethodId) -> None:
+    def delete(
+        self,
+        entity_id: EntityId,
+        payment_method_id: PaymentMethodId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
         """
         Mark a payment method as inactive. This will not remove the payment method from the system, but will prevent it from being used in the future.
 
@@ -206,14 +305,28 @@ class PaymentMethodClient:
             - entity_id: EntityId.
 
             - payment_method_id: PaymentMethodId.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "DELETE",
             urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/paymentMethod/{payment_method_id}"
             ),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         if 200 <= _response.status_code < 300:
             return
@@ -238,7 +351,13 @@ class PaymentMethodClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def initiate_micro_deposits(self, entity_id: EntityId, payment_method_id: PaymentMethodId) -> PaymentMethodResponse:
+    def initiate_micro_deposits(
+        self,
+        entity_id: EntityId,
+        payment_method_id: PaymentMethodId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> PaymentMethodResponse:
         """
         Initiate micro deposits for a bank account
 
@@ -246,6 +365,8 @@ class PaymentMethodClient:
             - entity_id: EntityId.
 
             - payment_method_id: PaymentMethodId.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
@@ -253,8 +374,23 @@ class PaymentMethodClient:
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{entity_id}/paymentMethod/{payment_method_id}/micro-deposits",
             ),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            json=jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))
+            if request_options is not None
+            else None,
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -280,7 +416,12 @@ class PaymentMethodClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def complete_micro_deposits(
-        self, entity_id: EntityId, payment_method_id: PaymentMethodId, *, amounts: typing.List[int]
+        self,
+        entity_id: EntityId,
+        payment_method_id: PaymentMethodId,
+        *,
+        amounts: typing.List[int],
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> PaymentMethodResponse:
         """
         Complete micro deposit verification
@@ -291,6 +432,8 @@ class PaymentMethodClient:
             - payment_method_id: PaymentMethodId.
 
             - amounts: typing.List[int].
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "PUT",
@@ -298,9 +441,26 @@ class PaymentMethodClient:
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{entity_id}/paymentMethod/{payment_method_id}/micro-deposits",
             ),
-            json=jsonable_encoder({"amounts": amounts}),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            json=jsonable_encoder({"amounts": amounts})
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder({"amounts": amounts}),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -325,7 +485,13 @@ class PaymentMethodClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def get_balance(self, entity_id: EntityId, payment_method_id: PaymentMethodId) -> PaymentMethodBalanceResponse:
+    def get_balance(
+        self,
+        entity_id: EntityId,
+        payment_method_id: PaymentMethodId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> PaymentMethodBalanceResponse:
         """
         Get the available balance of a payment method. Only bank accounts added with Plaid are supported. This endpoint will return a cached value and will refresh the balance when called.
 
@@ -333,6 +499,8 @@ class PaymentMethodClient:
             - entity_id: EntityId.
 
             - payment_method_id: PaymentMethodId.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
@@ -340,8 +508,20 @@ class PaymentMethodClient:
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{entity_id}/paymentMethod/{payment_method_id}/balance",
             ),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -376,19 +556,42 @@ class AsyncPaymentMethodClient:
         entity_id: EntityId,
         *,
         type: typing.Optional[typing.Union[PaymentMethodType, typing.List[PaymentMethodType]]] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.List[PaymentMethodResponse]:
         """
         Parameters:
             - entity_id: EntityId.
 
             - type: typing.Optional[typing.Union[PaymentMethodType, typing.List[PaymentMethodType]]]. Type of payment method to filter
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/paymentMethods"),
-            params=remove_none_from_dict({"type": type}),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        "type": type.value if type is not None else None,
+                        **(
+                            request_options.get("additional_query_parameters", {})
+                            if request_options is not None
+                            else {}
+                        ),
+                    }
+                )
+            ),
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -413,19 +616,44 @@ class AsyncPaymentMethodClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def create(self, entity_id: EntityId, *, request: PaymentMethodRequest) -> PaymentMethodResponse:
+    async def create(
+        self,
+        entity_id: EntityId,
+        *,
+        request: PaymentMethodRequest,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> PaymentMethodResponse:
         """
         Parameters:
             - entity_id: EntityId.
 
             - request: PaymentMethodRequest.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/paymentMethod"),
-            json=jsonable_encoder(request),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            json=jsonable_encoder(request)
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder(request),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -450,20 +678,40 @@ class AsyncPaymentMethodClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def get(self, entity_id: EntityId, payment_method_id: PaymentMethodId) -> PaymentMethodResponse:
+    async def get(
+        self,
+        entity_id: EntityId,
+        payment_method_id: PaymentMethodId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> PaymentMethodResponse:
         """
         Parameters:
             - entity_id: EntityId.
 
             - payment_method_id: PaymentMethodId.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/paymentMethod/{payment_method_id}"
             ),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -489,7 +737,12 @@ class AsyncPaymentMethodClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def update(
-        self, entity_id: EntityId, payment_method_id: PaymentMethodId, *, request: PaymentMethodUpdateRequest
+        self,
+        entity_id: EntityId,
+        payment_method_id: PaymentMethodId,
+        *,
+        request: PaymentMethodUpdateRequest,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> PaymentMethodResponse:
         """
         Only custom payment methods can be updated.
@@ -500,15 +753,34 @@ class AsyncPaymentMethodClient:
             - payment_method_id: PaymentMethodId.
 
             - request: PaymentMethodUpdateRequest.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "PUT",
             urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/paymentMethod/{payment_method_id}"
             ),
-            json=jsonable_encoder(request),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            json=jsonable_encoder(request)
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder(request),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -533,7 +805,13 @@ class AsyncPaymentMethodClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def delete(self, entity_id: EntityId, payment_method_id: PaymentMethodId) -> None:
+    async def delete(
+        self,
+        entity_id: EntityId,
+        payment_method_id: PaymentMethodId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
         """
         Mark a payment method as inactive. This will not remove the payment method from the system, but will prevent it from being used in the future.
 
@@ -541,14 +819,28 @@ class AsyncPaymentMethodClient:
             - entity_id: EntityId.
 
             - payment_method_id: PaymentMethodId.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "DELETE",
             urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/paymentMethod/{payment_method_id}"
             ),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         if 200 <= _response.status_code < 300:
             return
@@ -574,7 +866,11 @@ class AsyncPaymentMethodClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def initiate_micro_deposits(
-        self, entity_id: EntityId, payment_method_id: PaymentMethodId
+        self,
+        entity_id: EntityId,
+        payment_method_id: PaymentMethodId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> PaymentMethodResponse:
         """
         Initiate micro deposits for a bank account
@@ -583,6 +879,8 @@ class AsyncPaymentMethodClient:
             - entity_id: EntityId.
 
             - payment_method_id: PaymentMethodId.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
@@ -590,8 +888,23 @@ class AsyncPaymentMethodClient:
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{entity_id}/paymentMethod/{payment_method_id}/micro-deposits",
             ),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            json=jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))
+            if request_options is not None
+            else None,
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -617,7 +930,12 @@ class AsyncPaymentMethodClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def complete_micro_deposits(
-        self, entity_id: EntityId, payment_method_id: PaymentMethodId, *, amounts: typing.List[int]
+        self,
+        entity_id: EntityId,
+        payment_method_id: PaymentMethodId,
+        *,
+        amounts: typing.List[int],
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> PaymentMethodResponse:
         """
         Complete micro deposit verification
@@ -628,6 +946,8 @@ class AsyncPaymentMethodClient:
             - payment_method_id: PaymentMethodId.
 
             - amounts: typing.List[int].
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "PUT",
@@ -635,9 +955,26 @@ class AsyncPaymentMethodClient:
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{entity_id}/paymentMethod/{payment_method_id}/micro-deposits",
             ),
-            json=jsonable_encoder({"amounts": amounts}),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            json=jsonable_encoder({"amounts": amounts})
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder({"amounts": amounts}),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -663,7 +1000,11 @@ class AsyncPaymentMethodClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get_balance(
-        self, entity_id: EntityId, payment_method_id: PaymentMethodId
+        self,
+        entity_id: EntityId,
+        payment_method_id: PaymentMethodId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> PaymentMethodBalanceResponse:
         """
         Get the available balance of a payment method. Only bank accounts added with Plaid are supported. This endpoint will return a cached value and will refresh the balance when called.
@@ -672,6 +1013,8 @@ class AsyncPaymentMethodClient:
             - entity_id: EntityId.
 
             - payment_method_id: PaymentMethodId.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
@@ -679,8 +1022,20 @@ class AsyncPaymentMethodClient:
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{entity_id}/paymentMethod/{payment_method_id}/balance",
             ),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()

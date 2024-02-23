@@ -4,13 +4,11 @@ from __future__ import annotations
 
 import typing
 
-import typing_extensions
-
 from .codat_company_creation_request import CodatCompanyCreationRequest
 
 
 class ExternalAccountingSystemCompanyCreationRequest_Codat(CodatCompanyCreationRequest):
-    type: typing_extensions.Literal["codat"]
+    type: typing.Literal["codat"]
 
     class Config:
         frozen = True

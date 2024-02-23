@@ -8,6 +8,7 @@ from ...core.api_error import ApiError
 from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ...core.jsonable_encoder import jsonable_encoder
 from ...core.remove_none_from_dict import remove_none_from_dict
+from ...core.request_options import RequestOptions
 from ..commons.errors.auth_header_malformed_error import AuthHeaderMalformedError
 from ..commons.errors.auth_header_missing_error import AuthHeaderMissingError
 from ..commons.errors.forbidden import Forbidden
@@ -75,6 +76,7 @@ class EntityClient:
         name: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> FindEntityResponse:
         """
         Search all entities with the given filters. If no filters are provided, all entities will be returned.
@@ -97,25 +99,43 @@ class EntityClient:
             - limit: typing.Optional[int]. Number of entities to return. Limit can range between 1 and 100, and the default is 10.
 
             - starting_after: typing.Optional[EntityId]. The ID of the entity to start after. If not provided, the first page of entities will be returned.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "entity"),
-            params=remove_none_from_dict(
-                {
-                    "paymentMethods": payment_methods,
-                    "isCustomer": is_customer,
-                    "foreignId": foreign_id,
-                    "status": status,
-                    "isPayee": is_payee,
-                    "isPayor": is_payor,
-                    "name": name,
-                    "limit": limit,
-                    "startingAfter": starting_after,
-                }
+            params=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        "paymentMethods": payment_methods,
+                        "isCustomer": is_customer,
+                        "foreignId": foreign_id,
+                        "status": status.value if status is not None else None,
+                        "isPayee": is_payee,
+                        "isPayor": is_payor,
+                        "name": name,
+                        "limit": limit,
+                        "startingAfter": starting_after,
+                        **(
+                            request_options.get("additional_query_parameters", {})
+                            if request_options is not None
+                            else {}
+                        ),
+                    }
+                )
             ),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -138,10 +158,14 @@ class EntityClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def create(self, *, request: EntityRequest) -> EntityResponse:
+    def create(
+        self, *, request: EntityRequest, request_options: typing.Optional[RequestOptions] = None
+    ) -> EntityResponse:
         """
         Parameters:
             - request: EntityRequest.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         ---
         from mercoa import (
             AccountType,
@@ -195,9 +219,26 @@ class EntityClient:
         _response = self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "entity"),
-            json=jsonable_encoder(request),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            json=jsonable_encoder(request)
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder(request),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -232,16 +273,30 @@ class EntityClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def get(self, entity_id: EntityId) -> EntityResponse:
+    def get(self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None) -> EntityResponse:
         """
         Parameters:
             - entity_id: EntityId.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}"),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -264,19 +319,44 @@ class EntityClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def update(self, entity_id: EntityId, *, request: EntityUpdateRequest) -> EntityResponse:
+    def update(
+        self,
+        entity_id: EntityId,
+        *,
+        request: EntityUpdateRequest,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> EntityResponse:
         """
         Parameters:
             - entity_id: EntityId.
 
             - request: EntityUpdateRequest.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}"),
-            json=jsonable_encoder(request),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            json=jsonable_encoder(request)
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder(request),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -311,16 +391,30 @@ class EntityClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def delete(self, entity_id: EntityId) -> None:
+    def delete(self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
         Parameters:
             - entity_id: EntityId.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "DELETE",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}"),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         if 200 <= _response.status_code < 300:
             return
@@ -343,18 +437,37 @@ class EntityClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def accept_terms_of_service(self, entity_id: EntityId) -> None:
+    def accept_terms_of_service(
+        self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> None:
         """
         This endpoint is used to indicate acceptance of Mercoa's terms of service for an entity. Send a request to this endpoint only after the entity has accepted the Mercoa ToS. Entities must accept Mercoa ToS before they can be send or pay invoices using Mercoa's payment rails.
 
         Parameters:
             - entity_id: EntityId.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/accept-tos"),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            json=jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))
+            if request_options is not None
+            else None,
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         if 200 <= _response.status_code < 300:
             return
@@ -379,7 +492,7 @@ class EntityClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def initiate_kyb(self, entity_id: EntityId) -> None:
+    def initiate_kyb(self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
         This endpoint is used to initiate KYB for an entity.
         Send a request to this endpoint only after the entity has accepted the Mercoa ToS,
@@ -387,12 +500,29 @@ class EntityClient:
 
         Parameters:
             - entity_id: EntityId.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/request-kyb"),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            json=jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))
+            if request_options is not None
+            else None,
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         if 200 <= _response.status_code < 300:
             return
@@ -417,7 +547,13 @@ class EntityClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def get_token(self, entity_id: EntityId, *, request: TokenGenerationOptions) -> str:
+    def get_token(
+        self,
+        entity_id: EntityId,
+        *,
+        request: TokenGenerationOptions,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> str:
         """
         Generate a JWT token for an entity with the given options. This token can be used to authenticate the entity in the Mercoa API and iFrame.
 
@@ -425,6 +561,8 @@ class EntityClient:
             - entity_id: EntityId.
 
             - request: TokenGenerationOptions.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         ---
         from mercoa import TokenGenerationOptions
         from mercoa.client import Mercoa
@@ -442,9 +580,26 @@ class EntityClient:
         _response = self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/token"),
-            json=jsonable_encoder(request),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            json=jsonable_encoder(request)
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder(request),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -469,18 +624,32 @@ class EntityClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def plaid_link_token(self, entity_id: EntityId) -> str:
+    def plaid_link_token(self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None) -> str:
         """
         Get a Plaid link token for an entity. This token can be used to add a bank account to the entity using Plaid Link.
 
         Parameters:
             - entity_id: EntityId.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/plaidLinkToken"),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -512,6 +681,7 @@ class EntityClient:
         type: EntityOnboardingLinkType,
         expires_in: typing.Optional[str] = None,
         connected_entity_id: typing.Optional[EntityId] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> str:
         """
         Generate an onboarding link for the entity.
@@ -524,15 +694,37 @@ class EntityClient:
             - expires_in: typing.Optional[str]. Expressed in seconds or a string describing a time span. The default is 24h.
 
             - connected_entity_id: typing.Optional[EntityId]. The ID of the entity to connect to. If onboarding a payee, this should be the payor entity ID. If onboarding a payor, this should be the payee entity ID. If no connected entity ID is provided, the onboarding link will be for a standalone entity.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/onboarding"),
-            params=remove_none_from_dict(
-                {"type": type, "expiresIn": expires_in, "connectedEntityId": connected_entity_id}
+            params=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        "type": type.value,
+                        "expiresIn": expires_in,
+                        "connectedEntityId": connected_entity_id,
+                        **(
+                            request_options.get("additional_query_parameters", {})
+                            if request_options is not None
+                            else {}
+                        ),
+                    }
+                )
             ),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -562,6 +754,7 @@ class EntityClient:
         type: EntityOnboardingLinkType,
         expires_in: typing.Optional[str] = None,
         connected_entity_id: typing.Optional[EntityId] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
         Send an email with a onboarding link to the entity. The email will be sent to the email address associated with the entity.
@@ -574,15 +767,40 @@ class EntityClient:
             - expires_in: typing.Optional[str]. Expressed in seconds or a string describing a time span. The default is 7 days.
 
             - connected_entity_id: typing.Optional[EntityId]. The ID of the entity to connect to. If onboarding a payee, this should be the payor entity ID. If onboarding a payor, this should be the payee entity ID. If no connected entity ID is provided, the onboarding link will be for a standalone entity.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/onboarding"),
-            params=remove_none_from_dict(
-                {"type": type, "expiresIn": expires_in, "connectedEntityId": connected_entity_id}
+            params=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        "type": type.value,
+                        "expiresIn": expires_in,
+                        "connectedEntityId": connected_entity_id,
+                        **(
+                            request_options.get("additional_query_parameters", {})
+                            if request_options is not None
+                            else {}
+                        ),
+                    }
+                )
             ),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            json=jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))
+            if request_options is not None
+            else None,
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         if 200 <= _response.status_code < 300:
             return
@@ -631,6 +849,7 @@ class AsyncEntityClient:
         name: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> FindEntityResponse:
         """
         Search all entities with the given filters. If no filters are provided, all entities will be returned.
@@ -653,25 +872,43 @@ class AsyncEntityClient:
             - limit: typing.Optional[int]. Number of entities to return. Limit can range between 1 and 100, and the default is 10.
 
             - starting_after: typing.Optional[EntityId]. The ID of the entity to start after. If not provided, the first page of entities will be returned.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "entity"),
-            params=remove_none_from_dict(
-                {
-                    "paymentMethods": payment_methods,
-                    "isCustomer": is_customer,
-                    "foreignId": foreign_id,
-                    "status": status,
-                    "isPayee": is_payee,
-                    "isPayor": is_payor,
-                    "name": name,
-                    "limit": limit,
-                    "startingAfter": starting_after,
-                }
+            params=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        "paymentMethods": payment_methods,
+                        "isCustomer": is_customer,
+                        "foreignId": foreign_id,
+                        "status": status.value if status is not None else None,
+                        "isPayee": is_payee,
+                        "isPayor": is_payor,
+                        "name": name,
+                        "limit": limit,
+                        "startingAfter": starting_after,
+                        **(
+                            request_options.get("additional_query_parameters", {})
+                            if request_options is not None
+                            else {}
+                        ),
+                    }
+                )
             ),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -694,10 +931,14 @@ class AsyncEntityClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def create(self, *, request: EntityRequest) -> EntityResponse:
+    async def create(
+        self, *, request: EntityRequest, request_options: typing.Optional[RequestOptions] = None
+    ) -> EntityResponse:
         """
         Parameters:
             - request: EntityRequest.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         ---
         from mercoa import (
             AccountType,
@@ -751,9 +992,26 @@ class AsyncEntityClient:
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "entity"),
-            json=jsonable_encoder(request),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            json=jsonable_encoder(request)
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder(request),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -788,16 +1046,32 @@ class AsyncEntityClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def get(self, entity_id: EntityId) -> EntityResponse:
+    async def get(
+        self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> EntityResponse:
         """
         Parameters:
             - entity_id: EntityId.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}"),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -820,19 +1094,44 @@ class AsyncEntityClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def update(self, entity_id: EntityId, *, request: EntityUpdateRequest) -> EntityResponse:
+    async def update(
+        self,
+        entity_id: EntityId,
+        *,
+        request: EntityUpdateRequest,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> EntityResponse:
         """
         Parameters:
             - entity_id: EntityId.
 
             - request: EntityUpdateRequest.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}"),
-            json=jsonable_encoder(request),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            json=jsonable_encoder(request)
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder(request),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -867,16 +1166,30 @@ class AsyncEntityClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def delete(self, entity_id: EntityId) -> None:
+    async def delete(self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
         Parameters:
             - entity_id: EntityId.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "DELETE",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}"),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         if 200 <= _response.status_code < 300:
             return
@@ -899,18 +1212,37 @@ class AsyncEntityClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def accept_terms_of_service(self, entity_id: EntityId) -> None:
+    async def accept_terms_of_service(
+        self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> None:
         """
         This endpoint is used to indicate acceptance of Mercoa's terms of service for an entity. Send a request to this endpoint only after the entity has accepted the Mercoa ToS. Entities must accept Mercoa ToS before they can be send or pay invoices using Mercoa's payment rails.
 
         Parameters:
             - entity_id: EntityId.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/accept-tos"),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            json=jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))
+            if request_options is not None
+            else None,
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         if 200 <= _response.status_code < 300:
             return
@@ -935,7 +1267,9 @@ class AsyncEntityClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def initiate_kyb(self, entity_id: EntityId) -> None:
+    async def initiate_kyb(
+        self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> None:
         """
         This endpoint is used to initiate KYB for an entity.
         Send a request to this endpoint only after the entity has accepted the Mercoa ToS,
@@ -943,12 +1277,29 @@ class AsyncEntityClient:
 
         Parameters:
             - entity_id: EntityId.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/request-kyb"),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            json=jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))
+            if request_options is not None
+            else None,
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         if 200 <= _response.status_code < 300:
             return
@@ -973,7 +1324,13 @@ class AsyncEntityClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def get_token(self, entity_id: EntityId, *, request: TokenGenerationOptions) -> str:
+    async def get_token(
+        self,
+        entity_id: EntityId,
+        *,
+        request: TokenGenerationOptions,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> str:
         """
         Generate a JWT token for an entity with the given options. This token can be used to authenticate the entity in the Mercoa API and iFrame.
 
@@ -981,6 +1338,8 @@ class AsyncEntityClient:
             - entity_id: EntityId.
 
             - request: TokenGenerationOptions.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         ---
         from mercoa import TokenGenerationOptions
         from mercoa.client import AsyncMercoa
@@ -998,9 +1357,26 @@ class AsyncEntityClient:
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/token"),
-            json=jsonable_encoder(request),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            json=jsonable_encoder(request)
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder(request),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -1025,18 +1401,34 @@ class AsyncEntityClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def plaid_link_token(self, entity_id: EntityId) -> str:
+    async def plaid_link_token(
+        self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> str:
         """
         Get a Plaid link token for an entity. This token can be used to add a bank account to the entity using Plaid Link.
 
         Parameters:
             - entity_id: EntityId.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/plaidLinkToken"),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -1068,6 +1460,7 @@ class AsyncEntityClient:
         type: EntityOnboardingLinkType,
         expires_in: typing.Optional[str] = None,
         connected_entity_id: typing.Optional[EntityId] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> str:
         """
         Generate an onboarding link for the entity.
@@ -1080,15 +1473,37 @@ class AsyncEntityClient:
             - expires_in: typing.Optional[str]. Expressed in seconds or a string describing a time span. The default is 24h.
 
             - connected_entity_id: typing.Optional[EntityId]. The ID of the entity to connect to. If onboarding a payee, this should be the payor entity ID. If onboarding a payor, this should be the payee entity ID. If no connected entity ID is provided, the onboarding link will be for a standalone entity.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/onboarding"),
-            params=remove_none_from_dict(
-                {"type": type, "expiresIn": expires_in, "connectedEntityId": connected_entity_id}
+            params=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        "type": type.value,
+                        "expiresIn": expires_in,
+                        "connectedEntityId": connected_entity_id,
+                        **(
+                            request_options.get("additional_query_parameters", {})
+                            if request_options is not None
+                            else {}
+                        ),
+                    }
+                )
             ),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -1118,6 +1533,7 @@ class AsyncEntityClient:
         type: EntityOnboardingLinkType,
         expires_in: typing.Optional[str] = None,
         connected_entity_id: typing.Optional[EntityId] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
         Send an email with a onboarding link to the entity. The email will be sent to the email address associated with the entity.
@@ -1130,15 +1546,40 @@ class AsyncEntityClient:
             - expires_in: typing.Optional[str]. Expressed in seconds or a string describing a time span. The default is 7 days.
 
             - connected_entity_id: typing.Optional[EntityId]. The ID of the entity to connect to. If onboarding a payee, this should be the payor entity ID. If onboarding a payor, this should be the payee entity ID. If no connected entity ID is provided, the onboarding link will be for a standalone entity.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/onboarding"),
-            params=remove_none_from_dict(
-                {"type": type, "expiresIn": expires_in, "connectedEntityId": connected_entity_id}
+            params=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        "type": type.value,
+                        "expiresIn": expires_in,
+                        "connectedEntityId": connected_entity_id,
+                        **(
+                            request_options.get("additional_query_parameters", {})
+                            if request_options is not None
+                            else {}
+                        ),
+                    }
+                )
             ),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            json=jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))
+            if request_options is not None
+            else None,
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         if 200 <= _response.status_code < 300:
             return

@@ -4,6 +4,7 @@ import datetime as dt
 import typing
 
 from ....core.datetime_utils import serialize_datetime
+from .email_log import EmailLog
 
 try:
     import pydantic.v1 as pydantic  # type: ignore
@@ -12,11 +13,13 @@ except ImportError:
 
 
 class EmailLogResponse(pydantic.BaseModel):
-    from_: str = pydantic.Field(alias="from")
-    to: str
-    subject: str
-    raw_content: str = pydantic.Field(alias="rawContent")
-    created_at: dt.datetime = pydantic.Field(alias="createdAt")
+    count: int = pydantic.Field(
+        description="Total number of logs for the given start and end date filters. This value is not limited by the limit parameter. It is provided so that you can determine how many pages of results are available."
+    )
+    has_more: bool = pydantic.Field(
+        alias="hasMore", description="True if there are more logs available for the given start and end date filters."
+    )
+    data: typing.List[EmailLog]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

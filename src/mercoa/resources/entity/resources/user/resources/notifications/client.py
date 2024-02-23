@@ -8,7 +8,9 @@ from json.decoder import JSONDecodeError
 from .......core.api_error import ApiError
 from .......core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from .......core.datetime_utils import serialize_datetime
+from .......core.jsonable_encoder import jsonable_encoder
 from .......core.remove_none_from_dict import remove_none_from_dict
+from .......core.request_options import RequestOptions
 from ......commons.errors.auth_header_malformed_error import AuthHeaderMalformedError
 from ......commons.errors.auth_header_missing_error import AuthHeaderMissingError
 from ......commons.errors.forbidden import Forbidden
@@ -44,6 +46,7 @@ class NotificationsClient:
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[NotificationId] = None,
         notification_type: typing.Optional[typing.Union[NotificationType, typing.List[NotificationType]]] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> FindNotificationResponse:
         """
         Parameters:
@@ -62,24 +65,42 @@ class NotificationsClient:
             - starting_after: typing.Optional[NotificationId]. The ID of the notification to start after. If not provided, the first page of invoices will be returned.
 
             - notification_type: typing.Optional[typing.Union[NotificationType, typing.List[NotificationType]]]. The type of notification to filter by.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/user/{user_id}/notifications"
             ),
-            params=remove_none_from_dict(
-                {
-                    "startDate": serialize_datetime(start_date) if start_date is not None else None,
-                    "endDate": serialize_datetime(end_date) if end_date is not None else None,
-                    "orderDirection": order_direction,
-                    "limit": limit,
-                    "startingAfter": starting_after,
-                    "notificationType": notification_type,
-                }
+            params=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        "startDate": serialize_datetime(start_date) if start_date is not None else None,
+                        "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                        "orderDirection": order_direction.value if order_direction is not None else None,
+                        "limit": limit,
+                        "startingAfter": starting_after,
+                        "notificationType": notification_type.value if notification_type is not None else None,
+                        **(
+                            request_options.get("additional_query_parameters", {})
+                            if request_options is not None
+                            else {}
+                        ),
+                    }
+                )
             ),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -102,7 +123,14 @@ class NotificationsClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def get(self, entity_id: EntityId, user_id: EntityUserId, notification_id: NotificationId) -> NotificationResponse:
+    def get(
+        self,
+        entity_id: EntityId,
+        user_id: EntityUserId,
+        notification_id: NotificationId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> NotificationResponse:
         """
         Parameters:
             - entity_id: EntityId.
@@ -110,6 +138,8 @@ class NotificationsClient:
             - user_id: EntityUserId.
 
             - notification_id: NotificationId.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
@@ -117,8 +147,20 @@ class NotificationsClient:
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{entity_id}/user/{user_id}/notification/{notification_id}",
             ),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -157,6 +199,7 @@ class AsyncNotificationsClient:
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[NotificationId] = None,
         notification_type: typing.Optional[typing.Union[NotificationType, typing.List[NotificationType]]] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> FindNotificationResponse:
         """
         Parameters:
@@ -175,24 +218,42 @@ class AsyncNotificationsClient:
             - starting_after: typing.Optional[NotificationId]. The ID of the notification to start after. If not provided, the first page of invoices will be returned.
 
             - notification_type: typing.Optional[typing.Union[NotificationType, typing.List[NotificationType]]]. The type of notification to filter by.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/user/{user_id}/notifications"
             ),
-            params=remove_none_from_dict(
-                {
-                    "startDate": serialize_datetime(start_date) if start_date is not None else None,
-                    "endDate": serialize_datetime(end_date) if end_date is not None else None,
-                    "orderDirection": order_direction,
-                    "limit": limit,
-                    "startingAfter": starting_after,
-                    "notificationType": notification_type,
-                }
+            params=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        "startDate": serialize_datetime(start_date) if start_date is not None else None,
+                        "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                        "orderDirection": order_direction.value if order_direction is not None else None,
+                        "limit": limit,
+                        "startingAfter": starting_after,
+                        "notificationType": notification_type.value if notification_type is not None else None,
+                        **(
+                            request_options.get("additional_query_parameters", {})
+                            if request_options is not None
+                            else {}
+                        ),
+                    }
+                )
             ),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -216,7 +277,12 @@ class AsyncNotificationsClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get(
-        self, entity_id: EntityId, user_id: EntityUserId, notification_id: NotificationId
+        self,
+        entity_id: EntityId,
+        user_id: EntityUserId,
+        notification_id: NotificationId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> NotificationResponse:
         """
         Parameters:
@@ -225,6 +291,8 @@ class AsyncNotificationsClient:
             - user_id: EntityUserId.
 
             - notification_id: NotificationId.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
@@ -232,8 +300,20 @@ class AsyncNotificationsClient:
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{entity_id}/user/{user_id}/notification/{notification_id}",
             ),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()

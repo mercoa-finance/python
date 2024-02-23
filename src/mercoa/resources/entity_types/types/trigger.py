@@ -4,15 +4,13 @@ from __future__ import annotations
 
 import typing
 
-import typing_extensions
-
 from .amount_trigger import AmountTrigger
 from .metadata_trigger import MetadataTrigger
 from .vendor_trigger import VendorTrigger
 
 
 class Trigger_Amount(AmountTrigger):
-    type: typing_extensions.Literal["amount"]
+    type: typing.Literal["amount"]
 
     class Config:
         frozen = True
@@ -21,7 +19,7 @@ class Trigger_Amount(AmountTrigger):
 
 
 class Trigger_Vendor(VendorTrigger):
-    type: typing_extensions.Literal["vendor"]
+    type: typing.Literal["vendor"]
 
     class Config:
         frozen = True
@@ -30,7 +28,7 @@ class Trigger_Vendor(VendorTrigger):
 
 
 class Trigger_Metadata(MetadataTrigger):
-    type: typing_extensions.Literal["metadata"]
+    type: typing.Literal["metadata"]
 
     class Config:
         frozen = True

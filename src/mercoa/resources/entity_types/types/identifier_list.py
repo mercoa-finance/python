@@ -4,8 +4,6 @@ from __future__ import annotations
 
 import typing
 
-import typing_extensions
-
 from .entity_user_id import EntityUserId
 
 try:
@@ -15,7 +13,7 @@ except ImportError:
 
 
 class IdentifierList_RolesList(pydantic.BaseModel):
-    type: typing_extensions.Literal["rolesList"]
+    type: typing.Literal["rolesList"]
     value: typing.List[str]
 
     class Config:
@@ -24,7 +22,7 @@ class IdentifierList_RolesList(pydantic.BaseModel):
 
 
 class IdentifierList_UserList(pydantic.BaseModel):
-    type: typing_extensions.Literal["userList"]
+    type: typing.Literal["userList"]
     value: typing.List[EntityUserId]
 
     class Config:

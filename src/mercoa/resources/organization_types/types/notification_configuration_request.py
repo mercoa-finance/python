@@ -4,8 +4,6 @@ from __future__ import annotations
 
 import typing
 
-import typing_extensions
-
 from .invoice_notification_configuration_request import InvoiceNotificationConfigurationRequest
 
 try:
@@ -15,7 +13,7 @@ except ImportError:
 
 
 class NotificationConfigurationRequest_Invoice(InvoiceNotificationConfigurationRequest):
-    notification_type: typing_extensions.Literal["invoice"] = pydantic.Field(alias="notificationType")
+    notification_type: typing.Literal["invoice"] = pydantic.Field(alias="notificationType")
 
     class Config:
         frozen = True

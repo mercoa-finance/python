@@ -8,6 +8,7 @@ from .....core.api_error import ApiError
 from .....core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from .....core.jsonable_encoder import jsonable_encoder
 from .....core.remove_none_from_dict import remove_none_from_dict
+from .....core.request_options import RequestOptions
 from ....commons.errors.auth_header_malformed_error import AuthHeaderMalformedError
 from ....commons.errors.auth_header_missing_error import AuthHeaderMissingError
 from ....commons.errors.forbidden import Forbidden
@@ -47,6 +48,7 @@ class CounterpartyClient:
         counterparty_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> FindCounterpartiesResponse:
         """
         Find payee counterparties. This endpoint lets you find vendors linked to the entity.
@@ -65,24 +67,42 @@ class CounterpartyClient:
             - limit: typing.Optional[int]. Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.
 
             - starting_after: typing.Optional[EntityId]. The ID of the counterparties to start after. If not provided, the first page of counterparties will be returned.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/counterparties/payees"
             ),
-            params=remove_none_from_dict(
-                {
-                    "name": name,
-                    "networkType": network_type,
-                    "paymentMethods": payment_methods,
-                    "counterpartyId": counterparty_id,
-                    "limit": limit,
-                    "startingAfter": starting_after,
-                }
+            params=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        "name": name,
+                        "networkType": network_type.value if network_type is not None else None,
+                        "paymentMethods": payment_methods,
+                        "counterpartyId": counterparty_id,
+                        "limit": limit,
+                        "startingAfter": starting_after,
+                        **(
+                            request_options.get("additional_query_parameters", {})
+                            if request_options is not None
+                            else {}
+                        ),
+                    }
+                )
             ),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -117,6 +137,7 @@ class CounterpartyClient:
         counterparty_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> FindCounterpartiesResponse:
         """
         Find payor counterparties. This endpoint lets you find customers linked to the entity.
@@ -135,24 +156,42 @@ class CounterpartyClient:
             - limit: typing.Optional[int]. Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.
 
             - starting_after: typing.Optional[EntityId]. The ID of the counterparties to start after. If not provided, the first page of counterparties will be returned.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/counterparties/payors"
             ),
-            params=remove_none_from_dict(
-                {
-                    "name": name,
-                    "networkType": network_type,
-                    "paymentMethods": payment_methods,
-                    "counterpartyId": counterparty_id,
-                    "limit": limit,
-                    "startingAfter": starting_after,
-                }
+            params=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        "name": name,
+                        "networkType": network_type.value if network_type is not None else None,
+                        "paymentMethods": payment_methods,
+                        "counterpartyId": counterparty_id,
+                        "limit": limit,
+                        "startingAfter": starting_after,
+                        **(
+                            request_options.get("additional_query_parameters", {})
+                            if request_options is not None
+                            else {}
+                        ),
+                    }
+                )
             ),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -175,7 +214,13 @@ class CounterpartyClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def add_payees(self, entity_id: EntityId, *, request: EntityAddPayeesRequest) -> None:
+    def add_payees(
+        self,
+        entity_id: EntityId,
+        *,
+        request: EntityAddPayeesRequest,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
         """
         Create association between Entity and a given list of Payees. If a Payee has previously been archived, unarchive the Payee.
 
@@ -183,13 +228,32 @@ class CounterpartyClient:
             - entity_id: EntityId.
 
             - request: EntityAddPayeesRequest.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/addPayees"),
-            json=jsonable_encoder(request),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            json=jsonable_encoder(request)
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder(request),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         if 200 <= _response.status_code < 300:
             return
@@ -212,7 +276,13 @@ class CounterpartyClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def hide_payees(self, entity_id: EntityId, *, request: EntityHidePayeesRequest) -> None:
+    def hide_payees(
+        self,
+        entity_id: EntityId,
+        *,
+        request: EntityHidePayeesRequest,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
         """
         Marks Payees as unsearchable by Entity via Counterparty search. Invoices associated with these Payees will still be searchable via Invoice search.
 
@@ -220,13 +290,32 @@ class CounterpartyClient:
             - entity_id: EntityId.
 
             - request: EntityHidePayeesRequest.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/hidePayees"),
-            json=jsonable_encoder(request),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            json=jsonable_encoder(request)
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder(request),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         if 200 <= _response.status_code < 300:
             return
@@ -249,7 +338,13 @@ class CounterpartyClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def add_payors(self, entity_id: EntityId, *, request: EntityAddPayorsRequest) -> None:
+    def add_payors(
+        self,
+        entity_id: EntityId,
+        *,
+        request: EntityAddPayorsRequest,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
         """
         Create association between Entity and a given list of Payors. If a Payor has previously been archived, unarchive the Payor.
 
@@ -257,13 +352,32 @@ class CounterpartyClient:
             - entity_id: EntityId.
 
             - request: EntityAddPayorsRequest.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/addPayors"),
-            json=jsonable_encoder(request),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            json=jsonable_encoder(request)
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder(request),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         if 200 <= _response.status_code < 300:
             return
@@ -286,7 +400,13 @@ class CounterpartyClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def hide_payors(self, entity_id: EntityId, *, request: EntityHidePayorsRequest) -> None:
+    def hide_payors(
+        self,
+        entity_id: EntityId,
+        *,
+        request: EntityHidePayorsRequest,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
         """
         Marks Payors as unsearchable by Entity via Counterparty search. Invoices associated with these Payors will still be searchable via Invoice search.
 
@@ -294,13 +414,32 @@ class CounterpartyClient:
             - entity_id: EntityId.
 
             - request: EntityHidePayorsRequest.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/hidePayors"),
-            json=jsonable_encoder(request),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            json=jsonable_encoder(request)
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder(request),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         if 200 <= _response.status_code < 300:
             return
@@ -340,6 +479,7 @@ class AsyncCounterpartyClient:
         counterparty_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> FindCounterpartiesResponse:
         """
         Find payee counterparties. This endpoint lets you find vendors linked to the entity.
@@ -358,24 +498,42 @@ class AsyncCounterpartyClient:
             - limit: typing.Optional[int]. Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.
 
             - starting_after: typing.Optional[EntityId]. The ID of the counterparties to start after. If not provided, the first page of counterparties will be returned.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/counterparties/payees"
             ),
-            params=remove_none_from_dict(
-                {
-                    "name": name,
-                    "networkType": network_type,
-                    "paymentMethods": payment_methods,
-                    "counterpartyId": counterparty_id,
-                    "limit": limit,
-                    "startingAfter": starting_after,
-                }
+            params=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        "name": name,
+                        "networkType": network_type.value if network_type is not None else None,
+                        "paymentMethods": payment_methods,
+                        "counterpartyId": counterparty_id,
+                        "limit": limit,
+                        "startingAfter": starting_after,
+                        **(
+                            request_options.get("additional_query_parameters", {})
+                            if request_options is not None
+                            else {}
+                        ),
+                    }
+                )
             ),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -410,6 +568,7 @@ class AsyncCounterpartyClient:
         counterparty_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> FindCounterpartiesResponse:
         """
         Find payor counterparties. This endpoint lets you find customers linked to the entity.
@@ -428,24 +587,42 @@ class AsyncCounterpartyClient:
             - limit: typing.Optional[int]. Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.
 
             - starting_after: typing.Optional[EntityId]. The ID of the counterparties to start after. If not provided, the first page of counterparties will be returned.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/counterparties/payors"
             ),
-            params=remove_none_from_dict(
-                {
-                    "name": name,
-                    "networkType": network_type,
-                    "paymentMethods": payment_methods,
-                    "counterpartyId": counterparty_id,
-                    "limit": limit,
-                    "startingAfter": starting_after,
-                }
+            params=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        "name": name,
+                        "networkType": network_type.value if network_type is not None else None,
+                        "paymentMethods": payment_methods,
+                        "counterpartyId": counterparty_id,
+                        "limit": limit,
+                        "startingAfter": starting_after,
+                        **(
+                            request_options.get("additional_query_parameters", {})
+                            if request_options is not None
+                            else {}
+                        ),
+                    }
+                )
             ),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -468,7 +645,13 @@ class AsyncCounterpartyClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def add_payees(self, entity_id: EntityId, *, request: EntityAddPayeesRequest) -> None:
+    async def add_payees(
+        self,
+        entity_id: EntityId,
+        *,
+        request: EntityAddPayeesRequest,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
         """
         Create association between Entity and a given list of Payees. If a Payee has previously been archived, unarchive the Payee.
 
@@ -476,13 +659,32 @@ class AsyncCounterpartyClient:
             - entity_id: EntityId.
 
             - request: EntityAddPayeesRequest.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/addPayees"),
-            json=jsonable_encoder(request),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            json=jsonable_encoder(request)
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder(request),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         if 200 <= _response.status_code < 300:
             return
@@ -505,7 +707,13 @@ class AsyncCounterpartyClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def hide_payees(self, entity_id: EntityId, *, request: EntityHidePayeesRequest) -> None:
+    async def hide_payees(
+        self,
+        entity_id: EntityId,
+        *,
+        request: EntityHidePayeesRequest,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
         """
         Marks Payees as unsearchable by Entity via Counterparty search. Invoices associated with these Payees will still be searchable via Invoice search.
 
@@ -513,13 +721,32 @@ class AsyncCounterpartyClient:
             - entity_id: EntityId.
 
             - request: EntityHidePayeesRequest.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/hidePayees"),
-            json=jsonable_encoder(request),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            json=jsonable_encoder(request)
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder(request),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         if 200 <= _response.status_code < 300:
             return
@@ -542,7 +769,13 @@ class AsyncCounterpartyClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def add_payors(self, entity_id: EntityId, *, request: EntityAddPayorsRequest) -> None:
+    async def add_payors(
+        self,
+        entity_id: EntityId,
+        *,
+        request: EntityAddPayorsRequest,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
         """
         Create association between Entity and a given list of Payors. If a Payor has previously been archived, unarchive the Payor.
 
@@ -550,13 +783,32 @@ class AsyncCounterpartyClient:
             - entity_id: EntityId.
 
             - request: EntityAddPayorsRequest.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/addPayors"),
-            json=jsonable_encoder(request),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            json=jsonable_encoder(request)
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder(request),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         if 200 <= _response.status_code < 300:
             return
@@ -579,7 +831,13 @@ class AsyncCounterpartyClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def hide_payors(self, entity_id: EntityId, *, request: EntityHidePayorsRequest) -> None:
+    async def hide_payors(
+        self,
+        entity_id: EntityId,
+        *,
+        request: EntityHidePayorsRequest,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
         """
         Marks Payors as unsearchable by Entity via Counterparty search. Invoices associated with these Payors will still be searchable via Invoice search.
 
@@ -587,13 +845,32 @@ class AsyncCounterpartyClient:
             - entity_id: EntityId.
 
             - request: EntityHidePayorsRequest.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/hidePayors"),
-            json=jsonable_encoder(request),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            json=jsonable_encoder(request)
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder(request),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         if 200 <= _response.status_code < 300:
             return

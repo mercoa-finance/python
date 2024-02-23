@@ -10,6 +10,7 @@ from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ...core.datetime_utils import serialize_datetime
 from ...core.jsonable_encoder import jsonable_encoder
 from ...core.remove_none_from_dict import remove_none_from_dict
+from ...core.request_options import RequestOptions
 from ..commons.errors.auth_header_malformed_error import AuthHeaderMalformedError
 from ..commons.errors.auth_header_missing_error import AuthHeaderMissingError
 from ..commons.errors.forbidden import Forbidden
@@ -68,6 +69,7 @@ class InvoiceClient:
         invoice_id: typing.Optional[typing.Union[InvoiceId, typing.List[InvoiceId]]] = None,
         status: typing.Optional[typing.Union[InvoiceStatus, typing.List[InvoiceStatus]]] = None,
         include_fees: typing.Optional[bool] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> FindInvoiceResponse:
         """
         Search invoices for all entities in the organization
@@ -100,30 +102,48 @@ class InvoiceClient:
             - status: typing.Optional[typing.Union[InvoiceStatus, typing.List[InvoiceStatus]]]. Invoice status to filter on
 
             - include_fees: typing.Optional[bool]. If true, will include fees as part of the response.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "invoices"),
-            params=remove_none_from_dict(
-                {
-                    "entityId": entity_id,
-                    "startDate": serialize_datetime(start_date) if start_date is not None else None,
-                    "endDate": serialize_datetime(end_date) if end_date is not None else None,
-                    "orderBy": order_by,
-                    "orderDirection": order_direction,
-                    "limit": limit,
-                    "startingAfter": starting_after,
-                    "search": search,
-                    "payerId": payer_id,
-                    "vendorId": vendor_id,
-                    "approverId": approver_id,
-                    "invoiceId": invoice_id,
-                    "status": status,
-                    "includeFees": include_fees,
-                }
+            params=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        "entityId": entity_id,
+                        "startDate": serialize_datetime(start_date) if start_date is not None else None,
+                        "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                        "orderBy": order_by.value if order_by is not None else None,
+                        "orderDirection": order_direction.value if order_direction is not None else None,
+                        "limit": limit,
+                        "startingAfter": starting_after,
+                        "search": search,
+                        "payerId": payer_id,
+                        "vendorId": vendor_id,
+                        "approverId": approver_id,
+                        "invoiceId": invoice_id,
+                        "status": status.value if status is not None else None,
+                        "includeFees": include_fees,
+                        **(
+                            request_options.get("additional_query_parameters", {})
+                            if request_options is not None
+                            else {}
+                        ),
+                    }
+                )
             ),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -148,17 +168,38 @@ class InvoiceClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def create(self, *, request: InvoiceRequest) -> InvoiceResponse:
+    def create(
+        self, *, request: InvoiceRequest, request_options: typing.Optional[RequestOptions] = None
+    ) -> InvoiceResponse:
         """
         Parameters:
             - request: InvoiceRequest.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "invoice"),
-            json=jsonable_encoder(request),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            json=jsonable_encoder(request)
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder(request),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -185,19 +226,47 @@ class InvoiceClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def get(self, invoice_id: InvoiceId, *, include_fees: typing.Optional[bool] = None) -> InvoiceResponse:
+    def get(
+        self,
+        invoice_id: InvoiceId,
+        *,
+        include_fees: typing.Optional[bool] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> InvoiceResponse:
         """
         Parameters:
             - invoice_id: InvoiceId.
 
             - include_fees: typing.Optional[bool]. If true, will include fees as part of the response.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}"),
-            params=remove_none_from_dict({"includeFees": include_fees}),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        "includeFees": include_fees,
+                        **(
+                            request_options.get("additional_query_parameters", {})
+                            if request_options is not None
+                            else {}
+                        ),
+                    }
+                )
+            ),
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -220,19 +289,40 @@ class InvoiceClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def update(self, invoice_id: InvoiceId, *, request: InvoiceRequest) -> InvoiceResponse:
+    def update(
+        self, invoice_id: InvoiceId, *, request: InvoiceRequest, request_options: typing.Optional[RequestOptions] = None
+    ) -> InvoiceResponse:
         """
         Parameters:
             - invoice_id: InvoiceId.
 
             - request: InvoiceRequest.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}"),
-            json=jsonable_encoder(request),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            json=jsonable_encoder(request)
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder(request),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -259,18 +349,32 @@ class InvoiceClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def delete(self, invoice_id: InvoiceId) -> None:
+    def delete(self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
         Only invoices in the DRAFT and NEW status can be deleted.
 
         Parameters:
             - invoice_id: InvoiceId.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "DELETE",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}"),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         if 200 <= _response.status_code < 300:
             return
@@ -295,12 +399,14 @@ class InvoiceClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def get_payer_link(self, invoice_id: InvoiceId) -> str:
+    def get_payer_link(self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None) -> str:
         """
         Get temporary link for payer to send payment
 
         Parameters:
             - invoice_id: InvoiceId.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         ---
         from mercoa.client import Mercoa
 
@@ -314,8 +420,20 @@ class InvoiceClient:
         _response = self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/payerLink"),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -340,7 +458,13 @@ class InvoiceClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def send_payer_email(self, invoice_id: InvoiceId, *, attach_invoice: typing.Optional[bool] = None) -> None:
+    def send_payer_email(
+        self,
+        invoice_id: InvoiceId,
+        *,
+        attach_invoice: typing.Optional[bool] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
         """
         Trigger email to payer inviting them to make payment
 
@@ -348,13 +472,38 @@ class InvoiceClient:
             - invoice_id: InvoiceId.
 
             - attach_invoice: typing.Optional[bool]. Whether to attach the invoice to the email
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/sendPayerEmail"),
-            params=remove_none_from_dict({"attachInvoice": attach_invoice}),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        "attachInvoice": attach_invoice,
+                        **(
+                            request_options.get("additional_query_parameters", {})
+                            if request_options is not None
+                            else {}
+                        ),
+                    }
+                )
+            ),
+            json=jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))
+            if request_options is not None
+            else None,
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         if 200 <= _response.status_code < 300:
             return
@@ -379,12 +528,14 @@ class InvoiceClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def get_vendor_link(self, invoice_id: InvoiceId) -> str:
+    def get_vendor_link(self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None) -> str:
         """
         Get temporary link for vendor to accept payment
 
         Parameters:
             - invoice_id: InvoiceId.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         ---
         from mercoa.client import Mercoa
 
@@ -398,8 +549,20 @@ class InvoiceClient:
         _response = self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/vendorLink"),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -424,18 +587,37 @@ class InvoiceClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def send_vendor_email(self, invoice_id: InvoiceId) -> None:
+    def send_vendor_email(
+        self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> None:
         """
         Trigger email to vendor inviting them into the vendor portal
 
         Parameters:
             - invoice_id: InvoiceId.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/sendVendorEmail"),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            json=jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))
+            if request_options is not None
+            else None,
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         if 200 <= _response.status_code < 300:
             return
@@ -460,18 +642,34 @@ class InvoiceClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def generate_invoice_pdf(self, invoice_id: InvoiceId) -> DocumentResponse:
+    def generate_invoice_pdf(
+        self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> DocumentResponse:
         """
         Generate a PDF of the invoice
 
         Parameters:
             - invoice_id: InvoiceId.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/pdf/generate"),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -496,18 +694,34 @@ class InvoiceClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def generate_check_pdf(self, invoice_id: InvoiceId) -> DocumentResponse:
+    def generate_check_pdf(
+        self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> DocumentResponse:
         """
         Get a printable PDF of the check. This will only work for SCHEDULED invoices that have a check as the disbursement method. Once the PDF has been generated, it will no longer be possible to mail the check. The invoice will be marked as PAID as soon as the check is generated.
 
         Parameters:
             - invoice_id: InvoiceId.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/check/generate"),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -557,6 +771,7 @@ class AsyncInvoiceClient:
         invoice_id: typing.Optional[typing.Union[InvoiceId, typing.List[InvoiceId]]] = None,
         status: typing.Optional[typing.Union[InvoiceStatus, typing.List[InvoiceStatus]]] = None,
         include_fees: typing.Optional[bool] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> FindInvoiceResponse:
         """
         Search invoices for all entities in the organization
@@ -589,30 +804,48 @@ class AsyncInvoiceClient:
             - status: typing.Optional[typing.Union[InvoiceStatus, typing.List[InvoiceStatus]]]. Invoice status to filter on
 
             - include_fees: typing.Optional[bool]. If true, will include fees as part of the response.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "invoices"),
-            params=remove_none_from_dict(
-                {
-                    "entityId": entity_id,
-                    "startDate": serialize_datetime(start_date) if start_date is not None else None,
-                    "endDate": serialize_datetime(end_date) if end_date is not None else None,
-                    "orderBy": order_by,
-                    "orderDirection": order_direction,
-                    "limit": limit,
-                    "startingAfter": starting_after,
-                    "search": search,
-                    "payerId": payer_id,
-                    "vendorId": vendor_id,
-                    "approverId": approver_id,
-                    "invoiceId": invoice_id,
-                    "status": status,
-                    "includeFees": include_fees,
-                }
+            params=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        "entityId": entity_id,
+                        "startDate": serialize_datetime(start_date) if start_date is not None else None,
+                        "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                        "orderBy": order_by.value if order_by is not None else None,
+                        "orderDirection": order_direction.value if order_direction is not None else None,
+                        "limit": limit,
+                        "startingAfter": starting_after,
+                        "search": search,
+                        "payerId": payer_id,
+                        "vendorId": vendor_id,
+                        "approverId": approver_id,
+                        "invoiceId": invoice_id,
+                        "status": status.value if status is not None else None,
+                        "includeFees": include_fees,
+                        **(
+                            request_options.get("additional_query_parameters", {})
+                            if request_options is not None
+                            else {}
+                        ),
+                    }
+                )
             ),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -637,17 +870,38 @@ class AsyncInvoiceClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def create(self, *, request: InvoiceRequest) -> InvoiceResponse:
+    async def create(
+        self, *, request: InvoiceRequest, request_options: typing.Optional[RequestOptions] = None
+    ) -> InvoiceResponse:
         """
         Parameters:
             - request: InvoiceRequest.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "invoice"),
-            json=jsonable_encoder(request),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            json=jsonable_encoder(request)
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder(request),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -674,19 +928,47 @@ class AsyncInvoiceClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def get(self, invoice_id: InvoiceId, *, include_fees: typing.Optional[bool] = None) -> InvoiceResponse:
+    async def get(
+        self,
+        invoice_id: InvoiceId,
+        *,
+        include_fees: typing.Optional[bool] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> InvoiceResponse:
         """
         Parameters:
             - invoice_id: InvoiceId.
 
             - include_fees: typing.Optional[bool]. If true, will include fees as part of the response.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}"),
-            params=remove_none_from_dict({"includeFees": include_fees}),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        "includeFees": include_fees,
+                        **(
+                            request_options.get("additional_query_parameters", {})
+                            if request_options is not None
+                            else {}
+                        ),
+                    }
+                )
+            ),
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -709,19 +991,40 @@ class AsyncInvoiceClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def update(self, invoice_id: InvoiceId, *, request: InvoiceRequest) -> InvoiceResponse:
+    async def update(
+        self, invoice_id: InvoiceId, *, request: InvoiceRequest, request_options: typing.Optional[RequestOptions] = None
+    ) -> InvoiceResponse:
         """
         Parameters:
             - invoice_id: InvoiceId.
 
             - request: InvoiceRequest.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}"),
-            json=jsonable_encoder(request),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            json=jsonable_encoder(request)
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder(request),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -748,18 +1051,32 @@ class AsyncInvoiceClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def delete(self, invoice_id: InvoiceId) -> None:
+    async def delete(self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
         Only invoices in the DRAFT and NEW status can be deleted.
 
         Parameters:
             - invoice_id: InvoiceId.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "DELETE",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}"),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         if 200 <= _response.status_code < 300:
             return
@@ -784,12 +1101,16 @@ class AsyncInvoiceClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def get_payer_link(self, invoice_id: InvoiceId) -> str:
+    async def get_payer_link(
+        self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> str:
         """
         Get temporary link for payer to send payment
 
         Parameters:
             - invoice_id: InvoiceId.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         ---
         from mercoa.client import AsyncMercoa
 
@@ -803,8 +1124,20 @@ class AsyncInvoiceClient:
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/payerLink"),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -829,7 +1162,13 @@ class AsyncInvoiceClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def send_payer_email(self, invoice_id: InvoiceId, *, attach_invoice: typing.Optional[bool] = None) -> None:
+    async def send_payer_email(
+        self,
+        invoice_id: InvoiceId,
+        *,
+        attach_invoice: typing.Optional[bool] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
         """
         Trigger email to payer inviting them to make payment
 
@@ -837,13 +1176,38 @@ class AsyncInvoiceClient:
             - invoice_id: InvoiceId.
 
             - attach_invoice: typing.Optional[bool]. Whether to attach the invoice to the email
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/sendPayerEmail"),
-            params=remove_none_from_dict({"attachInvoice": attach_invoice}),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        "attachInvoice": attach_invoice,
+                        **(
+                            request_options.get("additional_query_parameters", {})
+                            if request_options is not None
+                            else {}
+                        ),
+                    }
+                )
+            ),
+            json=jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))
+            if request_options is not None
+            else None,
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         if 200 <= _response.status_code < 300:
             return
@@ -868,12 +1232,16 @@ class AsyncInvoiceClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def get_vendor_link(self, invoice_id: InvoiceId) -> str:
+    async def get_vendor_link(
+        self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> str:
         """
         Get temporary link for vendor to accept payment
 
         Parameters:
             - invoice_id: InvoiceId.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         ---
         from mercoa.client import AsyncMercoa
 
@@ -887,8 +1255,20 @@ class AsyncInvoiceClient:
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/vendorLink"),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -913,18 +1293,37 @@ class AsyncInvoiceClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def send_vendor_email(self, invoice_id: InvoiceId) -> None:
+    async def send_vendor_email(
+        self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> None:
         """
         Trigger email to vendor inviting them into the vendor portal
 
         Parameters:
             - invoice_id: InvoiceId.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/sendVendorEmail"),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            json=jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))
+            if request_options is not None
+            else None,
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         if 200 <= _response.status_code < 300:
             return
@@ -949,18 +1348,34 @@ class AsyncInvoiceClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def generate_invoice_pdf(self, invoice_id: InvoiceId) -> DocumentResponse:
+    async def generate_invoice_pdf(
+        self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> DocumentResponse:
         """
         Generate a PDF of the invoice
 
         Parameters:
             - invoice_id: InvoiceId.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/pdf/generate"),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -985,18 +1400,34 @@ class AsyncInvoiceClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def generate_check_pdf(self, invoice_id: InvoiceId) -> DocumentResponse:
+    async def generate_check_pdf(
+        self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> DocumentResponse:
         """
         Get a printable PDF of the check. This will only work for SCHEDULED invoices that have a check as the disbursement method. Once the PDF has been generated, it will no longer be possible to mail the check. The invoice will be marked as PAID as soon as the check is generated.
 
         Parameters:
             - invoice_id: InvoiceId.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/check/generate"),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()

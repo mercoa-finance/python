@@ -7,7 +7,7 @@ from .types import (
     ApprovalSlotId,
     ApproverAction,
     AssociatedApprovalAction,
-    BankAccountPaymentSourceOptions,
+    BankAccountPaymentDestinationOptions,
     BankDeliveryMethod,
     CheckDeliveryMethod,
     CheckPaymentDestinationOptions,
@@ -27,9 +27,8 @@ from .types import (
     InvoiceResponse,
     InvoiceStatus,
     PaymentDestinationOptions,
+    PaymentDestinationOptions_BankAccount,
     PaymentDestinationOptions_Check,
-    PaymentSourceOptions,
-    PaymentSourceOptions_BankAccount,
 )
 from .errors import DuplicateInvoiceNumber, InvoiceError, InvoiceQueryError, InvoiceStatusError, VendorNotFound
 
@@ -40,7 +39,7 @@ __all__ = [
     "ApprovalSlotId",
     "ApproverAction",
     "AssociatedApprovalAction",
-    "BankAccountPaymentSourceOptions",
+    "BankAccountPaymentDestinationOptions",
     "BankDeliveryMethod",
     "CheckDeliveryMethod",
     "CheckPaymentDestinationOptions",
@@ -64,8 +63,7 @@ __all__ = [
     "InvoiceStatus",
     "InvoiceStatusError",
     "PaymentDestinationOptions",
+    "PaymentDestinationOptions_BankAccount",
     "PaymentDestinationOptions_Check",
-    "PaymentSourceOptions",
-    "PaymentSourceOptions_BankAccount",
     "VendorNotFound",
 ]

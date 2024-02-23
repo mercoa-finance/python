@@ -12,7 +12,6 @@ from .approval_slot_assignment import ApprovalSlotAssignment
 from .invoice_line_item_request import InvoiceLineItemRequest
 from .invoice_status import InvoiceStatus
 from .payment_destination_options import PaymentDestinationOptions
-from .payment_source_options import PaymentSourceOptions
 
 try:
     import pydantic.v1 as pydantic  # type: ignore
@@ -25,7 +24,9 @@ class InvoiceRequest(pydantic.BaseModel):
     amount: typing.Optional[float] = pydantic.Field(
         description="Total amount of invoice in major units. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated."
     )
-    currency: typing.Optional[CurrencyCode]
+    currency: typing.Optional[CurrencyCode] = pydantic.Field(
+        description="Currency code for the amount. Defaults to USD."
+    )
     invoice_date: typing.Optional[dt.datetime] = pydantic.Field(
         alias="invoiceDate", description="Date the invoice was issued."
     )
@@ -47,13 +48,6 @@ class InvoiceRequest(pydantic.BaseModel):
         alias="paymentSourceId",
         description="ID of payment source for this invoice. If not provided, will attempt to use the default payment source for the payer when creating an invoice if a default payment source exists for the payer.",
     )
-    payment_source_options: typing.Optional[PaymentSourceOptions] = pydantic.Field(
-        alias="paymentSourceOptions",
-        description="Options for the payment source. Depending on the payment source, this may include things such as ACH speed.",
-    )
-    approvers: typing.Optional[typing.List[ApprovalSlotAssignment]] = pydantic.Field(
-        description="Set approvers for this invoice."
-    )
     vendor_id: typing.Optional[EntityId] = pydantic.Field(alias="vendorId")
     payment_destination_id: typing.Optional[PaymentMethodId] = pydantic.Field(
         alias="paymentDestinationId",
@@ -62,6 +56,9 @@ class InvoiceRequest(pydantic.BaseModel):
     payment_destination_options: typing.Optional[PaymentDestinationOptions] = pydantic.Field(
         alias="paymentDestinationOptions",
         description="Options for the payment destination. Depending on the payment destination, this may include things such as check delivery method.",
+    )
+    approvers: typing.Optional[typing.List[ApprovalSlotAssignment]] = pydantic.Field(
+        description="Set approvers for this invoice."
     )
     line_items: typing.Optional[typing.List[InvoiceLineItemRequest]] = pydantic.Field(alias="lineItems")
     metadata: typing.Optional[typing.Dict[str, str]] = pydantic.Field(

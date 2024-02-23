@@ -10,6 +10,7 @@ from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ...core.datetime_utils import serialize_datetime
 from ...core.jsonable_encoder import jsonable_encoder
 from ...core.remove_none_from_dict import remove_none_from_dict
+from ...core.request_options import RequestOptions
 from ..commons.errors.auth_header_malformed_error import AuthHeaderMalformedError
 from ..commons.errors.auth_header_missing_error import AuthHeaderMissingError
 from ..commons.errors.forbidden import Forbidden
@@ -47,6 +48,7 @@ class OrganizationClient:
         payee_onboarding_options: typing.Optional[bool] = None,
         payor_onboarding_options: typing.Optional[bool] = None,
         metadata_schema: typing.Optional[bool] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> OrganizationResponse:
         """
         Get current organization information
@@ -63,22 +65,40 @@ class OrganizationClient:
             - payor_onboarding_options: typing.Optional[bool]. include payor onboarding options in response
 
             - metadata_schema: typing.Optional[bool]. include metadata schema in response
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "organization"),
-            params=remove_none_from_dict(
-                {
-                    "paymentMethods": payment_methods,
-                    "emailProvider": email_provider,
-                    "colorScheme": color_scheme,
-                    "payeeOnboardingOptions": payee_onboarding_options,
-                    "payorOnboardingOptions": payor_onboarding_options,
-                    "metadataSchema": metadata_schema,
-                }
+            params=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        "paymentMethods": payment_methods,
+                        "emailProvider": email_provider,
+                        "colorScheme": color_scheme,
+                        "payeeOnboardingOptions": payee_onboarding_options,
+                        "payorOnboardingOptions": payor_onboarding_options,
+                        "metadataSchema": metadata_schema,
+                        **(
+                            request_options.get("additional_query_parameters", {})
+                            if request_options is not None
+                            else {}
+                        ),
+                    }
+                )
             ),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -101,19 +121,40 @@ class OrganizationClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def update(self, *, request: OrganizationRequest) -> OrganizationResponse:
+    def update(
+        self, *, request: OrganizationRequest, request_options: typing.Optional[RequestOptions] = None
+    ) -> OrganizationResponse:
         """
         Update current organization
 
         Parameters:
             - request: OrganizationRequest.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "organization"),
-            json=jsonable_encoder(request),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            json=jsonable_encoder(request)
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder(request),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -137,8 +178,14 @@ class OrganizationClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def email_log(
-        self, *, start_date: typing.Optional[dt.datetime] = None, end_date: typing.Optional[dt.datetime] = None
-    ) -> typing.List[EmailLogResponse]:
+        self,
+        *,
+        start_date: typing.Optional[dt.datetime] = None,
+        end_date: typing.Optional[dt.datetime] = None,
+        limit: typing.Optional[int] = None,
+        starting_after: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> EmailLogResponse:
         """
         Get log of all emails sent to this organization. Content format subject to change.
 
@@ -146,25 +193,49 @@ class OrganizationClient:
             - start_date: typing.Optional[dt.datetime].
 
             - end_date: typing.Optional[dt.datetime].
+
+            - limit: typing.Optional[int]. Number of logs to return. Limit can range between 1 and 100, and the default is 10.
+
+            - starting_after: typing.Optional[str]. The ID of the log to start after. If not provided, the first page of logs will be returned.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "organization/emailLog"),
-            params=remove_none_from_dict(
-                {
-                    "startDate": serialize_datetime(start_date) if start_date is not None else None,
-                    "endDate": serialize_datetime(end_date) if end_date is not None else None,
-                }
+            params=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        "startDate": serialize_datetime(start_date) if start_date is not None else None,
+                        "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                        "limit": limit,
+                        "startingAfter": starting_after,
+                        **(
+                            request_options.get("additional_query_parameters", {})
+                            if request_options is not None
+                            else {}
+                        ),
+                    }
+                )
             ),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(typing.List[EmailLogResponse], _response_json)  # type: ignore
+            return pydantic.parse_obj_as(EmailLogResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "AuthHeaderMissingError":
                 raise AuthHeaderMissingError()
@@ -195,6 +266,7 @@ class AsyncOrganizationClient:
         payee_onboarding_options: typing.Optional[bool] = None,
         payor_onboarding_options: typing.Optional[bool] = None,
         metadata_schema: typing.Optional[bool] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> OrganizationResponse:
         """
         Get current organization information
@@ -211,22 +283,40 @@ class AsyncOrganizationClient:
             - payor_onboarding_options: typing.Optional[bool]. include payor onboarding options in response
 
             - metadata_schema: typing.Optional[bool]. include metadata schema in response
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "organization"),
-            params=remove_none_from_dict(
-                {
-                    "paymentMethods": payment_methods,
-                    "emailProvider": email_provider,
-                    "colorScheme": color_scheme,
-                    "payeeOnboardingOptions": payee_onboarding_options,
-                    "payorOnboardingOptions": payor_onboarding_options,
-                    "metadataSchema": metadata_schema,
-                }
+            params=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        "paymentMethods": payment_methods,
+                        "emailProvider": email_provider,
+                        "colorScheme": color_scheme,
+                        "payeeOnboardingOptions": payee_onboarding_options,
+                        "payorOnboardingOptions": payor_onboarding_options,
+                        "metadataSchema": metadata_schema,
+                        **(
+                            request_options.get("additional_query_parameters", {})
+                            if request_options is not None
+                            else {}
+                        ),
+                    }
+                )
             ),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -249,19 +339,40 @@ class AsyncOrganizationClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def update(self, *, request: OrganizationRequest) -> OrganizationResponse:
+    async def update(
+        self, *, request: OrganizationRequest, request_options: typing.Optional[RequestOptions] = None
+    ) -> OrganizationResponse:
         """
         Update current organization
 
         Parameters:
             - request: OrganizationRequest.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "organization"),
-            json=jsonable_encoder(request),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            json=jsonable_encoder(request)
+            if request_options is None or request_options.get("additional_body_parameters") is None
+            else {
+                **jsonable_encoder(request),
+                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            },
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
@@ -285,8 +396,14 @@ class AsyncOrganizationClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def email_log(
-        self, *, start_date: typing.Optional[dt.datetime] = None, end_date: typing.Optional[dt.datetime] = None
-    ) -> typing.List[EmailLogResponse]:
+        self,
+        *,
+        start_date: typing.Optional[dt.datetime] = None,
+        end_date: typing.Optional[dt.datetime] = None,
+        limit: typing.Optional[int] = None,
+        starting_after: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> EmailLogResponse:
         """
         Get log of all emails sent to this organization. Content format subject to change.
 
@@ -294,25 +411,49 @@ class AsyncOrganizationClient:
             - start_date: typing.Optional[dt.datetime].
 
             - end_date: typing.Optional[dt.datetime].
+
+            - limit: typing.Optional[int]. Number of logs to return. Limit can range between 1 and 100, and the default is 10.
+
+            - starting_after: typing.Optional[str]. The ID of the log to start after. If not provided, the first page of logs will be returned.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "organization/emailLog"),
-            params=remove_none_from_dict(
-                {
-                    "startDate": serialize_datetime(start_date) if start_date is not None else None,
-                    "endDate": serialize_datetime(end_date) if end_date is not None else None,
-                }
+            params=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        "startDate": serialize_datetime(start_date) if start_date is not None else None,
+                        "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                        "limit": limit,
+                        "startingAfter": starting_after,
+                        **(
+                            request_options.get("additional_query_parameters", {})
+                            if request_options is not None
+                            else {}
+                        ),
+                    }
+                )
             ),
-            headers=self._client_wrapper.get_headers(),
-            timeout=60,
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
         )
         try:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(typing.List[EmailLogResponse], _response_json)  # type: ignore
+            return pydantic.parse_obj_as(EmailLogResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "AuthHeaderMissingError":
                 raise AuthHeaderMissingError()
