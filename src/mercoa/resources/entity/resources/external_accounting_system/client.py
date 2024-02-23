@@ -52,7 +52,8 @@ class ExternalAccountingSystemClient:
         _response = self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/external-accounting-system/create"
+                f"{self._client_wrapper.get_base_url()}/",
+                f"entity/{jsonable_encoder(entity_id)}/external-accounting-system/create",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
@@ -108,7 +109,8 @@ class ExternalAccountingSystemClient:
         _response = self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/external-accounting-system/connect"
+                f"{self._client_wrapper.get_base_url()}/",
+                f"entity/{jsonable_encoder(entity_id)}/external-accounting-system/connect",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
@@ -158,7 +160,8 @@ class ExternalAccountingSystemClient:
         _response = self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/external-accounting-system/sync"
+                f"{self._client_wrapper.get_base_url()}/",
+                f"entity/{jsonable_encoder(entity_id)}/external-accounting-system/sync",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
@@ -221,7 +224,8 @@ class AsyncExternalAccountingSystemClient:
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/external-accounting-system/create"
+                f"{self._client_wrapper.get_base_url()}/",
+                f"entity/{jsonable_encoder(entity_id)}/external-accounting-system/create",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
@@ -277,7 +281,8 @@ class AsyncExternalAccountingSystemClient:
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/external-accounting-system/connect"
+                f"{self._client_wrapper.get_base_url()}/",
+                f"entity/{jsonable_encoder(entity_id)}/external-accounting-system/connect",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
@@ -327,7 +332,8 @@ class AsyncExternalAccountingSystemClient:
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/external-accounting-system/sync"
+                f"{self._client_wrapper.get_base_url()}/",
+                f"entity/{jsonable_encoder(entity_id)}/external-accounting-system/sync",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None

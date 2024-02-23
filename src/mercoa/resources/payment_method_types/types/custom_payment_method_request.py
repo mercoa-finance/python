@@ -15,8 +15,8 @@ except ImportError:
 
 class CustomPaymentMethodRequest(PaymentMethodBaseRequest):
     foreign_id: str = pydantic.Field(alias="foreignId", description="ID for this payment method in your system")
-    account_name: typing.Optional[str] = pydantic.Field(alias="accountName")
-    account_number: typing.Optional[str] = pydantic.Field(alias="accountNumber")
+    account_name: typing.Optional[str] = pydantic.Field(alias="accountName", default=None)
+    account_number: typing.Optional[str] = pydantic.Field(alias="accountNumber", default=None)
     schema_id: CustomPaymentMethodSchemaId = pydantic.Field(
         alias="schemaId",
         description="Payment method schema used for this payment method. Defines the fields that this payment method contains.",

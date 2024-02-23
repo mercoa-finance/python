@@ -18,13 +18,15 @@ except ImportError:
 
 class TokenGenerationOptions(pydantic.BaseModel):
     expires_in: typing.Optional[str] = pydantic.Field(
-        alias="expiresIn", description="Expressed in seconds or a string describing a time span. The default is 1h."
+        alias="expiresIn",
+        default=None,
+        description="Expressed in seconds or a string describing a time span. The default is 1h.",
     )
-    invoice: typing.Optional[TokenGenerationInvoiceOptions]
-    pages: typing.Optional[TokenGenerationPagesOptions]
-    style: typing.Optional[TokenGenerationStyleOptions]
-    vendors: typing.Optional[TokenGenerationVendorOptions]
-    entity: typing.Optional[TokenGenerationEntityOptions]
+    invoice: typing.Optional[TokenGenerationInvoiceOptions] = None
+    pages: typing.Optional[TokenGenerationPagesOptions] = None
+    style: typing.Optional[TokenGenerationStyleOptions] = None
+    vendors: typing.Optional[TokenGenerationVendorOptions] = None
+    entity: typing.Optional[TokenGenerationEntityOptions] = None
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

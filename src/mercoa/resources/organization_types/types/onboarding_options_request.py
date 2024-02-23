@@ -14,11 +14,11 @@ except ImportError:
 
 
 class OnboardingOptionsRequest(pydantic.BaseModel):
-    enable_business: typing.Optional[bool] = pydantic.Field(alias="enableBusiness")
-    enable_individual: typing.Optional[bool] = pydantic.Field(alias="enableIndividual")
-    payment_method: typing.Optional[bool] = pydantic.Field(alias="paymentMethod")
-    business: typing.Optional[BusinessOnboardingOptions]
-    individual: typing.Optional[IndividualOnboardingOptions]
+    enable_business: typing.Optional[bool] = pydantic.Field(alias="enableBusiness", default=None)
+    enable_individual: typing.Optional[bool] = pydantic.Field(alias="enableIndividual", default=None)
+    payment_method: typing.Optional[bool] = pydantic.Field(alias="paymentMethod", default=None)
+    business: typing.Optional[BusinessOnboardingOptions] = None
+    individual: typing.Optional[IndividualOnboardingOptions] = None
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

@@ -16,7 +16,7 @@ class EmailSenderRequest(pydantic.BaseModel):
     provider: EmailSenderProvider
     from_email: str = pydantic.Field(alias="fromEmail")
     from_name: str = pydantic.Field(alias="fromName")
-    api_key: typing.Optional[str] = pydantic.Field(alias="apiKey")
+    api_key: typing.Optional[str] = pydantic.Field(alias="apiKey", default=None)
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

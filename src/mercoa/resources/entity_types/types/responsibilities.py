@@ -12,17 +12,21 @@ except ImportError:
 
 
 class Responsibilities(pydantic.BaseModel):
-    job_title: typing.Optional[str] = pydantic.Field(alias="jobTitle")
+    job_title: typing.Optional[str] = pydantic.Field(alias="jobTitle", default=None)
     is_controller: typing.Optional[bool] = pydantic.Field(
         alias="isController",
+        default=None,
         description="Indicates whether this individual has significant management responsibilities within the business",
     )
     is_owner: typing.Optional[bool] = pydantic.Field(
         alias="isOwner",
+        default=None,
         description="Indicates whether this individual has an ownership stake of at least 25% in the business",
     )
     ownership_percentage: typing.Optional[int] = pydantic.Field(
-        alias="ownershipPercentage", description="Percentage of ownership in the business. Must be between 0 and 100."
+        alias="ownershipPercentage",
+        default=None,
+        description="Percentage of ownership in the business. Must be between 0 and 100.",
     )
 
     def json(self, **kwargs: typing.Any) -> str:

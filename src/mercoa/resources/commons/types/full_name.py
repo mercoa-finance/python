@@ -13,9 +13,9 @@ except ImportError:
 
 class FullName(pydantic.BaseModel):
     first_name: str = pydantic.Field(alias="firstName")
-    middle_name: typing.Optional[str] = pydantic.Field(alias="middleName")
+    middle_name: typing.Optional[str] = pydantic.Field(alias="middleName", default=None)
     last_name: str = pydantic.Field(alias="lastName")
-    suffix: typing.Optional[str]
+    suffix: typing.Optional[str] = None
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

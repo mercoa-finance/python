@@ -13,7 +13,9 @@ except ImportError:
 
 
 class ApprovalRequest(pydantic.BaseModel):
-    text: typing.Optional[str] = pydantic.Field(description="Comment associated with this approval action.")
+    text: typing.Optional[str] = pydantic.Field(
+        default=None, description="Comment associated with this approval action."
+    )
     user_id: EntityUserId = pydantic.Field(alias="userId")
 
     def json(self, **kwargs: typing.Any) -> str:

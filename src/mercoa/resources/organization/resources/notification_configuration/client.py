@@ -95,7 +95,7 @@ class NotificationConfigurationClient:
             "GET",
             urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
-                f"organization/notification-configuration/{notification_type.value}",
+                f"organization/notification-configuration/{jsonable_encoder(notification_type)}",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
@@ -154,7 +154,7 @@ class NotificationConfigurationClient:
             "POST",
             urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
-                f"organization/notification-configuration/{notification_type.value}",
+                f"organization/notification-configuration/{jsonable_encoder(notification_type)}",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
@@ -213,7 +213,7 @@ class NotificationConfigurationClient:
             "DELETE",
             urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
-                f"organization/notification-configuration/{notification_type.value}",
+                f"organization/notification-configuration/{jsonable_encoder(notification_type)}",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
@@ -319,7 +319,7 @@ class AsyncNotificationConfigurationClient:
             "GET",
             urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
-                f"organization/notification-configuration/{notification_type.value}",
+                f"organization/notification-configuration/{jsonable_encoder(notification_type)}",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
@@ -378,7 +378,7 @@ class AsyncNotificationConfigurationClient:
             "POST",
             urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
-                f"organization/notification-configuration/{notification_type.value}",
+                f"organization/notification-configuration/{jsonable_encoder(notification_type)}",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
@@ -437,7 +437,7 @@ class AsyncNotificationConfigurationClient:
             "DELETE",
             urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
-                f"organization/notification-configuration/{notification_type.value}",
+                f"organization/notification-configuration/{jsonable_encoder(notification_type)}",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None

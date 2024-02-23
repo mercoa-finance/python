@@ -16,18 +16,21 @@ except ImportError:
 class MetadataSchema(pydantic.BaseModel):
     key: str
     display_name: str = pydantic.Field(alias="displayName")
-    description: typing.Optional[str]
+    description: typing.Optional[str] = None
     line_item: typing.Optional[bool] = pydantic.Field(
         alias="lineItem",
+        default=None,
         description="Whether or not this field should be shown on line items. If true, this field will be shown on each line item. If false, the field will be shown on the invoice level. Defaults to false.",
     )
     type: MetadataType
     allow_multiple: typing.Optional[bool] = pydantic.Field(
         alias="allowMultiple",
+        default=None,
         description="Whether or not multiple values are allowed for this field. Defaults to false. If true, the value will be a list of the specified type.",
     )
     show_conditions: typing.Optional[MetadataShowConditions] = pydantic.Field(
         alias="showConditions",
+        default=None,
         description="A list of conditional rules that determine whether or not this field should be shown. The field will only be shown if all of the conditions are met. If no conditions are specified, the field will always be shown.",
     )
 

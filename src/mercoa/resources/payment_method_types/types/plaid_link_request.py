@@ -15,10 +15,12 @@ class PlaidLinkRequest(pydantic.BaseModel):
     account_id: str = pydantic.Field(alias="accountId", description="Plaid account ID")
     public_token: typing.Optional[str] = pydantic.Field(
         alias="publicToken",
+        default=None,
         description="Public token received from Plaid Link. Use this if linking the account using the Plaid Link frontend component.",
     )
     access_token: typing.Optional[str] = pydantic.Field(
         alias="accessToken",
+        default=None,
         description="Plaid access token for the account. If you already have an access token for the account (for example, you have linked the account to your app already), use this instead of publicToken.",
     )
 

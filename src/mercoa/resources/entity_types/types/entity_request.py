@@ -61,14 +61,17 @@ class EntityRequest(pydantic.BaseModel):
 
     foreign_id: typing.Optional[str] = pydantic.Field(
         alias="foreignId",
+        default=None,
         description="The ID used to identify this entity in your system. This ID must be unique across all entities in your system.",
     )
     email_to: typing.Optional[str] = pydantic.Field(
         alias="emailTo",
+        default=None,
         description="Sets the email address to which to send invoices to be added to the Invoice Inbox. Only provide the local-part/username of the email address, do not include the @domain.com",
     )
     email_to_alias: typing.Optional[typing.List[str]] = pydantic.Field(
         alias="emailToAlias",
+        default=None,
         description="Email inbox alias addresses. Used when forwarding emails to the emailTo address from an alias. Include the full email address.",
     )
     is_customer: bool = pydantic.Field(
@@ -83,7 +86,9 @@ class EntityRequest(pydantic.BaseModel):
     is_payee: bool = pydantic.Field(
         alias="isPayee", description="If this entity will be receiving payments, set this to true."
     )
-    logo: typing.Optional[str] = pydantic.Field(description="Base64 encoded PNG image data for the entity logo.")
+    logo: typing.Optional[str] = pydantic.Field(
+        default=None, description="Base64 encoded PNG image data for the entity logo."
+    )
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

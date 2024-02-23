@@ -38,16 +38,18 @@ class BusinessProfileResponse(pydantic.BaseModel):
     )
     """
 
-    email: typing.Optional[str]
+    email: typing.Optional[str] = None
     legal_business_name: str = pydantic.Field(alias="legalBusinessName")
-    business_type: typing.Optional[BusinessType] = pydantic.Field(alias="businessType")
-    phone: typing.Optional[PhoneNumber]
-    doing_business_as: typing.Optional[str] = pydantic.Field(alias="doingBusinessAs")
-    website: typing.Optional[str]
-    description: typing.Optional[str]
-    address: typing.Optional[Address]
+    business_type: typing.Optional[BusinessType] = pydantic.Field(alias="businessType", default=None)
+    phone: typing.Optional[PhoneNumber] = None
+    doing_business_as: typing.Optional[str] = pydantic.Field(alias="doingBusinessAs", default=None)
+    website: typing.Optional[str] = None
+    description: typing.Optional[str] = None
+    address: typing.Optional[Address] = None
     owners_provided: typing.Optional[bool] = pydantic.Field(
-        alias="ownersProvided", description="True if all representatives have been provided for this business."
+        alias="ownersProvided",
+        default=None,
+        description="True if all representatives have been provided for this business.",
     )
     tax_id_provided: bool = pydantic.Field(alias="taxIDProvided")
 

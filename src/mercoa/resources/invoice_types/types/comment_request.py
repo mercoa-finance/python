@@ -14,7 +14,7 @@ except ImportError:
 
 class CommentRequest(pydantic.BaseModel):
     text: str
-    user_id: typing.Optional[EntityUserId] = pydantic.Field(alias="userId")
+    user_id: typing.Optional[EntityUserId] = pydantic.Field(alias="userId", default=None)
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

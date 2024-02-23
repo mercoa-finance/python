@@ -22,7 +22,7 @@ class ApprovalSlot(pydantic.BaseModel):
     approval_slot_id: ApprovalSlotId = pydantic.Field(
         alias="approvalSlotId", description="The identifier for this approval slot"
     )
-    assigned_user_id: typing.Optional[EntityUserId] = pydantic.Field(alias="assignedUserId")
+    assigned_user_id: typing.Optional[EntityUserId] = pydantic.Field(alias="assignedUserId", default=None)
     action: ApproverAction
     eligible_roles: typing.List[str] = pydantic.Field(alias="eligibleRoles")
     eligible_user_ids: typing.List[EntityUserId] = pydantic.Field(alias="eligibleUserIds")

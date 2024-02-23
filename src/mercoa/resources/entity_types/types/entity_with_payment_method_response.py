@@ -14,7 +14,9 @@ except ImportError:
 
 
 class EntityWithPaymentMethodResponse(EntityResponse):
-    payment_methods: typing.Optional[typing.List[PaymentMethodResponse]] = pydantic.Field(alias="paymentMethods")
+    payment_methods: typing.Optional[typing.List[PaymentMethodResponse]] = pydantic.Field(
+        alias="paymentMethods", default=None
+    )
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

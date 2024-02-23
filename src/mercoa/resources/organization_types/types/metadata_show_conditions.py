@@ -14,28 +14,36 @@ except ImportError:
 
 class MetadataShowConditions(pydantic.BaseModel):
     has_options: typing.Optional[bool] = pydantic.Field(
-        alias="hasOptions", description="Show this field only if the entity has values set for the metadata key."
+        alias="hasOptions",
+        default=None,
+        description="Show this field only if the entity has values set for the metadata key.",
     )
     has_document: typing.Optional[bool] = pydantic.Field(
-        alias="hasDocument", description="Show this field only if a document has been attached."
+        alias="hasDocument", default=None, description="Show this field only if a document has been attached."
     )
     has_no_line_items: typing.Optional[bool] = pydantic.Field(
         alias="hasNoLineItems",
+        default=None,
         description="Show this field only if the invoice has no line items. Useful for showing a field that applies to the entire invoice but overridden by line items if present.",
     )
     payment_source_types: typing.Optional[typing.List[PaymentMethodType]] = pydantic.Field(
-        alias="paymentSourceTypes", description="Show this field only if the payment source type is in this list."
+        alias="paymentSourceTypes",
+        default=None,
+        description="Show this field only if the payment source type is in this list.",
     )
     payment_source_custom_schema_ids: typing.Optional[typing.List[str]] = pydantic.Field(
         alias="paymentSourceCustomSchemaIds",
+        default=None,
         description="Show this field only if the payment source schema ID is in this list of payment source schema IDs. This is only applicable if paymentSourceTypes contains CUSTOM.",
     )
     payment_destination_types: typing.Optional[typing.List[PaymentMethodType]] = pydantic.Field(
         alias="paymentDestinationTypes",
+        default=None,
         description="Show this field only if the payment destination type is in this list.",
     )
     payment_destination_custom_schema_ids: typing.Optional[typing.List[str]] = pydantic.Field(
         alias="paymentDestinationCustomSchemaIds",
+        default=None,
         description="Show this field only if the payment destination schema ID is in this list of payment destination schema IDs. This is only applicable if paymentDestinationTypes contains CUSTOM.",
     )
 

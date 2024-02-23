@@ -12,11 +12,11 @@ except ImportError:
 
 
 class TokenGenerationPagesOptions(pydantic.BaseModel):
-    payment_methods: typing.Optional[bool] = pydantic.Field(alias="paymentMethods")
-    representatives: typing.Optional[bool]
-    notifications: typing.Optional[bool]
-    counterparties: typing.Optional[bool]
-    approvals: typing.Optional[bool]
+    payment_methods: typing.Optional[bool] = pydantic.Field(alias="paymentMethods", default=None)
+    representatives: typing.Optional[bool] = None
+    notifications: typing.Optional[bool] = None
+    counterparties: typing.Optional[bool] = None
+    approvals: typing.Optional[bool] = None
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

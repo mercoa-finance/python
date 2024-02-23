@@ -18,6 +18,7 @@ class NotificationResponse(pydantic.BaseModel):
     id: NotificationId
     invoice_id: typing.Optional[InvoiceId] = pydantic.Field(
         alias="invoiceId",
+        default=None,
         description="The invoice ID that this notification is related to. This field is only present for notifications related to invoices.",
     )
     type: NotificationType

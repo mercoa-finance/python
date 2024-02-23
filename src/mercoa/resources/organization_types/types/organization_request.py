@@ -18,19 +18,23 @@ except ImportError:
 
 
 class OrganizationRequest(pydantic.BaseModel):
-    name: typing.Optional[str]
-    logo: typing.Optional[str]
-    website_url: typing.Optional[str] = pydantic.Field(alias="websiteUrl")
-    support_email: typing.Optional[str] = pydantic.Field(alias="supportEmail")
-    payment_methods: typing.Optional[PaymentMethodsRequest] = pydantic.Field(alias="paymentMethods")
-    email_provider: typing.Optional[EmailProviderRequest] = pydantic.Field(alias="emailProvider")
+    name: typing.Optional[str] = None
+    logo: typing.Optional[str] = None
+    website_url: typing.Optional[str] = pydantic.Field(alias="websiteUrl", default=None)
+    support_email: typing.Optional[str] = pydantic.Field(alias="supportEmail", default=None)
+    payment_methods: typing.Optional[PaymentMethodsRequest] = pydantic.Field(alias="paymentMethods", default=None)
+    email_provider: typing.Optional[EmailProviderRequest] = pydantic.Field(alias="emailProvider", default=None)
     external_accounting_system_provider: typing.Optional[ExternalAccountingSystemProviderRequest] = pydantic.Field(
-        alias="externalAccountingSystemProvider"
+        alias="externalAccountingSystemProvider", default=None
     )
-    color_scheme: typing.Optional[ColorSchemeRequest] = pydantic.Field(alias="colorScheme")
-    payee_onboarding_options: typing.Optional[OnboardingOptionsRequest] = pydantic.Field(alias="payeeOnboardingOptions")
-    payor_onboarding_options: typing.Optional[OnboardingOptionsRequest] = pydantic.Field(alias="payorOnboardingOptions")
-    metadata_schema: typing.Optional[typing.List[MetadataSchema]] = pydantic.Field(alias="metadataSchema")
+    color_scheme: typing.Optional[ColorSchemeRequest] = pydantic.Field(alias="colorScheme", default=None)
+    payee_onboarding_options: typing.Optional[OnboardingOptionsRequest] = pydantic.Field(
+        alias="payeeOnboardingOptions", default=None
+    )
+    payor_onboarding_options: typing.Optional[OnboardingOptionsRequest] = pydantic.Field(
+        alias="payorOnboardingOptions", default=None
+    )
+    metadata_schema: typing.Optional[typing.List[MetadataSchema]] = pydantic.Field(alias="metadataSchema", default=None)
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

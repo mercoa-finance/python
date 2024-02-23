@@ -16,7 +16,7 @@ except ImportError:
 class OcrJobResponse(pydantic.BaseModel):
     job_id: str = pydantic.Field(alias="jobId")
     status: OcrJobStatus
-    data: typing.Optional[OcrResponse]
+    data: typing.Optional[OcrResponse] = None
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

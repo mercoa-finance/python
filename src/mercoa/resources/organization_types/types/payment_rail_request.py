@@ -18,8 +18,8 @@ class PaymentRailRequest(pydantic.BaseModel):
     name: str = pydantic.Field(
         description="Name of the payment method. For custom payment methods, this is the ID of the schema."
     )
-    markup: typing.Optional[PaymentRailMarkup]
-    description: typing.Optional[str]
+    markup: typing.Optional[PaymentRailMarkup] = None
+    description: typing.Optional[str] = None
     active: bool
 
     def json(self, **kwargs: typing.Any) -> str:

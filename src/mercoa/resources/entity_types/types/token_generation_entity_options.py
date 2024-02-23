@@ -14,6 +14,7 @@ except ImportError:
 class TokenGenerationEntityOptions(pydantic.BaseModel):
     enable_mercoa_payments: typing.Optional[bool] = pydantic.Field(
         alias="enableMercoaPayments",
+        default=None,
         description="If true, will require entity to undergo KYB to use Mercoa payment rails and will capture required KYB data in the portal.",
     )
 

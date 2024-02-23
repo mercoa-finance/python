@@ -13,13 +13,13 @@ except ImportError:
 
 class Address(pydantic.BaseModel):
     address_line_1: str = pydantic.Field(alias="addressLine1")
-    address_line_2: typing.Optional[str] = pydantic.Field(alias="addressLine2")
+    address_line_2: typing.Optional[str] = pydantic.Field(alias="addressLine2", default=None)
     city: str
     state_or_province: str = pydantic.Field(
         alias="stateOrProvince", description="State or province code. Must be in the format XX."
     )
     postal_code: str = pydantic.Field(alias="postalCode")
-    country: typing.Optional[str]
+    country: typing.Optional[str] = None
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

@@ -19,7 +19,7 @@ class CalculateFeesRequest(pydantic.BaseModel):
         description="Total amount in major units. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated."
     )
     currency: typing.Optional[CurrencyCode] = pydantic.Field(
-        description="Currency code for the amount. Defaults to USD."
+        default=None, description="Currency code for the amount. Defaults to USD."
     )
     payment_source_id: PaymentMethodId = pydantic.Field(alias="paymentSourceId", description="ID of payment source.")
     payment_destination_id: PaymentMethodId = pydantic.Field(
@@ -27,6 +27,7 @@ class CalculateFeesRequest(pydantic.BaseModel):
     )
     payment_destination_options: typing.Optional[PaymentDestinationOptions] = pydantic.Field(
         alias="paymentDestinationOptions",
+        default=None,
         description="Options for the payment destination. Depending on the payment destination, this may include things such as check delivery method.",
     )
 

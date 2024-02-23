@@ -55,7 +55,7 @@ class InvoiceClient:
     def find(
         self,
         *,
-        entity_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]] = None,
+        entity_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         start_date: typing.Optional[dt.datetime] = None,
         end_date: typing.Optional[dt.datetime] = None,
         order_by: typing.Optional[InvoiceOrderByField] = None,
@@ -63,11 +63,11 @@ class InvoiceClient:
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[InvoiceId] = None,
         search: typing.Optional[str] = None,
-        payer_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]] = None,
-        vendor_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]] = None,
-        approver_id: typing.Optional[typing.Union[EntityUserId, typing.List[EntityUserId]]] = None,
-        invoice_id: typing.Optional[typing.Union[InvoiceId, typing.List[InvoiceId]]] = None,
-        status: typing.Optional[typing.Union[InvoiceStatus, typing.List[InvoiceStatus]]] = None,
+        payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
+        vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
+        approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]] = None,
+        invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]] = None,
+        status: typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]] = None,
         include_fees: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> FindInvoiceResponse:
@@ -75,7 +75,7 @@ class InvoiceClient:
         Search invoices for all entities in the organization
 
         Parameters:
-            - entity_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]]. Filter invoices by the ID of the entity that created the invoice.
+            - entity_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter invoices by the ID of the entity that created the invoice.
 
             - start_date: typing.Optional[dt.datetime]. Start date for invoice created on date filter.
 
@@ -91,17 +91,17 @@ class InvoiceClient:
 
             - search: typing.Optional[str]. Filter vendors by name. Partial matches are supported.
 
-            - payer_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]]. Filter invoices by payer ID.
+            - payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter invoices by payer ID.
 
-            - vendor_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]]. Filter invoices by vendor ID.
+            - vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter invoices by vendor ID.
 
-            - approver_id: typing.Optional[typing.Union[EntityUserId, typing.List[EntityUserId]]]. Filter invoices by assigned approver user ID.
+            - approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]. Filter invoices by assigned approver user ID.
 
-            - invoice_id: typing.Optional[typing.Union[InvoiceId, typing.List[InvoiceId]]]. Filter invoices by invoice ID.
+            - invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]. Filter invoices by invoice ID.
 
-            - status: typing.Optional[typing.Union[InvoiceStatus, typing.List[InvoiceStatus]]]. Invoice status to filter on
+            - status: typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]]. Invoice status to filter on
 
-            - include_fees: typing.Optional[bool]. If true, will include fees as part of the response.
+            - include_fees: typing.Optional[bool]. DEPRECATED. Fees are now included by default in the response.
 
             - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
@@ -114,8 +114,8 @@ class InvoiceClient:
                         "entityId": entity_id,
                         "startDate": serialize_datetime(start_date) if start_date is not None else None,
                         "endDate": serialize_datetime(end_date) if end_date is not None else None,
-                        "orderBy": order_by.value if order_by is not None else None,
-                        "orderDirection": order_direction.value if order_direction is not None else None,
+                        "orderBy": order_by,
+                        "orderDirection": order_direction,
                         "limit": limit,
                         "startingAfter": starting_after,
                         "search": search,
@@ -123,7 +123,7 @@ class InvoiceClient:
                         "vendorId": vendor_id,
                         "approverId": approver_id,
                         "invoiceId": invoice_id,
-                        "status": status.value if status is not None else None,
+                        "status": status,
                         "includeFees": include_fees,
                         **(
                             request_options.get("additional_query_parameters", {})
@@ -237,13 +237,13 @@ class InvoiceClient:
         Parameters:
             - invoice_id: InvoiceId.
 
-            - include_fees: typing.Optional[bool]. If true, will include fees as part of the response.
+            - include_fees: typing.Optional[bool]. DEPRECATED. Fees are now included by default in the response.
 
             - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}"),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}"),
             params=jsonable_encoder(
                 remove_none_from_dict(
                     {
@@ -302,7 +302,7 @@ class InvoiceClient:
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}"),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}"),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -360,7 +360,7 @@ class InvoiceClient:
         """
         _response = self._client_wrapper.httpx_client.request(
             "DELETE",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}"),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}"),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -419,7 +419,9 @@ class InvoiceClient:
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/payerLink"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}/payerLink"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -477,7 +479,9 @@ class InvoiceClient:
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/sendPayerEmail"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}/sendPayerEmail"
+            ),
             params=jsonable_encoder(
                 remove_none_from_dict(
                     {
@@ -548,7 +552,9 @@ class InvoiceClient:
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/vendorLink"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}/vendorLink"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -600,7 +606,9 @@ class InvoiceClient:
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/sendVendorEmail"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}/sendVendorEmail"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -655,7 +663,9 @@ class InvoiceClient:
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/pdf/generate"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}/pdf/generate"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -707,7 +717,9 @@ class InvoiceClient:
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/check/generate"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}/check/generate"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -757,7 +769,7 @@ class AsyncInvoiceClient:
     async def find(
         self,
         *,
-        entity_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]] = None,
+        entity_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         start_date: typing.Optional[dt.datetime] = None,
         end_date: typing.Optional[dt.datetime] = None,
         order_by: typing.Optional[InvoiceOrderByField] = None,
@@ -765,11 +777,11 @@ class AsyncInvoiceClient:
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[InvoiceId] = None,
         search: typing.Optional[str] = None,
-        payer_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]] = None,
-        vendor_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]] = None,
-        approver_id: typing.Optional[typing.Union[EntityUserId, typing.List[EntityUserId]]] = None,
-        invoice_id: typing.Optional[typing.Union[InvoiceId, typing.List[InvoiceId]]] = None,
-        status: typing.Optional[typing.Union[InvoiceStatus, typing.List[InvoiceStatus]]] = None,
+        payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
+        vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
+        approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]] = None,
+        invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]] = None,
+        status: typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]] = None,
         include_fees: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> FindInvoiceResponse:
@@ -777,7 +789,7 @@ class AsyncInvoiceClient:
         Search invoices for all entities in the organization
 
         Parameters:
-            - entity_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]]. Filter invoices by the ID of the entity that created the invoice.
+            - entity_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter invoices by the ID of the entity that created the invoice.
 
             - start_date: typing.Optional[dt.datetime]. Start date for invoice created on date filter.
 
@@ -793,17 +805,17 @@ class AsyncInvoiceClient:
 
             - search: typing.Optional[str]. Filter vendors by name. Partial matches are supported.
 
-            - payer_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]]. Filter invoices by payer ID.
+            - payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter invoices by payer ID.
 
-            - vendor_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]]. Filter invoices by vendor ID.
+            - vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter invoices by vendor ID.
 
-            - approver_id: typing.Optional[typing.Union[EntityUserId, typing.List[EntityUserId]]]. Filter invoices by assigned approver user ID.
+            - approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]. Filter invoices by assigned approver user ID.
 
-            - invoice_id: typing.Optional[typing.Union[InvoiceId, typing.List[InvoiceId]]]. Filter invoices by invoice ID.
+            - invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]. Filter invoices by invoice ID.
 
-            - status: typing.Optional[typing.Union[InvoiceStatus, typing.List[InvoiceStatus]]]. Invoice status to filter on
+            - status: typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]]. Invoice status to filter on
 
-            - include_fees: typing.Optional[bool]. If true, will include fees as part of the response.
+            - include_fees: typing.Optional[bool]. DEPRECATED. Fees are now included by default in the response.
 
             - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
@@ -816,8 +828,8 @@ class AsyncInvoiceClient:
                         "entityId": entity_id,
                         "startDate": serialize_datetime(start_date) if start_date is not None else None,
                         "endDate": serialize_datetime(end_date) if end_date is not None else None,
-                        "orderBy": order_by.value if order_by is not None else None,
-                        "orderDirection": order_direction.value if order_direction is not None else None,
+                        "orderBy": order_by,
+                        "orderDirection": order_direction,
                         "limit": limit,
                         "startingAfter": starting_after,
                         "search": search,
@@ -825,7 +837,7 @@ class AsyncInvoiceClient:
                         "vendorId": vendor_id,
                         "approverId": approver_id,
                         "invoiceId": invoice_id,
-                        "status": status.value if status is not None else None,
+                        "status": status,
                         "includeFees": include_fees,
                         **(
                             request_options.get("additional_query_parameters", {})
@@ -939,13 +951,13 @@ class AsyncInvoiceClient:
         Parameters:
             - invoice_id: InvoiceId.
 
-            - include_fees: typing.Optional[bool]. If true, will include fees as part of the response.
+            - include_fees: typing.Optional[bool]. DEPRECATED. Fees are now included by default in the response.
 
             - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}"),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}"),
             params=jsonable_encoder(
                 remove_none_from_dict(
                     {
@@ -1004,7 +1016,7 @@ class AsyncInvoiceClient:
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}"),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}"),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -1062,7 +1074,7 @@ class AsyncInvoiceClient:
         """
         _response = await self._client_wrapper.httpx_client.request(
             "DELETE",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}"),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}"),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -1123,7 +1135,9 @@ class AsyncInvoiceClient:
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/payerLink"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}/payerLink"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -1181,7 +1195,9 @@ class AsyncInvoiceClient:
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/sendPayerEmail"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}/sendPayerEmail"
+            ),
             params=jsonable_encoder(
                 remove_none_from_dict(
                     {
@@ -1254,7 +1270,9 @@ class AsyncInvoiceClient:
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/vendorLink"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}/vendorLink"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -1306,7 +1324,9 @@ class AsyncInvoiceClient:
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/sendVendorEmail"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}/sendVendorEmail"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -1361,7 +1381,9 @@ class AsyncInvoiceClient:
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/pdf/generate"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}/pdf/generate"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -1413,7 +1435,9 @@ class AsyncInvoiceClient:
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/check/generate"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}/check/generate"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),

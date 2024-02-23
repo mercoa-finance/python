@@ -13,7 +13,7 @@ except ImportError:
 
 
 class TokenGenerationInvoiceOptions(pydantic.BaseModel):
-    disable_line_items: typing.Optional[bool] = pydantic.Field(alias="disableLineItems")
+    disable_line_items: typing.Optional[bool] = pydantic.Field(alias="disableLineItems", default=None)
     status: typing.List[InvoiceStatus]
 
     def json(self, **kwargs: typing.Any) -> str:

@@ -69,8 +69,8 @@ class EntityClient:
         *,
         payment_methods: typing.Optional[bool] = None,
         is_customer: typing.Optional[bool] = None,
-        foreign_id: typing.Optional[typing.Union[str, typing.List[str]]] = None,
-        status: typing.Optional[typing.Union[EntityStatus, typing.List[EntityStatus]]] = None,
+        foreign_id: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        status: typing.Optional[typing.Union[EntityStatus, typing.Sequence[EntityStatus]]] = None,
         is_payee: typing.Optional[bool] = None,
         is_payor: typing.Optional[bool] = None,
         name: typing.Optional[str] = None,
@@ -86,9 +86,9 @@ class EntityClient:
 
             - is_customer: typing.Optional[bool]. If true, only entities with a direct relationship to the requesting organization will be returned. If false or not provided, all entities will be returned.
 
-            - foreign_id: typing.Optional[typing.Union[str, typing.List[str]]]. ID used to identify this entity in your system
+            - foreign_id: typing.Optional[typing.Union[str, typing.Sequence[str]]]. ID used to identify this entity in your system
 
-            - status: typing.Optional[typing.Union[EntityStatus, typing.List[EntityStatus]]].
+            - status: typing.Optional[typing.Union[EntityStatus, typing.Sequence[EntityStatus]]].
 
             - is_payee: typing.Optional[bool]. If true, entities that are marked as payees will be returned.
                                                If false or not provided, entities that are marked as payees will not be returned.
@@ -111,7 +111,7 @@ class EntityClient:
                         "paymentMethods": payment_methods,
                         "isCustomer": is_customer,
                         "foreignId": foreign_id,
-                        "status": status.value if status is not None else None,
+                        "status": status,
                         "isPayee": is_payee,
                         "isPayor": is_payor,
                         "name": name,
@@ -282,7 +282,7 @@ class EntityClient:
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}"),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}"),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -336,7 +336,7 @@ class EntityClient:
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}"),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}"),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -400,7 +400,7 @@ class EntityClient:
         """
         _response = self._client_wrapper.httpx_client.request(
             "DELETE",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}"),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}"),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -450,7 +450,9 @@ class EntityClient:
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/accept-tos"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/accept-tos"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -505,7 +507,9 @@ class EntityClient:
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/request-kyb"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/request-kyb"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -579,7 +583,9 @@ class EntityClient:
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/token"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/token"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -635,7 +641,9 @@ class EntityClient:
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/plaidLinkToken"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/plaidLinkToken"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -699,11 +707,13 @@ class EntityClient:
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/onboarding"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/onboarding"
+            ),
             params=jsonable_encoder(
                 remove_none_from_dict(
                     {
-                        "type": type.value,
+                        "type": type,
                         "expiresIn": expires_in,
                         "connectedEntityId": connected_entity_id,
                         **(
@@ -772,11 +782,13 @@ class EntityClient:
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/onboarding"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/onboarding"
+            ),
             params=jsonable_encoder(
                 remove_none_from_dict(
                     {
-                        "type": type.value,
+                        "type": type,
                         "expiresIn": expires_in,
                         "connectedEntityId": connected_entity_id,
                         **(
@@ -842,8 +854,8 @@ class AsyncEntityClient:
         *,
         payment_methods: typing.Optional[bool] = None,
         is_customer: typing.Optional[bool] = None,
-        foreign_id: typing.Optional[typing.Union[str, typing.List[str]]] = None,
-        status: typing.Optional[typing.Union[EntityStatus, typing.List[EntityStatus]]] = None,
+        foreign_id: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        status: typing.Optional[typing.Union[EntityStatus, typing.Sequence[EntityStatus]]] = None,
         is_payee: typing.Optional[bool] = None,
         is_payor: typing.Optional[bool] = None,
         name: typing.Optional[str] = None,
@@ -859,9 +871,9 @@ class AsyncEntityClient:
 
             - is_customer: typing.Optional[bool]. If true, only entities with a direct relationship to the requesting organization will be returned. If false or not provided, all entities will be returned.
 
-            - foreign_id: typing.Optional[typing.Union[str, typing.List[str]]]. ID used to identify this entity in your system
+            - foreign_id: typing.Optional[typing.Union[str, typing.Sequence[str]]]. ID used to identify this entity in your system
 
-            - status: typing.Optional[typing.Union[EntityStatus, typing.List[EntityStatus]]].
+            - status: typing.Optional[typing.Union[EntityStatus, typing.Sequence[EntityStatus]]].
 
             - is_payee: typing.Optional[bool]. If true, entities that are marked as payees will be returned.
                                                If false or not provided, entities that are marked as payees will not be returned.
@@ -884,7 +896,7 @@ class AsyncEntityClient:
                         "paymentMethods": payment_methods,
                         "isCustomer": is_customer,
                         "foreignId": foreign_id,
-                        "status": status.value if status is not None else None,
+                        "status": status,
                         "isPayee": is_payee,
                         "isPayor": is_payor,
                         "name": name,
@@ -1057,7 +1069,7 @@ class AsyncEntityClient:
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}"),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}"),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -1111,7 +1123,7 @@ class AsyncEntityClient:
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}"),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}"),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -1175,7 +1187,7 @@ class AsyncEntityClient:
         """
         _response = await self._client_wrapper.httpx_client.request(
             "DELETE",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}"),
+            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}"),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -1225,7 +1237,9 @@ class AsyncEntityClient:
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/accept-tos"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/accept-tos"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -1282,7 +1296,9 @@ class AsyncEntityClient:
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/request-kyb"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/request-kyb"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -1356,7 +1372,9 @@ class AsyncEntityClient:
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/token"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/token"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -1414,7 +1432,9 @@ class AsyncEntityClient:
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/plaidLinkToken"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/plaidLinkToken"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -1478,11 +1498,13 @@ class AsyncEntityClient:
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/onboarding"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/onboarding"
+            ),
             params=jsonable_encoder(
                 remove_none_from_dict(
                     {
-                        "type": type.value,
+                        "type": type,
                         "expiresIn": expires_in,
                         "connectedEntityId": connected_entity_id,
                         **(
@@ -1551,11 +1573,13 @@ class AsyncEntityClient:
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/onboarding"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/onboarding"
+            ),
             params=jsonable_encoder(
                 remove_none_from_dict(
                     {
-                        "type": type.value,
+                        "type": type,
                         "expiresIn": expires_in,
                         "connectedEntityId": connected_entity_id,
                         **(

@@ -15,7 +15,7 @@ except ImportError:
 class CheckRequest(PaymentMethodBaseRequest):
     pay_to_the_order_of: str = pydantic.Field(alias="payToTheOrderOf")
     address_line_1: str = pydantic.Field(alias="addressLine1")
-    address_line_2: typing.Optional[str] = pydantic.Field(alias="addressLine2")
+    address_line_2: typing.Optional[str] = pydantic.Field(alias="addressLine2", default=None)
     city: str
     state_or_province: str = pydantic.Field(alias="stateOrProvince")
     postal_code: str = pydantic.Field(alias="postalCode")

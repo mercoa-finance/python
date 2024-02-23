@@ -41,24 +41,26 @@ class PaymentMethodClient:
         self,
         entity_id: EntityId,
         *,
-        type: typing.Optional[typing.Union[PaymentMethodType, typing.List[PaymentMethodType]]] = None,
+        type: typing.Optional[typing.Union[PaymentMethodType, typing.Sequence[PaymentMethodType]]] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.List[PaymentMethodResponse]:
         """
         Parameters:
             - entity_id: EntityId.
 
-            - type: typing.Optional[typing.Union[PaymentMethodType, typing.List[PaymentMethodType]]]. Type of payment method to filter
+            - type: typing.Optional[typing.Union[PaymentMethodType, typing.Sequence[PaymentMethodType]]]. Type of payment method to filter
 
             - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/paymentMethods"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/paymentMethods"
+            ),
             params=jsonable_encoder(
                 remove_none_from_dict(
                     {
-                        "type": type.value if type is not None else None,
+                        "type": type,
                         **(
                             request_options.get("additional_query_parameters", {})
                             if request_options is not None
@@ -119,7 +121,9 @@ class PaymentMethodClient:
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/paymentMethod"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/paymentMethod"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -182,7 +186,8 @@ class PaymentMethodClient:
         _response = self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/paymentMethod/{payment_method_id}"
+                f"{self._client_wrapper.get_base_url()}/",
+                f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
@@ -245,7 +250,8 @@ class PaymentMethodClient:
         _response = self._client_wrapper.httpx_client.request(
             "PUT",
             urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/paymentMethod/{payment_method_id}"
+                f"{self._client_wrapper.get_base_url()}/",
+                f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
@@ -311,7 +317,8 @@ class PaymentMethodClient:
         _response = self._client_wrapper.httpx_client.request(
             "DELETE",
             urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/paymentMethod/{payment_method_id}"
+                f"{self._client_wrapper.get_base_url()}/",
+                f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
@@ -372,7 +379,7 @@ class PaymentMethodClient:
             "POST",
             urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
-                f"entity/{entity_id}/paymentMethod/{payment_method_id}/micro-deposits",
+                f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}/micro-deposits",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
@@ -420,7 +427,7 @@ class PaymentMethodClient:
         entity_id: EntityId,
         payment_method_id: PaymentMethodId,
         *,
-        amounts: typing.List[int],
+        amounts: typing.Sequence[int],
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PaymentMethodResponse:
         """
@@ -431,7 +438,7 @@ class PaymentMethodClient:
 
             - payment_method_id: PaymentMethodId.
 
-            - amounts: typing.List[int].
+            - amounts: typing.Sequence[int].
 
             - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
@@ -439,7 +446,7 @@ class PaymentMethodClient:
             "PUT",
             urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
-                f"entity/{entity_id}/paymentMethod/{payment_method_id}/micro-deposits",
+                f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}/micro-deposits",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
@@ -506,7 +513,7 @@ class PaymentMethodClient:
             "GET",
             urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
-                f"entity/{entity_id}/paymentMethod/{payment_method_id}/balance",
+                f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}/balance",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
@@ -555,24 +562,26 @@ class AsyncPaymentMethodClient:
         self,
         entity_id: EntityId,
         *,
-        type: typing.Optional[typing.Union[PaymentMethodType, typing.List[PaymentMethodType]]] = None,
+        type: typing.Optional[typing.Union[PaymentMethodType, typing.Sequence[PaymentMethodType]]] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.List[PaymentMethodResponse]:
         """
         Parameters:
             - entity_id: EntityId.
 
-            - type: typing.Optional[typing.Union[PaymentMethodType, typing.List[PaymentMethodType]]]. Type of payment method to filter
+            - type: typing.Optional[typing.Union[PaymentMethodType, typing.Sequence[PaymentMethodType]]]. Type of payment method to filter
 
             - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/paymentMethods"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/paymentMethods"
+            ),
             params=jsonable_encoder(
                 remove_none_from_dict(
                     {
-                        "type": type.value if type is not None else None,
+                        "type": type,
                         **(
                             request_options.get("additional_query_parameters", {})
                             if request_options is not None
@@ -633,7 +642,9 @@ class AsyncPaymentMethodClient:
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/paymentMethod"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/paymentMethod"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -696,7 +707,8 @@ class AsyncPaymentMethodClient:
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/paymentMethod/{payment_method_id}"
+                f"{self._client_wrapper.get_base_url()}/",
+                f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
@@ -759,7 +771,8 @@ class AsyncPaymentMethodClient:
         _response = await self._client_wrapper.httpx_client.request(
             "PUT",
             urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/paymentMethod/{payment_method_id}"
+                f"{self._client_wrapper.get_base_url()}/",
+                f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
@@ -825,7 +838,8 @@ class AsyncPaymentMethodClient:
         _response = await self._client_wrapper.httpx_client.request(
             "DELETE",
             urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/paymentMethod/{payment_method_id}"
+                f"{self._client_wrapper.get_base_url()}/",
+                f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
@@ -886,7 +900,7 @@ class AsyncPaymentMethodClient:
             "POST",
             urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
-                f"entity/{entity_id}/paymentMethod/{payment_method_id}/micro-deposits",
+                f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}/micro-deposits",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
@@ -934,7 +948,7 @@ class AsyncPaymentMethodClient:
         entity_id: EntityId,
         payment_method_id: PaymentMethodId,
         *,
-        amounts: typing.List[int],
+        amounts: typing.Sequence[int],
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PaymentMethodResponse:
         """
@@ -945,7 +959,7 @@ class AsyncPaymentMethodClient:
 
             - payment_method_id: PaymentMethodId.
 
-            - amounts: typing.List[int].
+            - amounts: typing.Sequence[int].
 
             - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
@@ -953,7 +967,7 @@ class AsyncPaymentMethodClient:
             "PUT",
             urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
-                f"entity/{entity_id}/paymentMethod/{payment_method_id}/micro-deposits",
+                f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}/micro-deposits",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
@@ -1020,7 +1034,7 @@ class AsyncPaymentMethodClient:
             "GET",
             urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
-                f"entity/{entity_id}/paymentMethod/{payment_method_id}/balance",
+                f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}/balance",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None

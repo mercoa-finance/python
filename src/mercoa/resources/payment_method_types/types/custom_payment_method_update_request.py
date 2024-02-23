@@ -15,16 +15,17 @@ except ImportError:
 
 class CustomPaymentMethodUpdateRequest(PaymentMethodBaseRequest):
     foreign_id: typing.Optional[str] = pydantic.Field(
-        alias="foreignId", description="ID for this payment method in your system"
+        alias="foreignId", default=None, description="ID for this payment method in your system"
     )
-    account_name: typing.Optional[str] = pydantic.Field(alias="accountName")
-    account_number: typing.Optional[str] = pydantic.Field(alias="accountNumber")
+    account_name: typing.Optional[str] = pydantic.Field(alias="accountName", default=None)
+    account_number: typing.Optional[str] = pydantic.Field(alias="accountNumber", default=None)
     schema_id: typing.Optional[CustomPaymentMethodSchemaId] = pydantic.Field(
         alias="schemaId",
+        default=None,
         description="Payment method schema used for this payment method. Defines the fields that this payment method contains.",
     )
     data: typing.Optional[typing.Dict[str, str]] = pydantic.Field(
-        description="Object of key/value pairs that matches the keys in the linked payment method schema."
+        default=None, description="Object of key/value pairs that matches the keys in the linked payment method schema."
     )
 
     def json(self, **kwargs: typing.Any) -> str:

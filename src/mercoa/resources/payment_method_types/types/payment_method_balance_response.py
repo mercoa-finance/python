@@ -17,6 +17,7 @@ class PaymentMethodBalanceResponse(pydantic.BaseModel):
     currency: CurrencyCode
     updated_at: typing.Optional[dt.datetime] = pydantic.Field(
         alias="updatedAt",
+        default=None,
         description="The time the balance was last updated. Will be null if the balance has never been updated.",
     )
 

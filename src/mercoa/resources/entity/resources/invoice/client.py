@@ -52,11 +52,11 @@ class InvoiceClient:
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[InvoiceId] = None,
         search: typing.Optional[str] = None,
-        payer_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]] = None,
-        vendor_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]] = None,
-        approver_id: typing.Optional[typing.Union[EntityUserId, typing.List[EntityUserId]]] = None,
-        invoice_id: typing.Optional[typing.Union[InvoiceId, typing.List[InvoiceId]]] = None,
-        status: typing.Optional[typing.Union[InvoiceStatus, typing.List[InvoiceStatus]]] = None,
+        payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
+        vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
+        approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]] = None,
+        invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]] = None,
+        status: typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]] = None,
         include_fees: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> FindInvoiceResponse:
@@ -84,23 +84,25 @@ class InvoiceClient:
 
             - search: typing.Optional[str]. Filter vendors by name. Partial matches are supported.
 
-            - payer_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]]. Filter invoices by payer ID.
+            - payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter invoices by payer ID.
 
-            - vendor_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]]. Filter invoices by vendor ID.
+            - vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter invoices by vendor ID.
 
-            - approver_id: typing.Optional[typing.Union[EntityUserId, typing.List[EntityUserId]]]. Filter invoices by assigned approver user ID.
+            - approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]. Filter invoices by assigned approver user ID.
 
-            - invoice_id: typing.Optional[typing.Union[InvoiceId, typing.List[InvoiceId]]]. Filter invoices by invoice ID.
+            - invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]. Filter invoices by invoice ID.
 
-            - status: typing.Optional[typing.Union[InvoiceStatus, typing.List[InvoiceStatus]]]. Invoice status to filter on.
+            - status: typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]]. Invoice status to filter on.
 
-            - include_fees: typing.Optional[bool]. If true, will include fees as part of the response.
+            - include_fees: typing.Optional[bool]. DEPRECATED. Fees are now included by default in the response.
 
             - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/invoices"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/invoices"
+            ),
             params=jsonable_encoder(
                 remove_none_from_dict(
                     {
@@ -108,8 +110,8 @@ class InvoiceClient:
                         "excludeReceivables": exclude_receivables,
                         "startDate": serialize_datetime(start_date) if start_date is not None else None,
                         "endDate": serialize_datetime(end_date) if end_date is not None else None,
-                        "orderBy": order_by.value if order_by is not None else None,
-                        "orderDirection": order_direction.value if order_direction is not None else None,
+                        "orderBy": order_by,
+                        "orderDirection": order_direction,
                         "limit": limit,
                         "startingAfter": starting_after,
                         "search": search,
@@ -117,7 +119,7 @@ class InvoiceClient:
                         "vendorId": vendor_id,
                         "approverId": approver_id,
                         "invoiceId": invoice_id,
-                        "status": status.value if status is not None else None,
+                        "status": status,
                         "includeFees": include_fees,
                         **(
                             request_options.get("additional_query_parameters", {})
@@ -176,13 +178,16 @@ class InvoiceClient:
 
             - invoice_id: InvoiceId. ID of the invoice to retrieve. This can be the full invoice ID (in_11aa2b77-6391-49e4-8c3f-b198009202c1) or the first 8 characters of the ID (11aa2b77).
 
-            - include_fees: typing.Optional[bool]. If true, will include fees as part of the response.
+            - include_fees: typing.Optional[bool]. DEPRECATED. Fees are now included by default in the response.
 
             - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/invoice/{invoice_id}"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/",
+                f"entity/{jsonable_encoder(entity_id)}/invoice/{jsonable_encoder(invoice_id)}",
+            ),
             params=jsonable_encoder(
                 remove_none_from_dict(
                     {
@@ -235,16 +240,16 @@ class InvoiceClient:
         search: typing.Optional[str] = None,
         exclude_payables: typing.Optional[bool] = None,
         exclude_receivables: typing.Optional[bool] = None,
-        payer_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]] = None,
-        vendor_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]] = None,
-        approver_id: typing.Optional[typing.Union[EntityUserId, typing.List[EntityUserId]]] = None,
-        invoice_id: typing.Optional[typing.Union[InvoiceId, typing.List[InvoiceId]]] = None,
-        status: typing.Optional[typing.Union[InvoiceStatus, typing.List[InvoiceStatus]]] = None,
+        payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
+        vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
+        approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]] = None,
+        invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]] = None,
+        status: typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]] = None,
         due_date_start: typing.Optional[dt.datetime] = None,
         due_date_end: typing.Optional[dt.datetime] = None,
         created_date_start: typing.Optional[dt.datetime] = None,
         created_date_end: typing.Optional[dt.datetime] = None,
-        currency: typing.Optional[typing.Union[CurrencyCode, typing.List[CurrencyCode]]] = None,
+        currency: typing.Optional[typing.Union[CurrencyCode, typing.Sequence[CurrencyCode]]] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.List[InvoiceMetricsResponse]:
         """
@@ -259,15 +264,15 @@ class InvoiceClient:
 
             - exclude_receivables: typing.Optional[bool]. Only return invoices that are not receivable by the entity. This will return only invoices that are payable by the entity.
 
-            - payer_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]]. Filter invoices by payer ID.
+            - payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter invoices by payer ID.
 
-            - vendor_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]]. Filter invoices by vendor ID.
+            - vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter invoices by vendor ID.
 
-            - approver_id: typing.Optional[typing.Union[EntityUserId, typing.List[EntityUserId]]]. Filter invoices by assigned approver user ID.
+            - approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]. Filter invoices by assigned approver user ID.
 
-            - invoice_id: typing.Optional[typing.Union[InvoiceId, typing.List[InvoiceId]]]. Filter invoices by invoice ID.
+            - invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]. Filter invoices by invoice ID.
 
-            - status: typing.Optional[typing.Union[InvoiceStatus, typing.List[InvoiceStatus]]]. Invoice status to filter on
+            - status: typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]]. Invoice status to filter on
 
             - due_date_start: typing.Optional[dt.datetime]. Start date for invoice dueDate filter.
 
@@ -277,13 +282,15 @@ class InvoiceClient:
 
             - created_date_end: typing.Optional[dt.datetime]. End date for invoice created date filter.
 
-            - currency: typing.Optional[typing.Union[CurrencyCode, typing.List[CurrencyCode]]]. Currency to filter on
+            - currency: typing.Optional[typing.Union[CurrencyCode, typing.Sequence[CurrencyCode]]]. Currency to filter on
 
             - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/invoice-metrics"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/invoice-metrics"
+            ),
             params=jsonable_encoder(
                 remove_none_from_dict(
                     {
@@ -294,7 +301,7 @@ class InvoiceClient:
                         "vendorId": vendor_id,
                         "approverId": approver_id,
                         "invoiceId": invoice_id,
-                        "status": status.value if status is not None else None,
+                        "status": status,
                         "dueDateStart": serialize_datetime(due_date_start) if due_date_start is not None else None,
                         "dueDateEnd": serialize_datetime(due_date_end) if due_date_end is not None else None,
                         "createdDateStart": serialize_datetime(created_date_start)
@@ -303,7 +310,7 @@ class InvoiceClient:
                         "createdDateEnd": serialize_datetime(created_date_end)
                         if created_date_end is not None
                         else None,
-                        "currency": currency.value if currency is not None else None,
+                        "currency": currency,
                         **(
                             request_options.get("additional_query_parameters", {})
                             if request_options is not None
@@ -365,11 +372,11 @@ class AsyncInvoiceClient:
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[InvoiceId] = None,
         search: typing.Optional[str] = None,
-        payer_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]] = None,
-        vendor_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]] = None,
-        approver_id: typing.Optional[typing.Union[EntityUserId, typing.List[EntityUserId]]] = None,
-        invoice_id: typing.Optional[typing.Union[InvoiceId, typing.List[InvoiceId]]] = None,
-        status: typing.Optional[typing.Union[InvoiceStatus, typing.List[InvoiceStatus]]] = None,
+        payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
+        vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
+        approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]] = None,
+        invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]] = None,
+        status: typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]] = None,
         include_fees: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> FindInvoiceResponse:
@@ -397,23 +404,25 @@ class AsyncInvoiceClient:
 
             - search: typing.Optional[str]. Filter vendors by name. Partial matches are supported.
 
-            - payer_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]]. Filter invoices by payer ID.
+            - payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter invoices by payer ID.
 
-            - vendor_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]]. Filter invoices by vendor ID.
+            - vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter invoices by vendor ID.
 
-            - approver_id: typing.Optional[typing.Union[EntityUserId, typing.List[EntityUserId]]]. Filter invoices by assigned approver user ID.
+            - approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]. Filter invoices by assigned approver user ID.
 
-            - invoice_id: typing.Optional[typing.Union[InvoiceId, typing.List[InvoiceId]]]. Filter invoices by invoice ID.
+            - invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]. Filter invoices by invoice ID.
 
-            - status: typing.Optional[typing.Union[InvoiceStatus, typing.List[InvoiceStatus]]]. Invoice status to filter on.
+            - status: typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]]. Invoice status to filter on.
 
-            - include_fees: typing.Optional[bool]. If true, will include fees as part of the response.
+            - include_fees: typing.Optional[bool]. DEPRECATED. Fees are now included by default in the response.
 
             - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/invoices"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/invoices"
+            ),
             params=jsonable_encoder(
                 remove_none_from_dict(
                     {
@@ -421,8 +430,8 @@ class AsyncInvoiceClient:
                         "excludeReceivables": exclude_receivables,
                         "startDate": serialize_datetime(start_date) if start_date is not None else None,
                         "endDate": serialize_datetime(end_date) if end_date is not None else None,
-                        "orderBy": order_by.value if order_by is not None else None,
-                        "orderDirection": order_direction.value if order_direction is not None else None,
+                        "orderBy": order_by,
+                        "orderDirection": order_direction,
                         "limit": limit,
                         "startingAfter": starting_after,
                         "search": search,
@@ -430,7 +439,7 @@ class AsyncInvoiceClient:
                         "vendorId": vendor_id,
                         "approverId": approver_id,
                         "invoiceId": invoice_id,
-                        "status": status.value if status is not None else None,
+                        "status": status,
                         "includeFees": include_fees,
                         **(
                             request_options.get("additional_query_parameters", {})
@@ -489,13 +498,16 @@ class AsyncInvoiceClient:
 
             - invoice_id: InvoiceId. ID of the invoice to retrieve. This can be the full invoice ID (in_11aa2b77-6391-49e4-8c3f-b198009202c1) or the first 8 characters of the ID (11aa2b77).
 
-            - include_fees: typing.Optional[bool]. If true, will include fees as part of the response.
+            - include_fees: typing.Optional[bool]. DEPRECATED. Fees are now included by default in the response.
 
             - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/invoice/{invoice_id}"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/",
+                f"entity/{jsonable_encoder(entity_id)}/invoice/{jsonable_encoder(invoice_id)}",
+            ),
             params=jsonable_encoder(
                 remove_none_from_dict(
                     {
@@ -548,16 +560,16 @@ class AsyncInvoiceClient:
         search: typing.Optional[str] = None,
         exclude_payables: typing.Optional[bool] = None,
         exclude_receivables: typing.Optional[bool] = None,
-        payer_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]] = None,
-        vendor_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]] = None,
-        approver_id: typing.Optional[typing.Union[EntityUserId, typing.List[EntityUserId]]] = None,
-        invoice_id: typing.Optional[typing.Union[InvoiceId, typing.List[InvoiceId]]] = None,
-        status: typing.Optional[typing.Union[InvoiceStatus, typing.List[InvoiceStatus]]] = None,
+        payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
+        vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
+        approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]] = None,
+        invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]] = None,
+        status: typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]] = None,
         due_date_start: typing.Optional[dt.datetime] = None,
         due_date_end: typing.Optional[dt.datetime] = None,
         created_date_start: typing.Optional[dt.datetime] = None,
         created_date_end: typing.Optional[dt.datetime] = None,
-        currency: typing.Optional[typing.Union[CurrencyCode, typing.List[CurrencyCode]]] = None,
+        currency: typing.Optional[typing.Union[CurrencyCode, typing.Sequence[CurrencyCode]]] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.List[InvoiceMetricsResponse]:
         """
@@ -572,15 +584,15 @@ class AsyncInvoiceClient:
 
             - exclude_receivables: typing.Optional[bool]. Only return invoices that are not receivable by the entity. This will return only invoices that are payable by the entity.
 
-            - payer_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]]. Filter invoices by payer ID.
+            - payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter invoices by payer ID.
 
-            - vendor_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]]. Filter invoices by vendor ID.
+            - vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter invoices by vendor ID.
 
-            - approver_id: typing.Optional[typing.Union[EntityUserId, typing.List[EntityUserId]]]. Filter invoices by assigned approver user ID.
+            - approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]. Filter invoices by assigned approver user ID.
 
-            - invoice_id: typing.Optional[typing.Union[InvoiceId, typing.List[InvoiceId]]]. Filter invoices by invoice ID.
+            - invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]. Filter invoices by invoice ID.
 
-            - status: typing.Optional[typing.Union[InvoiceStatus, typing.List[InvoiceStatus]]]. Invoice status to filter on
+            - status: typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]]. Invoice status to filter on
 
             - due_date_start: typing.Optional[dt.datetime]. Start date for invoice dueDate filter.
 
@@ -590,13 +602,15 @@ class AsyncInvoiceClient:
 
             - created_date_end: typing.Optional[dt.datetime]. End date for invoice created date filter.
 
-            - currency: typing.Optional[typing.Union[CurrencyCode, typing.List[CurrencyCode]]]. Currency to filter on
+            - currency: typing.Optional[typing.Union[CurrencyCode, typing.Sequence[CurrencyCode]]]. Currency to filter on
 
             - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/invoice-metrics"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/invoice-metrics"
+            ),
             params=jsonable_encoder(
                 remove_none_from_dict(
                     {
@@ -607,7 +621,7 @@ class AsyncInvoiceClient:
                         "vendorId": vendor_id,
                         "approverId": approver_id,
                         "invoiceId": invoice_id,
-                        "status": status.value if status is not None else None,
+                        "status": status,
                         "dueDateStart": serialize_datetime(due_date_start) if due_date_start is not None else None,
                         "dueDateEnd": serialize_datetime(due_date_end) if due_date_end is not None else None,
                         "createdDateStart": serialize_datetime(created_date_start)
@@ -616,7 +630,7 @@ class AsyncInvoiceClient:
                         "createdDateEnd": serialize_datetime(created_date_end)
                         if created_date_end is not None
                         else None,
-                        "currency": currency.value if currency is not None else None,
+                        "currency": currency,
                         **(
                             request_options.get("additional_query_parameters", {})
                             if request_options is not None

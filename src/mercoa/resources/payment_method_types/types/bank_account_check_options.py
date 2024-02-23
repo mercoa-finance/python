@@ -13,26 +13,31 @@ except ImportError:
 
 class BankAccountCheckOptions(pydantic.BaseModel):
     enabled: typing.Optional[bool] = pydantic.Field(
-        description="If true, will allow the user to print checks from this bank account"
+        default=None, description="If true, will allow the user to print checks from this bank account"
     )
     initial_check_number: typing.Optional[int] = pydantic.Field(
         alias="initialCheckNumber",
+        default=None,
         description="If provided, will start the check number sequence at the provided number. If not provided, will start at 5000.",
     )
     routing_number_override: typing.Optional[str] = pydantic.Field(
         alias="routingNumberOverride",
+        default=None,
         description="If provided, will print a check with the provided routing number instead of the one from the bank account",
     )
     account_number_override: typing.Optional[str] = pydantic.Field(
         alias="accountNumberOverride",
+        default=None,
         description="If provided, will print a check with the provided account number instead of the one from the bank account",
     )
     signatory_name: typing.Optional[str] = pydantic.Field(
         alias="signatoryName",
+        default=None,
         description="If provided, will print a check with a generated signature from the provided name",
     )
     signature_image: typing.Optional[str] = pydantic.Field(
         alias="signatureImage",
+        default=None,
         description="Base64 encoded PNG of the signature. If provided, will print a check with the provided image as the signature. Will override signatoryName.",
     )
 

@@ -15,10 +15,10 @@ except ImportError:
 
 class ProfileRequest(pydantic.BaseModel):
     business: typing.Optional[BusinessProfileRequest] = pydantic.Field(
-        description="If this entity is a business, set this field"
+        default=None, description="If this entity is a business, set this field"
     )
     individual: typing.Optional[IndividualProfileRequest] = pydantic.Field(
-        description="If this entity is a individual, set this field"
+        default=None, description="If this entity is a individual, set this field"
     )
 
     def json(self, **kwargs: typing.Any) -> str:

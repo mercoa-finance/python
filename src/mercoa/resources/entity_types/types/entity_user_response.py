@@ -15,10 +15,10 @@ except ImportError:
 class EntityUserResponse(pydantic.BaseModel):
     id: EntityUserId
     foreign_id: typing.Optional[str] = pydantic.Field(
-        alias="foreignId", description="The ID used to identify this user in your system."
+        alias="foreignId", default=None, description="The ID used to identify this user in your system."
     )
-    email: typing.Optional[str]
-    name: typing.Optional[str]
+    email: typing.Optional[str] = None
+    name: typing.Optional[str] = None
     roles: typing.List[str]
     created_at: dt.datetime = pydantic.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic.Field(alias="updatedAt")

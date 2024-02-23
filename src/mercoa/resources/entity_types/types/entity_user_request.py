@@ -13,12 +13,12 @@ except ImportError:
 
 class EntityUserRequest(pydantic.BaseModel):
     foreign_id: typing.Optional[str] = pydantic.Field(
-        alias="foreignId", description="The ID used to identify this user in your system."
+        alias="foreignId", default=None, description="The ID used to identify this user in your system."
     )
-    email: typing.Optional[str]
-    name: typing.Optional[str]
+    email: typing.Optional[str] = None
+    name: typing.Optional[str] = None
     roles: typing.Optional[typing.List[str]] = pydantic.Field(
-        description='List of roles. A role can be any string. For example: "payer", "approver", "viewer"'
+        default=None, description='List of roles. A role can be any string. For example: "payer", "approver", "viewer"'
     )
 
     def json(self, **kwargs: typing.Any) -> str:

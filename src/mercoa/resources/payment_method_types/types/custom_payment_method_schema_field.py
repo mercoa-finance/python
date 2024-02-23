@@ -14,19 +14,21 @@ except ImportError:
 
 class CustomPaymentMethodSchemaField(pydantic.BaseModel):
     name: str
-    display_name: typing.Optional[str] = pydantic.Field(alias="displayName")
+    display_name: typing.Optional[str] = pydantic.Field(alias="displayName", default=None)
     type: CustomPaymentMethodSchemaFieldType
     optional: bool = pydantic.Field(description="Indicates whether this field is optional")
     use_as_account_name: typing.Optional[bool] = pydantic.Field(
         alias="useAsAccountName",
+        default=None,
         description="Indicates whether this field should be used as the name of the payment method. Only one field can be used as the name. Will set the accountName field of the payment method to the value of this field.",
     )
     use_as_account_number: typing.Optional[bool] = pydantic.Field(
         alias="useAsAccountNumber",
+        default=None,
         description="Indicates whether this field should be used as the account number of the payment method. Only one field can be used as the account number. Will set the accountNumber field of the payment method to the value of this field.",
     )
     options: typing.Optional[typing.List[str]] = pydantic.Field(
-        description="When type is 'select', provide options that can be selected"
+        default=None, description="When type is 'select', provide options that can be selected"
     )
 
     def json(self, **kwargs: typing.Any) -> str:

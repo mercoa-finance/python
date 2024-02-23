@@ -18,8 +18,8 @@ except ImportError:
 class OcrResponse(pydantic.BaseModel):
     invoice: InvoiceResponse
     vendor: EntityResponse
-    check: typing.Optional[CheckResponse]
-    bank_account: typing.Optional[BankAccountResponse] = pydantic.Field(alias="bankAccount")
+    check: typing.Optional[CheckResponse] = None
+    bank_account: typing.Optional[BankAccountResponse] = pydantic.Field(alias="bankAccount", default=None)
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

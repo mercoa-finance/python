@@ -49,7 +49,9 @@ class ApprovalPolicyClient:
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/approval-policies"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/approval-policies"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -105,7 +107,9 @@ class ApprovalPolicyClient:
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/approval-policy"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/approval-policy"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -174,7 +178,8 @@ class ApprovalPolicyClient:
         _response = self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/approval-policy/{policy_id}"
+                f"{self._client_wrapper.get_base_url()}/",
+                f"entity/{jsonable_encoder(entity_id)}/approval-policy/{jsonable_encoder(policy_id)}",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
@@ -235,7 +240,8 @@ class ApprovalPolicyClient:
         _response = self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/approval-policy/{policy_id}"
+                f"{self._client_wrapper.get_base_url()}/",
+                f"entity/{jsonable_encoder(entity_id)}/approval-policy/{jsonable_encoder(policy_id)}",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
@@ -305,7 +311,8 @@ class ApprovalPolicyClient:
         _response = self._client_wrapper.httpx_client.request(
             "DELETE",
             urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/approval-policy/{policy_id}"
+                f"{self._client_wrapper.get_base_url()}/",
+                f"entity/{jsonable_encoder(entity_id)}/approval-policy/{jsonable_encoder(policy_id)}",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
@@ -361,7 +368,9 @@ class AsyncApprovalPolicyClient:
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/approval-policies"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/approval-policies"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -417,7 +426,9 @@ class AsyncApprovalPolicyClient:
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/approval-policy"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/approval-policy"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -486,7 +497,8 @@ class AsyncApprovalPolicyClient:
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/approval-policy/{policy_id}"
+                f"{self._client_wrapper.get_base_url()}/",
+                f"entity/{jsonable_encoder(entity_id)}/approval-policy/{jsonable_encoder(policy_id)}",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
@@ -547,7 +559,8 @@ class AsyncApprovalPolicyClient:
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/approval-policy/{policy_id}"
+                f"{self._client_wrapper.get_base_url()}/",
+                f"entity/{jsonable_encoder(entity_id)}/approval-policy/{jsonable_encoder(policy_id)}",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
@@ -617,7 +630,8 @@ class AsyncApprovalPolicyClient:
         _response = await self._client_wrapper.httpx_client.request(
             "DELETE",
             urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/approval-policy/{policy_id}"
+                f"{self._client_wrapper.get_base_url()}/",
+                f"entity/{jsonable_encoder(entity_id)}/approval-policy/{jsonable_encoder(policy_id)}",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None

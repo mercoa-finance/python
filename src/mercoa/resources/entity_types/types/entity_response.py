@@ -73,14 +73,16 @@ class EntityResponse(pydantic.BaseModel):
     name: str
     email: str
     foreign_id: typing.Optional[str] = pydantic.Field(
-        alias="foreignId", description="The ID used to identify this entity in your system"
+        alias="foreignId", default=None, description="The ID used to identify this entity in your system"
     )
     email_to: typing.Optional[str] = pydantic.Field(
         alias="emailTo",
+        default=None,
         description="Local-part/username of the email address to which to send invoices to be added to the Invoice Inbox.",
     )
     email_to_alias: typing.Optional[typing.List[str]] = pydantic.Field(
         alias="emailToAlias",
+        default=None,
         description="Email inbox alias addresses. Used when forwarding emails to the emailTo address from an alias.",
     )
     is_customer: bool = pydantic.Field(

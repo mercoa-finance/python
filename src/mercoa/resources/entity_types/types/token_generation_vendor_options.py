@@ -14,7 +14,7 @@ except ImportError:
 
 class TokenGenerationVendorOptions(pydantic.BaseModel):
     disable_creation: typing.Optional[bool] = pydantic.Field(
-        alias="disableCreation", description="If true, the user will not be able to create new vendors."
+        alias="disableCreation", default=None, description="If true, the user will not be able to create new vendors."
     )
     network: VendorNetwork
 

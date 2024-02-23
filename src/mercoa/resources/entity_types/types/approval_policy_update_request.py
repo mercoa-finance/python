@@ -15,9 +15,9 @@ except ImportError:
 
 
 class ApprovalPolicyUpdateRequest(pydantic.BaseModel):
-    trigger: typing.Optional[typing.List[Trigger]]
-    rule: typing.Optional[Rule]
-    upstream_policy_id: typing.Optional[ApprovalPolicyId] = pydantic.Field(alias="upstreamPolicyId")
+    trigger: typing.Optional[typing.List[Trigger]] = None
+    rule: typing.Optional[Rule] = None
+    upstream_policy_id: typing.Optional[ApprovalPolicyId] = pydantic.Field(alias="upstreamPolicyId", default=None)
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

@@ -14,6 +14,7 @@ except ImportError:
 class CodatCompanyCreationRequest(pydantic.BaseModel):
     company_id: typing.Optional[str] = pydantic.Field(
         alias="companyId",
+        default=None,
         description="If the company already exists in Codat, provide the company ID to link the company to the entity. If the company does not exist, leave this field blank and Codat will create a new company.",
     )
 

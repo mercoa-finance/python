@@ -14,19 +14,21 @@ except ImportError:
 
 class InvoiceLineItemResponse(pydantic.BaseModel):
     id: str
-    amount: typing.Optional[float] = pydantic.Field(description="Total amount of line item in major units.")
-    currency: CurrencyCode
-    description: typing.Optional[str]
-    name: typing.Optional[str]
-    quantity: typing.Optional[int]
-    unit_price: typing.Optional[float] = pydantic.Field(
-        alias="unitPrice", description="Unit price of line item in major units."
+    amount: typing.Optional[float] = pydantic.Field(
+        default=None, description="Total amount of line item in major units."
     )
-    service_start_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceStartDate")
-    service_end_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceEndDate")
-    metadata: typing.Optional[typing.Dict[str, str]]
+    currency: CurrencyCode
+    description: typing.Optional[str] = None
+    name: typing.Optional[str] = None
+    quantity: typing.Optional[int] = None
+    unit_price: typing.Optional[float] = pydantic.Field(
+        alias="unitPrice", default=None, description="Unit price of line item in major units."
+    )
+    service_start_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceStartDate", default=None)
+    service_end_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceEndDate", default=None)
+    metadata: typing.Optional[typing.Dict[str, str]] = None
     gl_account_id: typing.Optional[str] = pydantic.Field(
-        alias="glAccountId", description="ID of general ledger account associated with this line item."
+        alias="glAccountId", default=None, description="ID of general ledger account associated with this line item."
     )
     created_at: dt.datetime = pydantic.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic.Field(alias="updatedAt")

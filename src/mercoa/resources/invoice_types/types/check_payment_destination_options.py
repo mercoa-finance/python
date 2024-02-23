@@ -14,7 +14,7 @@ except ImportError:
 
 class CheckPaymentDestinationOptions(pydantic.BaseModel):
     delivery: typing.Optional[CheckDeliveryMethod] = pydantic.Field(
-        description="Delivery method for check disbursements. Defaults to MAIL."
+        default=None, description="Delivery method for check disbursements. Defaults to MAIL."
     )
 
     def json(self, **kwargs: typing.Any) -> str:

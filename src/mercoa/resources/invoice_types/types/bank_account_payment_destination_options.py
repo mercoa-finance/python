@@ -14,7 +14,7 @@ except ImportError:
 
 class BankAccountPaymentDestinationOptions(pydantic.BaseModel):
     delivery: typing.Optional[BankDeliveryMethod] = pydantic.Field(
-        description="Delivery method for ACH payments. Defaults to ACH_SAME_DAY."
+        default=None, description="Delivery method for ACH payments. Defaults to ACH_SAME_DAY."
     )
 
     def json(self, **kwargs: typing.Any) -> str:

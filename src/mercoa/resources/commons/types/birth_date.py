@@ -12,9 +12,9 @@ except ImportError:
 
 
 class BirthDate(pydantic.BaseModel):
-    day: typing.Optional[str]
-    month: typing.Optional[str]
-    year: typing.Optional[str]
+    day: typing.Optional[str] = None
+    month: typing.Optional[str] = None
+    year: typing.Optional[str] = None
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

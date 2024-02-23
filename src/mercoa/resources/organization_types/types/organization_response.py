@@ -21,19 +21,19 @@ class OrganizationResponse(pydantic.BaseModel):
     id: OrganizationId
     sandbox: bool
     name: str
-    logo_url: typing.Optional[str] = pydantic.Field(alias="logoUrl")
-    website_url: typing.Optional[str] = pydantic.Field(alias="websiteUrl")
-    support_email: typing.Optional[str] = pydantic.Field(alias="supportEmail")
-    payment_methods: typing.Optional[PaymentMethodsResponse] = pydantic.Field(alias="paymentMethods")
-    email_provider: typing.Optional[EmailProviderResponse] = pydantic.Field(alias="emailProvider")
-    color_scheme: typing.Optional[ColorSchemeResponse] = pydantic.Field(alias="colorScheme")
+    logo_url: typing.Optional[str] = pydantic.Field(alias="logoUrl", default=None)
+    website_url: typing.Optional[str] = pydantic.Field(alias="websiteUrl", default=None)
+    support_email: typing.Optional[str] = pydantic.Field(alias="supportEmail", default=None)
+    payment_methods: typing.Optional[PaymentMethodsResponse] = pydantic.Field(alias="paymentMethods", default=None)
+    email_provider: typing.Optional[EmailProviderResponse] = pydantic.Field(alias="emailProvider", default=None)
+    color_scheme: typing.Optional[ColorSchemeResponse] = pydantic.Field(alias="colorScheme", default=None)
     payee_onboarding_options: typing.Optional[OnboardingOptionsResponse] = pydantic.Field(
-        alias="payeeOnboardingOptions"
+        alias="payeeOnboardingOptions", default=None
     )
     payor_onboarding_options: typing.Optional[OnboardingOptionsResponse] = pydantic.Field(
-        alias="payorOnboardingOptions"
+        alias="payorOnboardingOptions", default=None
     )
-    metadata_schema: typing.Optional[typing.List[MetadataSchema]] = pydantic.Field(alias="metadataSchema")
+    metadata_schema: typing.Optional[typing.List[MetadataSchema]] = pydantic.Field(alias="metadataSchema", default=None)
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

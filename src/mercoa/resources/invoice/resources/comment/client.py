@@ -46,7 +46,9 @@ class CommentClient:
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/comments"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}/comments"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -98,7 +100,9 @@ class CommentClient:
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/comment"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}/comment"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -155,7 +159,8 @@ class CommentClient:
         _response = self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/comment/{comment_id}"
+                f"{self._client_wrapper.get_base_url()}/",
+                f"invoice/{jsonable_encoder(invoice_id)}/comment/{jsonable_encoder(comment_id)}",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
@@ -216,7 +221,8 @@ class CommentClient:
         _response = self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/comment/{comment_id}"
+                f"{self._client_wrapper.get_base_url()}/",
+                f"invoice/{jsonable_encoder(invoice_id)}/comment/{jsonable_encoder(comment_id)}",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
@@ -276,7 +282,8 @@ class CommentClient:
         _response = self._client_wrapper.httpx_client.request(
             "DELETE",
             urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/comment/{comment_id}"
+                f"{self._client_wrapper.get_base_url()}/",
+                f"invoice/{jsonable_encoder(invoice_id)}/comment/{jsonable_encoder(comment_id)}",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
@@ -332,7 +339,9 @@ class AsyncCommentClient:
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/comments"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}/comments"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -384,7 +393,9 @@ class AsyncCommentClient:
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/comment"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}/comment"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -441,7 +452,8 @@ class AsyncCommentClient:
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/comment/{comment_id}"
+                f"{self._client_wrapper.get_base_url()}/",
+                f"invoice/{jsonable_encoder(invoice_id)}/comment/{jsonable_encoder(comment_id)}",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
@@ -502,7 +514,8 @@ class AsyncCommentClient:
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/comment/{comment_id}"
+                f"{self._client_wrapper.get_base_url()}/",
+                f"invoice/{jsonable_encoder(invoice_id)}/comment/{jsonable_encoder(comment_id)}",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
@@ -562,7 +575,8 @@ class AsyncCommentClient:
         _response = await self._client_wrapper.httpx_client.request(
             "DELETE",
             urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"invoice/{invoice_id}/comment/{comment_id}"
+                f"{self._client_wrapper.get_base_url()}/",
+                f"invoice/{jsonable_encoder(invoice_id)}/comment/{jsonable_encoder(comment_id)}",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None

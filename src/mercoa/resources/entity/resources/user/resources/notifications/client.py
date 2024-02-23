@@ -45,7 +45,7 @@ class NotificationsClient:
         order_direction: typing.Optional[OrderDirection] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[NotificationId] = None,
-        notification_type: typing.Optional[typing.Union[NotificationType, typing.List[NotificationType]]] = None,
+        notification_type: typing.Optional[typing.Union[NotificationType, typing.Sequence[NotificationType]]] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> FindNotificationResponse:
         """
@@ -64,24 +64,25 @@ class NotificationsClient:
 
             - starting_after: typing.Optional[NotificationId]. The ID of the notification to start after. If not provided, the first page of invoices will be returned.
 
-            - notification_type: typing.Optional[typing.Union[NotificationType, typing.List[NotificationType]]]. The type of notification to filter by.
+            - notification_type: typing.Optional[typing.Union[NotificationType, typing.Sequence[NotificationType]]]. The type of notification to filter by.
 
             - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/user/{user_id}/notifications"
+                f"{self._client_wrapper.get_base_url()}/",
+                f"entity/{jsonable_encoder(entity_id)}/user/{jsonable_encoder(user_id)}/notifications",
             ),
             params=jsonable_encoder(
                 remove_none_from_dict(
                     {
                         "startDate": serialize_datetime(start_date) if start_date is not None else None,
                         "endDate": serialize_datetime(end_date) if end_date is not None else None,
-                        "orderDirection": order_direction.value if order_direction is not None else None,
+                        "orderDirection": order_direction,
                         "limit": limit,
                         "startingAfter": starting_after,
-                        "notificationType": notification_type.value if notification_type is not None else None,
+                        "notificationType": notification_type,
                         **(
                             request_options.get("additional_query_parameters", {})
                             if request_options is not None
@@ -145,7 +146,7 @@ class NotificationsClient:
             "GET",
             urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
-                f"entity/{entity_id}/user/{user_id}/notification/{notification_id}",
+                f"entity/{jsonable_encoder(entity_id)}/user/{jsonable_encoder(user_id)}/notification/{jsonable_encoder(notification_id)}",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
@@ -198,7 +199,7 @@ class AsyncNotificationsClient:
         order_direction: typing.Optional[OrderDirection] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[NotificationId] = None,
-        notification_type: typing.Optional[typing.Union[NotificationType, typing.List[NotificationType]]] = None,
+        notification_type: typing.Optional[typing.Union[NotificationType, typing.Sequence[NotificationType]]] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> FindNotificationResponse:
         """
@@ -217,24 +218,25 @@ class AsyncNotificationsClient:
 
             - starting_after: typing.Optional[NotificationId]. The ID of the notification to start after. If not provided, the first page of invoices will be returned.
 
-            - notification_type: typing.Optional[typing.Union[NotificationType, typing.List[NotificationType]]]. The type of notification to filter by.
+            - notification_type: typing.Optional[typing.Union[NotificationType, typing.Sequence[NotificationType]]]. The type of notification to filter by.
 
             - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/user/{user_id}/notifications"
+                f"{self._client_wrapper.get_base_url()}/",
+                f"entity/{jsonable_encoder(entity_id)}/user/{jsonable_encoder(user_id)}/notifications",
             ),
             params=jsonable_encoder(
                 remove_none_from_dict(
                     {
                         "startDate": serialize_datetime(start_date) if start_date is not None else None,
                         "endDate": serialize_datetime(end_date) if end_date is not None else None,
-                        "orderDirection": order_direction.value if order_direction is not None else None,
+                        "orderDirection": order_direction,
                         "limit": limit,
                         "startingAfter": starting_after,
-                        "notificationType": notification_type.value if notification_type is not None else None,
+                        "notificationType": notification_type,
                         **(
                             request_options.get("additional_query_parameters", {})
                             if request_options is not None
@@ -298,7 +300,7 @@ class AsyncNotificationsClient:
             "GET",
             urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
-                f"entity/{entity_id}/user/{user_id}/notification/{notification_id}",
+                f"entity/{jsonable_encoder(entity_id)}/user/{jsonable_encoder(user_id)}/notification/{jsonable_encoder(notification_id)}",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None

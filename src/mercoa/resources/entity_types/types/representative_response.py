@@ -27,7 +27,7 @@ class RepresentativeResponse(pydantic.BaseModel):
     responsibilities: Responsibilities
     created_on: dt.datetime = pydantic.Field(alias="createdOn")
     updated_on: dt.datetime = pydantic.Field(alias="updatedOn")
-    disabled_on: typing.Optional[dt.datetime] = pydantic.Field(alias="disabledOn")
+    disabled_on: typing.Optional[dt.datetime] = pydantic.Field(alias="disabledOn", default=None)
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

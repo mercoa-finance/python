@@ -16,9 +16,10 @@ except ImportError:
 class CommentResponse(pydantic.BaseModel):
     id: str
     text: str
-    user: typing.Optional[EntityUserResponse]
+    user: typing.Optional[EntityUserResponse] = None
     associated_approval_action: typing.Optional[AssociatedApprovalAction] = pydantic.Field(
         alias="associatedApprovalAction",
+        default=None,
         description="If an approval action has triggered the generation of this comment, returns the associated approval action and actor",
     )
     created_at: dt.datetime = pydantic.Field(alias="createdAt")

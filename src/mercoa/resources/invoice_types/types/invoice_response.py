@@ -29,34 +29,40 @@ except ImportError:
 class InvoiceResponse(pydantic.BaseModel):
     id: InvoiceId
     status: InvoiceStatus
-    amount: typing.Optional[float] = pydantic.Field(description="Total amount of invoice in major units")
+    amount: typing.Optional[float] = pydantic.Field(default=None, description="Total amount of invoice in major units")
     currency: typing.Optional[CurrencyCode] = pydantic.Field(
-        description="Currency code for the amount. Defaults to USD."
+        default=None, description="Currency code for the amount. Defaults to USD."
     )
     invoice_date: typing.Optional[dt.datetime] = pydantic.Field(
-        alias="invoiceDate", description="Date the invoice was issued."
+        alias="invoiceDate", default=None, description="Date the invoice was issued."
     )
     deduction_date: typing.Optional[dt.datetime] = pydantic.Field(
-        alias="deductionDate", description="Date when funds will be deducted from payer's account."
+        alias="deductionDate", default=None, description="Date when funds will be deducted from payer's account."
     )
     settlement_date: typing.Optional[dt.datetime] = pydantic.Field(
-        alias="settlementDate", description="Date of funds settlement."
+        alias="settlementDate", default=None, description="Date of funds settlement."
     )
-    due_date: typing.Optional[dt.datetime] = pydantic.Field(alias="dueDate", description="Due date of invoice.")
-    invoice_number: typing.Optional[str] = pydantic.Field(alias="invoiceNumber")
-    note_to_self: typing.Optional[str] = pydantic.Field(alias="noteToSelf")
-    service_start_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceStartDate")
-    service_end_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceEndDate")
-    payer_id: typing.Optional[EntityId] = pydantic.Field(alias="payerId")
-    payer: typing.Optional[EntityResponse]
-    payment_source: typing.Optional[PaymentMethodResponse] = pydantic.Field(alias="paymentSource")
-    payment_source_id: typing.Optional[PaymentMethodId] = pydantic.Field(alias="paymentSourceId")
-    vendor_id: typing.Optional[EntityId] = pydantic.Field(alias="vendorId")
-    vendor: typing.Optional[EntityResponse]
-    payment_destination: typing.Optional[PaymentMethodResponse] = pydantic.Field(alias="paymentDestination")
-    payment_destination_id: typing.Optional[PaymentMethodId] = pydantic.Field(alias="paymentDestinationId")
+    due_date: typing.Optional[dt.datetime] = pydantic.Field(
+        alias="dueDate", default=None, description="Due date of invoice."
+    )
+    invoice_number: typing.Optional[str] = pydantic.Field(alias="invoiceNumber", default=None)
+    note_to_self: typing.Optional[str] = pydantic.Field(alias="noteToSelf", default=None)
+    service_start_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceStartDate", default=None)
+    service_end_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceEndDate", default=None)
+    payer_id: typing.Optional[EntityId] = pydantic.Field(alias="payerId", default=None)
+    payer: typing.Optional[EntityResponse] = None
+    payment_source: typing.Optional[PaymentMethodResponse] = pydantic.Field(alias="paymentSource", default=None)
+    payment_source_id: typing.Optional[PaymentMethodId] = pydantic.Field(alias="paymentSourceId", default=None)
+    vendor_id: typing.Optional[EntityId] = pydantic.Field(alias="vendorId", default=None)
+    vendor: typing.Optional[EntityResponse] = None
+    payment_destination: typing.Optional[PaymentMethodResponse] = pydantic.Field(
+        alias="paymentDestination", default=None
+    )
+    payment_destination_id: typing.Optional[PaymentMethodId] = pydantic.Field(
+        alias="paymentDestinationId", default=None
+    )
     payment_destination_options: typing.Optional[PaymentDestinationOptions] = pydantic.Field(
-        alias="paymentDestinationOptions"
+        alias="paymentDestinationOptions", default=None
     )
     payment_destination_confirmed: bool = pydantic.Field(
         alias="paymentDestinationConfirmed",
@@ -65,26 +71,30 @@ class InvoiceResponse(pydantic.BaseModel):
     has_documents: bool = pydantic.Field(
         alias="hasDocuments", description="True if the invoice has documents attached."
     )
-    comments: typing.Optional[typing.List[CommentResponse]]
-    line_items: typing.Optional[typing.List[InvoiceLineItemResponse]] = pydantic.Field(alias="lineItems")
+    comments: typing.Optional[typing.List[CommentResponse]] = None
+    line_items: typing.Optional[typing.List[InvoiceLineItemResponse]] = pydantic.Field(alias="lineItems", default=None)
     approvers: typing.List[ApprovalSlot]
     approval_policy: typing.List[ApprovalPolicyResponse] = pydantic.Field(alias="approvalPolicy")
     metadata: typing.Dict[str, str] = pydantic.Field(description="Metadata associated with this invoice.")
     foreign_id: typing.Optional[str] = pydantic.Field(
         alias="foreignId",
+        default=None,
         description="The ID used to identify this invoice in your system. This ID must be unique within each creatorEntity in your system, e.g. two invoices with the same creatorEntity may not have the same foreign ID.",
     )
     creator_user: typing.Optional[EntityUserResponse] = pydantic.Field(
-        alias="creatorUser", description="Entity user who created this invoice."
+        alias="creatorUser", default=None, description="Entity user who created this invoice."
     )
     failure_type: typing.Optional[InvoiceFailureType] = pydantic.Field(
         alias="failureType",
+        default=None,
         description="If the invoice failed to be paid, this field will be populated with the type of failure.",
     )
-    processed_at: typing.Optional[dt.datetime] = pydantic.Field(alias="processedAt")
+    processed_at: typing.Optional[dt.datetime] = pydantic.Field(alias="processedAt", default=None)
     created_at: dt.datetime = pydantic.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
-    fees: typing.Optional[InvoiceFeesResponse] = pydantic.Field(description="Fees associated with this invoice.")
+    fees: typing.Optional[InvoiceFeesResponse] = pydantic.Field(
+        default=None, description="Fees associated with this invoice."
+    )
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

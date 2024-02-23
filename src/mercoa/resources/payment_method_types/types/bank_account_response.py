@@ -24,6 +24,7 @@ class BankAccountResponse(PaymentMethodBaseResponse):
     status: BankStatus
     check_options: typing.Optional[BankAccountCheckOptions] = pydantic.Field(
         alias="checkOptions",
+        default=None,
         description="If check printing is enabled for the account, will return the check options for this bank account",
     )
 

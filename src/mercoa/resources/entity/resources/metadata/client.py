@@ -44,7 +44,9 @@ class MetadataClient:
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/metadata"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/metadata"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -96,7 +98,10 @@ class MetadataClient:
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/metadata/{key}"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/",
+                f"entity/{jsonable_encoder(entity_id)}/metadata/{jsonable_encoder(key)}",
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -138,7 +143,7 @@ class MetadataClient:
         entity_id: EntityId,
         key: str,
         *,
-        request: typing.List[str],
+        request: typing.Sequence[str],
         request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.List[str]:
         """
@@ -149,7 +154,7 @@ class MetadataClient:
 
             - key: str.
 
-            - request: typing.List[str].
+            - request: typing.Sequence[str].
 
             - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         ---
@@ -166,7 +171,10 @@ class MetadataClient:
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/metadata/{key}"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/",
+                f"entity/{jsonable_encoder(entity_id)}/metadata/{jsonable_encoder(key)}",
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -222,7 +230,10 @@ class MetadataClient:
         """
         _response = self._client_wrapper.httpx_client.request(
             "DELETE",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/metadata/{key}"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/",
+                f"entity/{jsonable_encoder(entity_id)}/metadata/{jsonable_encoder(key)}",
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -277,7 +288,9 @@ class AsyncMetadataClient:
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/metadata"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/metadata"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -329,7 +342,10 @@ class AsyncMetadataClient:
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/metadata/{key}"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/",
+                f"entity/{jsonable_encoder(entity_id)}/metadata/{jsonable_encoder(key)}",
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -371,7 +387,7 @@ class AsyncMetadataClient:
         entity_id: EntityId,
         key: str,
         *,
-        request: typing.List[str],
+        request: typing.Sequence[str],
         request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.List[str]:
         """
@@ -382,7 +398,7 @@ class AsyncMetadataClient:
 
             - key: str.
 
-            - request: typing.List[str].
+            - request: typing.Sequence[str].
 
             - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         ---
@@ -399,7 +415,10 @@ class AsyncMetadataClient:
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/metadata/{key}"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/",
+                f"entity/{jsonable_encoder(entity_id)}/metadata/{jsonable_encoder(key)}",
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -457,7 +476,10 @@ class AsyncMetadataClient:
         """
         _response = await self._client_wrapper.httpx_client.request(
             "DELETE",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/metadata/{key}"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/",
+                f"entity/{jsonable_encoder(entity_id)}/metadata/{jsonable_encoder(key)}",
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),

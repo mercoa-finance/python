@@ -42,10 +42,10 @@ class CounterpartyClient:
         *,
         name: typing.Optional[str] = None,
         network_type: typing.Optional[
-            typing.Union[CounterpartyNetworkType, typing.List[CounterpartyNetworkType]]
+            typing.Union[CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]]
         ] = None,
         payment_methods: typing.Optional[bool] = None,
-        counterparty_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]] = None,
+        counterparty_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -58,11 +58,11 @@ class CounterpartyClient:
 
             - name: typing.Optional[str]. Filter by counterparty name
 
-            - network_type: typing.Optional[typing.Union[CounterpartyNetworkType, typing.List[CounterpartyNetworkType]]]. Filter by network type. By default, only ENTITY counterparties are returned.
+            - network_type: typing.Optional[typing.Union[CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]]]. Filter by network type. By default, only ENTITY counterparties are returned.
 
             - payment_methods: typing.Optional[bool]. If true, will include counterparty payment methods as part of the response
 
-            - counterparty_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]]. Filter by counterparty ids
+            - counterparty_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter by counterparty ids
 
             - limit: typing.Optional[int]. Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.
 
@@ -73,13 +73,13 @@ class CounterpartyClient:
         _response = self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/counterparties/payees"
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/counterparties/payees"
             ),
             params=jsonable_encoder(
                 remove_none_from_dict(
                     {
                         "name": name,
-                        "networkType": network_type.value if network_type is not None else None,
+                        "networkType": network_type,
                         "paymentMethods": payment_methods,
                         "counterpartyId": counterparty_id,
                         "limit": limit,
@@ -131,10 +131,10 @@ class CounterpartyClient:
         *,
         name: typing.Optional[str] = None,
         network_type: typing.Optional[
-            typing.Union[CounterpartyNetworkType, typing.List[CounterpartyNetworkType]]
+            typing.Union[CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]]
         ] = None,
         payment_methods: typing.Optional[bool] = None,
-        counterparty_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]] = None,
+        counterparty_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -147,11 +147,11 @@ class CounterpartyClient:
 
             - name: typing.Optional[str]. Filter by counterparty name
 
-            - network_type: typing.Optional[typing.Union[CounterpartyNetworkType, typing.List[CounterpartyNetworkType]]]. Filter by network type. By default, only ENTITY counterparties are returned.
+            - network_type: typing.Optional[typing.Union[CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]]]. Filter by network type. By default, only ENTITY counterparties are returned.
 
             - payment_methods: typing.Optional[bool]. If true, will include counterparty payment methods as part of the response
 
-            - counterparty_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]]. Filter by counterparty ids
+            - counterparty_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter by counterparty ids
 
             - limit: typing.Optional[int]. Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.
 
@@ -162,13 +162,13 @@ class CounterpartyClient:
         _response = self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/counterparties/payors"
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/counterparties/payors"
             ),
             params=jsonable_encoder(
                 remove_none_from_dict(
                     {
                         "name": name,
-                        "networkType": network_type.value if network_type is not None else None,
+                        "networkType": network_type,
                         "paymentMethods": payment_methods,
                         "counterpartyId": counterparty_id,
                         "limit": limit,
@@ -233,7 +233,9 @@ class CounterpartyClient:
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/addPayees"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/addPayees"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -295,7 +297,9 @@ class CounterpartyClient:
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/hidePayees"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/hidePayees"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -357,7 +361,9 @@ class CounterpartyClient:
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/addPayors"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/addPayors"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -419,7 +425,9 @@ class CounterpartyClient:
         """
         _response = self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/hidePayors"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/hidePayors"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -473,10 +481,10 @@ class AsyncCounterpartyClient:
         *,
         name: typing.Optional[str] = None,
         network_type: typing.Optional[
-            typing.Union[CounterpartyNetworkType, typing.List[CounterpartyNetworkType]]
+            typing.Union[CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]]
         ] = None,
         payment_methods: typing.Optional[bool] = None,
-        counterparty_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]] = None,
+        counterparty_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -489,11 +497,11 @@ class AsyncCounterpartyClient:
 
             - name: typing.Optional[str]. Filter by counterparty name
 
-            - network_type: typing.Optional[typing.Union[CounterpartyNetworkType, typing.List[CounterpartyNetworkType]]]. Filter by network type. By default, only ENTITY counterparties are returned.
+            - network_type: typing.Optional[typing.Union[CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]]]. Filter by network type. By default, only ENTITY counterparties are returned.
 
             - payment_methods: typing.Optional[bool]. If true, will include counterparty payment methods as part of the response
 
-            - counterparty_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]]. Filter by counterparty ids
+            - counterparty_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter by counterparty ids
 
             - limit: typing.Optional[int]. Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.
 
@@ -504,13 +512,13 @@ class AsyncCounterpartyClient:
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/counterparties/payees"
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/counterparties/payees"
             ),
             params=jsonable_encoder(
                 remove_none_from_dict(
                     {
                         "name": name,
-                        "networkType": network_type.value if network_type is not None else None,
+                        "networkType": network_type,
                         "paymentMethods": payment_methods,
                         "counterpartyId": counterparty_id,
                         "limit": limit,
@@ -562,10 +570,10 @@ class AsyncCounterpartyClient:
         *,
         name: typing.Optional[str] = None,
         network_type: typing.Optional[
-            typing.Union[CounterpartyNetworkType, typing.List[CounterpartyNetworkType]]
+            typing.Union[CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]]
         ] = None,
         payment_methods: typing.Optional[bool] = None,
-        counterparty_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]] = None,
+        counterparty_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -578,11 +586,11 @@ class AsyncCounterpartyClient:
 
             - name: typing.Optional[str]. Filter by counterparty name
 
-            - network_type: typing.Optional[typing.Union[CounterpartyNetworkType, typing.List[CounterpartyNetworkType]]]. Filter by network type. By default, only ENTITY counterparties are returned.
+            - network_type: typing.Optional[typing.Union[CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]]]. Filter by network type. By default, only ENTITY counterparties are returned.
 
             - payment_methods: typing.Optional[bool]. If true, will include counterparty payment methods as part of the response
 
-            - counterparty_id: typing.Optional[typing.Union[EntityId, typing.List[EntityId]]]. Filter by counterparty ids
+            - counterparty_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter by counterparty ids
 
             - limit: typing.Optional[int]. Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.
 
@@ -593,13 +601,13 @@ class AsyncCounterpartyClient:
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/counterparties/payors"
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/counterparties/payors"
             ),
             params=jsonable_encoder(
                 remove_none_from_dict(
                     {
                         "name": name,
-                        "networkType": network_type.value if network_type is not None else None,
+                        "networkType": network_type,
                         "paymentMethods": payment_methods,
                         "counterpartyId": counterparty_id,
                         "limit": limit,
@@ -664,7 +672,9 @@ class AsyncCounterpartyClient:
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/addPayees"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/addPayees"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -726,7 +736,9 @@ class AsyncCounterpartyClient:
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/hidePayees"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/hidePayees"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -788,7 +800,9 @@ class AsyncCounterpartyClient:
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/addPayors"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/addPayors"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -850,7 +864,9 @@ class AsyncCounterpartyClient:
         """
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/hidePayors"),
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/hidePayors"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),

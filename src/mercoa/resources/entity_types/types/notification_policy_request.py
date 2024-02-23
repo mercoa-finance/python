@@ -13,7 +13,7 @@ except ImportError:
 
 class NotificationPolicyRequest(pydantic.BaseModel):
     disabled: typing.Optional[bool] = pydantic.Field(
-        description="Set to true if the selected notification type should be disabled for this entity"
+        default=None, description="Set to true if the selected notification type should be disabled for this entity"
     )
     additional_roles: typing.List[str] = pydantic.Field(
         alias="additionalRoles",

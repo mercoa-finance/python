@@ -14,9 +14,10 @@ except ImportError:
 
 
 class BankAccountUpdateRequest(PaymentMethodBaseRequest):
-    account_name: typing.Optional[str] = pydantic.Field(alias="accountName")
+    account_name: typing.Optional[str] = pydantic.Field(alias="accountName", default=None)
     check_options: typing.Optional[BankAccountCheckOptions] = pydantic.Field(
         alias="checkOptions",
+        default=None,
         description="If this bank account supports check printing, use this to enable check printing and set the check options. Checks will be printed directly from the bank account.",
     )
 

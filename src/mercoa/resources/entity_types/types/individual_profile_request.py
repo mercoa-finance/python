@@ -17,12 +17,12 @@ except ImportError:
 
 
 class IndividualProfileRequest(pydantic.BaseModel):
-    email: typing.Optional[str]
+    email: typing.Optional[str] = None
     name: FullName
-    phone: typing.Optional[PhoneNumber]
-    address: typing.Optional[Address]
-    birth_date: typing.Optional[BirthDate] = pydantic.Field(alias="birthDate")
-    government_id: typing.Optional[IndividualGovernmentId] = pydantic.Field(alias="governmentID")
+    phone: typing.Optional[PhoneNumber] = None
+    address: typing.Optional[Address] = None
+    birth_date: typing.Optional[BirthDate] = pydantic.Field(alias="birthDate", default=None)
+    government_id: typing.Optional[IndividualGovernmentId] = pydantic.Field(alias="governmentID", default=None)
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

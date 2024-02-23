@@ -47,7 +47,7 @@ class NotificationPolicyClient:
         _response = self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/notification-policies"
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/notification-policies"
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
@@ -106,7 +106,7 @@ class NotificationPolicyClient:
             "GET",
             urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
-                f"entity/{entity_id}/notification-policy/{notification_type.value}",
+                f"entity/{jsonable_encoder(entity_id)}/notification-policy/{jsonable_encoder(notification_type)}",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
@@ -168,7 +168,7 @@ class NotificationPolicyClient:
             "POST",
             urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
-                f"entity/{entity_id}/notification-policy/{notification_type.value}",
+                f"entity/{jsonable_encoder(entity_id)}/notification-policy/{jsonable_encoder(notification_type)}",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
@@ -231,7 +231,7 @@ class AsyncNotificationPolicyClient:
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"entity/{entity_id}/notification-policies"
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/notification-policies"
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
@@ -290,7 +290,7 @@ class AsyncNotificationPolicyClient:
             "GET",
             urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
-                f"entity/{entity_id}/notification-policy/{notification_type.value}",
+                f"entity/{jsonable_encoder(entity_id)}/notification-policy/{jsonable_encoder(notification_type)}",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
@@ -352,7 +352,7 @@ class AsyncNotificationPolicyClient:
             "POST",
             urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
-                f"entity/{entity_id}/notification-policy/{notification_type.value}",
+                f"entity/{jsonable_encoder(entity_id)}/notification-policy/{jsonable_encoder(notification_type)}",
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
