@@ -5,7 +5,6 @@ import typing
 
 from ....core.datetime_utils import serialize_datetime
 from ...entity_types.types.entity_id import EntityId
-from ...entity_types.types.entity_user_id import EntityUserId
 from ...payment_method_types.types.currency_code import CurrencyCode
 from ...payment_method_types.types.payment_method_id import PaymentMethodId
 from .approval_slot_assignment import ApprovalSlotAssignment
@@ -76,16 +75,12 @@ class InvoiceRequest(pydantic.BaseModel):
         default=None,
         description="The ID used to identify this invoice in your system. This ID must be unique within each creatorEntity in your system, e.g. two invoices with the same creatorEntity may not have the same foreign ID.",
     )
-    uploaded_image: typing.Optional[str] = pydantic.Field(
-        alias="uploadedImage",
+    document: typing.Optional[str] = pydantic.Field(
         default=None,
-        description="Base64 encoded image or PDF of invoice. PNG, JPG, and PDF are supported. 10MB max.",
+        description="Base64 encoded image or PDF of invoice document. PNG, JPG, and PDF are supported. 10MB max. If the invoice already has a document, this will add a new document to the invoice.",
     )
-    creator_entity_id: typing.Optional[EntityId] = pydantic.Field(
-        alias="creatorEntityId", default=None, description="ID of entity who created this invoice."
-    )
-    creator_user_id: typing.Optional[EntityUserId] = pydantic.Field(
-        alias="creatorUserId", default=None, description="ID of entity user who created this invoice."
+    uploaded_image: typing.Optional[str] = pydantic.Field(
+        alias="uploadedImage", default=None, description="DEPRECATED. Use document field instead."
     )
 
     def json(self, **kwargs: typing.Any) -> str:

@@ -4,6 +4,9 @@ import datetime as dt
 import typing
 
 from ....core.datetime_utils import serialize_datetime
+from ...entity_types.types.entity_id import EntityId
+from ...entity_types.types.entity_user_id import EntityUserId
+from .invoice_request import InvoiceRequest
 
 try:
     import pydantic.v1 as pydantic  # type: ignore
@@ -11,13 +14,13 @@ except ImportError:
     import pydantic  # type: ignore
 
 
-class DocumentResponse(pydantic.BaseModel):
-    id: typing.Optional[str] = pydantic.Field(
-        default=None,
-        description="ID of the document. If not provided, this is a dynamic document that is generated on the fly.",
+class InvoiceCreationRequest(InvoiceRequest):
+    creator_entity_id: typing.Optional[EntityId] = pydantic.Field(
+        alias="creatorEntityId", default=None, description="ID of entity who created this invoice."
     )
-    mime_type: str = pydantic.Field(alias="mimeType")
-    uri: str
+    creator_user_id: typing.Optional[EntityUserId] = pydantic.Field(
+        alias="creatorUserId", default=None, description="ID of entity user who created this invoice."
+    )
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

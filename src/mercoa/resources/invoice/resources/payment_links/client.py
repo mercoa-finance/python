@@ -16,7 +16,7 @@ from ....commons.errors.not_found import NotFound
 from ....commons.errors.unauthorized import Unauthorized
 from ....commons.errors.unimplemented import Unimplemented
 from ....invoice_types.errors.invoice_error import InvoiceError
-from ....invoice_types.types.document_response import DocumentResponse
+from ....invoice_types.errors.vendor_not_found import VendorNotFound
 from ....invoice_types.types.invoice_id import InvoiceId
 
 try:
@@ -24,29 +24,33 @@ try:
 except ImportError:
     import pydantic  # type: ignore
 
-# this is used as the default value for optional parameters
-OMIT = typing.cast(typing.Any, ...)
 
-
-class DocumentClient:
+class PaymentLinksClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    def get_all(
-        self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> typing.List[DocumentResponse]:
+    def get_payer_link(self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None) -> str:
         """
-        Get attachments (scanned/uploaded PDFs and images) associated with this invoice
+        Get temporary link for payer to send payment
 
         Parameters:
             - invoice_id: InvoiceId.
 
             - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
+        ---
+        from mercoa.client import Mercoa
+
+        client = Mercoa(
+            token="YOUR_TOKEN",
+        )
+        client.invoice.payment_links.get_payer_link(
+            invoice_id="inv_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+        )
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}/documents"
+                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}/payerLink"
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
@@ -68,8 +72,10 @@ class DocumentClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(typing.List[DocumentResponse], _response_json)  # type: ignore
+            return pydantic.parse_obj_as(str, _response_json)  # type: ignore
         if "errorName" in _response_json:
+            if _response_json["errorName"] == "VendorNotFound":
+                raise VendorNotFound(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "AuthHeaderMissingError":
                 raise AuthHeaderMissingError()
             if _response_json["errorName"] == "AuthHeaderMalformedError":
@@ -84,40 +90,43 @@ class DocumentClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def upload(
+    def send_payer_email(
         self,
         invoice_id: InvoiceId,
         *,
-        document: typing.Optional[str] = OMIT,
+        attach_invoice: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
-        Upload documents (scanned/uploaded PDFs and images) associated with this Invoice
+        Trigger email to payer inviting them to make payment
 
         Parameters:
             - invoice_id: InvoiceId.
 
-            - document: typing.Optional[str]. Base64 encoded image or PDF of invoice document. PNG, JPG, and PDF are supported. 10MB max.
+            - attach_invoice: typing.Optional[bool]. Whether to attach the invoice to the email
 
             - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
-        _request: typing.Dict[str, typing.Any] = {}
-        if document is not OMIT:
-            _request["document"] = document
         _response = self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}/document"
+                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}/sendPayerEmail"
             ),
             params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+                remove_none_from_dict(
+                    {
+                        "attachInvoice": attach_invoice,
+                        **(
+                            request_options.get("additional_query_parameters", {})
+                            if request_options is not None
+                            else {}
+                        ),
+                    }
+                )
             ),
-            json=jsonable_encoder(_request)
-            if request_options is None or request_options.get("additional_body_parameters") is None
-            else {
-                **jsonable_encoder(_request),
-                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
-            },
+            json=jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))
+            if request_options is not None
+            else None,
             headers=jsonable_encoder(
                 remove_none_from_dict(
                     {
@@ -137,6 +146,8 @@ class DocumentClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if "errorName" in _response_json:
+            if _response_json["errorName"] == "InvoiceError":
+                raise InvoiceError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "AuthHeaderMissingError":
                 raise AuthHeaderMissingError()
             if _response_json["errorName"] == "AuthHeaderMalformedError":
@@ -151,76 +162,28 @@ class DocumentClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def delete(
-        self, invoice_id: InvoiceId, document_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> None:
+    def get_vendor_link(self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None) -> str:
         """
-        Delete an attachment (scanned/uploaded PDFs and images) associated with this invoice
+        Get temporary link for vendor to accept payment
 
         Parameters:
             - invoice_id: InvoiceId.
 
-            - document_id: str.
-
             - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            "DELETE",
-            urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/",
-                f"invoice/{jsonable_encoder(invoice_id)}/document/{jsonable_encoder(document_id)}",
-            ),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
-            ),
-            headers=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        **self._client_wrapper.get_headers(),
-                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
-                    }
-                )
-            ),
-            timeout=request_options.get("timeout_in_seconds")
-            if request_options is not None and request_options.get("timeout_in_seconds") is not None
-            else 60,
+        ---
+        from mercoa.client import Mercoa
+
+        client = Mercoa(
+            token="YOUR_TOKEN",
         )
-        if 200 <= _response.status_code < 300:
-            return
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if "errorName" in _response_json:
-            if _response_json["errorName"] == "AuthHeaderMissingError":
-                raise AuthHeaderMissingError()
-            if _response_json["errorName"] == "AuthHeaderMalformedError":
-                raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unauthorized":
-                raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Forbidden":
-                raise Forbidden(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "NotFound":
-                raise NotFound(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unimplemented":
-                raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    def generate_check_pdf(
-        self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> DocumentResponse:
-        """
-        Get a PDF of the check for the invoice. If the invoice does not have check as the disbursement method, an error will be returned. If the disbursement option for the check is set to 'MAIL', a void copy of the check will be returned. If the disbursement option for the check is set to 'PRINT', a printable check will be returned. If the invoice is NOT marked as PAID, the check will be a void copy.
-
-        Parameters:
-            - invoice_id: InvoiceId.
-
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
+        client.invoice.payment_links.get_vendor_link(
+            invoice_id="inv_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+        )
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}/check/generate"
+                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}/vendorLink"
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
@@ -242,7 +205,64 @@ class DocumentClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(DocumentResponse, _response_json)  # type: ignore
+            return pydantic.parse_obj_as(str, _response_json)  # type: ignore
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "VendorNotFound":
+                raise VendorNotFound(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "AuthHeaderMissingError":
+                raise AuthHeaderMissingError()
+            if _response_json["errorName"] == "AuthHeaderMalformedError":
+                raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def send_vendor_email(
+        self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> None:
+        """
+        Trigger email to vendor inviting them into the vendor portal
+
+        Parameters:
+            - invoice_id: InvoiceId.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "POST",
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}/sendVendorEmail"
+            ),
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            json=jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))
+            if request_options is not None
+            else None,
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
+        )
+        if 200 <= _response.status_code < 300:
+            return
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
         if "errorName" in _response_json:
             if _response_json["errorName"] == "InvoiceError":
                 raise InvoiceError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
@@ -261,25 +281,34 @@ class DocumentClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
 
-class AsyncDocumentClient:
+class AsyncPaymentLinksClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    async def get_all(
+    async def get_payer_link(
         self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> typing.List[DocumentResponse]:
+    ) -> str:
         """
-        Get attachments (scanned/uploaded PDFs and images) associated with this invoice
+        Get temporary link for payer to send payment
 
         Parameters:
             - invoice_id: InvoiceId.
 
             - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
+        ---
+        from mercoa.client import AsyncMercoa
+
+        client = AsyncMercoa(
+            token="YOUR_TOKEN",
+        )
+        await client.invoice.payment_links.get_payer_link(
+            invoice_id="inv_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+        )
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}/documents"
+                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}/payerLink"
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
@@ -301,8 +330,10 @@ class AsyncDocumentClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(typing.List[DocumentResponse], _response_json)  # type: ignore
+            return pydantic.parse_obj_as(str, _response_json)  # type: ignore
         if "errorName" in _response_json:
+            if _response_json["errorName"] == "VendorNotFound":
+                raise VendorNotFound(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "AuthHeaderMissingError":
                 raise AuthHeaderMissingError()
             if _response_json["errorName"] == "AuthHeaderMalformedError":
@@ -317,40 +348,43 @@ class AsyncDocumentClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def upload(
+    async def send_payer_email(
         self,
         invoice_id: InvoiceId,
         *,
-        document: typing.Optional[str] = OMIT,
+        attach_invoice: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
-        Upload documents (scanned/uploaded PDFs and images) associated with this Invoice
+        Trigger email to payer inviting them to make payment
 
         Parameters:
             - invoice_id: InvoiceId.
 
-            - document: typing.Optional[str]. Base64 encoded image or PDF of invoice document. PNG, JPG, and PDF are supported. 10MB max.
+            - attach_invoice: typing.Optional[bool]. Whether to attach the invoice to the email
 
             - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
-        _request: typing.Dict[str, typing.Any] = {}
-        if document is not OMIT:
-            _request["document"] = document
         _response = await self._client_wrapper.httpx_client.request(
             "POST",
             urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}/document"
+                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}/sendPayerEmail"
             ),
             params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+                remove_none_from_dict(
+                    {
+                        "attachInvoice": attach_invoice,
+                        **(
+                            request_options.get("additional_query_parameters", {})
+                            if request_options is not None
+                            else {}
+                        ),
+                    }
+                )
             ),
-            json=jsonable_encoder(_request)
-            if request_options is None or request_options.get("additional_body_parameters") is None
-            else {
-                **jsonable_encoder(_request),
-                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
-            },
+            json=jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))
+            if request_options is not None
+            else None,
             headers=jsonable_encoder(
                 remove_none_from_dict(
                     {
@@ -370,6 +404,8 @@ class AsyncDocumentClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if "errorName" in _response_json:
+            if _response_json["errorName"] == "InvoiceError":
+                raise InvoiceError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "AuthHeaderMissingError":
                 raise AuthHeaderMissingError()
             if _response_json["errorName"] == "AuthHeaderMalformedError":
@@ -384,76 +420,30 @@ class AsyncDocumentClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def delete(
-        self, invoice_id: InvoiceId, document_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> None:
-        """
-        Delete an attachment (scanned/uploaded PDFs and images) associated with this invoice
-
-        Parameters:
-            - invoice_id: InvoiceId.
-
-            - document_id: str.
-
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            "DELETE",
-            urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/",
-                f"invoice/{jsonable_encoder(invoice_id)}/document/{jsonable_encoder(document_id)}",
-            ),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
-            ),
-            headers=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        **self._client_wrapper.get_headers(),
-                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
-                    }
-                )
-            ),
-            timeout=request_options.get("timeout_in_seconds")
-            if request_options is not None and request_options.get("timeout_in_seconds") is not None
-            else 60,
-        )
-        if 200 <= _response.status_code < 300:
-            return
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if "errorName" in _response_json:
-            if _response_json["errorName"] == "AuthHeaderMissingError":
-                raise AuthHeaderMissingError()
-            if _response_json["errorName"] == "AuthHeaderMalformedError":
-                raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unauthorized":
-                raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Forbidden":
-                raise Forbidden(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "NotFound":
-                raise NotFound(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unimplemented":
-                raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    async def generate_check_pdf(
+    async def get_vendor_link(
         self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> DocumentResponse:
+    ) -> str:
         """
-        Get a PDF of the check for the invoice. If the invoice does not have check as the disbursement method, an error will be returned. If the disbursement option for the check is set to 'MAIL', a void copy of the check will be returned. If the disbursement option for the check is set to 'PRINT', a printable check will be returned. If the invoice is NOT marked as PAID, the check will be a void copy.
+        Get temporary link for vendor to accept payment
 
         Parameters:
             - invoice_id: InvoiceId.
 
             - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
+        ---
+        from mercoa.client import AsyncMercoa
+
+        client = AsyncMercoa(
+            token="YOUR_TOKEN",
+        )
+        await client.invoice.payment_links.get_vendor_link(
+            invoice_id="inv_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+        )
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",
             urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}/check/generate"
+                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}/vendorLink"
             ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
@@ -475,7 +465,64 @@ class AsyncDocumentClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(DocumentResponse, _response_json)  # type: ignore
+            return pydantic.parse_obj_as(str, _response_json)  # type: ignore
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "VendorNotFound":
+                raise VendorNotFound(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "AuthHeaderMissingError":
+                raise AuthHeaderMissingError()
+            if _response_json["errorName"] == "AuthHeaderMalformedError":
+                raise AuthHeaderMalformedError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def send_vendor_email(
+        self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> None:
+        """
+        Trigger email to vendor inviting them into the vendor portal
+
+        Parameters:
+            - invoice_id: InvoiceId.
+
+            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "POST",
+            urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}/sendVendorEmail"
+            ),
+            params=jsonable_encoder(
+                request_options.get("additional_query_parameters") if request_options is not None else None
+            ),
+            json=jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))
+            if request_options is not None
+            else None,
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else 60,
+        )
+        if 200 <= _response.status_code < 300:
+            return
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
         if "errorName" in _response_json:
             if _response_json["errorName"] == "InvoiceError":
                 raise InvoiceError(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore

@@ -15,7 +15,7 @@ except ImportError:
 
 
 class IndividualProfileResponse(pydantic.BaseModel):
-    email: str
+    email: typing.Optional[str] = None
     name: FullName
     phone: typing.Optional[PhoneNumber] = None
     address: typing.Optional[Address] = None
