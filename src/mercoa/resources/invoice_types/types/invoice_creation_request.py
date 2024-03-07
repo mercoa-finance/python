@@ -4,24 +4,10 @@ import datetime as dt
 import typing
 
 from ....core.datetime_utils import serialize_datetime
-from ...entity_types.types.entity_id import EntityId
-from ...entity_types.types.entity_user_id import EntityUserId
 from .invoice_request import InvoiceRequest
-
-try:
-    import pydantic.v1 as pydantic  # type: ignore
-except ImportError:
-    import pydantic  # type: ignore
 
 
 class InvoiceCreationRequest(InvoiceRequest):
-    creator_entity_id: typing.Optional[EntityId] = pydantic.Field(
-        alias="creatorEntityId", default=None, description="ID of entity who created this invoice."
-    )
-    creator_user_id: typing.Optional[EntityUserId] = pydantic.Field(
-        alias="creatorUserId", default=None, description="ID of entity user who created this invoice."
-    )
-
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
         return super().json(**kwargs_with_defaults)
