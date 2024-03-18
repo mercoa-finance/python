@@ -6,6 +6,7 @@ import typing
 from ....core.datetime_utils import serialize_datetime
 from .bank_account_check_options import BankAccountCheckOptions
 from .payment_method_base_request import PaymentMethodBaseRequest
+from .plaid_link_request import PlaidLinkRequest
 
 try:
     import pydantic.v1 as pydantic  # type: ignore
@@ -15,6 +16,9 @@ except ImportError:
 
 class BankAccountUpdateRequest(PaymentMethodBaseRequest):
     account_name: typing.Optional[str] = pydantic.Field(alias="accountName", default=None)
+    plaid: typing.Optional[PlaidLinkRequest] = pydantic.Field(
+        default=None, description="If provided, will update a bank account using Plaid Link"
+    )
     check_options: typing.Optional[BankAccountCheckOptions] = pydantic.Field(
         alias="checkOptions",
         default=None,

@@ -22,6 +22,7 @@ from .custom_payment_method_schema_request import CustomPaymentMethodSchemaReque
 from .custom_payment_method_schema_response import CustomPaymentMethodSchemaResponse
 from .custom_payment_method_update_request import CustomPaymentMethodUpdateRequest
 from .payment_method_balance_response import PaymentMethodBalanceResponse
+from .payment_method_balance_status import PaymentMethodBalanceStatus
 from .payment_method_base_request import PaymentMethodBaseRequest
 from .payment_method_base_response import PaymentMethodBaseResponse
 from .payment_method_id import PaymentMethodId
@@ -75,6 +76,7 @@ __all__ = [
     "CustomPaymentMethodSchemaResponse",
     "CustomPaymentMethodUpdateRequest",
     "PaymentMethodBalanceResponse",
+    "PaymentMethodBalanceStatus",
     "PaymentMethodBaseRequest",
     "PaymentMethodBaseResponse",
     "PaymentMethodId",

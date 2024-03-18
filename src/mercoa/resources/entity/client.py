@@ -29,6 +29,7 @@ from ..entity_types.types.entity_status import EntityStatus
 from ..entity_types.types.entity_update_request import EntityUpdateRequest
 from ..entity_types.types.find_entity_response import FindEntityResponse
 from ..entity_types.types.token_generation_options import TokenGenerationOptions
+from ..payment_method_types.types.payment_method_id import PaymentMethodId
 from .resources.approval_policy.client import ApprovalPolicyClient, AsyncApprovalPolicyClient
 from .resources.counterparty.client import AsyncCounterpartyClient, CounterpartyClient
 from .resources.external_accounting_system.client import (
@@ -630,12 +631,20 @@ class EntityClient:
                 raise Unimplemented(pydantic.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def plaid_link_token(self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None) -> str:
+    def plaid_link_token(
+        self,
+        entity_id: EntityId,
+        *,
+        payment_method_id: typing.Optional[PaymentMethodId] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> str:
         """
-        Get a Plaid link token for an entity. This token can be used to add a bank account to the entity using Plaid Link.
+        Get a Plaid link token for an entity. This token can be used to add or update a bank account to the entity using Plaid Link.
 
         Parameters:
             - entity_id: EntityId.
+
+            - payment_method_id: typing.Optional[PaymentMethodId]. ID of Bank Account to update
 
             - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
@@ -645,7 +654,16 @@ class EntityClient:
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/plaidLinkToken"
             ),
             params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+                remove_none_from_dict(
+                    {
+                        "paymentMethodId": payment_method_id,
+                        **(
+                            request_options.get("additional_query_parameters", {})
+                            if request_options is not None
+                            else {}
+                        ),
+                    }
+                )
             ),
             headers=jsonable_encoder(
                 remove_none_from_dict(
@@ -1420,13 +1438,19 @@ class AsyncEntityClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def plaid_link_token(
-        self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_id: EntityId,
+        *,
+        payment_method_id: typing.Optional[PaymentMethodId] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> str:
         """
-        Get a Plaid link token for an entity. This token can be used to add a bank account to the entity using Plaid Link.
+        Get a Plaid link token for an entity. This token can be used to add or update a bank account to the entity using Plaid Link.
 
         Parameters:
             - entity_id: EntityId.
+
+            - payment_method_id: typing.Optional[PaymentMethodId]. ID of Bank Account to update
 
             - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
         """
@@ -1436,7 +1460,16 @@ class AsyncEntityClient:
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/plaidLinkToken"
             ),
             params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+                remove_none_from_dict(
+                    {
+                        "paymentMethodId": payment_method_id,
+                        **(
+                            request_options.get("additional_query_parameters", {})
+                            if request_options is not None
+                            else {}
+                        ),
+                    }
+                )
             ),
             headers=jsonable_encoder(
                 remove_none_from_dict(

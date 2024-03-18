@@ -5,6 +5,7 @@ import typing
 
 from ....core.datetime_utils import serialize_datetime
 from .currency_code import CurrencyCode
+from .payment_method_balance_status import PaymentMethodBalanceStatus
 
 try:
     import pydantic.v1 as pydantic  # type: ignore
@@ -15,6 +16,9 @@ except ImportError:
 class PaymentMethodBalanceResponse(pydantic.BaseModel):
     available_balance: float = pydantic.Field(alias="availableBalance")
     currency: CurrencyCode
+    status: PaymentMethodBalanceStatus = pydantic.Field(
+        description="If the status is UNAVAILABLE, the account does not support this operation. If the status is ERROR, the account may need to be re-linked with Plaid."
+    )
     updated_at: typing.Optional[dt.datetime] = pydantic.Field(
         alias="updatedAt",
         default=None,
