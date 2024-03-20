@@ -5,6 +5,7 @@ import typing
 
 from ....core.datetime_utils import serialize_datetime
 from ...invoice_types.types.invoice_status import InvoiceStatus
+from .line_item_availabilities import LineItemAvailabilities
 
 try:
     import pydantic.v1 as pydantic  # type: ignore
@@ -13,7 +14,14 @@ except ImportError:
 
 
 class TokenGenerationInvoiceOptions(pydantic.BaseModel):
-    disable_line_items: typing.Optional[bool] = pydantic.Field(alias="disableLineItems", default=None)
+    line_items: typing.Optional[LineItemAvailabilities] = pydantic.Field(
+        alias="lineItems",
+        default=None,
+        description="Defaults to OPTIONAL. If set to REQUIRED, the user will be required to provide at least one line item when creating an invoice. If set to DISABLED, the user will not be able to provide line items when creating an invoice.",
+    )
+    disable_line_items: typing.Optional[bool] = pydantic.Field(
+        alias="disableLineItems", default=None, description="DEPRECATED. Use lineItems instead."
+    )
     status: typing.List[InvoiceStatus]
 
     def json(self, **kwargs: typing.Any) -> str:

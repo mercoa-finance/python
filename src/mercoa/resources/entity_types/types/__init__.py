@@ -34,6 +34,7 @@ from .find_notification_response import FindNotificationResponse
 from .identifier_list import IdentifierList, IdentifierList_RolesList, IdentifierList_UserList
 from .individual_profile_request import IndividualProfileRequest
 from .individual_profile_response import IndividualProfileResponse
+from .line_item_availabilities import LineItemAvailabilities
 from .metadata_trigger import MetadataTrigger
 from .notification_id import NotificationId
 from .notification_policy_request import NotificationPolicyRequest
@@ -97,6 +98,7 @@ __all__ = [
     "IdentifierList_UserList",
     "IndividualProfileRequest",
     "IndividualProfileResponse",
+    "LineItemAvailabilities",
     "MetadataTrigger",
     "NotificationId",
     "NotificationPolicyRequest",
