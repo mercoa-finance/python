@@ -102,6 +102,17 @@ class EntityClient:
             - starting_after: typing.Optional[EntityId]. The ID of the entity to start after. If not provided, the first page of entities will be returned.
 
             - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
+        ---
+        from mercoa.client import Mercoa
+
+        client = Mercoa(
+            token="YOUR_TOKEN",
+        )
+        client.entity.find(
+            is_customer=True,
+            foreign_id="MY-DB-ID-12345",
+            payment_methods=True,
+        )
         """
         _response = self._client_wrapper.httpx_client.request(
             "GET",
@@ -904,6 +915,17 @@ class AsyncEntityClient:
             - starting_after: typing.Optional[EntityId]. The ID of the entity to start after. If not provided, the first page of entities will be returned.
 
             - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
+        ---
+        from mercoa.client import AsyncMercoa
+
+        client = AsyncMercoa(
+            token="YOUR_TOKEN",
+        )
+        await client.entity.find(
+            is_customer=True,
+            foreign_id="MY-DB-ID-12345",
+            payment_methods=True,
+        )
         """
         _response = await self._client_wrapper.httpx_client.request(
             "GET",

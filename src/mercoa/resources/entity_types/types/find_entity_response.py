@@ -13,6 +13,91 @@ except ImportError:
 
 
 class FindEntityResponse(pydantic.BaseModel):
+    """
+    import datetime
+
+    from mercoa import (
+        AccountType,
+        Address,
+        BankStatus,
+        BankType,
+        BusinessProfileResponse,
+        BusinessType,
+        CurrencyCode,
+        EntityStatus,
+        EntityWithPaymentMethodResponse,
+        FindEntityResponse,
+        PaymentMethodResponse_BankAccount,
+        PhoneNumber,
+        ProfileResponse,
+    )
+
+    FindEntityResponse(
+        count=1,
+        has_more=False,
+        data=[
+            EntityWithPaymentMethodResponse(
+                id="ent_123",
+                name="Acme Inc.",
+                email="customer@acme.com",
+                accepted_tos=True,
+                status=EntityStatus.VERIFIED,
+                is_customer=True,
+                is_payor=True,
+                is_payee=False,
+                account_type=AccountType.BUSINESS,
+                updated_at=datetime.datetime.fromisoformat(
+                    "2024-01-02 00:00:00+00:00",
+                ),
+                created_at=datetime.datetime.fromisoformat(
+                    "2024-01-01 00:00:00+00:00",
+                ),
+                profile=ProfileResponse(
+                    business=BusinessProfileResponse(
+                        email="customer@acme.com",
+                        legal_business_name="Acme Inc.",
+                        business_type=BusinessType.LLC,
+                        phone=PhoneNumber(
+                            country_code="1",
+                            number="4155551234",
+                        ),
+                        address=Address(
+                            address_line_1="123 Main St",
+                            city="San Francisco",
+                            state_or_province="CA",
+                            postal_code="94105",
+                            country="US",
+                        ),
+                        tax_id_provided=True,
+                        owners_provided=True,
+                    ),
+                ),
+                payment_methods=[
+                    PaymentMethodResponse_BankAccount(
+                        type="bankAccount",
+                        id="pm_12345",
+                        account_name="My Checking Account",
+                        bank_name="Chase",
+                        routing_number="12345678",
+                        account_number="99988767623",
+                        account_type=BankType.CHECKING,
+                        status=BankStatus.VERIFIED,
+                        is_default_source=True,
+                        is_default_destination=True,
+                        supported_currencies=[CurrencyCode.USD],
+                        created_at=datetime.datetime.fromisoformat(
+                            "2021-01-01 00:00:00+00:00",
+                        ),
+                        updated_at=datetime.datetime.fromisoformat(
+                            "2021-01-01 00:00:00+00:00",
+                        ),
+                    )
+                ],
+            )
+        ],
+    )
+    """
+
     count: int = pydantic.Field(
         description="Total number of entities for the given filters. This value is not limited by the limit parameter. It is provided so that you can determine how many pages of results are available."
     )

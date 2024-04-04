@@ -13,12 +13,12 @@ class VendorNetwork(str, enum.Enum):
 
     def visit(
         self,
-        all: typing.Callable[[], T_Result],
+        all_: typing.Callable[[], T_Result],
         platform: typing.Callable[[], T_Result],
         entity: typing.Callable[[], T_Result],
     ) -> T_Result:
         if self is VendorNetwork.ALL:
-            return all()
+            return all_()
         if self is VendorNetwork.PLATFORM:
             return platform()
         if self is VendorNetwork.ENTITY:

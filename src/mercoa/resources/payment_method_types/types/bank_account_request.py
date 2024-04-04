@@ -16,8 +16,16 @@ except ImportError:
 
 
 class BankAccountRequest(PaymentMethodBaseRequest):
-    account_name: typing.Optional[str] = pydantic.Field(alias="accountName", default=None)
-    bank_name: str = pydantic.Field(alias="bankName")
+    account_name: typing.Optional[str] = pydantic.Field(
+        alias="accountName",
+        default=None,
+        description='The name of the account. For example "My Checking Account" or "Property XYZ Checking"',
+    )
+    bank_name: typing.Optional[str] = pydantic.Field(
+        alias="bankName",
+        default=None,
+        description="The name of the bank. This is now automatically set when the bank account is linked.",
+    )
     routing_number: str = pydantic.Field(alias="routingNumber")
     account_number: str = pydantic.Field(alias="accountNumber")
     account_type: BankType = pydantic.Field(alias="accountType")

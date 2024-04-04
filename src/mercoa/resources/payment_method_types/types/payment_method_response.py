@@ -56,6 +56,36 @@ class PaymentMethodResponse_OffPlatform(PaymentMethodBaseResponse):
         allow_population_by_field_name = True
 
 
+"""
+import datetime
+
+from mercoa import (
+    BankStatus,
+    BankType,
+    CurrencyCode,
+    PaymentMethodResponse_BankAccount,
+)
+
+PaymentMethodResponse_BankAccount(
+    type="bankAccount",
+    id="pm_12345",
+    account_name="My Checking Account",
+    bank_name="Chase",
+    routing_number="12345678",
+    account_number="99988767623",
+    account_type=BankType.CHECKING,
+    status=BankStatus.VERIFIED,
+    is_default_source=True,
+    is_default_destination=True,
+    supported_currencies=[CurrencyCode.USD],
+    created_at=datetime.datetime.fromisoformat(
+        "2021-01-01 00:00:00+00:00",
+    ),
+    updated_at=datetime.datetime.fromisoformat(
+        "2021-01-01 00:00:00+00:00",
+    ),
+)
+"""
 PaymentMethodResponse = typing.Union[
     PaymentMethodResponse_BankAccount,
     PaymentMethodResponse_Card,
