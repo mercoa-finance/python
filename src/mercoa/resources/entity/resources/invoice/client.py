@@ -21,8 +21,10 @@ from ....commons.types.order_direction import OrderDirection
 from ....entity_types.types.entity_id import EntityId
 from ....entity_types.types.entity_user_id import EntityUserId
 from ....invoice_types.errors.invoice_query_error import InvoiceQueryError
+from ....invoice_types.types.approver_action import ApproverAction
 from ....invoice_types.types.find_invoice_response import FindInvoiceResponse
 from ....invoice_types.types.invoice_id import InvoiceId
+from ....invoice_types.types.invoice_metrics_per_date_group_by import InvoiceMetricsPerDateGroupBy
 from ....invoice_types.types.invoice_metrics_response import InvoiceMetricsResponse
 from ....invoice_types.types.invoice_order_by_field import InvoiceOrderByField
 from ....invoice_types.types.invoice_response import InvoiceResponse
@@ -55,6 +57,7 @@ class InvoiceClient:
         payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]] = None,
+        approver_action: typing.Optional[typing.Union[ApproverAction, typing.Sequence[ApproverAction]]] = None,
         invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]] = None,
         status: typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]] = None,
         include_fees: typing.Optional[bool] = None,
@@ -90,6 +93,8 @@ class InvoiceClient:
 
             - approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]. Filter invoices by assigned approver user ID.
 
+            - approver_action: typing.Optional[typing.Union[ApproverAction, typing.Sequence[ApproverAction]]]. Filter invoices by approver action. Needs to be used with approverId. For example, if you want to find all invoices that have been approved by a specific user, you would use approverId and approverAction=APPROVE.
+
             - invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]. Filter invoices by invoice ID.
 
             - status: typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]]. Invoice status to filter on.
@@ -118,6 +123,7 @@ class InvoiceClient:
                         "payerId": payer_id,
                         "vendorId": vendor_id,
                         "approverId": approver_id,
+                        "approverAction": approver_action,
                         "invoiceId": invoice_id,
                         "status": status,
                         "includeFees": include_fees,
@@ -240,6 +246,7 @@ class InvoiceClient:
         search: typing.Optional[str] = None,
         exclude_payables: typing.Optional[bool] = None,
         exclude_receivables: typing.Optional[bool] = None,
+        return_by_date: typing.Optional[InvoiceMetricsPerDateGroupBy] = None,
         payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]] = None,
@@ -253,7 +260,7 @@ class InvoiceClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.List[InvoiceMetricsResponse]:
         """
-        Get invoice metrics for an entity with the given filters.
+        Get invoice metrics for an entity with the given filters. Invoices will be grouped by currency.
 
         Parameters:
             - entity_id: EntityId.
@@ -263,6 +270,8 @@ class InvoiceClient:
             - exclude_payables: typing.Optional[bool]. Only return invoices that are not payable by the entity. This will return only invoices that are receivable by the entity.
 
             - exclude_receivables: typing.Optional[bool]. Only return invoices that are not receivable by the entity. This will return only invoices that are payable by the entity.
+
+            - return_by_date: typing.Optional[InvoiceMetricsPerDateGroupBy]. Return invoice metrics grouped by date.
 
             - payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter invoices by payer ID.
 
@@ -297,6 +306,7 @@ class InvoiceClient:
                         "search": search,
                         "excludePayables": exclude_payables,
                         "excludeReceivables": exclude_receivables,
+                        "returnByDate": return_by_date,
                         "payerId": payer_id,
                         "vendorId": vendor_id,
                         "approverId": approver_id,
@@ -375,6 +385,7 @@ class AsyncInvoiceClient:
         payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]] = None,
+        approver_action: typing.Optional[typing.Union[ApproverAction, typing.Sequence[ApproverAction]]] = None,
         invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]] = None,
         status: typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]] = None,
         include_fees: typing.Optional[bool] = None,
@@ -410,6 +421,8 @@ class AsyncInvoiceClient:
 
             - approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]. Filter invoices by assigned approver user ID.
 
+            - approver_action: typing.Optional[typing.Union[ApproverAction, typing.Sequence[ApproverAction]]]. Filter invoices by approver action. Needs to be used with approverId. For example, if you want to find all invoices that have been approved by a specific user, you would use approverId and approverAction=APPROVE.
+
             - invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]. Filter invoices by invoice ID.
 
             - status: typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]]. Invoice status to filter on.
@@ -438,6 +451,7 @@ class AsyncInvoiceClient:
                         "payerId": payer_id,
                         "vendorId": vendor_id,
                         "approverId": approver_id,
+                        "approverAction": approver_action,
                         "invoiceId": invoice_id,
                         "status": status,
                         "includeFees": include_fees,
@@ -560,6 +574,7 @@ class AsyncInvoiceClient:
         search: typing.Optional[str] = None,
         exclude_payables: typing.Optional[bool] = None,
         exclude_receivables: typing.Optional[bool] = None,
+        return_by_date: typing.Optional[InvoiceMetricsPerDateGroupBy] = None,
         payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]] = None,
@@ -573,7 +588,7 @@ class AsyncInvoiceClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.List[InvoiceMetricsResponse]:
         """
-        Get invoice metrics for an entity with the given filters.
+        Get invoice metrics for an entity with the given filters. Invoices will be grouped by currency.
 
         Parameters:
             - entity_id: EntityId.
@@ -583,6 +598,8 @@ class AsyncInvoiceClient:
             - exclude_payables: typing.Optional[bool]. Only return invoices that are not payable by the entity. This will return only invoices that are receivable by the entity.
 
             - exclude_receivables: typing.Optional[bool]. Only return invoices that are not receivable by the entity. This will return only invoices that are payable by the entity.
+
+            - return_by_date: typing.Optional[InvoiceMetricsPerDateGroupBy]. Return invoice metrics grouped by date.
 
             - payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter invoices by payer ID.
 
@@ -617,6 +634,7 @@ class AsyncInvoiceClient:
                         "search": search,
                         "excludePayables": exclude_payables,
                         "excludeReceivables": exclude_receivables,
+                        "returnByDate": return_by_date,
                         "payerId": payer_id,
                         "vendorId": vendor_id,
                         "approverId": approver_id,

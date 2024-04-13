@@ -105,6 +105,7 @@ from .entity_types import (
 )
 from .fees import CalculateFeesRequest
 from .invoice_types import (
+    AddApproverRequest,
     ApprovalRequest,
     ApprovalSlot,
     ApprovalSlotAssignment,
@@ -128,6 +129,8 @@ from .invoice_types import (
     InvoiceId,
     InvoiceLineItemRequest,
     InvoiceLineItemResponse,
+    InvoiceMetricsPerDateGroupBy,
+    InvoiceMetricsPerDateResponse,
     InvoiceMetricsResponse,
     InvoiceOrderByField,
     InvoiceQueryError,
@@ -230,6 +233,7 @@ from .payment_method_types import (
 
 __all__ = [
     "AccountType",
+    "AddApproverRequest",
     "Address",
     "AmountTrigger",
     "ApprovalPolicyId",
@@ -338,6 +342,8 @@ __all__ = [
     "InvoiceId",
     "InvoiceLineItemRequest",
     "InvoiceLineItemResponse",
+    "InvoiceMetricsPerDateGroupBy",
+    "InvoiceMetricsPerDateResponse",
     "InvoiceMetricsResponse",
     "InvoiceNotificationConfigurationRequest",
     "InvoiceNotificationConfigurationResponse",

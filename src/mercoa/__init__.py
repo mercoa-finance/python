@@ -2,6 +2,7 @@
 
 from .resources import (
     AccountType,
+    AddApproverRequest,
     Address,
     AmountTrigger,
     ApprovalPolicyId,
@@ -110,6 +111,8 @@ from .resources import (
     InvoiceId,
     InvoiceLineItemRequest,
     InvoiceLineItemResponse,
+    InvoiceMetricsPerDateGroupBy,
+    InvoiceMetricsPerDateResponse,
     InvoiceMetricsResponse,
     InvoiceNotificationConfigurationRequest,
     InvoiceNotificationConfigurationResponse,
@@ -226,6 +229,7 @@ from .environment import MercoaEnvironment
 
 __all__ = [
     "AccountType",
+    "AddApproverRequest",
     "Address",
     "AmountTrigger",
     "ApprovalPolicyId",
@@ -334,6 +338,8 @@ __all__ = [
     "InvoiceId",
     "InvoiceLineItemRequest",
     "InvoiceLineItemResponse",
+    "InvoiceMetricsPerDateGroupBy",
+    "InvoiceMetricsPerDateResponse",
     "InvoiceMetricsResponse",
     "InvoiceNotificationConfigurationRequest",
     "InvoiceNotificationConfigurationResponse",

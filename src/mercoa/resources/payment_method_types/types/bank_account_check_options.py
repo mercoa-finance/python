@@ -36,7 +36,7 @@ class BankAccountCheckOptions(pydantic.BaseModel):
     signature_image: typing.Optional[str] = pydantic.Field(
         alias="signatureImage",
         default=None,
-        description="Base64 encoded PNG of the signature. If not provided, will use the signatoryName to generate a signature.",
+        description="Base64 encoded image of the signature. If not provided, will use the signatoryName to generate a signature. Mercoa will automatically grayscale, resize, and convert the image to a PNG the image to fit on the check.",
     )
     use_signature_image: typing.Optional[bool] = pydantic.Field(
         alias="useSignatureImage",

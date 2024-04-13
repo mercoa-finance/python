@@ -24,6 +24,7 @@ from ..invoice_types.errors.duplicate_invoice_number import DuplicateInvoiceNumb
 from ..invoice_types.errors.invoice_error import InvoiceError
 from ..invoice_types.errors.invoice_query_error import InvoiceQueryError
 from ..invoice_types.errors.invoice_status_error import InvoiceStatusError
+from ..invoice_types.types.approver_action import ApproverAction
 from ..invoice_types.types.find_invoice_response import FindInvoiceResponse
 from ..invoice_types.types.invoice_creation_request import InvoiceCreationRequest
 from ..invoice_types.types.invoice_id import InvoiceId
@@ -67,6 +68,7 @@ class InvoiceClient:
         payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]] = None,
+        approver_action: typing.Optional[typing.Union[ApproverAction, typing.Sequence[ApproverAction]]] = None,
         invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]] = None,
         status: typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]] = None,
         include_fees: typing.Optional[bool] = None,
@@ -98,6 +100,8 @@ class InvoiceClient:
 
             - approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]. Filter invoices by assigned approver user ID.
 
+            - approver_action: typing.Optional[typing.Union[ApproverAction, typing.Sequence[ApproverAction]]]. Filter invoices by approver action. Needs to be used with approverId. For example, if you want to find all invoices that have been approved by a specific user, you would use approverId and approverAction=APPROVE.
+
             - invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]. Filter invoices by invoice ID.
 
             - status: typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]]. Invoice status to filter on
@@ -123,6 +127,7 @@ class InvoiceClient:
                         "payerId": payer_id,
                         "vendorId": vendor_id,
                         "approverId": approver_id,
+                        "approverAction": approver_action,
                         "invoiceId": invoice_id,
                         "status": status,
                         "includeFees": include_fees,
@@ -423,6 +428,7 @@ class AsyncInvoiceClient:
         payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]] = None,
+        approver_action: typing.Optional[typing.Union[ApproverAction, typing.Sequence[ApproverAction]]] = None,
         invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]] = None,
         status: typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]] = None,
         include_fees: typing.Optional[bool] = None,
@@ -454,6 +460,8 @@ class AsyncInvoiceClient:
 
             - approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]. Filter invoices by assigned approver user ID.
 
+            - approver_action: typing.Optional[typing.Union[ApproverAction, typing.Sequence[ApproverAction]]]. Filter invoices by approver action. Needs to be used with approverId. For example, if you want to find all invoices that have been approved by a specific user, you would use approverId and approverAction=APPROVE.
+
             - invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]. Filter invoices by invoice ID.
 
             - status: typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]]. Invoice status to filter on
@@ -479,6 +487,7 @@ class AsyncInvoiceClient:
                         "payerId": payer_id,
                         "vendorId": vendor_id,
                         "approverId": approver_id,
+                        "approverAction": approver_action,
                         "invoiceId": invoice_id,
                         "status": status,
                         "includeFees": include_fees,

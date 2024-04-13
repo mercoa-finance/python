@@ -5,7 +5,6 @@ import typing
 
 from ....core.datetime_utils import serialize_datetime
 from ...payment_method_types.types.currency_code import CurrencyCode
-from .invoice_metrics_per_date_response import InvoiceMetricsPerDateResponse
 
 try:
     import pydantic.v1 as pydantic  # type: ignore
@@ -13,12 +12,12 @@ except ImportError:
     import pydantic  # type: ignore
 
 
-class InvoiceMetricsResponse(pydantic.BaseModel):
+class InvoiceMetricsPerDateResponse(pydantic.BaseModel):
+    date: dt.datetime
     total_amount: float = pydantic.Field(alias="totalAmount")
     total_count: int = pydantic.Field(alias="totalCount")
     average_amount: float = pydantic.Field(alias="averageAmount")
     currency: CurrencyCode
-    dates: typing.Optional[typing.Dict[str, InvoiceMetricsPerDateResponse]] = None
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

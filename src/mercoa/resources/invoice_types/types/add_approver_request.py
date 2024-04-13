@@ -4,8 +4,8 @@ import datetime as dt
 import typing
 
 from ....core.datetime_utils import serialize_datetime
-from ...payment_method_types.types.currency_code import CurrencyCode
-from .invoice_metrics_per_date_response import InvoiceMetricsPerDateResponse
+from ...entity_types.types.entity_user_id import EntityUserId
+from .approval_slot_id import ApprovalSlotId
 
 try:
     import pydantic.v1 as pydantic  # type: ignore
@@ -13,12 +13,13 @@ except ImportError:
     import pydantic  # type: ignore
 
 
-class InvoiceMetricsResponse(pydantic.BaseModel):
-    total_amount: float = pydantic.Field(alias="totalAmount")
-    total_count: int = pydantic.Field(alias="totalCount")
-    average_amount: float = pydantic.Field(alias="averageAmount")
-    currency: CurrencyCode
-    dates: typing.Optional[typing.Dict[str, InvoiceMetricsPerDateResponse]] = None
+class AddApproverRequest(pydantic.BaseModel):
+    approval_slot_id: typing.Optional[ApprovalSlotId] = pydantic.Field(
+        alias="approvalSlotId",
+        default=None,
+        description="The identifier for the approval slot this user is assigned to.",
+    )
+    user_id: EntityUserId = pydantic.Field(alias="userId")
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
