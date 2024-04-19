@@ -4,18 +4,15 @@ import typing
 
 import httpx
 
+from .bank_lookup.client import AsyncBankLookupClient, BankLookupClient
 from .core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
+from .custom_payment_method_schema.client import AsyncCustomPaymentMethodSchemaClient, CustomPaymentMethodSchemaClient
+from .entity.client import AsyncEntityClient, EntityClient
 from .environment import MercoaEnvironment
-from .resources.bank_lookup.client import AsyncBankLookupClient, BankLookupClient
-from .resources.custom_payment_method_schema.client import (
-    AsyncCustomPaymentMethodSchemaClient,
-    CustomPaymentMethodSchemaClient,
-)
-from .resources.entity.client import AsyncEntityClient, EntityClient
-from .resources.fees.client import AsyncFeesClient, FeesClient
-from .resources.invoice.client import AsyncInvoiceClient, InvoiceClient
-from .resources.ocr.client import AsyncOcrClient, OcrClient
-from .resources.organization.client import AsyncOrganizationClient, OrganizationClient
+from .fees.client import AsyncFeesClient, FeesClient
+from .invoice.client import AsyncInvoiceClient, InvoiceClient
+from .ocr.client import AsyncOcrClient, OcrClient
+from .organization.client import AsyncOrganizationClient, OrganizationClient
 
 
 class Mercoa:
@@ -31,7 +28,9 @@ class Mercoa:
 
         - token: typing.Union[str, typing.Callable[[], str]].
 
-        - timeout: typing.Optional[float]. The timeout to be used, in seconds, for requests by default the timeout is 60 seconds.
+        - timeout: typing.Optional[float]. The timeout to be used, in seconds, for requests by default the timeout is 60 seconds, unless a custom httpx client is used, in which case a default is not set.
+
+        - follow_redirects: typing.Optional[bool]. Whether the default httpx client follows redirects or not, this is irrelevant if a custom httpx client is passed in.
 
         - httpx_client: typing.Optional[httpx.Client]. The httpx client to use for making requests, a preconfigured client is used by default, however this is useful should you want to pass in any custom httpx configuration.
     ---
@@ -48,13 +47,20 @@ class Mercoa:
         base_url: typing.Optional[str] = None,
         environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION,
         token: typing.Union[str, typing.Callable[[], str]],
-        timeout: typing.Optional[float] = 60,
+        timeout: typing.Optional[float] = None,
+        follow_redirects: typing.Optional[bool] = None,
         httpx_client: typing.Optional[httpx.Client] = None
     ):
+        _defaulted_timeout = timeout if timeout is not None else 60 if httpx_client is None else None
         self._client_wrapper = SyncClientWrapper(
             base_url=_get_base_url(base_url=base_url, environment=environment),
             token=token,
-            httpx_client=httpx.Client(timeout=timeout) if httpx_client is None else httpx_client,
+            httpx_client=httpx_client
+            if httpx_client is not None
+            else httpx.Client(timeout=_defaulted_timeout, follow_redirects=follow_redirects)
+            if follow_redirects is not None
+            else httpx.Client(timeout=_defaulted_timeout),
+            timeout=_defaulted_timeout,
         )
         self.entity = EntityClient(client_wrapper=self._client_wrapper)
         self.invoice = InvoiceClient(client_wrapper=self._client_wrapper)
@@ -78,7 +84,9 @@ class AsyncMercoa:
 
         - token: typing.Union[str, typing.Callable[[], str]].
 
-        - timeout: typing.Optional[float]. The timeout to be used, in seconds, for requests by default the timeout is 60 seconds.
+        - timeout: typing.Optional[float]. The timeout to be used, in seconds, for requests by default the timeout is 60 seconds, unless a custom httpx client is used, in which case a default is not set.
+
+        - follow_redirects: typing.Optional[bool]. Whether the default httpx client follows redirects or not, this is irrelevant if a custom httpx client is passed in.
 
         - httpx_client: typing.Optional[httpx.AsyncClient]. The httpx client to use for making requests, a preconfigured client is used by default, however this is useful should you want to pass in any custom httpx configuration.
     ---
@@ -95,13 +103,20 @@ class AsyncMercoa:
         base_url: typing.Optional[str] = None,
         environment: MercoaEnvironment = MercoaEnvironment.PRODUCTION,
         token: typing.Union[str, typing.Callable[[], str]],
-        timeout: typing.Optional[float] = 60,
+        timeout: typing.Optional[float] = None,
+        follow_redirects: typing.Optional[bool] = None,
         httpx_client: typing.Optional[httpx.AsyncClient] = None
     ):
+        _defaulted_timeout = timeout if timeout is not None else 60 if httpx_client is None else None
         self._client_wrapper = AsyncClientWrapper(
             base_url=_get_base_url(base_url=base_url, environment=environment),
             token=token,
-            httpx_client=httpx.AsyncClient(timeout=timeout) if httpx_client is None else httpx_client,
+            httpx_client=httpx_client
+            if httpx_client is not None
+            else httpx.AsyncClient(timeout=_defaulted_timeout, follow_redirects=follow_redirects)
+            if follow_redirects is not None
+            else httpx.AsyncClient(timeout=_defaulted_timeout),
+            timeout=_defaulted_timeout,
         )
         self.entity = AsyncEntityClient(client_wrapper=self._client_wrapper)
         self.invoice = AsyncInvoiceClient(client_wrapper=self._client_wrapper)
