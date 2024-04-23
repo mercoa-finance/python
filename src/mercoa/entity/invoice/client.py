@@ -317,7 +317,7 @@ class InvoiceClient:
         Parameters:
             - entity_id: EntityId.
 
-            - search: typing.Optional[str]. Filter vendors by name. Partial matches are supported.
+            - search: typing.Optional[str]. Find invoices by vendor name, invoice number, or amount. Partial matches are supported.
 
             - exclude_payables: typing.Optional[bool]. Only return invoices that are not payable by the entity. This will return only invoices that are receivable by the entity.
 
@@ -735,7 +735,7 @@ class AsyncInvoiceClient:
         Parameters:
             - entity_id: EntityId.
 
-            - search: typing.Optional[str]. Filter vendors by name. Partial matches are supported.
+            - search: typing.Optional[str]. Find invoices by vendor name, invoice number, or amount. Partial matches are supported.
 
             - exclude_payables: typing.Optional[bool]. Only return invoices that are not payable by the entity. This will return only invoices that are receivable by the entity.
 
