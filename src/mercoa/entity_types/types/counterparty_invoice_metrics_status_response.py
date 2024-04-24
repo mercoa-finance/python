@@ -10,7 +10,7 @@ from ...invoice_types.types.invoice_status import InvoiceStatus
 
 class CounterpartyInvoiceMetricsStatusResponse(pydantic_v1.BaseModel):
     status: InvoiceStatus
-    total_invoices: int = pydantic_v1.Field(alias="totalInvoices")
+    total_count: int = pydantic_v1.Field(alias="totalCount")
     total_amount: float = pydantic_v1.Field(alias="totalAmount")
 
     def json(self, **kwargs: typing.Any) -> str:

@@ -9,7 +9,7 @@ from .counterparty_invoice_metrics_status_response import CounterpartyInvoiceMet
 
 
 class CounterpartyInvoiceMetricsResponse(pydantic_v1.BaseModel):
-    total_invoices: int = pydantic_v1.Field(alias="totalInvoices")
+    total_count: int = pydantic_v1.Field(alias="totalCount")
     total_amount: float = pydantic_v1.Field(alias="totalAmount")
     statuses: typing.List[CounterpartyInvoiceMetricsStatusResponse]
 
