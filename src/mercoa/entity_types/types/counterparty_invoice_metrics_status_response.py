@@ -5,18 +5,13 @@ import typing
 
 from ...core.datetime_utils import serialize_datetime
 from ...core.pydantic_utilities import pydantic_v1
-from ...payment_method_types.types.payment_method_response import PaymentMethodResponse
-from .counterparty_invoice_metrics_response import CounterpartyInvoiceMetricsResponse
-from .counterparty_network_type import CounterpartyNetworkType
-from .entity_response import EntityResponse
+from ...invoice_types.types.invoice_status import InvoiceStatus
 
 
-class CounterpartyResponse(EntityResponse):
-    payment_methods: typing.List[PaymentMethodResponse] = pydantic_v1.Field(alias="paymentMethods")
-    counterparty_type: typing.List[CounterpartyNetworkType] = pydantic_v1.Field(alias="counterpartyType")
-    invoice_metrics: typing.Optional[CounterpartyInvoiceMetricsResponse] = pydantic_v1.Field(
-        alias="invoiceMetrics", default=None
-    )
+class CounterpartyInvoiceMetricsStatusResponse(pydantic_v1.BaseModel):
+    status: InvoiceStatus
+    total_invoices: int = pydantic_v1.Field(alias="totalInvoices")
+    total_amount: float = pydantic_v1.Field(alias="totalAmount")
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

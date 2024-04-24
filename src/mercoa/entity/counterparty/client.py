@@ -41,6 +41,7 @@ class CounterpartyClient:
             typing.Union[CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]]
         ] = None,
         payment_methods: typing.Optional[bool] = None,
+        invoice_metrics: typing.Optional[bool] = None,
         counterparty_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
@@ -57,6 +58,8 @@ class CounterpartyClient:
             - network_type: typing.Optional[typing.Union[CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]]]. Filter by network type. By default, only ENTITY counterparties are returned.
 
             - payment_methods: typing.Optional[bool]. If true, will include counterparty payment methods as part of the response
+
+            - invoice_metrics: typing.Optional[bool]. If true, will include counterparty invoice metrics as part of the response
 
             - counterparty_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter by counterparty ids
 
@@ -76,6 +79,7 @@ class CounterpartyClient:
             name="string",
             network_type="ENTITY",
             payment_methods=True,
+            invoice_metrics=True,
             counterparty_id="string",
             limit=1,
             starting_after="string",
@@ -92,6 +96,7 @@ class CounterpartyClient:
                         "name": name,
                         "networkType": network_type,
                         "paymentMethods": payment_methods,
+                        "invoiceMetrics": invoice_metrics,
                         "counterpartyId": counterparty_id,
                         "limit": limit,
                         "startingAfter": starting_after,
@@ -147,6 +152,7 @@ class CounterpartyClient:
             typing.Union[CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]]
         ] = None,
         payment_methods: typing.Optional[bool] = None,
+        invoice_metrics: typing.Optional[bool] = None,
         counterparty_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
@@ -163,6 +169,8 @@ class CounterpartyClient:
             - network_type: typing.Optional[typing.Union[CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]]]. Filter by network type. By default, only ENTITY counterparties are returned.
 
             - payment_methods: typing.Optional[bool]. If true, will include counterparty payment methods as part of the response
+
+            - invoice_metrics: typing.Optional[bool]. If true, will include counterparty invoice metrics as part of the response
 
             - counterparty_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter by counterparty ids
 
@@ -182,6 +190,7 @@ class CounterpartyClient:
             name="string",
             network_type="ENTITY",
             payment_methods=True,
+            invoice_metrics=True,
             counterparty_id="string",
             limit=1,
             starting_after="string",
@@ -198,6 +207,7 @@ class CounterpartyClient:
                         "name": name,
                         "networkType": network_type,
                         "paymentMethods": payment_methods,
+                        "invoiceMetrics": invoice_metrics,
                         "counterpartyId": counterparty_id,
                         "limit": limit,
                         "startingAfter": starting_after,
@@ -574,6 +584,7 @@ class AsyncCounterpartyClient:
             typing.Union[CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]]
         ] = None,
         payment_methods: typing.Optional[bool] = None,
+        invoice_metrics: typing.Optional[bool] = None,
         counterparty_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
@@ -590,6 +601,8 @@ class AsyncCounterpartyClient:
             - network_type: typing.Optional[typing.Union[CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]]]. Filter by network type. By default, only ENTITY counterparties are returned.
 
             - payment_methods: typing.Optional[bool]. If true, will include counterparty payment methods as part of the response
+
+            - invoice_metrics: typing.Optional[bool]. If true, will include counterparty invoice metrics as part of the response
 
             - counterparty_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter by counterparty ids
 
@@ -609,6 +622,7 @@ class AsyncCounterpartyClient:
             name="string",
             network_type="ENTITY",
             payment_methods=True,
+            invoice_metrics=True,
             counterparty_id="string",
             limit=1,
             starting_after="string",
@@ -625,6 +639,7 @@ class AsyncCounterpartyClient:
                         "name": name,
                         "networkType": network_type,
                         "paymentMethods": payment_methods,
+                        "invoiceMetrics": invoice_metrics,
                         "counterpartyId": counterparty_id,
                         "limit": limit,
                         "startingAfter": starting_after,
@@ -680,6 +695,7 @@ class AsyncCounterpartyClient:
             typing.Union[CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]]
         ] = None,
         payment_methods: typing.Optional[bool] = None,
+        invoice_metrics: typing.Optional[bool] = None,
         counterparty_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
@@ -696,6 +712,8 @@ class AsyncCounterpartyClient:
             - network_type: typing.Optional[typing.Union[CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]]]. Filter by network type. By default, only ENTITY counterparties are returned.
 
             - payment_methods: typing.Optional[bool]. If true, will include counterparty payment methods as part of the response
+
+            - invoice_metrics: typing.Optional[bool]. If true, will include counterparty invoice metrics as part of the response
 
             - counterparty_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter by counterparty ids
 
@@ -715,6 +733,7 @@ class AsyncCounterpartyClient:
             name="string",
             network_type="ENTITY",
             payment_methods=True,
+            invoice_metrics=True,
             counterparty_id="string",
             limit=1,
             starting_after="string",
@@ -731,6 +750,7 @@ class AsyncCounterpartyClient:
                         "name": name,
                         "networkType": network_type,
                         "paymentMethods": payment_methods,
+                        "invoiceMetrics": invoice_metrics,
                         "counterpartyId": counterparty_id,
                         "limit": limit,
                         "startingAfter": starting_after,

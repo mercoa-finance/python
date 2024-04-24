@@ -10,6 +10,8 @@ from .approver_rule import ApproverRule
 from .business_profile_request import BusinessProfileRequest
 from .business_profile_response import BusinessProfileResponse
 from .business_type import BusinessType
+from .counterparty_invoice_metrics_response import CounterpartyInvoiceMetricsResponse
+from .counterparty_invoice_metrics_status_response import CounterpartyInvoiceMetricsStatusResponse
 from .counterparty_network_type import CounterpartyNetworkType
 from .counterparty_response import CounterpartyResponse
 from .ein import Ein
@@ -72,6 +74,8 @@ __all__ = [
     "BusinessProfileRequest",
     "BusinessProfileResponse",
     "BusinessType",
+    "CounterpartyInvoiceMetricsResponse",
+    "CounterpartyInvoiceMetricsStatusResponse",
     "CounterpartyNetworkType",
     "CounterpartyResponse",
     "Ein",
