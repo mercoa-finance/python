@@ -5,11 +5,11 @@ from __future__ import annotations
 import typing
 
 from ...core.pydantic_utilities import pydantic_v1
-from .invoice_notification_configuration_request import InvoiceNotificationConfigurationRequest
 
 
-class NotificationConfigurationRequest_Invoice(InvoiceNotificationConfigurationRequest):
+class NotificationConfigurationRequest_Invoice(pydantic_v1.BaseModel):
     notification_type: typing.Literal["invoice"] = pydantic_v1.Field(alias="notificationType", default="invoice")
+    url: str
 
     class Config:
         frozen = True

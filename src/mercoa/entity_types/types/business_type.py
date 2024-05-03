@@ -3,7 +3,6 @@
 import typing
 
 BusinessType = typing.Union[
-    typing.AnyStr,
     typing.Literal[
         "soleProprietorship",
         "unincorporatedAssociation",
@@ -15,4 +14,5 @@ BusinessType = typing.Union[
         "unincorporatedNonProfit",
         "incorporatedNonProfit",
     ],
+    typing.Any,
 ]

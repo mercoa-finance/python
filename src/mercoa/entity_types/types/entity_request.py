@@ -11,6 +11,8 @@ from .profile_request import ProfileRequest
 
 class EntityRequest(pydantic_v1.BaseModel):
     """
+    Examples
+    --------
     from mercoa import (
         Address,
         BusinessProfileRequest,

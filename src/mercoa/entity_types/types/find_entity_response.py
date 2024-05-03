@@ -10,6 +10,8 @@ from .entity_with_payment_method_response import EntityWithPaymentMethodResponse
 
 class FindEntityResponse(pydantic_v1.BaseModel):
     """
+    Examples
+    --------
     import datetime
 
     from mercoa import (

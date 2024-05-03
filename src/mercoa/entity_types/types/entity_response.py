@@ -13,6 +13,8 @@ from .profile_response import ProfileResponse
 
 class EntityResponse(pydantic_v1.BaseModel):
     """
+    Examples
+    --------
     import datetime
 
     from mercoa import (

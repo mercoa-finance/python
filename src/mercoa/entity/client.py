@@ -75,27 +75,45 @@ class EntityClient:
         """
         Search all entities with the given filters. If no filters are provided, all entities will be returned.
 
-        Parameters:
-            - payment_methods: typing.Optional[bool]. If true, will include entity payment methods as part of the response
+        Parameters
+        ----------
+        payment_methods : typing.Optional[bool]
+            If true, will include entity payment methods as part of the response
 
-            - is_customer: typing.Optional[bool]. If true, only entities with a direct relationship to the requesting organization will be returned. If false or not provided, all entities will be returned.
+        is_customer : typing.Optional[bool]
+            If true, only entities with a direct relationship to the requesting organization will be returned. If false or not provided, all entities will be returned.
 
-            - foreign_id: typing.Optional[typing.Union[str, typing.Sequence[str]]]. ID used to identify this entity in your system
+        foreign_id : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            ID used to identify this entity in your system
 
-            - status: typing.Optional[typing.Union[EntityStatus, typing.Sequence[EntityStatus]]].
+        status : typing.Optional[typing.Union[EntityStatus, typing.Sequence[EntityStatus]]]
 
-            - is_payee: typing.Optional[bool]. If true, entities that are marked as payees will be returned.
-                                               If false or not provided, entities that are marked as payees will not be returned.
-            - is_payor: typing.Optional[bool]. If true or not provided, entities that are marked as payors will be returned.
-                                               If false, entities that are marked as payors will not be returned.
-            - name: typing.Optional[str]. Filter entities by name. Partial matches are supported.
+        is_payee : typing.Optional[bool]
+            If true, entities that are marked as payees will be returned.
+            If false or not provided, entities that are marked as payees will not be returned.
 
-            - limit: typing.Optional[int]. Number of entities to return. Limit can range between 1 and 100, and the default is 10.
+        is_payor : typing.Optional[bool]
+            If true or not provided, entities that are marked as payors will be returned.
+            If false, entities that are marked as payors will not be returned.
 
-            - starting_after: typing.Optional[EntityId]. The ID of the entity to start after. If not provided, the first page of entities will be returned.
+        name : typing.Optional[str]
+            Filter entities by name. Partial matches are supported.
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        limit : typing.Optional[int]
+            Number of entities to return. Limit can range between 1 and 100, and the default is 10.
+
+        starting_after : typing.Optional[EntityId]
+            The ID of the entity to start after. If not provided, the first page of entities will be returned.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        FindEntityResponse
+
+        Examples
+        --------
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -108,8 +126,8 @@ class EntityClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "entity"),
+            method="GET",
+            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "entity"),
             params=jsonable_encoder(
                 remove_none_from_dict(
                     {
@@ -169,11 +187,19 @@ class EntityClient:
         self, *, request: EntityRequest, request_options: typing.Optional[RequestOptions] = None
     ) -> EntityResponse:
         """
-        Parameters:
-            - request: EntityRequest.
+        Parameters
+        ----------
+        request : EntityRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        EntityResponse
+
+        Examples
+        --------
         from mercoa import (
             Address,
             BusinessProfileRequest,
@@ -222,8 +248,8 @@ class EntityClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "entity"),
+            method="POST",
+            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "entity"),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -282,11 +308,19 @@ class EntityClient:
 
     def get(self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None) -> EntityResponse:
         """
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        EntityResponse
+
+        Examples
+        --------
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -297,8 +331,10 @@ class EntityClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}"),
+            method="GET",
+            url=urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -345,13 +381,21 @@ class EntityClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityResponse:
         """
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - request: EntityUpdateRequest.
+        request : EntityUpdateRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        EntityResponse
+
+        Examples
+        --------
         from mercoa import EntityUpdateRequest, ProfileRequest
         from mercoa.client import Mercoa
 
@@ -374,8 +418,10 @@ class EntityClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}"),
+            method="POST",
+            url=urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -434,11 +480,19 @@ class EntityClient:
 
     def delete(self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -449,8 +503,10 @@ class EntityClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "DELETE",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}"),
+            method="DELETE",
+            url=urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -495,11 +551,19 @@ class EntityClient:
         """
         This endpoint is used to indicate acceptance of Mercoa's terms of service for an entity. Send a request to this endpoint only after the entity has accepted the Mercoa ToS. Entities must accept Mercoa ToS before they can be send or pay invoices using Mercoa's payment rails.
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -510,8 +574,8 @@ class EntityClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/accept-tos"
             ),
             params=jsonable_encoder(
@@ -563,11 +627,19 @@ class EntityClient:
         Send a request to this endpoint only after the entity has accepted the Mercoa ToS,
         all representatives have been added, and all required fields have been filled out.
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -578,8 +650,8 @@ class EntityClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/request-kyb"
             ),
             params=jsonable_encoder(
@@ -635,13 +707,21 @@ class EntityClient:
         """
         Generate a JWT token for an entity with the given options. This token can be used to authenticate the entity in the Mercoa API and iFrame.
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - request: TokenGenerationOptions.
+        request : TokenGenerationOptions
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        str
+
+        Examples
+        --------
         from mercoa import TokenGenerationOptions
         from mercoa.client import Mercoa
 
@@ -656,8 +736,8 @@ class EntityClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/token"
             ),
             params=jsonable_encoder(
@@ -716,13 +796,22 @@ class EntityClient:
         """
         Get a Plaid link token for an entity. This token can be used to add or update a bank account to the entity using Plaid Link.
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - payment_method_id: typing.Optional[PaymentMethodId]. ID of Bank Account to update
+        payment_method_id : typing.Optional[PaymentMethodId]
+            ID of Bank Account to update
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        str
+
+        Examples
+        --------
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -734,8 +823,8 @@ class EntityClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/plaidLinkToken"
             ),
             params=jsonable_encoder(
@@ -799,17 +888,28 @@ class EntityClient:
         """
         Generate an onboarding link for the entity.
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - type: EntityOnboardingLinkType. The type of onboarding link to generate. If not provided, the default is payee. The onboarding options are determined by your organization's onboarding configuration.
+        type : EntityOnboardingLinkType
+            The type of onboarding link to generate. If not provided, the default is payee. The onboarding options are determined by your organization's onboarding configuration.
 
-            - expires_in: typing.Optional[str]. Expressed in seconds or a string describing a time span. The default is 24h.
+        expires_in : typing.Optional[str]
+            Expressed in seconds or a string describing a time span. The default is 24h.
 
-            - connected_entity_id: typing.Optional[EntityId]. The ID of the entity to connect to. If onboarding a payee, this should be the payor entity ID. If onboarding a payor, this should be the payee entity ID. If no connected entity ID is provided, the onboarding link will be for a standalone entity.
+        connected_entity_id : typing.Optional[EntityId]
+            The ID of the entity to connect to. If onboarding a payee, this should be the payor entity ID. If onboarding a payor, this should be the payee entity ID. If no connected entity ID is provided, the onboarding link will be for a standalone entity.
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        str
+
+        Examples
+        --------
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -823,8 +923,8 @@ class EntityClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/onboarding"
             ),
             params=jsonable_encoder(
@@ -888,17 +988,28 @@ class EntityClient:
         """
         Send an email with a onboarding link to the entity. The email will be sent to the email address associated with the entity.
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - type: EntityOnboardingLinkType. The type of onboarding link to generate. If not provided, the default is payee. The onboarding options are determined by your organization's onboarding configuration.
+        type : EntityOnboardingLinkType
+            The type of onboarding link to generate. If not provided, the default is payee. The onboarding options are determined by your organization's onboarding configuration.
 
-            - expires_in: typing.Optional[str]. Expressed in seconds or a string describing a time span. The default is 7 days.
+        expires_in : typing.Optional[str]
+            Expressed in seconds or a string describing a time span. The default is 7 days.
 
-            - connected_entity_id: typing.Optional[EntityId]. The ID of the entity to connect to. If onboarding a payee, this should be the payor entity ID. If onboarding a payor, this should be the payee entity ID. If no connected entity ID is provided, the onboarding link will be for a standalone entity.
+        connected_entity_id : typing.Optional[EntityId]
+            The ID of the entity to connect to. If onboarding a payee, this should be the payor entity ID. If onboarding a payor, this should be the payee entity ID. If no connected entity ID is provided, the onboarding link will be for a standalone entity.
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -912,8 +1023,8 @@ class EntityClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/onboarding"
             ),
             params=jsonable_encoder(
@@ -999,27 +1110,45 @@ class AsyncEntityClient:
         """
         Search all entities with the given filters. If no filters are provided, all entities will be returned.
 
-        Parameters:
-            - payment_methods: typing.Optional[bool]. If true, will include entity payment methods as part of the response
+        Parameters
+        ----------
+        payment_methods : typing.Optional[bool]
+            If true, will include entity payment methods as part of the response
 
-            - is_customer: typing.Optional[bool]. If true, only entities with a direct relationship to the requesting organization will be returned. If false or not provided, all entities will be returned.
+        is_customer : typing.Optional[bool]
+            If true, only entities with a direct relationship to the requesting organization will be returned. If false or not provided, all entities will be returned.
 
-            - foreign_id: typing.Optional[typing.Union[str, typing.Sequence[str]]]. ID used to identify this entity in your system
+        foreign_id : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            ID used to identify this entity in your system
 
-            - status: typing.Optional[typing.Union[EntityStatus, typing.Sequence[EntityStatus]]].
+        status : typing.Optional[typing.Union[EntityStatus, typing.Sequence[EntityStatus]]]
 
-            - is_payee: typing.Optional[bool]. If true, entities that are marked as payees will be returned.
-                                               If false or not provided, entities that are marked as payees will not be returned.
-            - is_payor: typing.Optional[bool]. If true or not provided, entities that are marked as payors will be returned.
-                                               If false, entities that are marked as payors will not be returned.
-            - name: typing.Optional[str]. Filter entities by name. Partial matches are supported.
+        is_payee : typing.Optional[bool]
+            If true, entities that are marked as payees will be returned.
+            If false or not provided, entities that are marked as payees will not be returned.
 
-            - limit: typing.Optional[int]. Number of entities to return. Limit can range between 1 and 100, and the default is 10.
+        is_payor : typing.Optional[bool]
+            If true or not provided, entities that are marked as payors will be returned.
+            If false, entities that are marked as payors will not be returned.
 
-            - starting_after: typing.Optional[EntityId]. The ID of the entity to start after. If not provided, the first page of entities will be returned.
+        name : typing.Optional[str]
+            Filter entities by name. Partial matches are supported.
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        limit : typing.Optional[int]
+            Number of entities to return. Limit can range between 1 and 100, and the default is 10.
+
+        starting_after : typing.Optional[EntityId]
+            The ID of the entity to start after. If not provided, the first page of entities will be returned.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        FindEntityResponse
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -1032,8 +1161,8 @@ class AsyncEntityClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "entity"),
+            method="GET",
+            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "entity"),
             params=jsonable_encoder(
                 remove_none_from_dict(
                     {
@@ -1093,11 +1222,19 @@ class AsyncEntityClient:
         self, *, request: EntityRequest, request_options: typing.Optional[RequestOptions] = None
     ) -> EntityResponse:
         """
-        Parameters:
-            - request: EntityRequest.
+        Parameters
+        ----------
+        request : EntityRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        EntityResponse
+
+        Examples
+        --------
         from mercoa import (
             Address,
             BusinessProfileRequest,
@@ -1146,8 +1283,8 @@ class AsyncEntityClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "entity"),
+            method="POST",
+            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "entity"),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -1208,11 +1345,19 @@ class AsyncEntityClient:
         self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None
     ) -> EntityResponse:
         """
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        EntityResponse
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -1223,8 +1368,10 @@ class AsyncEntityClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}"),
+            method="GET",
+            url=urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -1271,13 +1418,21 @@ class AsyncEntityClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityResponse:
         """
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - request: EntityUpdateRequest.
+        request : EntityUpdateRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        EntityResponse
+
+        Examples
+        --------
         from mercoa import EntityUpdateRequest, ProfileRequest
         from mercoa.client import AsyncMercoa
 
@@ -1300,8 +1455,10 @@ class AsyncEntityClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}"),
+            method="POST",
+            url=urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -1360,11 +1517,19 @@ class AsyncEntityClient:
 
     async def delete(self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -1375,8 +1540,10 @@ class AsyncEntityClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "DELETE",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}"),
+            method="DELETE",
+            url=urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -1421,11 +1588,19 @@ class AsyncEntityClient:
         """
         This endpoint is used to indicate acceptance of Mercoa's terms of service for an entity. Send a request to this endpoint only after the entity has accepted the Mercoa ToS. Entities must accept Mercoa ToS before they can be send or pay invoices using Mercoa's payment rails.
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -1436,8 +1611,8 @@ class AsyncEntityClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/accept-tos"
             ),
             params=jsonable_encoder(
@@ -1491,11 +1666,19 @@ class AsyncEntityClient:
         Send a request to this endpoint only after the entity has accepted the Mercoa ToS,
         all representatives have been added, and all required fields have been filled out.
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -1506,8 +1689,8 @@ class AsyncEntityClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/request-kyb"
             ),
             params=jsonable_encoder(
@@ -1563,13 +1746,21 @@ class AsyncEntityClient:
         """
         Generate a JWT token for an entity with the given options. This token can be used to authenticate the entity in the Mercoa API and iFrame.
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - request: TokenGenerationOptions.
+        request : TokenGenerationOptions
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        str
+
+        Examples
+        --------
         from mercoa import TokenGenerationOptions
         from mercoa.client import AsyncMercoa
 
@@ -1584,8 +1775,8 @@ class AsyncEntityClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/token"
             ),
             params=jsonable_encoder(
@@ -1644,13 +1835,22 @@ class AsyncEntityClient:
         """
         Get a Plaid link token for an entity. This token can be used to add or update a bank account to the entity using Plaid Link.
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - payment_method_id: typing.Optional[PaymentMethodId]. ID of Bank Account to update
+        payment_method_id : typing.Optional[PaymentMethodId]
+            ID of Bank Account to update
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        str
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -1662,8 +1862,8 @@ class AsyncEntityClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/plaidLinkToken"
             ),
             params=jsonable_encoder(
@@ -1727,17 +1927,28 @@ class AsyncEntityClient:
         """
         Generate an onboarding link for the entity.
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - type: EntityOnboardingLinkType. The type of onboarding link to generate. If not provided, the default is payee. The onboarding options are determined by your organization's onboarding configuration.
+        type : EntityOnboardingLinkType
+            The type of onboarding link to generate. If not provided, the default is payee. The onboarding options are determined by your organization's onboarding configuration.
 
-            - expires_in: typing.Optional[str]. Expressed in seconds or a string describing a time span. The default is 24h.
+        expires_in : typing.Optional[str]
+            Expressed in seconds or a string describing a time span. The default is 24h.
 
-            - connected_entity_id: typing.Optional[EntityId]. The ID of the entity to connect to. If onboarding a payee, this should be the payor entity ID. If onboarding a payor, this should be the payee entity ID. If no connected entity ID is provided, the onboarding link will be for a standalone entity.
+        connected_entity_id : typing.Optional[EntityId]
+            The ID of the entity to connect to. If onboarding a payee, this should be the payor entity ID. If onboarding a payor, this should be the payee entity ID. If no connected entity ID is provided, the onboarding link will be for a standalone entity.
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        str
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -1751,8 +1962,8 @@ class AsyncEntityClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/onboarding"
             ),
             params=jsonable_encoder(
@@ -1816,17 +2027,28 @@ class AsyncEntityClient:
         """
         Send an email with a onboarding link to the entity. The email will be sent to the email address associated with the entity.
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - type: EntityOnboardingLinkType. The type of onboarding link to generate. If not provided, the default is payee. The onboarding options are determined by your organization's onboarding configuration.
+        type : EntityOnboardingLinkType
+            The type of onboarding link to generate. If not provided, the default is payee. The onboarding options are determined by your organization's onboarding configuration.
 
-            - expires_in: typing.Optional[str]. Expressed in seconds or a string describing a time span. The default is 7 days.
+        expires_in : typing.Optional[str]
+            Expressed in seconds or a string describing a time span. The default is 7 days.
 
-            - connected_entity_id: typing.Optional[EntityId]. The ID of the entity to connect to. If onboarding a payee, this should be the payor entity ID. If onboarding a payor, this should be the payee entity ID. If no connected entity ID is provided, the onboarding link will be for a standalone entity.
+        connected_entity_id : typing.Optional[EntityId]
+            The ID of the entity to connect to. If onboarding a payee, this should be the payor entity ID. If onboarding a payor, this should be the payee entity ID. If no connected entity ID is provided, the onboarding link will be for a standalone entity.
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -1840,8 +2062,8 @@ class AsyncEntityClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/onboarding"
             ),
             params=jsonable_encoder(

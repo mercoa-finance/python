@@ -4,11 +4,12 @@ from __future__ import annotations
 
 import typing
 
-from .codat_company_creation_request import CodatCompanyCreationRequest
+from ....core.pydantic_utilities import pydantic_v1
 
 
-class ExternalAccountingSystemCompanyCreationRequest_Codat(CodatCompanyCreationRequest):
+class ExternalAccountingSystemCompanyCreationRequest_Codat(pydantic_v1.BaseModel):
     type: typing.Literal["codat"] = "codat"
+    company_id: typing.Optional[str] = pydantic_v1.Field(alias="companyId")
 
     class Config:
         frozen = True

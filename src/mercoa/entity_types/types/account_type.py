@@ -2,4 +2,4 @@
 
 import typing
 
-AccountType = typing.Union[typing.AnyStr, typing.Literal["business", "individual"]]
+AccountType = typing.Union[typing.Literal["business", "individual"], typing.Any]

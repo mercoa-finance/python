@@ -50,25 +50,40 @@ class CounterpartyClient:
         """
         Find payee counterparties. This endpoint lets you find vendors linked to the entity.
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - name: typing.Optional[str]. Filter by counterparty name
+        name : typing.Optional[str]
+            Filter by counterparty name
 
-            - network_type: typing.Optional[typing.Union[CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]]]. Filter by network type. By default, only ENTITY counterparties are returned.
+        network_type : typing.Optional[typing.Union[CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]]]
+            Filter by network type. By default, only ENTITY counterparties are returned.
 
-            - payment_methods: typing.Optional[bool]. If true, will include counterparty payment methods as part of the response
+        payment_methods : typing.Optional[bool]
+            If true, will include counterparty payment methods as part of the response
 
-            - invoice_metrics: typing.Optional[bool]. If true, will include counterparty invoice metrics as part of the response
+        invoice_metrics : typing.Optional[bool]
+            If true, will include counterparty invoice metrics as part of the response
 
-            - counterparty_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter by counterparty ids
+        counterparty_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
+            Filter by counterparty ids
 
-            - limit: typing.Optional[int]. Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.
+        limit : typing.Optional[int]
+            Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.
 
-            - starting_after: typing.Optional[EntityId]. The ID of the counterparties to start after. If not provided, the first page of counterparties will be returned.
+        starting_after : typing.Optional[EntityId]
+            The ID of the counterparties to start after. If not provided, the first page of counterparties will be returned.
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        FindCounterpartiesResponse
+
+        Examples
+        --------
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -86,8 +101,8 @@ class CounterpartyClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/counterparties/payees"
             ),
             params=jsonable_encoder(
@@ -161,25 +176,40 @@ class CounterpartyClient:
         """
         Find payor counterparties. This endpoint lets you find customers linked to the entity.
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - name: typing.Optional[str]. Filter by counterparty name
+        name : typing.Optional[str]
+            Filter by counterparty name
 
-            - network_type: typing.Optional[typing.Union[CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]]]. Filter by network type. By default, only ENTITY counterparties are returned.
+        network_type : typing.Optional[typing.Union[CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]]]
+            Filter by network type. By default, only ENTITY counterparties are returned.
 
-            - payment_methods: typing.Optional[bool]. If true, will include counterparty payment methods as part of the response
+        payment_methods : typing.Optional[bool]
+            If true, will include counterparty payment methods as part of the response
 
-            - invoice_metrics: typing.Optional[bool]. If true, will include counterparty invoice metrics as part of the response
+        invoice_metrics : typing.Optional[bool]
+            If true, will include counterparty invoice metrics as part of the response
 
-            - counterparty_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter by counterparty ids
+        counterparty_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
+            Filter by counterparty ids
 
-            - limit: typing.Optional[int]. Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.
+        limit : typing.Optional[int]
+            Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.
 
-            - starting_after: typing.Optional[EntityId]. The ID of the counterparties to start after. If not provided, the first page of counterparties will be returned.
+        starting_after : typing.Optional[EntityId]
+            The ID of the counterparties to start after. If not provided, the first page of counterparties will be returned.
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        FindCounterpartiesResponse
+
+        Examples
+        --------
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -197,8 +227,8 @@ class CounterpartyClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/counterparties/payors"
             ),
             params=jsonable_encoder(
@@ -264,13 +294,21 @@ class CounterpartyClient:
         """
         Create association between Entity and a given list of Payees. If a Payee has previously been archived, unarchive the Payee.
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - request: EntityAddPayeesRequest.
+        request : EntityAddPayeesRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
         from mercoa import EntityAddPayeesRequest
         from mercoa.client import Mercoa
 
@@ -285,8 +323,8 @@ class CounterpartyClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/addPayees"
             ),
             params=jsonable_encoder(
@@ -343,13 +381,21 @@ class CounterpartyClient:
         """
         Marks Payees as unsearchable by Entity via Counterparty search. Invoices associated with these Payees will still be searchable via Invoice search.
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - request: EntityHidePayeesRequest.
+        request : EntityHidePayeesRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
         from mercoa import EntityHidePayeesRequest
         from mercoa.client import Mercoa
 
@@ -364,8 +410,8 @@ class CounterpartyClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/hidePayees"
             ),
             params=jsonable_encoder(
@@ -422,13 +468,21 @@ class CounterpartyClient:
         """
         Create association between Entity and a given list of Payors. If a Payor has previously been archived, unarchive the Payor.
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - request: EntityAddPayorsRequest.
+        request : EntityAddPayorsRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
         from mercoa import EntityAddPayorsRequest
         from mercoa.client import Mercoa
 
@@ -443,8 +497,8 @@ class CounterpartyClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/addPayors"
             ),
             params=jsonable_encoder(
@@ -501,13 +555,21 @@ class CounterpartyClient:
         """
         Marks Payors as unsearchable by Entity via Counterparty search. Invoices associated with these Payors will still be searchable via Invoice search.
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - request: EntityHidePayorsRequest.
+        request : EntityHidePayorsRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
         from mercoa import EntityHidePayorsRequest
         from mercoa.client import Mercoa
 
@@ -522,8 +584,8 @@ class CounterpartyClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/hidePayors"
             ),
             params=jsonable_encoder(
@@ -593,25 +655,40 @@ class AsyncCounterpartyClient:
         """
         Find payee counterparties. This endpoint lets you find vendors linked to the entity.
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - name: typing.Optional[str]. Filter by counterparty name
+        name : typing.Optional[str]
+            Filter by counterparty name
 
-            - network_type: typing.Optional[typing.Union[CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]]]. Filter by network type. By default, only ENTITY counterparties are returned.
+        network_type : typing.Optional[typing.Union[CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]]]
+            Filter by network type. By default, only ENTITY counterparties are returned.
 
-            - payment_methods: typing.Optional[bool]. If true, will include counterparty payment methods as part of the response
+        payment_methods : typing.Optional[bool]
+            If true, will include counterparty payment methods as part of the response
 
-            - invoice_metrics: typing.Optional[bool]. If true, will include counterparty invoice metrics as part of the response
+        invoice_metrics : typing.Optional[bool]
+            If true, will include counterparty invoice metrics as part of the response
 
-            - counterparty_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter by counterparty ids
+        counterparty_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
+            Filter by counterparty ids
 
-            - limit: typing.Optional[int]. Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.
+        limit : typing.Optional[int]
+            Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.
 
-            - starting_after: typing.Optional[EntityId]. The ID of the counterparties to start after. If not provided, the first page of counterparties will be returned.
+        starting_after : typing.Optional[EntityId]
+            The ID of the counterparties to start after. If not provided, the first page of counterparties will be returned.
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        FindCounterpartiesResponse
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -629,8 +706,8 @@ class AsyncCounterpartyClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/counterparties/payees"
             ),
             params=jsonable_encoder(
@@ -704,25 +781,40 @@ class AsyncCounterpartyClient:
         """
         Find payor counterparties. This endpoint lets you find customers linked to the entity.
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - name: typing.Optional[str]. Filter by counterparty name
+        name : typing.Optional[str]
+            Filter by counterparty name
 
-            - network_type: typing.Optional[typing.Union[CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]]]. Filter by network type. By default, only ENTITY counterparties are returned.
+        network_type : typing.Optional[typing.Union[CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]]]
+            Filter by network type. By default, only ENTITY counterparties are returned.
 
-            - payment_methods: typing.Optional[bool]. If true, will include counterparty payment methods as part of the response
+        payment_methods : typing.Optional[bool]
+            If true, will include counterparty payment methods as part of the response
 
-            - invoice_metrics: typing.Optional[bool]. If true, will include counterparty invoice metrics as part of the response
+        invoice_metrics : typing.Optional[bool]
+            If true, will include counterparty invoice metrics as part of the response
 
-            - counterparty_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter by counterparty ids
+        counterparty_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
+            Filter by counterparty ids
 
-            - limit: typing.Optional[int]. Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.
+        limit : typing.Optional[int]
+            Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.
 
-            - starting_after: typing.Optional[EntityId]. The ID of the counterparties to start after. If not provided, the first page of counterparties will be returned.
+        starting_after : typing.Optional[EntityId]
+            The ID of the counterparties to start after. If not provided, the first page of counterparties will be returned.
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        FindCounterpartiesResponse
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -740,8 +832,8 @@ class AsyncCounterpartyClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/counterparties/payors"
             ),
             params=jsonable_encoder(
@@ -807,13 +899,21 @@ class AsyncCounterpartyClient:
         """
         Create association between Entity and a given list of Payees. If a Payee has previously been archived, unarchive the Payee.
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - request: EntityAddPayeesRequest.
+        request : EntityAddPayeesRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
         from mercoa import EntityAddPayeesRequest
         from mercoa.client import AsyncMercoa
 
@@ -828,8 +928,8 @@ class AsyncCounterpartyClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/addPayees"
             ),
             params=jsonable_encoder(
@@ -886,13 +986,21 @@ class AsyncCounterpartyClient:
         """
         Marks Payees as unsearchable by Entity via Counterparty search. Invoices associated with these Payees will still be searchable via Invoice search.
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - request: EntityHidePayeesRequest.
+        request : EntityHidePayeesRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
         from mercoa import EntityHidePayeesRequest
         from mercoa.client import AsyncMercoa
 
@@ -907,8 +1015,8 @@ class AsyncCounterpartyClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/hidePayees"
             ),
             params=jsonable_encoder(
@@ -965,13 +1073,21 @@ class AsyncCounterpartyClient:
         """
         Create association between Entity and a given list of Payors. If a Payor has previously been archived, unarchive the Payor.
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - request: EntityAddPayorsRequest.
+        request : EntityAddPayorsRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
         from mercoa import EntityAddPayorsRequest
         from mercoa.client import AsyncMercoa
 
@@ -986,8 +1102,8 @@ class AsyncCounterpartyClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/addPayors"
             ),
             params=jsonable_encoder(
@@ -1044,13 +1160,21 @@ class AsyncCounterpartyClient:
         """
         Marks Payors as unsearchable by Entity via Counterparty search. Invoices associated with these Payors will still be searchable via Invoice search.
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - request: EntityHidePayorsRequest.
+        request : EntityHidePayorsRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
         from mercoa import EntityHidePayorsRequest
         from mercoa.client import AsyncMercoa
 
@@ -1065,8 +1189,8 @@ class AsyncCounterpartyClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/hidePayors"
             ),
             params=jsonable_encoder(

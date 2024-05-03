@@ -7,6 +7,7 @@ from ...core.datetime_utils import serialize_datetime
 from ...core.pydantic_utilities import pydantic_v1
 from .color_scheme_response import ColorSchemeResponse
 from .email_provider_response import EmailProviderResponse
+from .external_accounting_system_provider_response import ExternalAccountingSystemProviderResponse
 from .metadata_schema import MetadataSchema
 from .onboarding_options_response import OnboardingOptionsResponse
 from .organization_id import OrganizationId
@@ -22,6 +23,9 @@ class OrganizationResponse(pydantic_v1.BaseModel):
     support_email: typing.Optional[str] = pydantic_v1.Field(alias="supportEmail", default=None)
     payment_methods: typing.Optional[PaymentMethodsResponse] = pydantic_v1.Field(alias="paymentMethods", default=None)
     email_provider: typing.Optional[EmailProviderResponse] = pydantic_v1.Field(alias="emailProvider", default=None)
+    external_accounting_system_provider: typing.Optional[ExternalAccountingSystemProviderResponse] = pydantic_v1.Field(
+        alias="externalAccountingSystemProvider", default=None
+    )
     color_scheme: typing.Optional[ColorSchemeResponse] = pydantic_v1.Field(alias="colorScheme", default=None)
     payee_onboarding_options: typing.Optional[OnboardingOptionsResponse] = pydantic_v1.Field(
         alias="payeeOnboardingOptions", default=None

@@ -4,11 +4,14 @@ from __future__ import annotations
 
 import typing
 
-from .approver_rule import ApproverRule
+from ...core.pydantic_utilities import pydantic_v1
+from .identifier_list import IdentifierList
 
 
-class Rule_Approver(ApproverRule):
+class Rule_Approver(pydantic_v1.BaseModel):
     type: typing.Literal["approver"] = "approver"
+    num_approvers: int = pydantic_v1.Field(alias="numApprovers")
+    identifier_list: IdentifierList = pydantic_v1.Field(alias="identifierList")
 
     class Config:
         frozen = True

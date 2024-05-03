@@ -33,11 +33,19 @@ class FeesClient:
         """
         Calculate the fees associated with an payment given the amount, payment source, and disbursement method. Can be used to calculate fees for a payment before creating an invoice.
 
-        Parameters:
-            - request: CalculateFeesRequest.
+        Parameters
+        ----------
+        request : CalculateFeesRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        InvoiceFeesResponse
+
+        Examples
+        --------
         from mercoa import CalculateFeesRequest, PaymentDestinationOptions_Check
         from mercoa.client import Mercoa
 
@@ -55,8 +63,8 @@ class FeesClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "fees"),
+            method="POST",
+            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "fees"),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -112,11 +120,19 @@ class AsyncFeesClient:
         """
         Calculate the fees associated with an payment given the amount, payment source, and disbursement method. Can be used to calculate fees for a payment before creating an invoice.
 
-        Parameters:
-            - request: CalculateFeesRequest.
+        Parameters
+        ----------
+        request : CalculateFeesRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        InvoiceFeesResponse
+
+        Examples
+        --------
         from mercoa import CalculateFeesRequest, PaymentDestinationOptions_Check
         from mercoa.client import AsyncMercoa
 
@@ -134,8 +150,8 @@ class AsyncFeesClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "fees"),
+            method="POST",
+            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "fees"),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),

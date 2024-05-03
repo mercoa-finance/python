@@ -3,8 +3,8 @@
 import typing
 
 InvoiceStatus = typing.Union[
-    typing.AnyStr,
     typing.Literal[
         "DRAFT", "NEW", "APPROVED", "SCHEDULED", "PENDING", "PAID", "ARCHIVED", "REFUSED", "CANCELED", "FAILED"
     ],
+    typing.Any,
 ]

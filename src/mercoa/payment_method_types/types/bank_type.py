@@ -2,4 +2,4 @@
 
 import typing
 
-BankType = typing.Union[typing.AnyStr, typing.Literal["CHECKING", "SAVINGS", "UNKNOWN"]]
+BankType = typing.Union[typing.Literal["CHECKING", "SAVINGS", "UNKNOWN"], typing.Any]

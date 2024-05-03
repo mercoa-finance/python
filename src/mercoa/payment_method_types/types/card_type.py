@@ -2,4 +2,4 @@
 
 import typing
 
-CardType = typing.Union[typing.AnyStr, typing.Literal["credit", "debit", "prepaid", "unknown"]]
+CardType = typing.Union[typing.Literal["credit", "debit", "prepaid", "unknown"], typing.Any]

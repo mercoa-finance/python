@@ -2,4 +2,4 @@
 
 import typing
 
-MetadataType = typing.Union[typing.AnyStr, typing.Literal["STRING", "NUMBER", "DATE", "BOOLEAN", "KEY_VALUE"]]
+MetadataType = typing.Union[typing.Literal["STRING", "NUMBER", "DATE", "BOOLEAN", "KEY_VALUE"], typing.Any]

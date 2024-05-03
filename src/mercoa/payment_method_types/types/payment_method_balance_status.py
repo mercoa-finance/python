@@ -2,4 +2,4 @@
 
 import typing
 
-PaymentMethodBalanceStatus = typing.Union[typing.AnyStr, typing.Literal["AVAILABLE", "UNAVAILABLE", "ERROR"]]
+PaymentMethodBalanceStatus = typing.Union[typing.Literal["AVAILABLE", "UNAVAILABLE", "ERROR"], typing.Any]

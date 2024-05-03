@@ -2,4 +2,4 @@
 
 import typing
 
-VendorNetwork = typing.Union[typing.AnyStr, typing.Literal["all", "platform", "entity"]]
+VendorNetwork = typing.Union[typing.Literal["all", "platform", "entity"], typing.Any]

@@ -3,7 +3,6 @@
 import typing
 
 InvoiceFailureType = typing.Union[
-    typing.AnyStr,
     typing.Literal[
         "SOURCE_PAYMENT_ERROR",
         "DESTINATION_PAYMENT_ERROR",
@@ -11,4 +10,5 @@ InvoiceFailureType = typing.Union[
         "INSUFFICIENT_FUNDS",
         "PROCESSING_ERROR",
     ],
+    typing.Any,
 ]

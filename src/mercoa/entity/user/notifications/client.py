@@ -45,25 +45,39 @@ class NotificationsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> FindNotificationResponse:
         """
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - user_id: EntityUserId.
+        user_id : EntityUserId
 
-            - start_date: typing.Optional[dt.datetime]. Start date for notification created on date filter.
+        start_date : typing.Optional[dt.datetime]
+            Start date for notification created on date filter.
 
-            - end_date: typing.Optional[dt.datetime]. End date for notification created date filter.
+        end_date : typing.Optional[dt.datetime]
+            End date for notification created date filter.
 
-            - order_direction: typing.Optional[OrderDirection]. Direction to order notifications by. Defaults to asc.
+        order_direction : typing.Optional[OrderDirection]
+            Direction to order notifications by. Defaults to asc.
 
-            - limit: typing.Optional[int]. Number of invoices to return. Limit can range between 1 and 100, and the default is 10.
+        limit : typing.Optional[int]
+            Number of invoices to return. Limit can range between 1 and 100, and the default is 10.
 
-            - starting_after: typing.Optional[NotificationId]. The ID of the notification to start after. If not provided, the first page of invoices will be returned.
+        starting_after : typing.Optional[NotificationId]
+            The ID of the notification to start after. If not provided, the first page of invoices will be returned.
 
-            - notification_type: typing.Optional[typing.Union[NotificationType, typing.Sequence[NotificationType]]]. The type of notification to filter by.
+        notification_type : typing.Optional[typing.Union[NotificationType, typing.Sequence[NotificationType]]]
+            The type of notification to filter by.
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        FindNotificationResponse
+
+        Examples
+        --------
         import datetime
 
         from mercoa.client import Mercoa
@@ -87,8 +101,8 @@ class NotificationsClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{jsonable_encoder(entity_id)}/user/{jsonable_encoder(user_id)}/notifications",
             ),
@@ -153,15 +167,23 @@ class NotificationsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> NotificationResponse:
         """
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - user_id: EntityUserId.
+        user_id : EntityUserId
 
-            - notification_id: NotificationId.
+        notification_id : NotificationId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        NotificationResponse
+
+        Examples
+        --------
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -174,8 +196,8 @@ class NotificationsClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{jsonable_encoder(entity_id)}/user/{jsonable_encoder(user_id)}/notification/{jsonable_encoder(notification_id)}",
             ),
@@ -236,25 +258,39 @@ class AsyncNotificationsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> FindNotificationResponse:
         """
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - user_id: EntityUserId.
+        user_id : EntityUserId
 
-            - start_date: typing.Optional[dt.datetime]. Start date for notification created on date filter.
+        start_date : typing.Optional[dt.datetime]
+            Start date for notification created on date filter.
 
-            - end_date: typing.Optional[dt.datetime]. End date for notification created date filter.
+        end_date : typing.Optional[dt.datetime]
+            End date for notification created date filter.
 
-            - order_direction: typing.Optional[OrderDirection]. Direction to order notifications by. Defaults to asc.
+        order_direction : typing.Optional[OrderDirection]
+            Direction to order notifications by. Defaults to asc.
 
-            - limit: typing.Optional[int]. Number of invoices to return. Limit can range between 1 and 100, and the default is 10.
+        limit : typing.Optional[int]
+            Number of invoices to return. Limit can range between 1 and 100, and the default is 10.
 
-            - starting_after: typing.Optional[NotificationId]. The ID of the notification to start after. If not provided, the first page of invoices will be returned.
+        starting_after : typing.Optional[NotificationId]
+            The ID of the notification to start after. If not provided, the first page of invoices will be returned.
 
-            - notification_type: typing.Optional[typing.Union[NotificationType, typing.Sequence[NotificationType]]]. The type of notification to filter by.
+        notification_type : typing.Optional[typing.Union[NotificationType, typing.Sequence[NotificationType]]]
+            The type of notification to filter by.
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        FindNotificationResponse
+
+        Examples
+        --------
         import datetime
 
         from mercoa.client import AsyncMercoa
@@ -278,8 +314,8 @@ class AsyncNotificationsClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{jsonable_encoder(entity_id)}/user/{jsonable_encoder(user_id)}/notifications",
             ),
@@ -344,15 +380,23 @@ class AsyncNotificationsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> NotificationResponse:
         """
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - user_id: EntityUserId.
+        user_id : EntityUserId
 
-            - notification_id: NotificationId.
+        notification_id : NotificationId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        NotificationResponse
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -365,8 +409,8 @@ class AsyncNotificationsClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{jsonable_encoder(entity_id)}/user/{jsonable_encoder(user_id)}/notification/{jsonable_encoder(notification_id)}",
             ),

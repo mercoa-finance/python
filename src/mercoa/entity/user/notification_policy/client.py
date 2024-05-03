@@ -36,13 +36,21 @@ class NotificationPolicyClient:
         """
         Retrieve all notification policies associated with this entity user
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - user_id: EntityUserId.
+        user_id : EntityUserId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.List[UserNotificationPolicyResponse]
+
+        Examples
+        --------
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -54,8 +62,8 @@ class NotificationPolicyClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{jsonable_encoder(entity_id)}/user/{jsonable_encoder(user_id)}/notification-policies",
             ),
@@ -108,15 +116,23 @@ class NotificationPolicyClient:
         """
         Retrieve notification policy associated with this entity user
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - user_id: EntityUserId.
+        user_id : EntityUserId
 
-            - notification_type: NotificationType.
+        notification_type : NotificationType
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UserNotificationPolicyResponse
+
+        Examples
+        --------
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -129,8 +145,8 @@ class NotificationPolicyClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{jsonable_encoder(entity_id)}/user/{jsonable_encoder(user_id)}/notification-policy/{jsonable_encoder(notification_type)}",
             ),
@@ -184,17 +200,25 @@ class NotificationPolicyClient:
         """
         Update notification policy associated with this entity user
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - user_id: EntityUserId.
+        user_id : EntityUserId
 
-            - notification_type: NotificationType.
+        notification_type : NotificationType
 
-            - request: UserNotificationPolicyRequest.
+        request : UserNotificationPolicyRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UserNotificationPolicyResponse
+
+        Examples
+        --------
         from mercoa import UserNotificationPolicyRequest
         from mercoa.client import Mercoa
 
@@ -213,8 +237,8 @@ class NotificationPolicyClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{jsonable_encoder(entity_id)}/user/{jsonable_encoder(user_id)}/notification-policy/{jsonable_encoder(notification_type)}",
             ),
@@ -273,13 +297,21 @@ class AsyncNotificationPolicyClient:
         """
         Retrieve all notification policies associated with this entity user
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - user_id: EntityUserId.
+        user_id : EntityUserId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.List[UserNotificationPolicyResponse]
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -291,8 +323,8 @@ class AsyncNotificationPolicyClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{jsonable_encoder(entity_id)}/user/{jsonable_encoder(user_id)}/notification-policies",
             ),
@@ -345,15 +377,23 @@ class AsyncNotificationPolicyClient:
         """
         Retrieve notification policy associated with this entity user
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - user_id: EntityUserId.
+        user_id : EntityUserId
 
-            - notification_type: NotificationType.
+        notification_type : NotificationType
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UserNotificationPolicyResponse
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -366,8 +406,8 @@ class AsyncNotificationPolicyClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{jsonable_encoder(entity_id)}/user/{jsonable_encoder(user_id)}/notification-policy/{jsonable_encoder(notification_type)}",
             ),
@@ -421,17 +461,25 @@ class AsyncNotificationPolicyClient:
         """
         Update notification policy associated with this entity user
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - user_id: EntityUserId.
+        user_id : EntityUserId
 
-            - notification_type: NotificationType.
+        notification_type : NotificationType
 
-            - request: UserNotificationPolicyRequest.
+        request : UserNotificationPolicyRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        UserNotificationPolicyResponse
+
+        Examples
+        --------
         from mercoa import UserNotificationPolicyRequest
         from mercoa.client import AsyncMercoa
 
@@ -450,8 +498,8 @@ class AsyncNotificationPolicyClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{jsonable_encoder(entity_id)}/user/{jsonable_encoder(user_id)}/notification-policy/{jsonable_encoder(notification_type)}",
             ),

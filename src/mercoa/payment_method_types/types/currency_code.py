@@ -3,7 +3,6 @@
 import typing
 
 CurrencyCode = typing.Union[
-    typing.AnyStr,
     typing.Literal[
         "AED",
         "AFN",
@@ -186,4 +185,5 @@ CurrencyCode = typing.Union[
         "ZMW",
         "ZWL",
     ],
+    typing.Any,
 ]

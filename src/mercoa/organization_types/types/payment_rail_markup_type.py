@@ -2,4 +2,4 @@
 
 import typing
 
-PaymentRailMarkupType = typing.Union[typing.AnyStr, typing.Literal["flat", "percent"]]
+PaymentRailMarkupType = typing.Union[typing.Literal["flat", "percent"], typing.Any]

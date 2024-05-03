@@ -34,9 +34,17 @@ class NotificationConfigurationClient:
         """
         Retrieve all notification configurations
 
-        Parameters:
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.List[NotificationConfigurationResponse]
+
+        Examples
+        --------
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -45,8 +53,10 @@ class NotificationConfigurationClient:
         client.organization.notification_configuration.get_all()
         """
         _response = self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "organization/notification-configurations"),
+            method="GET",
+            url=urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", "organization/notification-configurations"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -91,11 +101,19 @@ class NotificationConfigurationClient:
         """
         Retrieve notification configuration for this notification type
 
-        Parameters:
-            - notification_type: NotificationType.
+        Parameters
+        ----------
+        notification_type : NotificationType
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        NotificationConfigurationResponse
+
+        Examples
+        --------
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -106,8 +124,8 @@ class NotificationConfigurationClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"organization/notification-configuration/{jsonable_encoder(notification_type)}",
             ),
@@ -159,13 +177,21 @@ class NotificationConfigurationClient:
         """
         Update notification configuration for this notification type
 
-        Parameters:
-            - notification_type: NotificationType.
+        Parameters
+        ----------
+        notification_type : NotificationType
 
-            - request: NotificationConfigurationRequest.
+        request : NotificationConfigurationRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        NotificationConfigurationResponse
+
+        Examples
+        --------
         from mercoa import NotificationConfigurationRequest_Invoice
         from mercoa.client import Mercoa
 
@@ -180,8 +206,8 @@ class NotificationConfigurationClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"organization/notification-configuration/{jsonable_encoder(notification_type)}",
             ),
@@ -235,11 +261,19 @@ class NotificationConfigurationClient:
         """
         Reset notification configuration for this notification type
 
-        Parameters:
-            - notification_type: NotificationType.
+        Parameters
+        ----------
+        notification_type : NotificationType
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -250,8 +284,8 @@ class NotificationConfigurationClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "DELETE",
-            urllib.parse.urljoin(
+            method="DELETE",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"organization/notification-configuration/{jsonable_encoder(notification_type)}",
             ),
@@ -304,9 +338,17 @@ class AsyncNotificationConfigurationClient:
         """
         Retrieve all notification configurations
 
-        Parameters:
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.List[NotificationConfigurationResponse]
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -315,8 +357,10 @@ class AsyncNotificationConfigurationClient:
         await client.organization.notification_configuration.get_all()
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "organization/notification-configurations"),
+            method="GET",
+            url=urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", "organization/notification-configurations"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -361,11 +405,19 @@ class AsyncNotificationConfigurationClient:
         """
         Retrieve notification configuration for this notification type
 
-        Parameters:
-            - notification_type: NotificationType.
+        Parameters
+        ----------
+        notification_type : NotificationType
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        NotificationConfigurationResponse
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -376,8 +428,8 @@ class AsyncNotificationConfigurationClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"organization/notification-configuration/{jsonable_encoder(notification_type)}",
             ),
@@ -429,13 +481,21 @@ class AsyncNotificationConfigurationClient:
         """
         Update notification configuration for this notification type
 
-        Parameters:
-            - notification_type: NotificationType.
+        Parameters
+        ----------
+        notification_type : NotificationType
 
-            - request: NotificationConfigurationRequest.
+        request : NotificationConfigurationRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        NotificationConfigurationResponse
+
+        Examples
+        --------
         from mercoa import NotificationConfigurationRequest_Invoice
         from mercoa.client import AsyncMercoa
 
@@ -450,8 +510,8 @@ class AsyncNotificationConfigurationClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"organization/notification-configuration/{jsonable_encoder(notification_type)}",
             ),
@@ -505,11 +565,19 @@ class AsyncNotificationConfigurationClient:
         """
         Reset notification configuration for this notification type
 
-        Parameters:
-            - notification_type: NotificationType.
+        Parameters
+        ----------
+        notification_type : NotificationType
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -520,8 +588,8 @@ class AsyncNotificationConfigurationClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "DELETE",
-            urllib.parse.urljoin(
+            method="DELETE",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"organization/notification-configuration/{jsonable_encoder(notification_type)}",
             ),

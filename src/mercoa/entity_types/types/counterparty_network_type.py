@@ -2,4 +2,4 @@
 
 import typing
 
-CounterpartyNetworkType = typing.Union[typing.AnyStr, typing.Literal["ENTITY", "NETWORK"]]
+CounterpartyNetworkType = typing.Union[typing.Literal["ENTITY", "NETWORK"], typing.Any]

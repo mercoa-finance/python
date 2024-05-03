@@ -75,41 +75,65 @@ class InvoiceClient:
         """
         Search invoices for all entities in the organization
 
-        Parameters:
-            - entity_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter invoices by the ID of the entity that created the invoice.
+        Parameters
+        ----------
+        entity_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
+            Filter invoices by the ID of the entity that created the invoice.
 
-            - start_date: typing.Optional[dt.datetime]. Start date for invoice created on date filter.
+        start_date : typing.Optional[dt.datetime]
+            Start date for invoice created on date filter.
 
-            - end_date: typing.Optional[dt.datetime]. End date for invoice created date filter.
+        end_date : typing.Optional[dt.datetime]
+            End date for invoice created date filter.
 
-            - order_by: typing.Optional[InvoiceOrderByField]. Field to order invoices by. Defaults to CREATED_AT.
+        order_by : typing.Optional[InvoiceOrderByField]
+            Field to order invoices by. Defaults to CREATED_AT.
 
-            - order_direction: typing.Optional[OrderDirection]. Direction to order invoices by. Defaults to asc.
+        order_direction : typing.Optional[OrderDirection]
+            Direction to order invoices by. Defaults to asc.
 
-            - limit: typing.Optional[int]. Number of invoices to return. Limit can range between 1 and 100, and the default is 10.
+        limit : typing.Optional[int]
+            Number of invoices to return. Limit can range between 1 and 100, and the default is 10.
 
-            - starting_after: typing.Optional[InvoiceId]. The ID of the invoice to start after. If not provided, the first page of invoices will be returned.
+        starting_after : typing.Optional[InvoiceId]
+            The ID of the invoice to start after. If not provided, the first page of invoices will be returned.
 
-            - search: typing.Optional[str]. Find invoices by vendor name, invoice number, or amount. Partial matches are supported.
+        search : typing.Optional[str]
+            Find invoices by vendor name, invoice number, or amount. Partial matches are supported.
 
-            - metadata: typing.Optional[typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]]. Filter invoices by metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+        metadata : typing.Optional[typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]]
+            Filter invoices by metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
 
-            - payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter invoices by payer ID.
+        payer_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
+            Filter invoices by payer ID.
 
-            - vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter invoices by vendor ID.
+        vendor_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
+            Filter invoices by vendor ID.
 
-            - approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]. Filter invoices by assigned approver user ID.
+        approver_id : typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]
+            Filter invoices by assigned approver user ID.
 
-            - approver_action: typing.Optional[typing.Union[ApproverAction, typing.Sequence[ApproverAction]]]. Filter invoices by approver action. Needs to be used with approverId. For example, if you want to find all invoices that have been approved by a specific user, you would use approverId and approverAction=APPROVE.
+        approver_action : typing.Optional[typing.Union[ApproverAction, typing.Sequence[ApproverAction]]]
+            Filter invoices by approver action. Needs to be used with approverId. For example, if you want to find all invoices that have been approved by a specific user, you would use approverId and approverAction=APPROVE.
 
-            - invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]. Filter invoices by invoice ID.
+        invoice_id : typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]
+            Filter invoices by invoice ID.
 
-            - status: typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]]. Invoice status to filter on
+        status : typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]]
+            Invoice status to filter on
 
-            - include_fees: typing.Optional[bool]. DEPRECATED. Fees are now included by default in the response.
+        include_fees : typing.Optional[bool]
+            DEPRECATED. Fees are now included by default in the response.
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        FindInvoiceResponse
+
+        Examples
+        --------
         import datetime
 
         from mercoa import InvoiceMetadataFilter
@@ -145,8 +169,8 @@ class InvoiceClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "invoices"),
+            method="GET",
+            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "invoices"),
             params=jsonable_encoder(
                 remove_none_from_dict(
                     {
@@ -215,11 +239,19 @@ class InvoiceClient:
         self, *, request: InvoiceCreationRequest, request_options: typing.Optional[RequestOptions] = None
     ) -> InvoiceResponse:
         """
-        Parameters:
-            - request: InvoiceCreationRequest.
+        Parameters
+        ----------
+        request : InvoiceCreationRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        InvoiceResponse
+
+        Examples
+        --------
         import datetime
 
         from mercoa import (
@@ -275,8 +307,8 @@ class InvoiceClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "invoice"),
+            method="POST",
+            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "invoice"),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -333,13 +365,22 @@ class InvoiceClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> InvoiceResponse:
         """
-        Parameters:
-            - invoice_id: InvoiceId.
+        Parameters
+        ----------
+        invoice_id : InvoiceId
 
-            - include_fees: typing.Optional[bool]. DEPRECATED. Fees are now included by default in the response.
+        include_fees : typing.Optional[bool]
+            DEPRECATED. Fees are now included by default in the response.
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        InvoiceResponse
+
+        Examples
+        --------
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -351,8 +392,10 @@ class InvoiceClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}"),
+            method="GET",
+            url=urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}"
+            ),
             params=jsonable_encoder(
                 remove_none_from_dict(
                     {
@@ -404,13 +447,21 @@ class InvoiceClient:
         self, invoice_id: InvoiceId, *, request: InvoiceRequest, request_options: typing.Optional[RequestOptions] = None
     ) -> InvoiceResponse:
         """
-        Parameters:
-            - invoice_id: InvoiceId.
+        Parameters
+        ----------
+        invoice_id : InvoiceId
 
-            - request: InvoiceRequest.
+        request : InvoiceRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        InvoiceResponse
+
+        Examples
+        --------
         import datetime
 
         from mercoa import (
@@ -467,8 +518,10 @@ class InvoiceClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}"),
+            method="POST",
+            url=urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -521,11 +574,19 @@ class InvoiceClient:
         """
         Only invoices in the DRAFT and NEW status can be deleted.
 
-        Parameters:
-            - invoice_id: InvoiceId.
+        Parameters
+        ----------
+        invoice_id : InvoiceId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -536,8 +597,10 @@ class InvoiceClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "DELETE",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}"),
+            method="DELETE",
+            url=urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -611,41 +674,65 @@ class AsyncInvoiceClient:
         """
         Search invoices for all entities in the organization
 
-        Parameters:
-            - entity_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter invoices by the ID of the entity that created the invoice.
+        Parameters
+        ----------
+        entity_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
+            Filter invoices by the ID of the entity that created the invoice.
 
-            - start_date: typing.Optional[dt.datetime]. Start date for invoice created on date filter.
+        start_date : typing.Optional[dt.datetime]
+            Start date for invoice created on date filter.
 
-            - end_date: typing.Optional[dt.datetime]. End date for invoice created date filter.
+        end_date : typing.Optional[dt.datetime]
+            End date for invoice created date filter.
 
-            - order_by: typing.Optional[InvoiceOrderByField]. Field to order invoices by. Defaults to CREATED_AT.
+        order_by : typing.Optional[InvoiceOrderByField]
+            Field to order invoices by. Defaults to CREATED_AT.
 
-            - order_direction: typing.Optional[OrderDirection]. Direction to order invoices by. Defaults to asc.
+        order_direction : typing.Optional[OrderDirection]
+            Direction to order invoices by. Defaults to asc.
 
-            - limit: typing.Optional[int]. Number of invoices to return. Limit can range between 1 and 100, and the default is 10.
+        limit : typing.Optional[int]
+            Number of invoices to return. Limit can range between 1 and 100, and the default is 10.
 
-            - starting_after: typing.Optional[InvoiceId]. The ID of the invoice to start after. If not provided, the first page of invoices will be returned.
+        starting_after : typing.Optional[InvoiceId]
+            The ID of the invoice to start after. If not provided, the first page of invoices will be returned.
 
-            - search: typing.Optional[str]. Find invoices by vendor name, invoice number, or amount. Partial matches are supported.
+        search : typing.Optional[str]
+            Find invoices by vendor name, invoice number, or amount. Partial matches are supported.
 
-            - metadata: typing.Optional[typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]]. Filter invoices by metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+        metadata : typing.Optional[typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]]
+            Filter invoices by metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
 
-            - payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter invoices by payer ID.
+        payer_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
+            Filter invoices by payer ID.
 
-            - vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter invoices by vendor ID.
+        vendor_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
+            Filter invoices by vendor ID.
 
-            - approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]. Filter invoices by assigned approver user ID.
+        approver_id : typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]
+            Filter invoices by assigned approver user ID.
 
-            - approver_action: typing.Optional[typing.Union[ApproverAction, typing.Sequence[ApproverAction]]]. Filter invoices by approver action. Needs to be used with approverId. For example, if you want to find all invoices that have been approved by a specific user, you would use approverId and approverAction=APPROVE.
+        approver_action : typing.Optional[typing.Union[ApproverAction, typing.Sequence[ApproverAction]]]
+            Filter invoices by approver action. Needs to be used with approverId. For example, if you want to find all invoices that have been approved by a specific user, you would use approverId and approverAction=APPROVE.
 
-            - invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]. Filter invoices by invoice ID.
+        invoice_id : typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]
+            Filter invoices by invoice ID.
 
-            - status: typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]]. Invoice status to filter on
+        status : typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]]
+            Invoice status to filter on
 
-            - include_fees: typing.Optional[bool]. DEPRECATED. Fees are now included by default in the response.
+        include_fees : typing.Optional[bool]
+            DEPRECATED. Fees are now included by default in the response.
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        FindInvoiceResponse
+
+        Examples
+        --------
         import datetime
 
         from mercoa import InvoiceMetadataFilter
@@ -681,8 +768,8 @@ class AsyncInvoiceClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "invoices"),
+            method="GET",
+            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "invoices"),
             params=jsonable_encoder(
                 remove_none_from_dict(
                     {
@@ -751,11 +838,19 @@ class AsyncInvoiceClient:
         self, *, request: InvoiceCreationRequest, request_options: typing.Optional[RequestOptions] = None
     ) -> InvoiceResponse:
         """
-        Parameters:
-            - request: InvoiceCreationRequest.
+        Parameters
+        ----------
+        request : InvoiceCreationRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        InvoiceResponse
+
+        Examples
+        --------
         import datetime
 
         from mercoa import (
@@ -811,8 +906,8 @@ class AsyncInvoiceClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "invoice"),
+            method="POST",
+            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "invoice"),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -869,13 +964,22 @@ class AsyncInvoiceClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> InvoiceResponse:
         """
-        Parameters:
-            - invoice_id: InvoiceId.
+        Parameters
+        ----------
+        invoice_id : InvoiceId
 
-            - include_fees: typing.Optional[bool]. DEPRECATED. Fees are now included by default in the response.
+        include_fees : typing.Optional[bool]
+            DEPRECATED. Fees are now included by default in the response.
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        InvoiceResponse
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -887,8 +991,10 @@ class AsyncInvoiceClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}"),
+            method="GET",
+            url=urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}"
+            ),
             params=jsonable_encoder(
                 remove_none_from_dict(
                     {
@@ -940,13 +1046,21 @@ class AsyncInvoiceClient:
         self, invoice_id: InvoiceId, *, request: InvoiceRequest, request_options: typing.Optional[RequestOptions] = None
     ) -> InvoiceResponse:
         """
-        Parameters:
-            - invoice_id: InvoiceId.
+        Parameters
+        ----------
+        invoice_id : InvoiceId
 
-            - request: InvoiceRequest.
+        request : InvoiceRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        InvoiceResponse
+
+        Examples
+        --------
         import datetime
 
         from mercoa import (
@@ -1003,8 +1117,10 @@ class AsyncInvoiceClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}"),
+            method="POST",
+            url=urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -1057,11 +1173,19 @@ class AsyncInvoiceClient:
         """
         Only invoices in the DRAFT and NEW status can be deleted.
 
-        Parameters:
-            - invoice_id: InvoiceId.
+        Parameters
+        ----------
+        invoice_id : InvoiceId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -1072,8 +1196,10 @@ class AsyncInvoiceClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "DELETE",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}"),
+            method="DELETE",
+            url=urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),

@@ -41,13 +41,22 @@ class PaymentMethodClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.List[PaymentMethodResponse]:
         """
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - type: typing.Optional[typing.Union[PaymentMethodType, typing.Sequence[PaymentMethodType]]]. Type of payment method to filter
+        type : typing.Optional[typing.Union[PaymentMethodType, typing.Sequence[PaymentMethodType]]]
+            Type of payment method to filter
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.List[PaymentMethodResponse]
+
+        Examples
+        --------
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -59,8 +68,8 @@ class PaymentMethodClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/paymentMethods"
             ),
             params=jsonable_encoder(
@@ -120,13 +129,21 @@ class PaymentMethodClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PaymentMethodResponse:
         """
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - request: PaymentMethodRequest.
+        request : PaymentMethodRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        PaymentMethodResponse
+
+        Examples
+        --------
         from mercoa import (
             BankAccountCheckOptions,
             PaymentMethodRequest_BankAccount,
@@ -153,8 +170,8 @@ class PaymentMethodClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/paymentMethod"
             ),
             params=jsonable_encoder(
@@ -211,13 +228,21 @@ class PaymentMethodClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PaymentMethodResponse:
         """
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - payment_method_id: PaymentMethodId.
+        payment_method_id : PaymentMethodId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        PaymentMethodResponse
+
+        Examples
+        --------
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -229,8 +254,8 @@ class PaymentMethodClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}",
             ),
@@ -285,15 +310,23 @@ class PaymentMethodClient:
         """
         Only custom payment methods can be updated.
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - payment_method_id: PaymentMethodId.
+        payment_method_id : PaymentMethodId
 
-            - request: PaymentMethodUpdateRequest.
+        request : PaymentMethodUpdateRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        PaymentMethodResponse
+
+        Examples
+        --------
         from mercoa import PaymentMethodUpdateRequest_Custom
         from mercoa.client import Mercoa
 
@@ -315,8 +348,8 @@ class PaymentMethodClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "PUT",
-            urllib.parse.urljoin(
+            method="PUT",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}",
             ),
@@ -376,13 +409,21 @@ class PaymentMethodClient:
         """
         Mark a payment method as inactive. This will not remove the payment method from the system, but will prevent it from being used in the future.
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - payment_method_id: PaymentMethodId.
+        payment_method_id : PaymentMethodId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -394,8 +435,8 @@ class PaymentMethodClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "DELETE",
-            urllib.parse.urljoin(
+            method="DELETE",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}",
             ),
@@ -449,13 +490,21 @@ class PaymentMethodClient:
         """
         Initiate micro deposits for a bank account
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - payment_method_id: PaymentMethodId.
+        payment_method_id : PaymentMethodId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        PaymentMethodResponse
+
+        Examples
+        --------
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -467,8 +516,8 @@ class PaymentMethodClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}/micro-deposits",
             ),
@@ -526,15 +575,23 @@ class PaymentMethodClient:
         """
         Complete micro deposit verification
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - payment_method_id: PaymentMethodId.
+        payment_method_id : PaymentMethodId
 
-            - amounts: typing.Sequence[int].
+        amounts : typing.Sequence[int]
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        PaymentMethodResponse
+
+        Examples
+        --------
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -547,8 +604,8 @@ class PaymentMethodClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "PUT",
-            urllib.parse.urljoin(
+            method="PUT",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}/micro-deposits",
             ),
@@ -608,13 +665,21 @@ class PaymentMethodClient:
         """
         Get the available balance of a payment method. Only bank accounts added with Plaid are supported. This endpoint will return a cached value and will refresh the balance when called.
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - payment_method_id: PaymentMethodId.
+        payment_method_id : PaymentMethodId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        PaymentMethodBalanceResponse
+
+        Examples
+        --------
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -626,8 +691,8 @@ class PaymentMethodClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}/balance",
             ),
@@ -684,13 +749,22 @@ class AsyncPaymentMethodClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.List[PaymentMethodResponse]:
         """
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - type: typing.Optional[typing.Union[PaymentMethodType, typing.Sequence[PaymentMethodType]]]. Type of payment method to filter
+        type : typing.Optional[typing.Union[PaymentMethodType, typing.Sequence[PaymentMethodType]]]
+            Type of payment method to filter
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.List[PaymentMethodResponse]
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -702,8 +776,8 @@ class AsyncPaymentMethodClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/paymentMethods"
             ),
             params=jsonable_encoder(
@@ -763,13 +837,21 @@ class AsyncPaymentMethodClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PaymentMethodResponse:
         """
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - request: PaymentMethodRequest.
+        request : PaymentMethodRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        PaymentMethodResponse
+
+        Examples
+        --------
         from mercoa import (
             BankAccountCheckOptions,
             PaymentMethodRequest_BankAccount,
@@ -796,8 +878,8 @@ class AsyncPaymentMethodClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/paymentMethod"
             ),
             params=jsonable_encoder(
@@ -854,13 +936,21 @@ class AsyncPaymentMethodClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PaymentMethodResponse:
         """
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - payment_method_id: PaymentMethodId.
+        payment_method_id : PaymentMethodId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        PaymentMethodResponse
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -872,8 +962,8 @@ class AsyncPaymentMethodClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}",
             ),
@@ -928,15 +1018,23 @@ class AsyncPaymentMethodClient:
         """
         Only custom payment methods can be updated.
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - payment_method_id: PaymentMethodId.
+        payment_method_id : PaymentMethodId
 
-            - request: PaymentMethodUpdateRequest.
+        request : PaymentMethodUpdateRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        PaymentMethodResponse
+
+        Examples
+        --------
         from mercoa import PaymentMethodUpdateRequest_Custom
         from mercoa.client import AsyncMercoa
 
@@ -958,8 +1056,8 @@ class AsyncPaymentMethodClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "PUT",
-            urllib.parse.urljoin(
+            method="PUT",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}",
             ),
@@ -1019,13 +1117,21 @@ class AsyncPaymentMethodClient:
         """
         Mark a payment method as inactive. This will not remove the payment method from the system, but will prevent it from being used in the future.
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - payment_method_id: PaymentMethodId.
+        payment_method_id : PaymentMethodId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -1037,8 +1143,8 @@ class AsyncPaymentMethodClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "DELETE",
-            urllib.parse.urljoin(
+            method="DELETE",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}",
             ),
@@ -1092,13 +1198,21 @@ class AsyncPaymentMethodClient:
         """
         Initiate micro deposits for a bank account
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - payment_method_id: PaymentMethodId.
+        payment_method_id : PaymentMethodId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        PaymentMethodResponse
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -1110,8 +1224,8 @@ class AsyncPaymentMethodClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}/micro-deposits",
             ),
@@ -1169,15 +1283,23 @@ class AsyncPaymentMethodClient:
         """
         Complete micro deposit verification
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - payment_method_id: PaymentMethodId.
+        payment_method_id : PaymentMethodId
 
-            - amounts: typing.Sequence[int].
+        amounts : typing.Sequence[int]
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        PaymentMethodResponse
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -1190,8 +1312,8 @@ class AsyncPaymentMethodClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "PUT",
-            urllib.parse.urljoin(
+            method="PUT",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}/micro-deposits",
             ),
@@ -1251,13 +1373,21 @@ class AsyncPaymentMethodClient:
         """
         Get the available balance of a payment method. Only bank accounts added with Plaid are supported. This endpoint will return a cached value and will refresh the balance when called.
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - payment_method_id: PaymentMethodId.
+        payment_method_id : PaymentMethodId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        PaymentMethodBalanceResponse
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -1269,8 +1399,8 @@ class AsyncPaymentMethodClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}/balance",
             ),

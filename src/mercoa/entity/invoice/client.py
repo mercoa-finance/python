@@ -64,45 +64,70 @@ class InvoiceClient:
         """
         Get invoices for an entity with the given filters.
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - exclude_payables: typing.Optional[bool]. Return only invoices that are receivable by the entity.
+        exclude_payables : typing.Optional[bool]
+            Return only invoices that are receivable by the entity.
 
-            - exclude_receivables: typing.Optional[bool]. Return only invoices that are payable by the entity.
+        exclude_receivables : typing.Optional[bool]
+            Return only invoices that are payable by the entity.
 
-            - start_date: typing.Optional[dt.datetime]. Start date for invoice created on date filter.
+        start_date : typing.Optional[dt.datetime]
+            Start date for invoice created on date filter.
 
-            - end_date: typing.Optional[dt.datetime]. End date for invoice created date filter.
+        end_date : typing.Optional[dt.datetime]
+            End date for invoice created date filter.
 
-            - order_by: typing.Optional[InvoiceOrderByField]. Field to order invoices by. Defaults to CREATED_AT.
+        order_by : typing.Optional[InvoiceOrderByField]
+            Field to order invoices by. Defaults to CREATED_AT.
 
-            - order_direction: typing.Optional[OrderDirection]. Direction to order invoices by. Defaults to asc.
+        order_direction : typing.Optional[OrderDirection]
+            Direction to order invoices by. Defaults to asc.
 
-            - limit: typing.Optional[int]. Number of invoices to return. Limit can range between 1 and 100, and the default is 10.
+        limit : typing.Optional[int]
+            Number of invoices to return. Limit can range between 1 and 100, and the default is 10.
 
-            - starting_after: typing.Optional[InvoiceId]. The ID of the invoice to start after. If not provided, the first page of invoices will be returned.
+        starting_after : typing.Optional[InvoiceId]
+            The ID of the invoice to start after. If not provided, the first page of invoices will be returned.
 
-            - metadata: typing.Optional[typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]]. Filter invoices by metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+        metadata : typing.Optional[typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]]
+            Filter invoices by metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
 
-            - search: typing.Optional[str]. Find invoices by vendor name, invoice number, or amount. Partial matches are supported.
+        search : typing.Optional[str]
+            Find invoices by vendor name, invoice number, or amount. Partial matches are supported.
 
-            - payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter invoices by payer ID.
+        payer_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
+            Filter invoices by payer ID.
 
-            - vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter invoices by vendor ID.
+        vendor_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
+            Filter invoices by vendor ID.
 
-            - approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]. Filter invoices by assigned approver user ID.
+        approver_id : typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]
+            Filter invoices by assigned approver user ID.
 
-            - approver_action: typing.Optional[typing.Union[ApproverAction, typing.Sequence[ApproverAction]]]. Filter invoices by approver action. Needs to be used with approverId. For example, if you want to find all invoices that have been approved by a specific user, you would use approverId and approverAction=APPROVE.
+        approver_action : typing.Optional[typing.Union[ApproverAction, typing.Sequence[ApproverAction]]]
+            Filter invoices by approver action. Needs to be used with approverId. For example, if you want to find all invoices that have been approved by a specific user, you would use approverId and approverAction=APPROVE.
 
-            - invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]. Filter invoices by invoice ID.
+        invoice_id : typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]
+            Filter invoices by invoice ID.
 
-            - status: typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]]. Invoice status to filter on.
+        status : typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]]
+            Invoice status to filter on.
 
-            - include_fees: typing.Optional[bool]. DEPRECATED. Fees are now included by default in the response.
+        include_fees : typing.Optional[bool]
+            DEPRECATED. Fees are now included by default in the response.
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        FindInvoiceResponse
+
+        Examples
+        --------
         import datetime
 
         from mercoa import InvoiceMetadataFilter
@@ -140,8 +165,8 @@ class InvoiceClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/invoices"
             ),
             params=jsonable_encoder(
@@ -218,15 +243,25 @@ class InvoiceClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> InvoiceResponse:
         """
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - invoice_id: InvoiceId. ID of the invoice to retrieve. This can be the full invoice ID (in_11aa2b77-6391-49e4-8c3f-b198009202c1) or the first 8 characters of the ID (11aa2b77).
+        invoice_id : InvoiceId
+            ID of the invoice to retrieve. This can be the full invoice ID (in_11aa2b77-6391-49e4-8c3f-b198009202c1) or the first 8 characters of the ID (11aa2b77).
 
-            - include_fees: typing.Optional[bool]. DEPRECATED. Fees are now included by default in the response.
+        include_fees : typing.Optional[bool]
+            DEPRECATED. Fees are now included by default in the response.
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        InvoiceResponse
+
+        Examples
+        --------
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -239,8 +274,8 @@ class InvoiceClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{jsonable_encoder(entity_id)}/invoice/{jsonable_encoder(invoice_id)}",
             ),
@@ -312,41 +347,63 @@ class InvoiceClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.List[InvoiceMetricsResponse]:
         """
-        Get invoice metrics for an entity with the given filters. Invoices will be grouped by currency.
+        Get invoice metrics for an entity with the given filters. Invoices will be grouped by currency. If none of excludePayables, excludeReceivables, payerId, vendorId, or invoiceId status filters are provided, excludeReceivables will be set to true.
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - search: typing.Optional[str]. Find invoices by vendor name, invoice number, or amount. Partial matches are supported.
+        search : typing.Optional[str]
+            Find invoices by vendor name, invoice number, or amount. Partial matches are supported.
 
-            - exclude_payables: typing.Optional[bool]. Only return invoices that are not payable by the entity. This will return only invoices that are receivable by the entity.
+        exclude_payables : typing.Optional[bool]
+            Only return invoices that are not payable by the entity. This will return only invoices that are receivable by the entity.
 
-            - exclude_receivables: typing.Optional[bool]. Only return invoices that are not receivable by the entity. This will return only invoices that are payable by the entity.
+        exclude_receivables : typing.Optional[bool]
+            Only return invoices that are not receivable by the entity. This will return only invoices that are payable by the entity.
 
-            - return_by_date: typing.Optional[InvoiceMetricsPerDateGroupBy]. Return invoice metrics grouped by date.
+        return_by_date : typing.Optional[InvoiceMetricsPerDateGroupBy]
+            Return invoice metrics grouped by date.
 
-            - payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter invoices by payer ID.
+        payer_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
+            Filter invoices by payer ID.
 
-            - vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter invoices by vendor ID.
+        vendor_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
+            Filter invoices by vendor ID.
 
-            - approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]. Filter invoices by assigned approver user ID.
+        approver_id : typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]
+            Filter invoices by assigned approver user ID.
 
-            - invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]. Filter invoices by invoice ID.
+        invoice_id : typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]
+            Filter invoices by invoice ID.
 
-            - status: typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]]. Invoice status to filter on
+        status : typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]]
+            Invoice status to filter on
 
-            - due_date_start: typing.Optional[dt.datetime]. Start date for invoice dueDate filter.
+        due_date_start : typing.Optional[dt.datetime]
+            Start date for invoice dueDate filter.
 
-            - due_date_end: typing.Optional[dt.datetime]. End date for invoice dueDate filter.
+        due_date_end : typing.Optional[dt.datetime]
+            End date for invoice dueDate filter.
 
-            - created_date_start: typing.Optional[dt.datetime]. Start date for invoice created on date filter.
+        created_date_start : typing.Optional[dt.datetime]
+            Start date for invoice created on date filter.
 
-            - created_date_end: typing.Optional[dt.datetime]. End date for invoice created date filter.
+        created_date_end : typing.Optional[dt.datetime]
+            End date for invoice created date filter.
 
-            - currency: typing.Optional[typing.Union[CurrencyCode, typing.Sequence[CurrencyCode]]]. Currency to filter on
+        currency : typing.Optional[typing.Union[CurrencyCode, typing.Sequence[CurrencyCode]]]
+            Currency to filter on
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.List[InvoiceMetricsResponse]
+
+        Examples
+        --------
         import datetime
 
         from mercoa.client import Mercoa
@@ -381,8 +438,8 @@ class InvoiceClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/invoice-metrics"
             ),
             params=jsonable_encoder(
@@ -482,45 +539,70 @@ class AsyncInvoiceClient:
         """
         Get invoices for an entity with the given filters.
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - exclude_payables: typing.Optional[bool]. Return only invoices that are receivable by the entity.
+        exclude_payables : typing.Optional[bool]
+            Return only invoices that are receivable by the entity.
 
-            - exclude_receivables: typing.Optional[bool]. Return only invoices that are payable by the entity.
+        exclude_receivables : typing.Optional[bool]
+            Return only invoices that are payable by the entity.
 
-            - start_date: typing.Optional[dt.datetime]. Start date for invoice created on date filter.
+        start_date : typing.Optional[dt.datetime]
+            Start date for invoice created on date filter.
 
-            - end_date: typing.Optional[dt.datetime]. End date for invoice created date filter.
+        end_date : typing.Optional[dt.datetime]
+            End date for invoice created date filter.
 
-            - order_by: typing.Optional[InvoiceOrderByField]. Field to order invoices by. Defaults to CREATED_AT.
+        order_by : typing.Optional[InvoiceOrderByField]
+            Field to order invoices by. Defaults to CREATED_AT.
 
-            - order_direction: typing.Optional[OrderDirection]. Direction to order invoices by. Defaults to asc.
+        order_direction : typing.Optional[OrderDirection]
+            Direction to order invoices by. Defaults to asc.
 
-            - limit: typing.Optional[int]. Number of invoices to return. Limit can range between 1 and 100, and the default is 10.
+        limit : typing.Optional[int]
+            Number of invoices to return. Limit can range between 1 and 100, and the default is 10.
 
-            - starting_after: typing.Optional[InvoiceId]. The ID of the invoice to start after. If not provided, the first page of invoices will be returned.
+        starting_after : typing.Optional[InvoiceId]
+            The ID of the invoice to start after. If not provided, the first page of invoices will be returned.
 
-            - metadata: typing.Optional[typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]]. Filter invoices by metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+        metadata : typing.Optional[typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]]
+            Filter invoices by metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
 
-            - search: typing.Optional[str]. Find invoices by vendor name, invoice number, or amount. Partial matches are supported.
+        search : typing.Optional[str]
+            Find invoices by vendor name, invoice number, or amount. Partial matches are supported.
 
-            - payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter invoices by payer ID.
+        payer_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
+            Filter invoices by payer ID.
 
-            - vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter invoices by vendor ID.
+        vendor_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
+            Filter invoices by vendor ID.
 
-            - approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]. Filter invoices by assigned approver user ID.
+        approver_id : typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]
+            Filter invoices by assigned approver user ID.
 
-            - approver_action: typing.Optional[typing.Union[ApproverAction, typing.Sequence[ApproverAction]]]. Filter invoices by approver action. Needs to be used with approverId. For example, if you want to find all invoices that have been approved by a specific user, you would use approverId and approverAction=APPROVE.
+        approver_action : typing.Optional[typing.Union[ApproverAction, typing.Sequence[ApproverAction]]]
+            Filter invoices by approver action. Needs to be used with approverId. For example, if you want to find all invoices that have been approved by a specific user, you would use approverId and approverAction=APPROVE.
 
-            - invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]. Filter invoices by invoice ID.
+        invoice_id : typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]
+            Filter invoices by invoice ID.
 
-            - status: typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]]. Invoice status to filter on.
+        status : typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]]
+            Invoice status to filter on.
 
-            - include_fees: typing.Optional[bool]. DEPRECATED. Fees are now included by default in the response.
+        include_fees : typing.Optional[bool]
+            DEPRECATED. Fees are now included by default in the response.
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        FindInvoiceResponse
+
+        Examples
+        --------
         import datetime
 
         from mercoa import InvoiceMetadataFilter
@@ -558,8 +640,8 @@ class AsyncInvoiceClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/invoices"
             ),
             params=jsonable_encoder(
@@ -636,15 +718,25 @@ class AsyncInvoiceClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> InvoiceResponse:
         """
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - invoice_id: InvoiceId. ID of the invoice to retrieve. This can be the full invoice ID (in_11aa2b77-6391-49e4-8c3f-b198009202c1) or the first 8 characters of the ID (11aa2b77).
+        invoice_id : InvoiceId
+            ID of the invoice to retrieve. This can be the full invoice ID (in_11aa2b77-6391-49e4-8c3f-b198009202c1) or the first 8 characters of the ID (11aa2b77).
 
-            - include_fees: typing.Optional[bool]. DEPRECATED. Fees are now included by default in the response.
+        include_fees : typing.Optional[bool]
+            DEPRECATED. Fees are now included by default in the response.
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        InvoiceResponse
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -657,8 +749,8 @@ class AsyncInvoiceClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{jsonable_encoder(entity_id)}/invoice/{jsonable_encoder(invoice_id)}",
             ),
@@ -730,41 +822,63 @@ class AsyncInvoiceClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.List[InvoiceMetricsResponse]:
         """
-        Get invoice metrics for an entity with the given filters. Invoices will be grouped by currency.
+        Get invoice metrics for an entity with the given filters. Invoices will be grouped by currency. If none of excludePayables, excludeReceivables, payerId, vendorId, or invoiceId status filters are provided, excludeReceivables will be set to true.
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - search: typing.Optional[str]. Find invoices by vendor name, invoice number, or amount. Partial matches are supported.
+        search : typing.Optional[str]
+            Find invoices by vendor name, invoice number, or amount. Partial matches are supported.
 
-            - exclude_payables: typing.Optional[bool]. Only return invoices that are not payable by the entity. This will return only invoices that are receivable by the entity.
+        exclude_payables : typing.Optional[bool]
+            Only return invoices that are not payable by the entity. This will return only invoices that are receivable by the entity.
 
-            - exclude_receivables: typing.Optional[bool]. Only return invoices that are not receivable by the entity. This will return only invoices that are payable by the entity.
+        exclude_receivables : typing.Optional[bool]
+            Only return invoices that are not receivable by the entity. This will return only invoices that are payable by the entity.
 
-            - return_by_date: typing.Optional[InvoiceMetricsPerDateGroupBy]. Return invoice metrics grouped by date.
+        return_by_date : typing.Optional[InvoiceMetricsPerDateGroupBy]
+            Return invoice metrics grouped by date.
 
-            - payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter invoices by payer ID.
+        payer_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
+            Filter invoices by payer ID.
 
-            - vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]. Filter invoices by vendor ID.
+        vendor_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
+            Filter invoices by vendor ID.
 
-            - approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]. Filter invoices by assigned approver user ID.
+        approver_id : typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]
+            Filter invoices by assigned approver user ID.
 
-            - invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]. Filter invoices by invoice ID.
+        invoice_id : typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]
+            Filter invoices by invoice ID.
 
-            - status: typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]]. Invoice status to filter on
+        status : typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]]
+            Invoice status to filter on
 
-            - due_date_start: typing.Optional[dt.datetime]. Start date for invoice dueDate filter.
+        due_date_start : typing.Optional[dt.datetime]
+            Start date for invoice dueDate filter.
 
-            - due_date_end: typing.Optional[dt.datetime]. End date for invoice dueDate filter.
+        due_date_end : typing.Optional[dt.datetime]
+            End date for invoice dueDate filter.
 
-            - created_date_start: typing.Optional[dt.datetime]. Start date for invoice created on date filter.
+        created_date_start : typing.Optional[dt.datetime]
+            Start date for invoice created on date filter.
 
-            - created_date_end: typing.Optional[dt.datetime]. End date for invoice created date filter.
+        created_date_end : typing.Optional[dt.datetime]
+            End date for invoice created date filter.
 
-            - currency: typing.Optional[typing.Union[CurrencyCode, typing.Sequence[CurrencyCode]]]. Currency to filter on
+        currency : typing.Optional[typing.Union[CurrencyCode, typing.Sequence[CurrencyCode]]]
+            Currency to filter on
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.List[InvoiceMetricsResponse]
+
+        Examples
+        --------
         import datetime
 
         from mercoa.client import AsyncMercoa
@@ -799,8 +913,8 @@ class AsyncInvoiceClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/invoice-metrics"
             ),
             params=jsonable_encoder(

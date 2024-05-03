@@ -4,13 +4,21 @@ from __future__ import annotations
 
 import typing
 
-from .bank_account_update_request import BankAccountUpdateRequest
-from .custom_payment_method_update_request import CustomPaymentMethodUpdateRequest
-from .payment_method_base_request import PaymentMethodBaseRequest
+from ...core.pydantic_utilities import pydantic_v1
+from .bank_account_check_options import BankAccountCheckOptions
+from .custom_payment_method_schema_id import CustomPaymentMethodSchemaId
+from .plaid_link_request import PlaidLinkRequest
 
 
-class PaymentMethodUpdateRequest_Custom(CustomPaymentMethodUpdateRequest):
+class PaymentMethodUpdateRequest_Custom(pydantic_v1.BaseModel):
     type: typing.Literal["custom"] = "custom"
+    foreign_id: typing.Optional[str] = pydantic_v1.Field(alias="foreignId")
+    account_name: typing.Optional[str] = pydantic_v1.Field(alias="accountName")
+    account_number: typing.Optional[str] = pydantic_v1.Field(alias="accountNumber")
+    schema_id: typing.Optional[CustomPaymentMethodSchemaId] = pydantic_v1.Field(alias="schemaId")
+    data: typing.Optional[typing.Dict[str, str]]
+    default_source: typing.Optional[bool] = pydantic_v1.Field(alias="defaultSource")
+    default_destination: typing.Optional[bool] = pydantic_v1.Field(alias="defaultDestination")
 
     class Config:
         frozen = True
@@ -19,8 +27,13 @@ class PaymentMethodUpdateRequest_Custom(CustomPaymentMethodUpdateRequest):
         populate_by_name = True
 
 
-class PaymentMethodUpdateRequest_BankAccount(BankAccountUpdateRequest):
+class PaymentMethodUpdateRequest_BankAccount(pydantic_v1.BaseModel):
     type: typing.Literal["bankAccount"] = "bankAccount"
+    account_name: typing.Optional[str] = pydantic_v1.Field(alias="accountName")
+    plaid: typing.Optional[PlaidLinkRequest]
+    check_options: typing.Optional[BankAccountCheckOptions] = pydantic_v1.Field(alias="checkOptions")
+    default_source: typing.Optional[bool] = pydantic_v1.Field(alias="defaultSource")
+    default_destination: typing.Optional[bool] = pydantic_v1.Field(alias="defaultDestination")
 
     class Config:
         frozen = True
@@ -29,8 +42,10 @@ class PaymentMethodUpdateRequest_BankAccount(BankAccountUpdateRequest):
         populate_by_name = True
 
 
-class PaymentMethodUpdateRequest_Card(PaymentMethodBaseRequest):
+class PaymentMethodUpdateRequest_Card(pydantic_v1.BaseModel):
     type: typing.Literal["card"] = "card"
+    default_source: typing.Optional[bool] = pydantic_v1.Field(alias="defaultSource")
+    default_destination: typing.Optional[bool] = pydantic_v1.Field(alias="defaultDestination")
 
     class Config:
         frozen = True
@@ -39,8 +54,10 @@ class PaymentMethodUpdateRequest_Card(PaymentMethodBaseRequest):
         populate_by_name = True
 
 
-class PaymentMethodUpdateRequest_Check(PaymentMethodBaseRequest):
+class PaymentMethodUpdateRequest_Check(pydantic_v1.BaseModel):
     type: typing.Literal["check"] = "check"
+    default_source: typing.Optional[bool] = pydantic_v1.Field(alias="defaultSource")
+    default_destination: typing.Optional[bool] = pydantic_v1.Field(alias="defaultDestination")
 
     class Config:
         frozen = True
@@ -49,8 +66,10 @@ class PaymentMethodUpdateRequest_Check(PaymentMethodBaseRequest):
         populate_by_name = True
 
 
-class PaymentMethodUpdateRequest_OffPlatform(PaymentMethodBaseRequest):
+class PaymentMethodUpdateRequest_OffPlatform(pydantic_v1.BaseModel):
     type: typing.Literal["offPlatform"] = "offPlatform"
+    default_source: typing.Optional[bool] = pydantic_v1.Field(alias="defaultSource")
+    default_destination: typing.Optional[bool] = pydantic_v1.Field(alias="defaultDestination")
 
     class Config:
         frozen = True

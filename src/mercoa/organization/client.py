@@ -37,6 +37,7 @@ class OrganizationClient:
         *,
         payment_methods: typing.Optional[bool] = None,
         email_provider: typing.Optional[bool] = None,
+        external_accounting_system_provider: typing.Optional[bool] = None,
         color_scheme: typing.Optional[bool] = None,
         payee_onboarding_options: typing.Optional[bool] = None,
         payor_onboarding_options: typing.Optional[bool] = None,
@@ -46,21 +47,38 @@ class OrganizationClient:
         """
         Get current organization information
 
-        Parameters:
-            - payment_methods: typing.Optional[bool]. include supported payment methods in response
+        Parameters
+        ----------
+        payment_methods : typing.Optional[bool]
+            include supported payment methods in response
 
-            - email_provider: typing.Optional[bool]. include email provider info in response
+        email_provider : typing.Optional[bool]
+            include email provider info in response
 
-            - color_scheme: typing.Optional[bool]. include color scheme info in response
+        external_accounting_system_provider : typing.Optional[bool]
+            include external accounting system provider info in response
 
-            - payee_onboarding_options: typing.Optional[bool]. include payee onboarding options in response
+        color_scheme : typing.Optional[bool]
+            include color scheme info in response
 
-            - payor_onboarding_options: typing.Optional[bool]. include payor onboarding options in response
+        payee_onboarding_options : typing.Optional[bool]
+            include payee onboarding options in response
 
-            - metadata_schema: typing.Optional[bool]. include metadata schema in response
+        payor_onboarding_options : typing.Optional[bool]
+            include payor onboarding options in response
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        metadata_schema : typing.Optional[bool]
+            include metadata schema in response
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        OrganizationResponse
+
+        Examples
+        --------
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -69,6 +87,7 @@ class OrganizationClient:
         client.organization.get(
             payment_methods=True,
             email_provider=True,
+            external_accounting_system_provider=True,
             color_scheme=True,
             payee_onboarding_options=True,
             payor_onboarding_options=True,
@@ -76,13 +95,14 @@ class OrganizationClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "organization"),
+            method="GET",
+            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "organization"),
             params=jsonable_encoder(
                 remove_none_from_dict(
                     {
                         "paymentMethods": payment_methods,
                         "emailProvider": email_provider,
+                        "externalAccountingSystemProvider": external_accounting_system_provider,
                         "colorScheme": color_scheme,
                         "payeeOnboardingOptions": payee_onboarding_options,
                         "payorOnboardingOptions": payor_onboarding_options,
@@ -136,11 +156,19 @@ class OrganizationClient:
         """
         Update current organization
 
-        Parameters:
-            - request: OrganizationRequest.
+        Parameters
+        ----------
+        request : OrganizationRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        OrganizationResponse
+
+        Examples
+        --------
         from mercoa import (
             ColorSchemeRequest,
             EmailProviderRequest,
@@ -172,8 +200,8 @@ class OrganizationClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "organization"),
+            method="POST",
+            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "organization"),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -230,17 +258,27 @@ class OrganizationClient:
         """
         Get log of all emails sent to this organization. Content format subject to change.
 
-        Parameters:
-            - start_date: typing.Optional[dt.datetime].
+        Parameters
+        ----------
+        start_date : typing.Optional[dt.datetime]
 
-            - end_date: typing.Optional[dt.datetime].
+        end_date : typing.Optional[dt.datetime]
 
-            - limit: typing.Optional[int]. Number of logs to return. Limit can range between 1 and 100, and the default is 10.
+        limit : typing.Optional[int]
+            Number of logs to return. Limit can range between 1 and 100, and the default is 10.
 
-            - starting_after: typing.Optional[str]. The ID of the log to start after. If not provided, the first page of logs will be returned.
+        starting_after : typing.Optional[str]
+            The ID of the log to start after. If not provided, the first page of logs will be returned.
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        EmailLogResponse
+
+        Examples
+        --------
         import datetime
 
         from mercoa.client import Mercoa
@@ -260,8 +298,8 @@ class OrganizationClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "organization/emailLog"),
+            method="GET",
+            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "organization/emailLog"),
             params=jsonable_encoder(
                 remove_none_from_dict(
                     {
@@ -323,6 +361,7 @@ class AsyncOrganizationClient:
         *,
         payment_methods: typing.Optional[bool] = None,
         email_provider: typing.Optional[bool] = None,
+        external_accounting_system_provider: typing.Optional[bool] = None,
         color_scheme: typing.Optional[bool] = None,
         payee_onboarding_options: typing.Optional[bool] = None,
         payor_onboarding_options: typing.Optional[bool] = None,
@@ -332,21 +371,38 @@ class AsyncOrganizationClient:
         """
         Get current organization information
 
-        Parameters:
-            - payment_methods: typing.Optional[bool]. include supported payment methods in response
+        Parameters
+        ----------
+        payment_methods : typing.Optional[bool]
+            include supported payment methods in response
 
-            - email_provider: typing.Optional[bool]. include email provider info in response
+        email_provider : typing.Optional[bool]
+            include email provider info in response
 
-            - color_scheme: typing.Optional[bool]. include color scheme info in response
+        external_accounting_system_provider : typing.Optional[bool]
+            include external accounting system provider info in response
 
-            - payee_onboarding_options: typing.Optional[bool]. include payee onboarding options in response
+        color_scheme : typing.Optional[bool]
+            include color scheme info in response
 
-            - payor_onboarding_options: typing.Optional[bool]. include payor onboarding options in response
+        payee_onboarding_options : typing.Optional[bool]
+            include payee onboarding options in response
 
-            - metadata_schema: typing.Optional[bool]. include metadata schema in response
+        payor_onboarding_options : typing.Optional[bool]
+            include payor onboarding options in response
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        metadata_schema : typing.Optional[bool]
+            include metadata schema in response
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        OrganizationResponse
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -355,6 +411,7 @@ class AsyncOrganizationClient:
         await client.organization.get(
             payment_methods=True,
             email_provider=True,
+            external_accounting_system_provider=True,
             color_scheme=True,
             payee_onboarding_options=True,
             payor_onboarding_options=True,
@@ -362,13 +419,14 @@ class AsyncOrganizationClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "organization"),
+            method="GET",
+            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "organization"),
             params=jsonable_encoder(
                 remove_none_from_dict(
                     {
                         "paymentMethods": payment_methods,
                         "emailProvider": email_provider,
+                        "externalAccountingSystemProvider": external_accounting_system_provider,
                         "colorScheme": color_scheme,
                         "payeeOnboardingOptions": payee_onboarding_options,
                         "payorOnboardingOptions": payor_onboarding_options,
@@ -422,11 +480,19 @@ class AsyncOrganizationClient:
         """
         Update current organization
 
-        Parameters:
-            - request: OrganizationRequest.
+        Parameters
+        ----------
+        request : OrganizationRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        OrganizationResponse
+
+        Examples
+        --------
         from mercoa import (
             ColorSchemeRequest,
             EmailProviderRequest,
@@ -458,8 +524,8 @@ class AsyncOrganizationClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "organization"),
+            method="POST",
+            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "organization"),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -516,17 +582,27 @@ class AsyncOrganizationClient:
         """
         Get log of all emails sent to this organization. Content format subject to change.
 
-        Parameters:
-            - start_date: typing.Optional[dt.datetime].
+        Parameters
+        ----------
+        start_date : typing.Optional[dt.datetime]
 
-            - end_date: typing.Optional[dt.datetime].
+        end_date : typing.Optional[dt.datetime]
 
-            - limit: typing.Optional[int]. Number of logs to return. Limit can range between 1 and 100, and the default is 10.
+        limit : typing.Optional[int]
+            Number of logs to return. Limit can range between 1 and 100, and the default is 10.
 
-            - starting_after: typing.Optional[str]. The ID of the log to start after. If not provided, the first page of logs will be returned.
+        starting_after : typing.Optional[str]
+            The ID of the log to start after. If not provided, the first page of logs will be returned.
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        EmailLogResponse
+
+        Examples
+        --------
         import datetime
 
         from mercoa.client import AsyncMercoa
@@ -546,8 +622,8 @@ class AsyncOrganizationClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "organization/emailLog"),
+            method="GET",
+            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "organization/emailLog"),
             params=jsonable_encoder(
                 remove_none_from_dict(
                     {

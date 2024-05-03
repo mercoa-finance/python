@@ -36,15 +36,23 @@ class ExternalAccountingSystemClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ExternalAccountingSystemCompanyResponse:
         """
-        Create a company/entity in the external accounting system
+        Create/Link an entity to an external accounting system like Codat or Rutter
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - request: ExternalAccountingSystemCompanyCreationRequest.
+        request : ExternalAccountingSystemCompanyCreationRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ExternalAccountingSystemCompanyResponse
+
+        Examples
+        --------
         from mercoa.client import Mercoa
         from mercoa.entity import ExternalAccountingSystemCompanyCreationRequest_Codat
 
@@ -59,8 +67,8 @@ class ExternalAccountingSystemClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{jsonable_encoder(entity_id)}/external-accounting-system/create",
             ),
@@ -110,13 +118,21 @@ class ExternalAccountingSystemClient:
 
     def connect(self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None) -> str:
         """
-        Get a link to connect an entity to an external accounting system
+        Get a link to connect an entity to an external accounting system like Quickbooks or Xero
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        str
+
+        Examples
+        --------
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -127,8 +143,8 @@ class ExternalAccountingSystemClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{jsonable_encoder(entity_id)}/external-accounting-system/connect",
             ),
@@ -174,11 +190,19 @@ class ExternalAccountingSystemClient:
         """
         Sync an entity with an external accounting system. Will sync customers/vendors and invoices.
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -189,8 +213,8 @@ class ExternalAccountingSystemClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{jsonable_encoder(entity_id)}/external-accounting-system/sync",
             ),
@@ -245,15 +269,23 @@ class AsyncExternalAccountingSystemClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ExternalAccountingSystemCompanyResponse:
         """
-        Create a company/entity in the external accounting system
+        Create/Link an entity to an external accounting system like Codat or Rutter
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - request: ExternalAccountingSystemCompanyCreationRequest.
+        request : ExternalAccountingSystemCompanyCreationRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ExternalAccountingSystemCompanyResponse
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
         from mercoa.entity import ExternalAccountingSystemCompanyCreationRequest_Codat
 
@@ -268,8 +300,8 @@ class AsyncExternalAccountingSystemClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{jsonable_encoder(entity_id)}/external-accounting-system/create",
             ),
@@ -319,13 +351,21 @@ class AsyncExternalAccountingSystemClient:
 
     async def connect(self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None) -> str:
         """
-        Get a link to connect an entity to an external accounting system
+        Get a link to connect an entity to an external accounting system like Quickbooks or Xero
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        str
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -336,8 +376,8 @@ class AsyncExternalAccountingSystemClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{jsonable_encoder(entity_id)}/external-accounting-system/connect",
             ),
@@ -383,11 +423,19 @@ class AsyncExternalAccountingSystemClient:
         """
         Sync an entity with an external accounting system. Will sync customers/vendors and invoices.
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -398,8 +446,8 @@ class AsyncExternalAccountingSystemClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{jsonable_encoder(entity_id)}/external-accounting-system/sync",
             ),

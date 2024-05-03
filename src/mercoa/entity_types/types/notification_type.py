@@ -3,7 +3,6 @@
 import typing
 
 NotificationType = typing.Union[
-    typing.AnyStr,
     typing.Literal[
         "INVOICE_APPROVAL_NEEDED",
         "INVOICE_APPROVED",
@@ -16,4 +15,5 @@ NotificationType = typing.Union[
         "INVOICE_EMAILED",
         "INVOICE_FAILED",
     ],
+    typing.Any,
 ]

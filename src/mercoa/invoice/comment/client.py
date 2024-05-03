@@ -35,11 +35,19 @@ class CommentClient:
         """
         Get all comments associated with this invoice
 
-        Parameters:
-            - invoice_id: InvoiceId.
+        Parameters
+        ----------
+        invoice_id : InvoiceId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.List[CommentResponse]
+
+        Examples
+        --------
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -50,8 +58,8 @@ class CommentClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}/comments"
             ),
             params=jsonable_encoder(
@@ -98,13 +106,21 @@ class CommentClient:
         """
         Add a comment to this invoice
 
-        Parameters:
-            - invoice_id: InvoiceId.
+        Parameters
+        ----------
+        invoice_id : InvoiceId
 
-            - request: CommentRequest.
+        request : CommentRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CommentResponse
+
+        Examples
+        --------
         from mercoa import CommentRequest
         from mercoa.client import Mercoa
 
@@ -120,8 +136,8 @@ class CommentClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}/comment"
             ),
             params=jsonable_encoder(
@@ -172,13 +188,21 @@ class CommentClient:
         self, invoice_id: InvoiceId, comment_id: CommentId, *, request_options: typing.Optional[RequestOptions] = None
     ) -> CommentResponse:
         """
-        Parameters:
-            - invoice_id: InvoiceId.
+        Parameters
+        ----------
+        invoice_id : InvoiceId
 
-            - comment_id: CommentId.
+        comment_id : CommentId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CommentResponse
+
+        Examples
+        --------
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -190,8 +214,8 @@ class CommentClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"invoice/{jsonable_encoder(invoice_id)}/comment/{jsonable_encoder(comment_id)}",
             ),
@@ -244,15 +268,23 @@ class CommentClient:
         """
         Edit a comment on this invoice
 
-        Parameters:
-            - invoice_id: InvoiceId.
+        Parameters
+        ----------
+        invoice_id : InvoiceId
 
-            - comment_id: CommentId.
+        comment_id : CommentId
 
-            - request: CommentRequest.
+        request : CommentRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CommentResponse
+
+        Examples
+        --------
         from mercoa import CommentRequest
         from mercoa.client import Mercoa
 
@@ -269,8 +301,8 @@ class CommentClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"invoice/{jsonable_encoder(invoice_id)}/comment/{jsonable_encoder(comment_id)}",
             ),
@@ -324,13 +356,21 @@ class CommentClient:
         """
         Delete a comment on this invoice
 
-        Parameters:
-            - invoice_id: InvoiceId.
+        Parameters
+        ----------
+        invoice_id : InvoiceId
 
-            - comment_id: CommentId.
+        comment_id : CommentId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -342,8 +382,8 @@ class CommentClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "DELETE",
-            urllib.parse.urljoin(
+            method="DELETE",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"invoice/{jsonable_encoder(invoice_id)}/comment/{jsonable_encoder(comment_id)}",
             ),
@@ -396,11 +436,19 @@ class AsyncCommentClient:
         """
         Get all comments associated with this invoice
 
-        Parameters:
-            - invoice_id: InvoiceId.
+        Parameters
+        ----------
+        invoice_id : InvoiceId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.List[CommentResponse]
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -411,8 +459,8 @@ class AsyncCommentClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}/comments"
             ),
             params=jsonable_encoder(
@@ -459,13 +507,21 @@ class AsyncCommentClient:
         """
         Add a comment to this invoice
 
-        Parameters:
-            - invoice_id: InvoiceId.
+        Parameters
+        ----------
+        invoice_id : InvoiceId
 
-            - request: CommentRequest.
+        request : CommentRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CommentResponse
+
+        Examples
+        --------
         from mercoa import CommentRequest
         from mercoa.client import AsyncMercoa
 
@@ -481,8 +537,8 @@ class AsyncCommentClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}/comment"
             ),
             params=jsonable_encoder(
@@ -533,13 +589,21 @@ class AsyncCommentClient:
         self, invoice_id: InvoiceId, comment_id: CommentId, *, request_options: typing.Optional[RequestOptions] = None
     ) -> CommentResponse:
         """
-        Parameters:
-            - invoice_id: InvoiceId.
+        Parameters
+        ----------
+        invoice_id : InvoiceId
 
-            - comment_id: CommentId.
+        comment_id : CommentId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CommentResponse
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -551,8 +615,8 @@ class AsyncCommentClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"invoice/{jsonable_encoder(invoice_id)}/comment/{jsonable_encoder(comment_id)}",
             ),
@@ -605,15 +669,23 @@ class AsyncCommentClient:
         """
         Edit a comment on this invoice
 
-        Parameters:
-            - invoice_id: InvoiceId.
+        Parameters
+        ----------
+        invoice_id : InvoiceId
 
-            - comment_id: CommentId.
+        comment_id : CommentId
 
-            - request: CommentRequest.
+        request : CommentRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CommentResponse
+
+        Examples
+        --------
         from mercoa import CommentRequest
         from mercoa.client import AsyncMercoa
 
@@ -630,8 +702,8 @@ class AsyncCommentClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"invoice/{jsonable_encoder(invoice_id)}/comment/{jsonable_encoder(comment_id)}",
             ),
@@ -685,13 +757,21 @@ class AsyncCommentClient:
         """
         Delete a comment on this invoice
 
-        Parameters:
-            - invoice_id: InvoiceId.
+        Parameters
+        ----------
+        invoice_id : InvoiceId
 
-            - comment_id: CommentId.
+        comment_id : CommentId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -703,8 +783,8 @@ class AsyncCommentClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "DELETE",
-            urllib.parse.urljoin(
+            method="DELETE",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"invoice/{jsonable_encoder(invoice_id)}/comment/{jsonable_encoder(comment_id)}",
             ),

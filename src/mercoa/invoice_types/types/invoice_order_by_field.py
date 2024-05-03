@@ -3,6 +3,6 @@
 import typing
 
 InvoiceOrderByField = typing.Union[
-    typing.AnyStr,
     typing.Literal["AMOUNT", "DUE_DATE", "CREATED_AT", "UPDATED_AT", "INVOICE_NUMBER", "VENDOR_NAME", "PAYER_NAME"],
+    typing.Any,
 ]

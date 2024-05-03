@@ -3,5 +3,5 @@
 import typing
 
 EntityStatus = typing.Union[
-    typing.AnyStr, typing.Literal["unverified", "pending", "resubmit", "review", "verified", "failed"]
+    typing.Literal["unverified", "pending", "resubmit", "review", "verified", "failed"], typing.Any
 ]

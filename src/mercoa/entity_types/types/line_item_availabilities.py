@@ -2,4 +2,4 @@
 
 import typing
 
-LineItemAvailabilities = typing.Union[typing.AnyStr, typing.Literal["DISABLED", "OPTIONAL", "REQUIRED"]]
+LineItemAvailabilities = typing.Union[typing.Literal["DISABLED", "OPTIONAL", "REQUIRED"], typing.Any]

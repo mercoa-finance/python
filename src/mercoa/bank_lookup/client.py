@@ -29,11 +29,20 @@ class BankLookupClient:
         """
         Find bank account details
 
-        Parameters:
-            - routing_number: str. Routing number to validate
+        Parameters
+        ----------
+        routing_number : str
+            Routing number to validate
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        BankLookupResponse
+
+        Examples
+        --------
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -44,8 +53,8 @@ class BankLookupClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "bankLookup"),
+            method="GET",
+            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "bankLookup"),
             params=jsonable_encoder(
                 remove_none_from_dict(
                     {
@@ -104,11 +113,20 @@ class AsyncBankLookupClient:
         """
         Find bank account details
 
-        Parameters:
-            - routing_number: str. Routing number to validate
+        Parameters
+        ----------
+        routing_number : str
+            Routing number to validate
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        BankLookupResponse
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -119,8 +137,8 @@ class AsyncBankLookupClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "bankLookup"),
+            method="GET",
+            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "bankLookup"),
             params=jsonable_encoder(
                 remove_none_from_dict(
                     {

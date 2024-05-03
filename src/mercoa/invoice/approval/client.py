@@ -40,13 +40,21 @@ class ApprovalClient:
         """
         Adds an approver to the invoice. Will select the first available approver slot that is not already filled and assign the approver to it. If no approver slots are available, an error will be returned. An explicit approver slot can be specified by setting the `approverSlot` field.
 
-        Parameters:
-            - invoice_id: InvoiceId.
+        Parameters
+        ----------
+        invoice_id : InvoiceId
 
-            - request: AddApproverRequest.
+        request : AddApproverRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
         from mercoa import AddApproverRequest
         from mercoa.client import Mercoa
 
@@ -62,8 +70,8 @@ class ApprovalClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}/add-approver"
             ),
             params=jsonable_encoder(
@@ -122,13 +130,21 @@ class ApprovalClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
-        Parameters:
-            - invoice_id: InvoiceId.
+        Parameters
+        ----------
+        invoice_id : InvoiceId
 
-            - request: ApprovalRequest.
+        request : ApprovalRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
         from mercoa import ApprovalRequest
         from mercoa.client import Mercoa
 
@@ -144,8 +160,8 @@ class ApprovalClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}/approve"
             ),
             params=jsonable_encoder(
@@ -204,13 +220,21 @@ class ApprovalClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
-        Parameters:
-            - invoice_id: InvoiceId.
+        Parameters
+        ----------
+        invoice_id : InvoiceId
 
-            - request: ApprovalRequest.
+        request : ApprovalRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
         from mercoa import ApprovalRequest
         from mercoa.client import Mercoa
 
@@ -226,8 +250,8 @@ class ApprovalClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}/reject"
             ),
             params=jsonable_encoder(
@@ -293,13 +317,21 @@ class AsyncApprovalClient:
         """
         Adds an approver to the invoice. Will select the first available approver slot that is not already filled and assign the approver to it. If no approver slots are available, an error will be returned. An explicit approver slot can be specified by setting the `approverSlot` field.
 
-        Parameters:
-            - invoice_id: InvoiceId.
+        Parameters
+        ----------
+        invoice_id : InvoiceId
 
-            - request: AddApproverRequest.
+        request : AddApproverRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
         from mercoa import AddApproverRequest
         from mercoa.client import AsyncMercoa
 
@@ -315,8 +347,8 @@ class AsyncApprovalClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}/add-approver"
             ),
             params=jsonable_encoder(
@@ -375,13 +407,21 @@ class AsyncApprovalClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
-        Parameters:
-            - invoice_id: InvoiceId.
+        Parameters
+        ----------
+        invoice_id : InvoiceId
 
-            - request: ApprovalRequest.
+        request : ApprovalRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
         from mercoa import ApprovalRequest
         from mercoa.client import AsyncMercoa
 
@@ -397,8 +437,8 @@ class AsyncApprovalClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}/approve"
             ),
             params=jsonable_encoder(
@@ -457,13 +497,21 @@ class AsyncApprovalClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
-        Parameters:
-            - invoice_id: InvoiceId.
+        Parameters
+        ----------
+        invoice_id : InvoiceId
 
-            - request: ApprovalRequest.
+        request : ApprovalRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
         from mercoa import ApprovalRequest
         from mercoa.client import AsyncMercoa
 
@@ -479,8 +527,8 @@ class AsyncApprovalClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}/reject"
             ),
             params=jsonable_encoder(

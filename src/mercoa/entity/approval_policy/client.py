@@ -38,11 +38,19 @@ class ApprovalPolicyClient:
         """
         Retrieve all invoice approval policies associated with an entity
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.List[ApprovalPolicyResponse]
+
+        Examples
+        --------
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -53,8 +61,8 @@ class ApprovalPolicyClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/approval-policies"
             ),
             params=jsonable_encoder(
@@ -105,13 +113,21 @@ class ApprovalPolicyClient:
         """
         Create an invoice approval policy associated with an entity
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - request: ApprovalPolicyRequest.
+        request : ApprovalPolicyRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ApprovalPolicyResponse
+
+        Examples
+        --------
         from mercoa import ApprovalPolicyRequest, Rule_Approver, Trigger_Amount
         from mercoa.client import Mercoa
 
@@ -128,8 +144,8 @@ class ApprovalPolicyClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/approval-policy"
             ),
             params=jsonable_encoder(
@@ -194,13 +210,21 @@ class ApprovalPolicyClient:
         """
         Retrieve an invoice approval policy associated with an entity
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - policy_id: ApprovalPolicyId.
+        policy_id : ApprovalPolicyId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ApprovalPolicyResponse
+
+        Examples
+        --------
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -212,8 +236,8 @@ class ApprovalPolicyClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{jsonable_encoder(entity_id)}/approval-policy/{jsonable_encoder(policy_id)}",
             ),
@@ -266,15 +290,23 @@ class ApprovalPolicyClient:
         """
         Update an invoice approval policy associated with an entity
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - policy_id: ApprovalPolicyId.
+        policy_id : ApprovalPolicyId
 
-            - request: ApprovalPolicyUpdateRequest.
+        request : ApprovalPolicyUpdateRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ApprovalPolicyResponse
+
+        Examples
+        --------
         from mercoa import ApprovalPolicyUpdateRequest, Rule_Approver, Trigger_Amount
         from mercoa.client import Mercoa
 
@@ -292,8 +324,8 @@ class ApprovalPolicyClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{jsonable_encoder(entity_id)}/approval-policy/{jsonable_encoder(policy_id)}",
             ),
@@ -359,13 +391,21 @@ class ApprovalPolicyClient:
         """
         Delete an invoice approval policy associated with Entity. BEWARE: Any approval policy deletion will result in all associated downstream policies also being deleted.
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - policy_id: ApprovalPolicyId.
+        policy_id : ApprovalPolicyId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -377,8 +417,8 @@ class ApprovalPolicyClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "DELETE",
-            urllib.parse.urljoin(
+            method="DELETE",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{jsonable_encoder(entity_id)}/approval-policy/{jsonable_encoder(policy_id)}",
             ),
@@ -431,11 +471,19 @@ class AsyncApprovalPolicyClient:
         """
         Retrieve all invoice approval policies associated with an entity
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.List[ApprovalPolicyResponse]
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -446,8 +494,8 @@ class AsyncApprovalPolicyClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/approval-policies"
             ),
             params=jsonable_encoder(
@@ -498,13 +546,21 @@ class AsyncApprovalPolicyClient:
         """
         Create an invoice approval policy associated with an entity
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - request: ApprovalPolicyRequest.
+        request : ApprovalPolicyRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ApprovalPolicyResponse
+
+        Examples
+        --------
         from mercoa import ApprovalPolicyRequest, Rule_Approver, Trigger_Amount
         from mercoa.client import AsyncMercoa
 
@@ -521,8 +577,8 @@ class AsyncApprovalPolicyClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/approval-policy"
             ),
             params=jsonable_encoder(
@@ -587,13 +643,21 @@ class AsyncApprovalPolicyClient:
         """
         Retrieve an invoice approval policy associated with an entity
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - policy_id: ApprovalPolicyId.
+        policy_id : ApprovalPolicyId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ApprovalPolicyResponse
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -605,8 +669,8 @@ class AsyncApprovalPolicyClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{jsonable_encoder(entity_id)}/approval-policy/{jsonable_encoder(policy_id)}",
             ),
@@ -659,15 +723,23 @@ class AsyncApprovalPolicyClient:
         """
         Update an invoice approval policy associated with an entity
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - policy_id: ApprovalPolicyId.
+        policy_id : ApprovalPolicyId
 
-            - request: ApprovalPolicyUpdateRequest.
+        request : ApprovalPolicyUpdateRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ApprovalPolicyResponse
+
+        Examples
+        --------
         from mercoa import ApprovalPolicyUpdateRequest, Rule_Approver, Trigger_Amount
         from mercoa.client import AsyncMercoa
 
@@ -685,8 +757,8 @@ class AsyncApprovalPolicyClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{jsonable_encoder(entity_id)}/approval-policy/{jsonable_encoder(policy_id)}",
             ),
@@ -752,13 +824,21 @@ class AsyncApprovalPolicyClient:
         """
         Delete an invoice approval policy associated with Entity. BEWARE: Any approval policy deletion will result in all associated downstream policies also being deleted.
 
-        Parameters:
-            - entity_id: EntityId.
+        Parameters
+        ----------
+        entity_id : EntityId
 
-            - policy_id: ApprovalPolicyId.
+        policy_id : ApprovalPolicyId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -770,8 +850,8 @@ class AsyncApprovalPolicyClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "DELETE",
-            urllib.parse.urljoin(
+            method="DELETE",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/",
                 f"entity/{jsonable_encoder(entity_id)}/approval-policy/{jsonable_encoder(policy_id)}",
             ),

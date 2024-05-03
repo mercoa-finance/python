@@ -34,9 +34,17 @@ class CustomPaymentMethodSchemaClient:
         """
         Get all custom payment method schemas
 
-        Parameters:
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.List[CustomPaymentMethodSchemaResponse]
+
+        Examples
+        --------
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -45,8 +53,8 @@ class CustomPaymentMethodSchemaClient:
         client.custom_payment_method_schema.get_all()
         """
         _response = self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "paymentMethod/schema"),
+            method="GET",
+            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "paymentMethod/schema"),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -91,11 +99,19 @@ class CustomPaymentMethodSchemaClient:
         """
         Create custom payment method schema
 
-        Parameters:
-            - request: CustomPaymentMethodSchemaRequest.
+        Parameters
+        ----------
+        request : CustomPaymentMethodSchemaRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CustomPaymentMethodSchemaResponse
+
+        Examples
+        --------
         from mercoa import (
             CustomPaymentMethodSchemaField,
             CustomPaymentMethodSchemaRequest,
@@ -116,8 +132,8 @@ class CustomPaymentMethodSchemaClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "paymentMethod/schema"),
+            method="POST",
+            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "paymentMethod/schema"),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -172,13 +188,21 @@ class CustomPaymentMethodSchemaClient:
         """
         Update custom payment method schema
 
-        Parameters:
-            - schema_id: CustomPaymentMethodSchemaId.
+        Parameters
+        ----------
+        schema_id : CustomPaymentMethodSchemaId
 
-            - request: CustomPaymentMethodSchemaRequest.
+        request : CustomPaymentMethodSchemaRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CustomPaymentMethodSchemaResponse
+
+        Examples
+        --------
         from mercoa import (
             CustomPaymentMethodSchemaField,
             CustomPaymentMethodSchemaRequest,
@@ -200,8 +224,8 @@ class CustomPaymentMethodSchemaClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"paymentMethod/schema/{jsonable_encoder(schema_id)}"
             ),
             params=jsonable_encoder(
@@ -254,11 +278,19 @@ class CustomPaymentMethodSchemaClient:
         """
         Get custom payment method schema
 
-        Parameters:
-            - schema_id: CustomPaymentMethodSchemaId.
+        Parameters
+        ----------
+        schema_id : CustomPaymentMethodSchemaId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CustomPaymentMethodSchemaResponse
+
+        Examples
+        --------
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -269,8 +301,8 @@ class CustomPaymentMethodSchemaClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"paymentMethod/schema/{jsonable_encoder(schema_id)}"
             ),
             params=jsonable_encoder(
@@ -317,11 +349,19 @@ class CustomPaymentMethodSchemaClient:
         """
         Delete custom payment method schema. Schema that have been used in an invoice cannot be deleted.
 
-        Parameters:
-            - schema_id: CustomPaymentMethodSchemaId.
+        Parameters
+        ----------
+        schema_id : CustomPaymentMethodSchemaId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -332,8 +372,8 @@ class CustomPaymentMethodSchemaClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "DELETE",
-            urllib.parse.urljoin(
+            method="DELETE",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"paymentMethod/schema/{jsonable_encoder(schema_id)}"
             ),
             params=jsonable_encoder(
@@ -385,9 +425,17 @@ class AsyncCustomPaymentMethodSchemaClient:
         """
         Get all custom payment method schemas
 
-        Parameters:
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.List[CustomPaymentMethodSchemaResponse]
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -396,8 +444,8 @@ class AsyncCustomPaymentMethodSchemaClient:
         await client.custom_payment_method_schema.get_all()
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "paymentMethod/schema"),
+            method="GET",
+            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "paymentMethod/schema"),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -442,11 +490,19 @@ class AsyncCustomPaymentMethodSchemaClient:
         """
         Create custom payment method schema
 
-        Parameters:
-            - request: CustomPaymentMethodSchemaRequest.
+        Parameters
+        ----------
+        request : CustomPaymentMethodSchemaRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CustomPaymentMethodSchemaResponse
+
+        Examples
+        --------
         from mercoa import (
             CustomPaymentMethodSchemaField,
             CustomPaymentMethodSchemaRequest,
@@ -467,8 +523,8 @@ class AsyncCustomPaymentMethodSchemaClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "paymentMethod/schema"),
+            method="POST",
+            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "paymentMethod/schema"),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -523,13 +579,21 @@ class AsyncCustomPaymentMethodSchemaClient:
         """
         Update custom payment method schema
 
-        Parameters:
-            - schema_id: CustomPaymentMethodSchemaId.
+        Parameters
+        ----------
+        schema_id : CustomPaymentMethodSchemaId
 
-            - request: CustomPaymentMethodSchemaRequest.
+        request : CustomPaymentMethodSchemaRequest
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CustomPaymentMethodSchemaResponse
+
+        Examples
+        --------
         from mercoa import (
             CustomPaymentMethodSchemaField,
             CustomPaymentMethodSchemaRequest,
@@ -551,8 +615,8 @@ class AsyncCustomPaymentMethodSchemaClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(
+            method="POST",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"paymentMethod/schema/{jsonable_encoder(schema_id)}"
             ),
             params=jsonable_encoder(
@@ -605,11 +669,19 @@ class AsyncCustomPaymentMethodSchemaClient:
         """
         Get custom payment method schema
 
-        Parameters:
-            - schema_id: CustomPaymentMethodSchemaId.
+        Parameters
+        ----------
+        schema_id : CustomPaymentMethodSchemaId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CustomPaymentMethodSchemaResponse
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -620,8 +692,8 @@ class AsyncCustomPaymentMethodSchemaClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(
+            method="GET",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"paymentMethod/schema/{jsonable_encoder(schema_id)}"
             ),
             params=jsonable_encoder(
@@ -668,11 +740,19 @@ class AsyncCustomPaymentMethodSchemaClient:
         """
         Delete custom payment method schema. Schema that have been used in an invoice cannot be deleted.
 
-        Parameters:
-            - schema_id: CustomPaymentMethodSchemaId.
+        Parameters
+        ----------
+        schema_id : CustomPaymentMethodSchemaId
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -683,8 +763,8 @@ class AsyncCustomPaymentMethodSchemaClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "DELETE",
-            urllib.parse.urljoin(
+            method="DELETE",
+            url=urllib.parse.urljoin(
                 f"{self._client_wrapper.get_base_url()}/", f"paymentMethod/schema/{jsonable_encoder(schema_id)}"
             ),
             params=jsonable_encoder(

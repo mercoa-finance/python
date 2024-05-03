@@ -4,11 +4,12 @@ from __future__ import annotations
 
 import typing
 
-from .codat_provider_request import CodatProviderRequest
+from ...core.pydantic_utilities import pydantic_v1
 
 
-class ExternalAccountingSystemProviderRequest_Codat(CodatProviderRequest):
+class ExternalAccountingSystemProviderRequest_Codat(pydantic_v1.BaseModel):
     type: typing.Literal["codat"] = "codat"
+    api_key: str = pydantic_v1.Field(alias="apiKey")
 
     class Config:
         frozen = True

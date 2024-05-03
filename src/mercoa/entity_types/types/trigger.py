@@ -4,23 +4,24 @@ from __future__ import annotations
 
 import typing
 
-from .amount_trigger import AmountTrigger
-from .metadata_trigger import MetadataTrigger
-from .vendor_trigger import VendorTrigger
+from ...core.pydantic_utilities import pydantic_v1
+from ...payment_method_types.types.currency_code import CurrencyCode
+from .entity_id import EntityId
 
 
-class Trigger_Amount(AmountTrigger):
+class Trigger_Amount(pydantic_v1.BaseModel):
     type: typing.Literal["amount"] = "amount"
+    amount: float
+    currency: CurrencyCode
 
     class Config:
         frozen = True
         smart_union = True
-        allow_population_by_field_name = True
-        populate_by_name = True
 
 
-class Trigger_Vendor(VendorTrigger):
+class Trigger_Vendor(pydantic_v1.BaseModel):
     type: typing.Literal["vendor"] = "vendor"
+    vendor_ids: typing.List[EntityId] = pydantic_v1.Field(alias="vendorIds")
 
     class Config:
         frozen = True
@@ -29,14 +30,14 @@ class Trigger_Vendor(VendorTrigger):
         populate_by_name = True
 
 
-class Trigger_Metadata(MetadataTrigger):
+class Trigger_Metadata(pydantic_v1.BaseModel):
     type: typing.Literal["metadata"] = "metadata"
+    key: str
+    value: str
 
     class Config:
         frozen = True
         smart_union = True
-        allow_population_by_field_name = True
-        populate_by_name = True
 
 
 Trigger = typing.Union[Trigger_Amount, Trigger_Vendor, Trigger_Metadata]

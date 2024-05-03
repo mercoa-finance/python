@@ -2,4 +2,4 @@
 
 import typing
 
-CheckDeliveryMethod = typing.Union[typing.AnyStr, typing.Literal["PRINT", "MAIL"]]
+CheckDeliveryMethod = typing.Union[typing.Literal["PRINT", "MAIL"], typing.Any]

@@ -34,26 +34,38 @@ class OcrClient:
     def ocr(
         self,
         *,
-        vendor_network: typing.Optional[VendorNetwork] = None,
-        entity_id: typing.Optional[EntityId] = None,
         mime_type: str,
         image: str,
+        vendor_network: typing.Optional[VendorNetwork] = None,
+        entity_id: typing.Optional[EntityId] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> OcrResponse:
         """
         Run OCR on an Base64 encoded image or PDF. This endpoint will block until the OCR is complete.
 
-        Parameters:
-            - vendor_network: typing.Optional[VendorNetwork]. Limit OCR vendor search to a specific network
+        Parameters
+        ----------
+        mime_type : str
+            MIME type of the image. Supported types are image/png, image/jpeg, and application/pdf.
 
-            - entity_id: typing.Optional[EntityId]. When using the Entity vendor network, specify the entity to use if. EntityId on an auth token will take precedence over this parameter.
+        image : str
+            Base64 encoded image or PDF. PNG, JPG, and PDF are supported. 10MB max.
 
-            - mime_type: str. MIME type of the image. Supported types are image/png, image/jpeg, and application/pdf.
+        vendor_network : typing.Optional[VendorNetwork]
+            Limit OCR vendor search to a specific network
 
-            - image: str. Base64 encoded image or PDF. PNG, JPG, and PDF are supported. 10MB max.
+        entity_id : typing.Optional[EntityId]
+            When using the Entity vendor network, specify the entity to use if. EntityId on an auth token will take precedence over this parameter.
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        OcrResponse
+
+        Examples
+        --------
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -67,8 +79,8 @@ class OcrClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "ocr"),
+            method="POST",
+            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "ocr"),
             params=jsonable_encoder(
                 remove_none_from_dict(
                     {
@@ -128,26 +140,38 @@ class OcrClient:
     def run_async_ocr(
         self,
         *,
-        vendor_network: typing.Optional[VendorNetwork] = None,
-        entity_id: typing.Optional[EntityId] = None,
         mime_type: str,
         image: str,
+        vendor_network: typing.Optional[VendorNetwork] = None,
+        entity_id: typing.Optional[EntityId] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> OcrAsyncResponse:
         """
         Run OCR on an Base64 encoded image or PDF. This endpoint will return immediately and the OCR will be processed asynchronously.
 
-        Parameters:
-            - vendor_network: typing.Optional[VendorNetwork]. Limit OCR vendor search to a specific network
+        Parameters
+        ----------
+        mime_type : str
+            MIME type of the image. Supported types are image/png, image/jpeg, and application/pdf.
 
-            - entity_id: typing.Optional[EntityId]. When using the Entity vendor network, specify the entity to use if. EntityId on an auth token will take precedence over this parameter.
+        image : str
+            Base64 encoded image or PDF. PNG, JPG, and PDF are supported. 10MB max.
 
-            - mime_type: str. MIME type of the image. Supported types are image/png, image/jpeg, and application/pdf.
+        vendor_network : typing.Optional[VendorNetwork]
+            Limit OCR vendor search to a specific network
 
-            - image: str. Base64 encoded image or PDF. PNG, JPG, and PDF are supported. 10MB max.
+        entity_id : typing.Optional[EntityId]
+            When using the Entity vendor network, specify the entity to use if. EntityId on an auth token will take precedence over this parameter.
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        OcrAsyncResponse
+
+        Examples
+        --------
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -161,8 +185,8 @@ class OcrClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "ocr-async"),
+            method="POST",
+            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "ocr-async"),
             params=jsonable_encoder(
                 remove_none_from_dict(
                     {
@@ -223,11 +247,19 @@ class OcrClient:
         """
         Get the status and results of an asynchronous OCR job.
 
-        Parameters:
-            - job_id: str.
+        Parameters
+        ----------
+        job_id : str
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        OcrJobResponse
+
+        Examples
+        --------
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -238,8 +270,10 @@ class OcrClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"ocr-async/{jsonable_encoder(job_id)}"),
+            method="GET",
+            url=urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"ocr-async/{jsonable_encoder(job_id)}"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),
@@ -288,26 +322,38 @@ class AsyncOcrClient:
     async def ocr(
         self,
         *,
-        vendor_network: typing.Optional[VendorNetwork] = None,
-        entity_id: typing.Optional[EntityId] = None,
         mime_type: str,
         image: str,
+        vendor_network: typing.Optional[VendorNetwork] = None,
+        entity_id: typing.Optional[EntityId] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> OcrResponse:
         """
         Run OCR on an Base64 encoded image or PDF. This endpoint will block until the OCR is complete.
 
-        Parameters:
-            - vendor_network: typing.Optional[VendorNetwork]. Limit OCR vendor search to a specific network
+        Parameters
+        ----------
+        mime_type : str
+            MIME type of the image. Supported types are image/png, image/jpeg, and application/pdf.
 
-            - entity_id: typing.Optional[EntityId]. When using the Entity vendor network, specify the entity to use if. EntityId on an auth token will take precedence over this parameter.
+        image : str
+            Base64 encoded image or PDF. PNG, JPG, and PDF are supported. 10MB max.
 
-            - mime_type: str. MIME type of the image. Supported types are image/png, image/jpeg, and application/pdf.
+        vendor_network : typing.Optional[VendorNetwork]
+            Limit OCR vendor search to a specific network
 
-            - image: str. Base64 encoded image or PDF. PNG, JPG, and PDF are supported. 10MB max.
+        entity_id : typing.Optional[EntityId]
+            When using the Entity vendor network, specify the entity to use if. EntityId on an auth token will take precedence over this parameter.
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        OcrResponse
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -321,8 +367,8 @@ class AsyncOcrClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "ocr"),
+            method="POST",
+            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "ocr"),
             params=jsonable_encoder(
                 remove_none_from_dict(
                     {
@@ -382,26 +428,38 @@ class AsyncOcrClient:
     async def run_async_ocr(
         self,
         *,
-        vendor_network: typing.Optional[VendorNetwork] = None,
-        entity_id: typing.Optional[EntityId] = None,
         mime_type: str,
         image: str,
+        vendor_network: typing.Optional[VendorNetwork] = None,
+        entity_id: typing.Optional[EntityId] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> OcrAsyncResponse:
         """
         Run OCR on an Base64 encoded image or PDF. This endpoint will return immediately and the OCR will be processed asynchronously.
 
-        Parameters:
-            - vendor_network: typing.Optional[VendorNetwork]. Limit OCR vendor search to a specific network
+        Parameters
+        ----------
+        mime_type : str
+            MIME type of the image. Supported types are image/png, image/jpeg, and application/pdf.
 
-            - entity_id: typing.Optional[EntityId]. When using the Entity vendor network, specify the entity to use if. EntityId on an auth token will take precedence over this parameter.
+        image : str
+            Base64 encoded image or PDF. PNG, JPG, and PDF are supported. 10MB max.
 
-            - mime_type: str. MIME type of the image. Supported types are image/png, image/jpeg, and application/pdf.
+        vendor_network : typing.Optional[VendorNetwork]
+            Limit OCR vendor search to a specific network
 
-            - image: str. Base64 encoded image or PDF. PNG, JPG, and PDF are supported. 10MB max.
+        entity_id : typing.Optional[EntityId]
+            When using the Entity vendor network, specify the entity to use if. EntityId on an auth token will take precedence over this parameter.
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        OcrAsyncResponse
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -415,8 +473,8 @@ class AsyncOcrClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "POST",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "ocr-async"),
+            method="POST",
+            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "ocr-async"),
             params=jsonable_encoder(
                 remove_none_from_dict(
                     {
@@ -479,11 +537,19 @@ class AsyncOcrClient:
         """
         Get the status and results of an asynchronous OCR job.
 
-        Parameters:
-            - job_id: str.
+        Parameters
+        ----------
+        job_id : str
 
-            - request_options: typing.Optional[RequestOptions]. Request-specific configuration.
-        ---
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        OcrJobResponse
+
+        Examples
+        --------
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -494,8 +560,10 @@ class AsyncOcrClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "GET",
-            urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", f"ocr-async/{jsonable_encoder(job_id)}"),
+            method="GET",
+            url=urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"ocr-async/{jsonable_encoder(job_id)}"
+            ),
             params=jsonable_encoder(
                 request_options.get("additional_query_parameters") if request_options is not None else None
             ),

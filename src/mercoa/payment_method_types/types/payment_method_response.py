@@ -2,17 +2,36 @@
 
 from __future__ import annotations
 
+import datetime as dt
 import typing
 
-from .bank_account_response import BankAccountResponse
-from .card_response import CardResponse
-from .check_response import CheckResponse
-from .custom_payment_method_response import CustomPaymentMethodResponse
-from .payment_method_base_response import PaymentMethodBaseResponse
+from ...core.pydantic_utilities import pydantic_v1
+from .bank_account_check_options import BankAccountCheckOptions
+from .bank_status import BankStatus
+from .bank_type import BankType
+from .card_brand import CardBrand
+from .card_type import CardType
+from .currency_code import CurrencyCode
+from .custom_payment_method_schema_id import CustomPaymentMethodSchemaId
+from .custom_payment_method_schema_response import CustomPaymentMethodSchemaResponse
+from .payment_method_id import PaymentMethodId
 
 
-class PaymentMethodResponse_BankAccount(BankAccountResponse):
+class PaymentMethodResponse_BankAccount(pydantic_v1.BaseModel):
     type: typing.Literal["bankAccount"] = "bankAccount"
+    account_name: str = pydantic_v1.Field(alias="accountName")
+    bank_name: str = pydantic_v1.Field(alias="bankName")
+    routing_number: str = pydantic_v1.Field(alias="routingNumber")
+    account_number: str = pydantic_v1.Field(alias="accountNumber")
+    account_type: BankType = pydantic_v1.Field(alias="accountType")
+    status: BankStatus
+    check_options: typing.Optional[BankAccountCheckOptions] = pydantic_v1.Field(alias="checkOptions")
+    id: PaymentMethodId
+    is_default_source: bool = pydantic_v1.Field(alias="isDefaultSource")
+    is_default_destination: bool = pydantic_v1.Field(alias="isDefaultDestination")
+    supported_currencies: typing.List[CurrencyCode] = pydantic_v1.Field(alias="supportedCurrencies")
+    created_at: dt.datetime = pydantic_v1.Field(alias="createdAt")
+    updated_at: dt.datetime = pydantic_v1.Field(alias="updatedAt")
 
     class Config:
         frozen = True
@@ -21,8 +40,19 @@ class PaymentMethodResponse_BankAccount(BankAccountResponse):
         populate_by_name = True
 
 
-class PaymentMethodResponse_Card(CardResponse):
+class PaymentMethodResponse_Card(pydantic_v1.BaseModel):
     type: typing.Literal["card"] = "card"
+    card_type: CardType = pydantic_v1.Field(alias="cardType")
+    card_brand: CardBrand = pydantic_v1.Field(alias="cardBrand")
+    last_four: str = pydantic_v1.Field(alias="lastFour")
+    exp_month: str = pydantic_v1.Field(alias="expMonth")
+    exp_year: str = pydantic_v1.Field(alias="expYear")
+    id: PaymentMethodId
+    is_default_source: bool = pydantic_v1.Field(alias="isDefaultSource")
+    is_default_destination: bool = pydantic_v1.Field(alias="isDefaultDestination")
+    supported_currencies: typing.List[CurrencyCode] = pydantic_v1.Field(alias="supportedCurrencies")
+    created_at: dt.datetime = pydantic_v1.Field(alias="createdAt")
+    updated_at: dt.datetime = pydantic_v1.Field(alias="updatedAt")
 
     class Config:
         frozen = True
@@ -31,8 +61,21 @@ class PaymentMethodResponse_Card(CardResponse):
         populate_by_name = True
 
 
-class PaymentMethodResponse_Check(CheckResponse):
+class PaymentMethodResponse_Check(pydantic_v1.BaseModel):
     type: typing.Literal["check"] = "check"
+    pay_to_the_order_of: str = pydantic_v1.Field(alias="payToTheOrderOf")
+    address_line_1: str = pydantic_v1.Field(alias="addressLine1")
+    address_line_2: typing.Optional[str] = pydantic_v1.Field(alias="addressLine2")
+    city: str
+    state_or_province: str = pydantic_v1.Field(alias="stateOrProvince")
+    postal_code: str = pydantic_v1.Field(alias="postalCode")
+    country: str
+    id: PaymentMethodId
+    is_default_source: bool = pydantic_v1.Field(alias="isDefaultSource")
+    is_default_destination: bool = pydantic_v1.Field(alias="isDefaultDestination")
+    supported_currencies: typing.List[CurrencyCode] = pydantic_v1.Field(alias="supportedCurrencies")
+    created_at: dt.datetime = pydantic_v1.Field(alias="createdAt")
+    updated_at: dt.datetime = pydantic_v1.Field(alias="updatedAt")
 
     class Config:
         frozen = True
@@ -41,8 +84,20 @@ class PaymentMethodResponse_Check(CheckResponse):
         populate_by_name = True
 
 
-class PaymentMethodResponse_Custom(CustomPaymentMethodResponse):
+class PaymentMethodResponse_Custom(pydantic_v1.BaseModel):
     type: typing.Literal["custom"] = "custom"
+    foreign_id: str = pydantic_v1.Field(alias="foreignId")
+    account_name: typing.Optional[str] = pydantic_v1.Field(alias="accountName")
+    account_number: typing.Optional[str] = pydantic_v1.Field(alias="accountNumber")
+    schema_id: CustomPaymentMethodSchemaId = pydantic_v1.Field(alias="schemaId")
+    schema_: CustomPaymentMethodSchemaResponse = pydantic_v1.Field(alias="schema")
+    data: typing.Dict[str, str]
+    id: PaymentMethodId
+    is_default_source: bool = pydantic_v1.Field(alias="isDefaultSource")
+    is_default_destination: bool = pydantic_v1.Field(alias="isDefaultDestination")
+    supported_currencies: typing.List[CurrencyCode] = pydantic_v1.Field(alias="supportedCurrencies")
+    created_at: dt.datetime = pydantic_v1.Field(alias="createdAt")
+    updated_at: dt.datetime = pydantic_v1.Field(alias="updatedAt")
 
     class Config:
         frozen = True
@@ -51,8 +106,14 @@ class PaymentMethodResponse_Custom(CustomPaymentMethodResponse):
         populate_by_name = True
 
 
-class PaymentMethodResponse_OffPlatform(PaymentMethodBaseResponse):
+class PaymentMethodResponse_OffPlatform(pydantic_v1.BaseModel):
     type: typing.Literal["offPlatform"] = "offPlatform"
+    id: PaymentMethodId
+    is_default_source: bool = pydantic_v1.Field(alias="isDefaultSource")
+    is_default_destination: bool = pydantic_v1.Field(alias="isDefaultDestination")
+    supported_currencies: typing.List[CurrencyCode] = pydantic_v1.Field(alias="supportedCurrencies")
+    created_at: dt.datetime = pydantic_v1.Field(alias="createdAt")
+    updated_at: dt.datetime = pydantic_v1.Field(alias="updatedAt")
 
     class Config:
         frozen = True

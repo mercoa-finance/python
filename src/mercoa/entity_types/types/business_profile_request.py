@@ -13,6 +13,8 @@ from .tax_id import TaxId
 
 class BusinessProfileRequest(pydantic_v1.BaseModel):
     """
+    Examples
+    --------
     from mercoa import Address, BusinessProfileRequest, Ein, PhoneNumber, TaxId
 
     BusinessProfileRequest(

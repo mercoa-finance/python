@@ -2,4 +2,4 @@
 
 import typing
 
-OcrJobStatus = typing.Union[typing.AnyStr, typing.Literal["pending", "success", "failed"]]
+OcrJobStatus = typing.Union[typing.Literal["pending", "success", "failed"], typing.Any]

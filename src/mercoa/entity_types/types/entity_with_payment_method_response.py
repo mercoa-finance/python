@@ -11,6 +11,8 @@ from .entity_response import EntityResponse
 
 class EntityWithPaymentMethodResponse(EntityResponse):
     """
+    Examples
+    --------
     import datetime
 
     from mercoa import (

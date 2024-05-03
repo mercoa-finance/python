@@ -2,4 +2,4 @@
 
 import typing
 
-ApproverAction = typing.Union[typing.AnyStr, typing.Literal["NONE", "APPROVE", "REJECT"]]
+ApproverAction = typing.Union[typing.Literal["NONE", "APPROVE", "REJECT"], typing.Any]

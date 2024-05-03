@@ -4,15 +4,26 @@ from __future__ import annotations
 
 import typing
 
-from .bank_account_request import BankAccountRequest
-from .card_request import CardRequest
-from .check_request import CheckRequest
-from .custom_payment_method_request import CustomPaymentMethodRequest
-from .payment_method_base_request import PaymentMethodBaseRequest
+from ...core.pydantic_utilities import pydantic_v1
+from .bank_account_check_options import BankAccountCheckOptions
+from .bank_type import BankType
+from .card_brand import CardBrand
+from .card_type import CardType
+from .custom_payment_method_schema_id import CustomPaymentMethodSchemaId
+from .plaid_link_request import PlaidLinkRequest
 
 
-class PaymentMethodRequest_BankAccount(BankAccountRequest):
+class PaymentMethodRequest_BankAccount(pydantic_v1.BaseModel):
     type: typing.Literal["bankAccount"] = "bankAccount"
+    account_name: typing.Optional[str] = pydantic_v1.Field(alias="accountName")
+    bank_name: typing.Optional[str] = pydantic_v1.Field(alias="bankName")
+    routing_number: str = pydantic_v1.Field(alias="routingNumber")
+    account_number: str = pydantic_v1.Field(alias="accountNumber")
+    account_type: BankType = pydantic_v1.Field(alias="accountType")
+    plaid: typing.Optional[PlaidLinkRequest]
+    check_options: typing.Optional[BankAccountCheckOptions] = pydantic_v1.Field(alias="checkOptions")
+    default_source: typing.Optional[bool] = pydantic_v1.Field(alias="defaultSource")
+    default_destination: typing.Optional[bool] = pydantic_v1.Field(alias="defaultDestination")
 
     class Config:
         frozen = True
@@ -21,8 +32,16 @@ class PaymentMethodRequest_BankAccount(BankAccountRequest):
         populate_by_name = True
 
 
-class PaymentMethodRequest_Card(CardRequest):
+class PaymentMethodRequest_Card(pydantic_v1.BaseModel):
     type: typing.Literal["card"] = "card"
+    card_type: CardType = pydantic_v1.Field(alias="cardType")
+    card_brand: CardBrand = pydantic_v1.Field(alias="cardBrand")
+    last_four: str = pydantic_v1.Field(alias="lastFour")
+    exp_month: str = pydantic_v1.Field(alias="expMonth")
+    exp_year: str = pydantic_v1.Field(alias="expYear")
+    token: str
+    default_source: typing.Optional[bool] = pydantic_v1.Field(alias="defaultSource")
+    default_destination: typing.Optional[bool] = pydantic_v1.Field(alias="defaultDestination")
 
     class Config:
         frozen = True
@@ -31,8 +50,17 @@ class PaymentMethodRequest_Card(CardRequest):
         populate_by_name = True
 
 
-class PaymentMethodRequest_Check(CheckRequest):
+class PaymentMethodRequest_Check(pydantic_v1.BaseModel):
     type: typing.Literal["check"] = "check"
+    pay_to_the_order_of: str = pydantic_v1.Field(alias="payToTheOrderOf")
+    address_line_1: str = pydantic_v1.Field(alias="addressLine1")
+    address_line_2: typing.Optional[str] = pydantic_v1.Field(alias="addressLine2")
+    city: str
+    state_or_province: str = pydantic_v1.Field(alias="stateOrProvince")
+    postal_code: str = pydantic_v1.Field(alias="postalCode")
+    country: str
+    default_source: typing.Optional[bool] = pydantic_v1.Field(alias="defaultSource")
+    default_destination: typing.Optional[bool] = pydantic_v1.Field(alias="defaultDestination")
 
     class Config:
         frozen = True
@@ -41,8 +69,15 @@ class PaymentMethodRequest_Check(CheckRequest):
         populate_by_name = True
 
 
-class PaymentMethodRequest_Custom(CustomPaymentMethodRequest):
+class PaymentMethodRequest_Custom(pydantic_v1.BaseModel):
     type: typing.Literal["custom"] = "custom"
+    foreign_id: str = pydantic_v1.Field(alias="foreignId")
+    account_name: typing.Optional[str] = pydantic_v1.Field(alias="accountName")
+    account_number: typing.Optional[str] = pydantic_v1.Field(alias="accountNumber")
+    schema_id: CustomPaymentMethodSchemaId = pydantic_v1.Field(alias="schemaId")
+    data: typing.Dict[str, str]
+    default_source: typing.Optional[bool] = pydantic_v1.Field(alias="defaultSource")
+    default_destination: typing.Optional[bool] = pydantic_v1.Field(alias="defaultDestination")
 
     class Config:
         frozen = True
@@ -51,8 +86,10 @@ class PaymentMethodRequest_Custom(CustomPaymentMethodRequest):
         populate_by_name = True
 
 
-class PaymentMethodRequest_OffPlatform(PaymentMethodBaseRequest):
+class PaymentMethodRequest_OffPlatform(pydantic_v1.BaseModel):
     type: typing.Literal["offPlatform"] = "offPlatform"
+    default_source: typing.Optional[bool] = pydantic_v1.Field(alias="defaultSource")
+    default_destination: typing.Optional[bool] = pydantic_v1.Field(alias="defaultDestination")
 
     class Config:
         frozen = True

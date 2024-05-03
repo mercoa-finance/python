@@ -12,6 +12,8 @@ from .business_type import BusinessType
 
 class BusinessProfileResponse(pydantic_v1.BaseModel):
     """
+    Examples
+    --------
     from mercoa import Address, BusinessProfileResponse, PhoneNumber
 
     BusinessProfileResponse(

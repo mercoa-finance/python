@@ -2,4 +2,4 @@
 
 import typing
 
-CardBrand = typing.Union[typing.AnyStr, typing.Literal["AmericanExpress", "Discover", "Mastercard", "Visa"]]
+CardBrand = typing.Union[typing.Literal["AmericanExpress", "Discover", "Mastercard", "Visa"], typing.Any]

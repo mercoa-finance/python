@@ -2,4 +2,4 @@
 
 import typing
 
-EntityOnboardingLinkType = typing.Union[typing.AnyStr, typing.Literal["PAYEE", "PAYOR"]]
+EntityOnboardingLinkType = typing.Union[typing.Literal["PAYEE", "PAYOR"], typing.Any]

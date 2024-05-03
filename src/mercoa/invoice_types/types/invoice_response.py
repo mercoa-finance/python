@@ -84,6 +84,11 @@ class InvoiceResponse(pydantic_v1.BaseModel):
     True if the invoice has documents attached.
     """
 
+    has_source_email: bool = pydantic_v1.Field(alias="hasSourceEmail")
+    """
+    True if the invoice was created by an incoming email.
+    """
+
     comments: typing.Optional[typing.List[CommentResponse]] = None
     line_items: typing.Optional[typing.List[InvoiceLineItemResponse]] = pydantic_v1.Field(
         alias="lineItems", default=None

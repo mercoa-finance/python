@@ -4,28 +4,27 @@ from __future__ import annotations
 
 import typing
 
-from .bank_account_payment_destination_options import BankAccountPaymentDestinationOptions
-from .check_payment_destination_options import CheckPaymentDestinationOptions
+from ...core.pydantic_utilities import pydantic_v1
+from .bank_delivery_method import BankDeliveryMethod
+from .check_delivery_method import CheckDeliveryMethod
 
 
-class PaymentDestinationOptions_Check(CheckPaymentDestinationOptions):
+class PaymentDestinationOptions_Check(pydantic_v1.BaseModel):
     type: typing.Literal["check"] = "check"
+    delivery: typing.Optional[CheckDeliveryMethod]
 
     class Config:
         frozen = True
         smart_union = True
-        allow_population_by_field_name = True
-        populate_by_name = True
 
 
-class PaymentDestinationOptions_BankAccount(BankAccountPaymentDestinationOptions):
+class PaymentDestinationOptions_BankAccount(pydantic_v1.BaseModel):
     type: typing.Literal["bankAccount"] = "bankAccount"
+    delivery: typing.Optional[BankDeliveryMethod]
 
     class Config:
         frozen = True
         smart_union = True
-        allow_population_by_field_name = True
-        populate_by_name = True
 
 
 PaymentDestinationOptions = typing.Union[PaymentDestinationOptions_Check, PaymentDestinationOptions_BankAccount]
