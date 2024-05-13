@@ -10,6 +10,42 @@ from .associated_approval_action import AssociatedApprovalAction
 
 
 class CommentResponse(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    import datetime
+
+    from mercoa import AssociatedApprovalAction, CommentResponse, EntityUserResponse
+
+    CommentResponse(
+        id="ic_b3525b66-da94-4525-9f31-426bcf657128",
+        text="This is a comment",
+        user=EntityUserResponse(
+            id="user_ec3aafc8-ea86-408a-a6c1-545497badbbb",
+            foreign_id="MY-DB-ID-12345",
+            email="john.doe@acme.com",
+            name="John Doe",
+            roles=["admin", "approver"],
+            created_at=datetime.datetime.fromisoformat(
+                "2024-01-01 00:00:00+00:00",
+            ),
+            updated_at=datetime.datetime.fromisoformat(
+                "2024-01-01 00:00:00+00:00",
+            ),
+        ),
+        associated_approval_action=AssociatedApprovalAction(
+            user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+            action="APPROVE",
+        ),
+        created_at=datetime.datetime.fromisoformat(
+            "2021-01-01 00:00:00+00:00",
+        ),
+        updated_at=datetime.datetime.fromisoformat(
+            "2021-01-01 00:00:00+00:00",
+        ),
+    )
+    """
+
     id: str
     text: str
     user: typing.Optional[EntityUserResponse] = None

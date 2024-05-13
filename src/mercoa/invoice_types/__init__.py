@@ -34,7 +34,6 @@ from .types import (
     PaymentDestinationOptions,
     PaymentDestinationOptions_BankAccount,
     PaymentDestinationOptions_Check,
-    SourceEmailResponse,
 )
 from .errors import DuplicateInvoiceNumber, InvoiceError, InvoiceQueryError, InvoiceStatusError, VendorNotFound
 
@@ -76,6 +75,5 @@ __all__ = [
     "PaymentDestinationOptions",
     "PaymentDestinationOptions_BankAccount",
     "PaymentDestinationOptions_Check",
-    "SourceEmailResponse",
     "VendorNotFound",
 ]

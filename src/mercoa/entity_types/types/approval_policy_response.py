@@ -11,6 +11,26 @@ from .trigger import Trigger
 
 
 class ApprovalPolicyResponse(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    from mercoa import (
+        ApprovalPolicyResponse,
+        IdentifierList_RolesList,
+        Rule_Approver,
+    )
+
+    ApprovalPolicyResponse(
+        id="apvl_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+        trigger=[],
+        rule=Rule_Approver(
+            num_approvers=1,
+            identifier_list=IdentifierList_RolesList(value=["admin"]),
+        ),
+        upstream_policy_id="root",
+    )
+    """
+
     id: ApprovalPolicyId
     trigger: typing.List[Trigger]
     rule: Rule

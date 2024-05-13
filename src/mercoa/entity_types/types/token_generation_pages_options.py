@@ -13,6 +13,7 @@ class TokenGenerationPagesOptions(pydantic_v1.BaseModel):
     notifications: typing.Optional[bool] = None
     counterparties: typing.Optional[bool] = None
     approvals: typing.Optional[bool] = None
+    email_log: typing.Optional[bool] = pydantic_v1.Field(alias="emailLog", default=None)
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

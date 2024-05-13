@@ -63,8 +63,7 @@ class PaymentMethodClient:
             token="YOUR_TOKEN",
         )
         client.entity.payment_method.get_all(
-            entity_id="string",
-            type="custom",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -144,28 +143,19 @@ class PaymentMethodClient:
 
         Examples
         --------
-        from mercoa import (
-            BankAccountCheckOptions,
-            PaymentMethodRequest_BankAccount,
-            PlaidLinkRequest,
-        )
+        from mercoa import PaymentMethodRequest_BankAccount
         from mercoa.client import Mercoa
 
         client = Mercoa(
             token="YOUR_TOKEN",
         )
         client.entity.payment_method.create(
-            entity_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             request=PaymentMethodRequest_BankAccount(
-                account_name="string",
-                bank_name="string",
-                routing_number="string",
-                account_number="string",
+                bank_name="Chase",
+                routing_number="12345678",
+                account_number="99988767623",
                 account_type="CHECKING",
-                plaid=PlaidLinkRequest(),
-                check_options=BankAccountCheckOptions(),
-                default_source=True,
-                default_destination=True,
             ),
         )
         """
@@ -249,8 +239,8 @@ class PaymentMethodClient:
             token="YOUR_TOKEN",
         )
         client.entity.payment_method.get(
-            entity_id="string",
-            payment_method_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -327,21 +317,16 @@ class PaymentMethodClient:
 
         Examples
         --------
-        from mercoa import PaymentMethodUpdateRequest_Custom
+        from mercoa import PaymentMethodUpdateRequest_BankAccount
         from mercoa.client import Mercoa
 
         client = Mercoa(
             token="YOUR_TOKEN",
         )
         client.entity.payment_method.update(
-            entity_id="string",
-            payment_method_id="string",
-            request=PaymentMethodUpdateRequest_Custom(
-                foreign_id="string",
-                account_name="string",
-                account_number="string",
-                schema_id="string",
-                data={"string": "string"},
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+            request=PaymentMethodUpdateRequest_BankAccount(
                 default_source=True,
                 default_destination=True,
             ),
@@ -430,8 +415,8 @@ class PaymentMethodClient:
             token="YOUR_TOKEN",
         )
         client.entity.payment_method.delete(
-            entity_id="string",
-            payment_method_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -511,8 +496,8 @@ class PaymentMethodClient:
             token="YOUR_TOKEN",
         )
         client.entity.payment_method.initiate_micro_deposits(
-            entity_id="string",
-            payment_method_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -582,6 +567,7 @@ class PaymentMethodClient:
         payment_method_id : PaymentMethodId
 
         amounts : typing.Sequence[int]
+            The amounts of the micro deposits in cents
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -598,9 +584,9 @@ class PaymentMethodClient:
             token="YOUR_TOKEN",
         )
         client.entity.payment_method.complete_micro_deposits(
-            entity_id="string",
-            payment_method_id="string",
-            amounts=[1],
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+            amounts=[40, 2],
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -771,8 +757,7 @@ class AsyncPaymentMethodClient:
             token="YOUR_TOKEN",
         )
         await client.entity.payment_method.get_all(
-            entity_id="string",
-            type="custom",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -852,28 +837,19 @@ class AsyncPaymentMethodClient:
 
         Examples
         --------
-        from mercoa import (
-            BankAccountCheckOptions,
-            PaymentMethodRequest_BankAccount,
-            PlaidLinkRequest,
-        )
+        from mercoa import PaymentMethodRequest_BankAccount
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
         await client.entity.payment_method.create(
-            entity_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             request=PaymentMethodRequest_BankAccount(
-                account_name="string",
-                bank_name="string",
-                routing_number="string",
-                account_number="string",
+                bank_name="Chase",
+                routing_number="12345678",
+                account_number="99988767623",
                 account_type="CHECKING",
-                plaid=PlaidLinkRequest(),
-                check_options=BankAccountCheckOptions(),
-                default_source=True,
-                default_destination=True,
             ),
         )
         """
@@ -957,8 +933,8 @@ class AsyncPaymentMethodClient:
             token="YOUR_TOKEN",
         )
         await client.entity.payment_method.get(
-            entity_id="string",
-            payment_method_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1035,21 +1011,16 @@ class AsyncPaymentMethodClient:
 
         Examples
         --------
-        from mercoa import PaymentMethodUpdateRequest_Custom
+        from mercoa import PaymentMethodUpdateRequest_BankAccount
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
         await client.entity.payment_method.update(
-            entity_id="string",
-            payment_method_id="string",
-            request=PaymentMethodUpdateRequest_Custom(
-                foreign_id="string",
-                account_name="string",
-                account_number="string",
-                schema_id="string",
-                data={"string": "string"},
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+            request=PaymentMethodUpdateRequest_BankAccount(
                 default_source=True,
                 default_destination=True,
             ),
@@ -1138,8 +1109,8 @@ class AsyncPaymentMethodClient:
             token="YOUR_TOKEN",
         )
         await client.entity.payment_method.delete(
-            entity_id="string",
-            payment_method_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1219,8 +1190,8 @@ class AsyncPaymentMethodClient:
             token="YOUR_TOKEN",
         )
         await client.entity.payment_method.initiate_micro_deposits(
-            entity_id="string",
-            payment_method_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1290,6 +1261,7 @@ class AsyncPaymentMethodClient:
         payment_method_id : PaymentMethodId
 
         amounts : typing.Sequence[int]
+            The amounts of the micro deposits in cents
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1306,9 +1278,9 @@ class AsyncPaymentMethodClient:
             token="YOUR_TOKEN",
         )
         await client.entity.payment_method.complete_micro_deposits(
-            entity_id="string",
-            payment_method_id="string",
-            amounts=[1],
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+            amounts=[40, 2],
         )
         """
         _response = await self._client_wrapper.httpx_client.request(

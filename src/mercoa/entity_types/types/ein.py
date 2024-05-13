@@ -8,6 +8,16 @@ from ...core.pydantic_utilities import pydantic_v1
 
 
 class Ein(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    from mercoa import Ein
+
+    Ein(
+        number="12-3456789",
+    )
+    """
+
     number: str = pydantic_v1.Field()
     """
     Must be in the format XX-XXXXXXX.

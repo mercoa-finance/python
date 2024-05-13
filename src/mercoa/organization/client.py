@@ -18,7 +18,7 @@ from ..core.jsonable_encoder import jsonable_encoder
 from ..core.pydantic_utilities import pydantic_v1
 from ..core.remove_none_from_dict import remove_none_from_dict
 from ..core.request_options import RequestOptions
-from ..organization_types.types.email_log_response import EmailLogResponse
+from ..email_log_types.types.email_log_response import EmailLogResponse
 from ..organization_types.types.organization_request import OrganizationRequest
 from ..organization_types.types.organization_response import OrganizationResponse
 from .notification_configuration.client import AsyncNotificationConfigurationClient, NotificationConfigurationClient
@@ -172,7 +172,7 @@ class OrganizationClient:
         from mercoa import (
             ColorSchemeRequest,
             EmailProviderRequest,
-            ExternalAccountingSystemProviderRequest_Codat,
+            ExternalAccountingSystemProviderRequest_None,
             MetadataSchema,
             OnboardingOptionsRequest,
             OrganizationRequest,
@@ -191,7 +191,7 @@ class OrganizationClient:
                 support_email="string",
                 payment_methods=PaymentMethodsRequest(),
                 email_provider=EmailProviderRequest(),
-                external_accounting_system_provider=ExternalAccountingSystemProviderRequest_Codat(),
+                external_accounting_system_provider=ExternalAccountingSystemProviderRequest_None(),
                 color_scheme=ColorSchemeRequest(),
                 payee_onboarding_options=OnboardingOptionsRequest(),
                 payor_onboarding_options=OnboardingOptionsRequest(),
@@ -496,7 +496,7 @@ class AsyncOrganizationClient:
         from mercoa import (
             ColorSchemeRequest,
             EmailProviderRequest,
-            ExternalAccountingSystemProviderRequest_Codat,
+            ExternalAccountingSystemProviderRequest_None,
             MetadataSchema,
             OnboardingOptionsRequest,
             OrganizationRequest,
@@ -515,7 +515,7 @@ class AsyncOrganizationClient:
                 support_email="string",
                 payment_methods=PaymentMethodsRequest(),
                 email_provider=EmailProviderRequest(),
-                external_accounting_system_provider=ExternalAccountingSystemProviderRequest_Codat(),
+                external_accounting_system_provider=ExternalAccountingSystemProviderRequest_None(),
                 color_scheme=ColorSchemeRequest(),
                 payee_onboarding_options=OnboardingOptionsRequest(),
                 payor_onboarding_options=OnboardingOptionsRequest(),

@@ -7,13 +7,9 @@ from ...core.datetime_utils import serialize_datetime
 from ...core.pydantic_utilities import pydantic_v1
 
 
-class EmailLog(pydantic_v1.BaseModel):
-    id: str
-    from_: str = pydantic_v1.Field(alias="from")
-    to: str
-    subject: str
-    raw_content: str = pydantic_v1.Field(alias="rawContent")
-    created_at: dt.datetime = pydantic_v1.Field(alias="createdAt")
+class RutterProviderRequest(pydantic_v1.BaseModel):
+    client_id: str = pydantic_v1.Field(alias="clientId")
+    client_secret: str = pydantic_v1.Field(alias="clientSecret")
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

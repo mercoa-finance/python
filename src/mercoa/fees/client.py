@@ -58,7 +58,9 @@ class FeesClient:
                 currency="AED",
                 payment_source_id="string",
                 payment_destination_id="string",
-                payment_destination_options=PaymentDestinationOptions_Check(),
+                payment_destination_options=PaymentDestinationOptions_Check(
+                    delivery="MAIL",
+                ),
             ),
         )
         """
@@ -145,7 +147,9 @@ class AsyncFeesClient:
                 currency="AED",
                 payment_source_id="string",
                 payment_destination_id="string",
-                payment_destination_options=PaymentDestinationOptions_Check(),
+                payment_destination_options=PaymentDestinationOptions_Check(
+                    delivery="MAIL",
+                ),
             ),
         )
         """

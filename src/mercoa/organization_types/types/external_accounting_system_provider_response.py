@@ -29,6 +29,20 @@ class ExternalAccountingSystemProviderResponse_Codat(pydantic_v1.BaseModel):
         populate_by_name = True
 
 
+class ExternalAccountingSystemProviderResponse_Rutter(pydantic_v1.BaseModel):
+    type: typing.Literal["rutter"] = "rutter"
+    has_client_id: bool = pydantic_v1.Field(alias="hasClientId")
+    has_client_secret: bool = pydantic_v1.Field(alias="hasClientSecret")
+
+    class Config:
+        frozen = True
+        smart_union = True
+        allow_population_by_field_name = True
+        populate_by_name = True
+
+
 ExternalAccountingSystemProviderResponse = typing.Union[
-    ExternalAccountingSystemProviderResponse_None, ExternalAccountingSystemProviderResponse_Codat
+    ExternalAccountingSystemProviderResponse_None,
+    ExternalAccountingSystemProviderResponse_Codat,
+    ExternalAccountingSystemProviderResponse_Rutter,
 ]

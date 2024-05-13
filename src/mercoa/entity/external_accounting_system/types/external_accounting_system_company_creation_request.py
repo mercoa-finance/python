@@ -18,4 +18,17 @@ class ExternalAccountingSystemCompanyCreationRequest_Codat(pydantic_v1.BaseModel
         populate_by_name = True
 
 
-ExternalAccountingSystemCompanyCreationRequest = typing.Union[ExternalAccountingSystemCompanyCreationRequest_Codat]
+class ExternalAccountingSystemCompanyCreationRequest_Rutter(pydantic_v1.BaseModel):
+    type: typing.Literal["rutter"] = "rutter"
+    access_token: typing.Optional[str] = pydantic_v1.Field(alias="accessToken")
+
+    class Config:
+        frozen = True
+        smart_union = True
+        allow_population_by_field_name = True
+        populate_by_name = True
+
+
+ExternalAccountingSystemCompanyCreationRequest = typing.Union[
+    ExternalAccountingSystemCompanyCreationRequest_Codat, ExternalAccountingSystemCompanyCreationRequest_Rutter
+]

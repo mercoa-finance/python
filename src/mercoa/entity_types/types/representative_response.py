@@ -13,6 +13,56 @@ from .responsibilities import Responsibilities
 
 
 class RepresentativeResponse(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    import datetime
+
+    from mercoa import (
+        Address,
+        FullName,
+        PhoneNumber,
+        RepresentativeResponse,
+        Responsibilities,
+    )
+
+    RepresentativeResponse(
+        id="rep_7df2974a-4069-454c-912f-7e58ebe030fb",
+        name=FullName(
+            first_name="John",
+            middle_name="Quincy",
+            last_name="Adams",
+            suffix="Jr.",
+        ),
+        phone=PhoneNumber(
+            country_code="1",
+            number="4155551234",
+        ),
+        email="john.doe@acme.com",
+        address=Address(
+            address_line_1="123 Main St",
+            address_line_2="Unit 1",
+            city="San Francisco",
+            state_or_province="CA",
+            postal_code="94105",
+            country="US",
+        ),
+        birth_date_provided=True,
+        government_id_provided=True,
+        responsibilities=Responsibilities(
+            is_owner=True,
+            ownership_percentage=40,
+            is_controller=True,
+        ),
+        created_on=datetime.datetime.fromisoformat(
+            "2024-01-01 00:00:00+00:00",
+        ),
+        updated_on=datetime.datetime.fromisoformat(
+            "2024-01-01 00:00:00+00:00",
+        ),
+    )
+    """
+
     id: RepresentativeId
     name: FullName
     phone: PhoneNumber

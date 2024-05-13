@@ -33,6 +33,7 @@ from ..entity_types.types.token_generation_options import TokenGenerationOptions
 from ..payment_method_types.types.payment_method_id import PaymentMethodId
 from .approval_policy.client import ApprovalPolicyClient, AsyncApprovalPolicyClient
 from .counterparty.client import AsyncCounterpartyClient, CounterpartyClient
+from .email_log.client import AsyncEmailLogClient, EmailLogClient
 from .external_accounting_system.client import AsyncExternalAccountingSystemClient, ExternalAccountingSystemClient
 from .invoice.client import AsyncInvoiceClient, InvoiceClient
 from .metadata.client import AsyncMetadataClient, MetadataClient
@@ -48,6 +49,7 @@ OMIT = typing.cast(typing.Any, ...)
 class EntityClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
+        self.email_log = EmailLogClient(client_wrapper=self._client_wrapper)
         self.user = UserClient(client_wrapper=self._client_wrapper)
         self.approval_policy = ApprovalPolicyClient(client_wrapper=self._client_wrapper)
         self.counterparty = CounterpartyClient(client_wrapper=self._client_wrapper)
@@ -220,6 +222,7 @@ class EntityClient:
                 is_payor=True,
                 is_payee=False,
                 account_type="business",
+                foreign_id="MY-DB-ID-12345",
                 profile=ProfileRequest(
                     business=BusinessProfileRequest(
                         email="customer@acme.com",
@@ -232,6 +235,7 @@ class EntityClient:
                         ),
                         address=Address(
                             address_line_1="123 Main St",
+                            address_line_2="Unit 1",
                             city="San Francisco",
                             state_or_province="CA",
                             postal_code="94105",
@@ -396,7 +400,15 @@ class EntityClient:
 
         Examples
         --------
-        from mercoa import EntityUpdateRequest, ProfileRequest
+        from mercoa import (
+            Address,
+            BusinessProfileRequest,
+            Ein,
+            EntityUpdateRequest,
+            PhoneNumber,
+            ProfileRequest,
+            TaxId,
+        )
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -405,15 +417,36 @@ class EntityClient:
         client.entity.update(
             entity_id="string",
             request=EntityUpdateRequest(
-                foreign_id="string",
-                email_to="string",
-                email_to_alias=["string"],
                 is_customer=True,
-                account_type="business",
-                profile=ProfileRequest(),
                 is_payor=True,
-                is_payee=True,
-                logo="string",
+                is_payee=False,
+                account_type="business",
+                foreign_id="MY-DB-ID-12345",
+                profile=ProfileRequest(
+                    business=BusinessProfileRequest(
+                        email="customer@acme.com",
+                        legal_business_name="Acme Inc.",
+                        website="http://www.acme.com",
+                        business_type="llc",
+                        phone=PhoneNumber(
+                            country_code="1",
+                            number="4155551234",
+                        ),
+                        address=Address(
+                            address_line_1="123 Main St",
+                            address_line_2="Unit 1",
+                            city="San Francisco",
+                            state_or_province="CA",
+                            postal_code="94105",
+                            country="US",
+                        ),
+                        tax_id=TaxId(
+                            ein=Ein(
+                                number="12-3456789",
+                            ),
+                        ),
+                    ),
+                ),
             ),
         )
         """
@@ -570,7 +603,7 @@ class EntityClient:
             token="YOUR_TOKEN",
         )
         client.entity.accept_terms_of_service(
-            entity_id="string",
+            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -646,7 +679,7 @@ class EntityClient:
             token="YOUR_TOKEN",
         )
         client.entity.initiate_kyb(
-            entity_id="string",
+            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -1083,6 +1116,7 @@ class EntityClient:
 class AsyncEntityClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
+        self.email_log = AsyncEmailLogClient(client_wrapper=self._client_wrapper)
         self.user = AsyncUserClient(client_wrapper=self._client_wrapper)
         self.approval_policy = AsyncApprovalPolicyClient(client_wrapper=self._client_wrapper)
         self.counterparty = AsyncCounterpartyClient(client_wrapper=self._client_wrapper)
@@ -1255,6 +1289,7 @@ class AsyncEntityClient:
                 is_payor=True,
                 is_payee=False,
                 account_type="business",
+                foreign_id="MY-DB-ID-12345",
                 profile=ProfileRequest(
                     business=BusinessProfileRequest(
                         email="customer@acme.com",
@@ -1267,6 +1302,7 @@ class AsyncEntityClient:
                         ),
                         address=Address(
                             address_line_1="123 Main St",
+                            address_line_2="Unit 1",
                             city="San Francisco",
                             state_or_province="CA",
                             postal_code="94105",
@@ -1433,7 +1469,15 @@ class AsyncEntityClient:
 
         Examples
         --------
-        from mercoa import EntityUpdateRequest, ProfileRequest
+        from mercoa import (
+            Address,
+            BusinessProfileRequest,
+            Ein,
+            EntityUpdateRequest,
+            PhoneNumber,
+            ProfileRequest,
+            TaxId,
+        )
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -1442,15 +1486,36 @@ class AsyncEntityClient:
         await client.entity.update(
             entity_id="string",
             request=EntityUpdateRequest(
-                foreign_id="string",
-                email_to="string",
-                email_to_alias=["string"],
                 is_customer=True,
-                account_type="business",
-                profile=ProfileRequest(),
                 is_payor=True,
-                is_payee=True,
-                logo="string",
+                is_payee=False,
+                account_type="business",
+                foreign_id="MY-DB-ID-12345",
+                profile=ProfileRequest(
+                    business=BusinessProfileRequest(
+                        email="customer@acme.com",
+                        legal_business_name="Acme Inc.",
+                        website="http://www.acme.com",
+                        business_type="llc",
+                        phone=PhoneNumber(
+                            country_code="1",
+                            number="4155551234",
+                        ),
+                        address=Address(
+                            address_line_1="123 Main St",
+                            address_line_2="Unit 1",
+                            city="San Francisco",
+                            state_or_province="CA",
+                            postal_code="94105",
+                            country="US",
+                        ),
+                        tax_id=TaxId(
+                            ein=Ein(
+                                number="12-3456789",
+                            ),
+                        ),
+                    ),
+                ),
             ),
         )
         """
@@ -1607,7 +1672,7 @@ class AsyncEntityClient:
             token="YOUR_TOKEN",
         )
         await client.entity.accept_terms_of_service(
-            entity_id="string",
+            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1685,7 +1750,7 @@ class AsyncEntityClient:
             token="YOUR_TOKEN",
         )
         await client.entity.initiate_kyb(
-            entity_id="string",
+            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(

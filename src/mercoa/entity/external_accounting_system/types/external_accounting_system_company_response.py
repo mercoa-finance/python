@@ -18,4 +18,17 @@ class ExternalAccountingSystemCompanyResponse_Codat(pydantic_v1.BaseModel):
         populate_by_name = True
 
 
-ExternalAccountingSystemCompanyResponse = typing.Union[ExternalAccountingSystemCompanyResponse_Codat]
+class ExternalAccountingSystemCompanyResponse_Rutter(pydantic_v1.BaseModel):
+    type: typing.Literal["rutter"] = "rutter"
+    access_token: str = pydantic_v1.Field(alias="accessToken")
+
+    class Config:
+        frozen = True
+        smart_union = True
+        allow_population_by_field_name = True
+        populate_by_name = True
+
+
+ExternalAccountingSystemCompanyResponse = typing.Union[
+    ExternalAccountingSystemCompanyResponse_Codat, ExternalAccountingSystemCompanyResponse_Rutter
+]

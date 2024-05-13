@@ -12,6 +12,26 @@ from .approver_action import ApproverAction
 
 
 class ApprovalSlot(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    import datetime
+
+    from mercoa import ApprovalSlot
+
+    ApprovalSlot(
+        approval_policy_id="apvl_5ce50275-1789-42ea-bc60-bb7e6d03635c",
+        approval_slot_id="inap_9bb311c9-7c15-4c9e-8148-63814e0abec6",
+        assigned_user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+        action="APPROVE",
+        eligible_user_ids=["user_e24fc81c-c5ee-47e8-af42-4fe29d895506"],
+        eligible_roles=["admin"],
+        date=datetime.datetime.fromisoformat(
+            "2021-01-01 00:00:00+00:00",
+        ),
+    )
+    """
+
     approval_policy_id: ApprovalPolicyId = pydantic_v1.Field(alias="approvalPolicyId")
     """
     The identifier for the approval policy this slot is associated with.

@@ -20,4 +20,12 @@ class Rule_Approver(pydantic_v1.BaseModel):
         populate_by_name = True
 
 
+"""
+from mercoa import IdentifierList_RolesList, Rule_Approver
+
+Rule_Approver(
+    num_approvers=1,
+    identifier_list=IdentifierList_RolesList(value=["admin"]),
+)
+"""
 Rule = typing.Union[Rule_Approver]

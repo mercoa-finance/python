@@ -134,38 +134,13 @@ class InvoiceClient:
 
         Examples
         --------
-        import datetime
-
-        from mercoa import InvoiceMetadataFilter
         from mercoa.client import Mercoa
 
         client = Mercoa(
             token="YOUR_TOKEN",
         )
         client.invoice.find(
-            entity_id="string",
-            start_date=datetime.datetime.fromisoformat(
-                "2024-01-15 09:30:00+00:00",
-            ),
-            end_date=datetime.datetime.fromisoformat(
-                "2024-01-15 09:30:00+00:00",
-            ),
-            order_by="AMOUNT",
-            order_direction="ASC",
-            limit=1,
-            starting_after="string",
-            search="string",
-            metadata=InvoiceMetadataFilter(
-                key="string",
-                value="string",
-            ),
-            payer_id="string",
-            vendor_id="string",
-            approver_id="string",
-            approver_action="NONE",
-            invoice_id="string",
-            status="DRAFT",
-            include_fees=True,
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -252,58 +227,14 @@ class InvoiceClient:
 
         Examples
         --------
-        import datetime
-
-        from mercoa import (
-            ApprovalSlotAssignment,
-            InvoiceCreationRequest,
-            InvoiceLineItemRequest,
-            PaymentDestinationOptions_Check,
-        )
+        from mercoa import InvoiceCreationRequest
         from mercoa.client import Mercoa
 
         client = Mercoa(
             token="YOUR_TOKEN",
         )
         client.invoice.create(
-            request=InvoiceCreationRequest(
-                status="DRAFT",
-                amount=1.1,
-                currency="AED",
-                invoice_date=datetime.datetime.fromisoformat(
-                    "2024-01-15 09:30:00+00:00",
-                ),
-                deduction_date=datetime.datetime.fromisoformat(
-                    "2024-01-15 09:30:00+00:00",
-                ),
-                settlement_date=datetime.datetime.fromisoformat(
-                    "2024-01-15 09:30:00+00:00",
-                ),
-                due_date=datetime.datetime.fromisoformat(
-                    "2024-01-15 09:30:00+00:00",
-                ),
-                invoice_number="string",
-                note_to_self="string",
-                service_start_date=datetime.datetime.fromisoformat(
-                    "2024-01-15 09:30:00+00:00",
-                ),
-                service_end_date=datetime.datetime.fromisoformat(
-                    "2024-01-15 09:30:00+00:00",
-                ),
-                payer_id="string",
-                payment_source_id="string",
-                vendor_id="string",
-                payment_destination_id="string",
-                payment_destination_options=PaymentDestinationOptions_Check(),
-                approvers=[ApprovalSlotAssignment()],
-                line_items=[InvoiceLineItemRequest()],
-                metadata={"string": "string"},
-                foreign_id="string",
-                document="string",
-                uploaded_image="string",
-                creator_entity_id="string",
-                creator_user_id="string",
-            ),
+            request=InvoiceCreationRequest(),
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -387,8 +318,7 @@ class InvoiceClient:
             token="YOUR_TOKEN",
         )
         client.invoice.get(
-            invoice_id="string",
-            include_fees=True,
+            invoice_id="inv_8545a84e-a45f-41bf-bdf1-33b42a55812c",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -465,7 +395,6 @@ class InvoiceClient:
         import datetime
 
         from mercoa import (
-            ApprovalSlotAssignment,
             InvoiceLineItemRequest,
             InvoiceRequest,
             PaymentDestinationOptions_Check,
@@ -476,44 +405,52 @@ class InvoiceClient:
             token="YOUR_TOKEN",
         )
         client.invoice.update(
-            invoice_id="string",
+            invoice_id="inv_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             request=InvoiceRequest(
                 status="DRAFT",
-                amount=1.1,
-                currency="AED",
+                amount=100.0,
+                currency="USD",
                 invoice_date=datetime.datetime.fromisoformat(
-                    "2024-01-15 09:30:00+00:00",
-                ),
-                deduction_date=datetime.datetime.fromisoformat(
-                    "2024-01-15 09:30:00+00:00",
-                ),
-                settlement_date=datetime.datetime.fromisoformat(
-                    "2024-01-15 09:30:00+00:00",
+                    "2021-01-01 00:00:00+00:00",
                 ),
                 due_date=datetime.datetime.fromisoformat(
-                    "2024-01-15 09:30:00+00:00",
+                    "2021-01-31 00:00:00+00:00",
                 ),
-                invoice_number="string",
-                note_to_self="string",
+                invoice_number="INV-123",
+                note_to_self="For the month of January",
                 service_start_date=datetime.datetime.fromisoformat(
-                    "2024-01-15 09:30:00+00:00",
+                    "2021-01-01 00:00:00+00:00",
                 ),
                 service_end_date=datetime.datetime.fromisoformat(
-                    "2024-01-15 09:30:00+00:00",
+                    "2021-01-31 00:00:00+00:00",
                 ),
-                payer_id="string",
-                payment_source_id="string",
-                vendor_id="string",
-                payment_destination_id="string",
-                payment_destination_options=PaymentDestinationOptions_Check(),
-                approvers=[ApprovalSlotAssignment()],
-                line_items=[InvoiceLineItemRequest()],
-                metadata={"string": "string"},
-                foreign_id="string",
-                document="string",
-                uploaded_image="string",
-                creator_entity_id="string",
-                creator_user_id="string",
+                payer_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                payment_source_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                vendor_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+                payment_destination_id="pm_5fde2f4a-facc-48ef-8f0d-6b7d087c7b18",
+                payment_destination_options=PaymentDestinationOptions_Check(
+                    delivery="MAIL",
+                ),
+                line_items=[
+                    InvoiceLineItemRequest(
+                        amount=100.0,
+                        currency="USD",
+                        description="Product A",
+                        name="Product A",
+                        quantity=1,
+                        unit_price=100.0,
+                        service_start_date=datetime.datetime.fromisoformat(
+                            "2021-01-01 00:00:00+00:00",
+                        ),
+                        service_end_date=datetime.datetime.fromisoformat(
+                            "2021-01-31 00:00:00+00:00",
+                        ),
+                        metadata={"key1": "value1", "key2": "value2"},
+                        gl_account_id="600394",
+                    )
+                ],
+                creator_entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                creator_user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
             ),
         )
         """
@@ -593,7 +530,7 @@ class InvoiceClient:
             token="YOUR_TOKEN",
         )
         client.invoice.delete(
-            invoice_id="string",
+            invoice_id="inv_8545a84e-a45f-41bf-bdf1-33b42a55812c",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -733,38 +670,13 @@ class AsyncInvoiceClient:
 
         Examples
         --------
-        import datetime
-
-        from mercoa import InvoiceMetadataFilter
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
         await client.invoice.find(
-            entity_id="string",
-            start_date=datetime.datetime.fromisoformat(
-                "2024-01-15 09:30:00+00:00",
-            ),
-            end_date=datetime.datetime.fromisoformat(
-                "2024-01-15 09:30:00+00:00",
-            ),
-            order_by="AMOUNT",
-            order_direction="ASC",
-            limit=1,
-            starting_after="string",
-            search="string",
-            metadata=InvoiceMetadataFilter(
-                key="string",
-                value="string",
-            ),
-            payer_id="string",
-            vendor_id="string",
-            approver_id="string",
-            approver_action="NONE",
-            invoice_id="string",
-            status="DRAFT",
-            include_fees=True,
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -851,58 +763,14 @@ class AsyncInvoiceClient:
 
         Examples
         --------
-        import datetime
-
-        from mercoa import (
-            ApprovalSlotAssignment,
-            InvoiceCreationRequest,
-            InvoiceLineItemRequest,
-            PaymentDestinationOptions_Check,
-        )
+        from mercoa import InvoiceCreationRequest
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
         await client.invoice.create(
-            request=InvoiceCreationRequest(
-                status="DRAFT",
-                amount=1.1,
-                currency="AED",
-                invoice_date=datetime.datetime.fromisoformat(
-                    "2024-01-15 09:30:00+00:00",
-                ),
-                deduction_date=datetime.datetime.fromisoformat(
-                    "2024-01-15 09:30:00+00:00",
-                ),
-                settlement_date=datetime.datetime.fromisoformat(
-                    "2024-01-15 09:30:00+00:00",
-                ),
-                due_date=datetime.datetime.fromisoformat(
-                    "2024-01-15 09:30:00+00:00",
-                ),
-                invoice_number="string",
-                note_to_self="string",
-                service_start_date=datetime.datetime.fromisoformat(
-                    "2024-01-15 09:30:00+00:00",
-                ),
-                service_end_date=datetime.datetime.fromisoformat(
-                    "2024-01-15 09:30:00+00:00",
-                ),
-                payer_id="string",
-                payment_source_id="string",
-                vendor_id="string",
-                payment_destination_id="string",
-                payment_destination_options=PaymentDestinationOptions_Check(),
-                approvers=[ApprovalSlotAssignment()],
-                line_items=[InvoiceLineItemRequest()],
-                metadata={"string": "string"},
-                foreign_id="string",
-                document="string",
-                uploaded_image="string",
-                creator_entity_id="string",
-                creator_user_id="string",
-            ),
+            request=InvoiceCreationRequest(),
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -986,8 +854,7 @@ class AsyncInvoiceClient:
             token="YOUR_TOKEN",
         )
         await client.invoice.get(
-            invoice_id="string",
-            include_fees=True,
+            invoice_id="inv_8545a84e-a45f-41bf-bdf1-33b42a55812c",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1064,7 +931,6 @@ class AsyncInvoiceClient:
         import datetime
 
         from mercoa import (
-            ApprovalSlotAssignment,
             InvoiceLineItemRequest,
             InvoiceRequest,
             PaymentDestinationOptions_Check,
@@ -1075,44 +941,52 @@ class AsyncInvoiceClient:
             token="YOUR_TOKEN",
         )
         await client.invoice.update(
-            invoice_id="string",
+            invoice_id="inv_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             request=InvoiceRequest(
                 status="DRAFT",
-                amount=1.1,
-                currency="AED",
+                amount=100.0,
+                currency="USD",
                 invoice_date=datetime.datetime.fromisoformat(
-                    "2024-01-15 09:30:00+00:00",
-                ),
-                deduction_date=datetime.datetime.fromisoformat(
-                    "2024-01-15 09:30:00+00:00",
-                ),
-                settlement_date=datetime.datetime.fromisoformat(
-                    "2024-01-15 09:30:00+00:00",
+                    "2021-01-01 00:00:00+00:00",
                 ),
                 due_date=datetime.datetime.fromisoformat(
-                    "2024-01-15 09:30:00+00:00",
+                    "2021-01-31 00:00:00+00:00",
                 ),
-                invoice_number="string",
-                note_to_self="string",
+                invoice_number="INV-123",
+                note_to_self="For the month of January",
                 service_start_date=datetime.datetime.fromisoformat(
-                    "2024-01-15 09:30:00+00:00",
+                    "2021-01-01 00:00:00+00:00",
                 ),
                 service_end_date=datetime.datetime.fromisoformat(
-                    "2024-01-15 09:30:00+00:00",
+                    "2021-01-31 00:00:00+00:00",
                 ),
-                payer_id="string",
-                payment_source_id="string",
-                vendor_id="string",
-                payment_destination_id="string",
-                payment_destination_options=PaymentDestinationOptions_Check(),
-                approvers=[ApprovalSlotAssignment()],
-                line_items=[InvoiceLineItemRequest()],
-                metadata={"string": "string"},
-                foreign_id="string",
-                document="string",
-                uploaded_image="string",
-                creator_entity_id="string",
-                creator_user_id="string",
+                payer_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                payment_source_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                vendor_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+                payment_destination_id="pm_5fde2f4a-facc-48ef-8f0d-6b7d087c7b18",
+                payment_destination_options=PaymentDestinationOptions_Check(
+                    delivery="MAIL",
+                ),
+                line_items=[
+                    InvoiceLineItemRequest(
+                        amount=100.0,
+                        currency="USD",
+                        description="Product A",
+                        name="Product A",
+                        quantity=1,
+                        unit_price=100.0,
+                        service_start_date=datetime.datetime.fromisoformat(
+                            "2021-01-01 00:00:00+00:00",
+                        ),
+                        service_end_date=datetime.datetime.fromisoformat(
+                            "2021-01-31 00:00:00+00:00",
+                        ),
+                        metadata={"key1": "value1", "key2": "value2"},
+                        gl_account_id="600394",
+                    )
+                ],
+                creator_entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                creator_user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
             ),
         )
         """
@@ -1192,7 +1066,7 @@ class AsyncInvoiceClient:
             token="YOUR_TOKEN",
         )
         await client.invoice.delete(
-            invoice_id="string",
+            invoice_id="inv_8545a84e-a45f-41bf-bdf1-33b42a55812c",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(

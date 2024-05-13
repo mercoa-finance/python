@@ -16,10 +16,10 @@ from ...core.jsonable_encoder import jsonable_encoder
 from ...core.pydantic_utilities import pydantic_v1
 from ...core.remove_none_from_dict import remove_none_from_dict
 from ...core.request_options import RequestOptions
+from ...email_log_types.types.email_log_response import EmailLogResponse
 from ...invoice_types.errors.invoice_error import InvoiceError
 from ...invoice_types.types.document_response import DocumentResponse
 from ...invoice_types.types.invoice_id import InvoiceId
-from ...invoice_types.types.source_email_response import SourceEmailResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -413,7 +413,7 @@ class DocumentClient:
 
     def get_source_email(
         self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> SourceEmailResponse:
+    ) -> EmailLogResponse:
         """
         Get the email subject and body that was used to create this invoice.
 
@@ -426,7 +426,7 @@ class DocumentClient:
 
         Returns
         -------
-        SourceEmailResponse
+        EmailLogResponse
 
         Examples
         --------
@@ -466,7 +466,7 @@ class DocumentClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic_v1.parse_obj_as(SourceEmailResponse, _response_json)  # type: ignore
+            return pydantic_v1.parse_obj_as(EmailLogResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "InvoiceError":
                 raise InvoiceError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
@@ -873,7 +873,7 @@ class AsyncDocumentClient:
 
     async def get_source_email(
         self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> SourceEmailResponse:
+    ) -> EmailLogResponse:
         """
         Get the email subject and body that was used to create this invoice.
 
@@ -886,7 +886,7 @@ class AsyncDocumentClient:
 
         Returns
         -------
-        SourceEmailResponse
+        EmailLogResponse
 
         Examples
         --------
@@ -926,7 +926,7 @@ class AsyncDocumentClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic_v1.parse_obj_as(SourceEmailResponse, _response_json)  # type: ignore
+            return pydantic_v1.parse_obj_as(EmailLogResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "InvoiceError":
                 raise InvoiceError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore

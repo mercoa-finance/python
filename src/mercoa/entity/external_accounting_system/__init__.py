@@ -5,8 +5,12 @@ from .types import (
     CodatCompanyResponse,
     ExternalAccountingSystemCompanyCreationRequest,
     ExternalAccountingSystemCompanyCreationRequest_Codat,
+    ExternalAccountingSystemCompanyCreationRequest_Rutter,
     ExternalAccountingSystemCompanyResponse,
     ExternalAccountingSystemCompanyResponse_Codat,
+    ExternalAccountingSystemCompanyResponse_Rutter,
+    RutterCompanyCreationRequest,
+    RutterCompanyResponse,
 )
 
 __all__ = [
@@ -14,6 +18,10 @@ __all__ = [
     "CodatCompanyResponse",
     "ExternalAccountingSystemCompanyCreationRequest",
     "ExternalAccountingSystemCompanyCreationRequest_Codat",
+    "ExternalAccountingSystemCompanyCreationRequest_Rutter",
     "ExternalAccountingSystemCompanyResponse",
     "ExternalAccountingSystemCompanyResponse_Codat",
+    "ExternalAccountingSystemCompanyResponse_Rutter",
+    "RutterCompanyCreationRequest",
+    "RutterCompanyResponse",
 ]

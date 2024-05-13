@@ -35,7 +35,6 @@ from .payment_destination_options import (
     PaymentDestinationOptions_BankAccount,
     PaymentDestinationOptions_Check,
 )
-from .source_email_response import SourceEmailResponse
 
 __all__ = [
     "AddApproverRequest",
@@ -71,5 +70,4 @@ __all__ = [
     "PaymentDestinationOptions",
     "PaymentDestinationOptions_BankAccount",
     "PaymentDestinationOptions_Check",
-    "SourceEmailResponse",
 ]

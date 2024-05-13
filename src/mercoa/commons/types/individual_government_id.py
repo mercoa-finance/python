@@ -8,6 +8,16 @@ from ...core.pydantic_utilities import pydantic_v1
 
 
 class IndividualGovernmentId(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    from mercoa import IndividualGovernmentId
+
+    IndividualGovernmentId(
+        ssn="123-45-6789",
+    )
+    """
+
     ssn: str = pydantic_v1.Field()
     """
     Full Social Security Number. Must be in the format 123-45-6789.

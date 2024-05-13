@@ -128,7 +128,7 @@ import datetime
 from mercoa import PaymentMethodResponse_BankAccount
 
 PaymentMethodResponse_BankAccount(
-    id="pm_12345",
+    id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
     account_name="My Checking Account",
     bank_name="Chase",
     routing_number="12345678",

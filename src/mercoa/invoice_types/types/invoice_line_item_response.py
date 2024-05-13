@@ -9,6 +9,38 @@ from ...payment_method_types.types.currency_code import CurrencyCode
 
 
 class InvoiceLineItemResponse(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    import datetime
+
+    from mercoa import InvoiceLineItemResponse
+
+    InvoiceLineItemResponse(
+        id="inli_26672f38-eb9a-48f1-a7a0-f1b855e38cd7",
+        amount=100.0,
+        currency="USD",
+        description="Product A",
+        name="Product A",
+        quantity=1,
+        unit_price=100.0,
+        service_start_date=datetime.datetime.fromisoformat(
+            "2021-01-01 00:00:00+00:00",
+        ),
+        service_end_date=datetime.datetime.fromisoformat(
+            "2021-01-31 00:00:00+00:00",
+        ),
+        metadata={"key1": "value1", "key2": "value2"},
+        gl_account_id="600394",
+        created_at=datetime.datetime.fromisoformat(
+            "2021-01-01 00:00:00+00:00",
+        ),
+        updated_at=datetime.datetime.fromisoformat(
+            "2021-01-01 00:00:00+00:00",
+        ),
+    )
+    """
+
     id: str
     amount: typing.Optional[float] = pydantic_v1.Field(default=None)
     """

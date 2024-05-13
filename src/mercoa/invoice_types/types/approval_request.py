@@ -9,6 +9,17 @@ from ...entity_types.types.entity_user_id import EntityUserId
 
 
 class ApprovalRequest(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    from mercoa import ApprovalRequest
+
+    ApprovalRequest(
+        text="This is an approval",
+        user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+    )
+    """
+
     text: typing.Optional[str] = pydantic_v1.Field(default=None)
     """
     Comment associated with this approval action.

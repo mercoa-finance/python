@@ -3,25 +3,14 @@
 import datetime as dt
 import typing
 
-from ...core.datetime_utils import serialize_datetime
-from ...core.pydantic_utilities import pydantic_v1
-from .check_delivery_method import CheckDeliveryMethod
+from ....core.datetime_utils import serialize_datetime
+from ....core.pydantic_utilities import pydantic_v1
 
 
-class CheckPaymentDestinationOptions(pydantic_v1.BaseModel):
+class RutterCompanyCreationRequest(pydantic_v1.BaseModel):
+    access_token: typing.Optional[str] = pydantic_v1.Field(alias="accessToken", default=None)
     """
-    Examples
-    --------
-    from mercoa import CheckPaymentDestinationOptions
-
-    CheckPaymentDestinationOptions(
-        delivery="MAIL",
-    )
-    """
-
-    delivery: typing.Optional[CheckDeliveryMethod] = pydantic_v1.Field(default=None)
-    """
-    Delivery method for check disbursements. Defaults to MAIL.
+    The access token for the existing Rutter connection. If the connection does not exist, leave this field blank and Rutter will create a new connection.
     """
 
     def json(self, **kwargs: typing.Any) -> str:
@@ -35,5 +24,7 @@ class CheckPaymentDestinationOptions(pydantic_v1.BaseModel):
     class Config:
         frozen = True
         smart_union = True
+        allow_population_by_field_name = True
+        populate_by_name = True
         extra = pydantic_v1.Extra.allow
         json_encoders = {dt.datetime: serialize_datetime}

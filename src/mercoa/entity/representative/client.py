@@ -58,7 +58,7 @@ class RepresentativeClient:
             token="YOUR_TOKEN",
         )
         client.entity.representative.get_all(
-            entity_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -142,36 +142,40 @@ class RepresentativeClient:
             token="YOUR_TOKEN",
         )
         client.entity.representative.create(
-            entity_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             request=RepresentativeRequest(
                 name=FullName(
-                    first_name="string",
-                    middle_name="string",
-                    last_name="string",
-                    suffix="string",
+                    first_name="John",
+                    middle_name="Quincy",
+                    last_name="Adams",
+                    suffix="Jr.",
                 ),
                 phone=PhoneNumber(
-                    country_code="string",
-                    number="string",
+                    country_code="1",
+                    number="4155551234",
                 ),
-                email="string",
+                email="john.doe@acme.com",
                 address=Address(
-                    address_line_1="string",
-                    address_line_2="string",
-                    city="string",
-                    state_or_province="string",
-                    postal_code="string",
-                    country="string",
+                    address_line_1="123 Main St",
+                    address_line_2="Unit 1",
+                    city="San Francisco",
+                    state_or_province="CA",
+                    postal_code="94105",
+                    country="US",
                 ),
                 birth_date=BirthDate(
-                    day="string",
-                    month="string",
-                    year="string",
+                    day="1",
+                    month="1",
+                    year="1980",
                 ),
                 government_id=IndividualGovernmentId(
-                    ssn="string",
+                    ssn="123-45-6789",
                 ),
-                responsibilities=Responsibilities(),
+                responsibilities=Responsibilities(
+                    is_owner=True,
+                    ownership_percentage=40,
+                    is_controller=True,
+                ),
             ),
         )
         """
@@ -261,8 +265,8 @@ class RepresentativeClient:
             token="YOUR_TOKEN",
         )
         client.entity.representative.get(
-            entity_id="string",
-            representative_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            representative_id="rep_7df2974a-4069-454c-912f-7e58ebe030fb",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -416,7 +420,7 @@ class AsyncRepresentativeClient:
             token="YOUR_TOKEN",
         )
         await client.entity.representative.get_all(
-            entity_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -500,36 +504,40 @@ class AsyncRepresentativeClient:
             token="YOUR_TOKEN",
         )
         await client.entity.representative.create(
-            entity_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             request=RepresentativeRequest(
                 name=FullName(
-                    first_name="string",
-                    middle_name="string",
-                    last_name="string",
-                    suffix="string",
+                    first_name="John",
+                    middle_name="Quincy",
+                    last_name="Adams",
+                    suffix="Jr.",
                 ),
                 phone=PhoneNumber(
-                    country_code="string",
-                    number="string",
+                    country_code="1",
+                    number="4155551234",
                 ),
-                email="string",
+                email="john.doe@acme.com",
                 address=Address(
-                    address_line_1="string",
-                    address_line_2="string",
-                    city="string",
-                    state_or_province="string",
-                    postal_code="string",
-                    country="string",
+                    address_line_1="123 Main St",
+                    address_line_2="Unit 1",
+                    city="San Francisco",
+                    state_or_province="CA",
+                    postal_code="94105",
+                    country="US",
                 ),
                 birth_date=BirthDate(
-                    day="string",
-                    month="string",
-                    year="string",
+                    day="1",
+                    month="1",
+                    year="1980",
                 ),
                 government_id=IndividualGovernmentId(
-                    ssn="string",
+                    ssn="123-45-6789",
                 ),
-                responsibilities=Responsibilities(),
+                responsibilities=Responsibilities(
+                    is_owner=True,
+                    ownership_percentage=40,
+                    is_controller=True,
+                ),
             ),
         )
         """
@@ -619,8 +627,8 @@ class AsyncRepresentativeClient:
             token="YOUR_TOKEN",
         )
         await client.entity.representative.get(
-            entity_id="string",
-            representative_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            representative_id="rep_7df2974a-4069-454c-912f-7e58ebe030fb",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(

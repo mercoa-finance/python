@@ -138,10 +138,10 @@ class UserClient:
         client.entity.user.create(
             entity_id="string",
             request=EntityUserRequest(
-                foreign_id="string",
-                email="string",
-                name="string",
-                roles=["string"],
+                foreign_id="MY-DB-ID-12345",
+                email="john.doe@acme.com",
+                name="John Doe",
+                roles=["admin", "approver"],
             ),
         )
         """
@@ -307,10 +307,10 @@ class UserClient:
             entity_id="string",
             user_id="string",
             request=EntityUserRequest(
-                foreign_id="string",
-                email="string",
-                name="string",
-                roles=["string"],
+                foreign_id="MY-DB-ID-12345",
+                email="john.doe@acme.com",
+                name="John Doe",
+                roles=["admin", "approver"],
             ),
         )
         """
@@ -643,10 +643,10 @@ class AsyncUserClient:
         await client.entity.user.create(
             entity_id="string",
             request=EntityUserRequest(
-                foreign_id="string",
-                email="string",
-                name="string",
-                roles=["string"],
+                foreign_id="MY-DB-ID-12345",
+                email="john.doe@acme.com",
+                name="John Doe",
+                roles=["admin", "approver"],
             ),
         )
         """
@@ -812,10 +812,10 @@ class AsyncUserClient:
             entity_id="string",
             user_id="string",
             request=EntityUserRequest(
-                foreign_id="string",
-                email="string",
-                name="string",
-                roles=["string"],
+                foreign_id="MY-DB-ID-12345",
+                email="john.doe@acme.com",
+                name="John Doe",
+                roles=["admin", "approver"],
             ),
         )
         """

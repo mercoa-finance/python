@@ -8,6 +8,19 @@ from ...core.pydantic_utilities import pydantic_v1
 
 
 class FullName(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    from mercoa import FullName
+
+    FullName(
+        first_name="John",
+        middle_name="Quincy",
+        last_name="Adams",
+        suffix="Jr.",
+    )
+    """
+
     first_name: str = pydantic_v1.Field(alias="firstName")
     middle_name: typing.Optional[str] = pydantic_v1.Field(alias="middleName", default=None)
     last_name: str = pydantic_v1.Field(alias="lastName")

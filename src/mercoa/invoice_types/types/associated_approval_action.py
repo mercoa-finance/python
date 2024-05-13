@@ -10,6 +10,17 @@ from .approver_action import ApproverAction
 
 
 class AssociatedApprovalAction(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    from mercoa import AssociatedApprovalAction
+
+    AssociatedApprovalAction(
+        user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+        action="APPROVE",
+    )
+    """
+
     user_id: EntityUserId = pydantic_v1.Field(alias="userId")
     action: ApproverAction
 

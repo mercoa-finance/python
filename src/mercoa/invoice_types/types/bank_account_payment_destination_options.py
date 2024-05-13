@@ -9,6 +9,16 @@ from .bank_delivery_method import BankDeliveryMethod
 
 
 class BankAccountPaymentDestinationOptions(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    from mercoa import BankAccountPaymentDestinationOptions
+
+    BankAccountPaymentDestinationOptions(
+        delivery="ACH_SAME_DAY",
+    )
+    """
+
     delivery: typing.Optional[BankDeliveryMethod] = pydantic_v1.Field(default=None)
     """
     Delivery method for ACH payments. Defaults to ACH_SAME_DAY.

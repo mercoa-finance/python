@@ -3,6 +3,7 @@
 from . import (
     approval_policy,
     counterparty,
+    email_log,
     external_accounting_system,
     invoice,
     metadata,
@@ -17,8 +18,12 @@ from .external_accounting_system import (
     CodatCompanyResponse,
     ExternalAccountingSystemCompanyCreationRequest,
     ExternalAccountingSystemCompanyCreationRequest_Codat,
+    ExternalAccountingSystemCompanyCreationRequest_Rutter,
     ExternalAccountingSystemCompanyResponse,
     ExternalAccountingSystemCompanyResponse_Codat,
+    ExternalAccountingSystemCompanyResponse_Rutter,
+    RutterCompanyCreationRequest,
+    RutterCompanyResponse,
 )
 
 __all__ = [
@@ -26,12 +31,17 @@ __all__ = [
     "CodatCompanyResponse",
     "ExternalAccountingSystemCompanyCreationRequest",
     "ExternalAccountingSystemCompanyCreationRequest_Codat",
+    "ExternalAccountingSystemCompanyCreationRequest_Rutter",
     "ExternalAccountingSystemCompanyResponse",
     "ExternalAccountingSystemCompanyResponse_Codat",
+    "ExternalAccountingSystemCompanyResponse_Rutter",
     "NumApproverLessThanOneError",
     "NumApproversUserListMismatchError",
+    "RutterCompanyCreationRequest",
+    "RutterCompanyResponse",
     "approval_policy",
     "counterparty",
+    "email_log",
     "external_accounting_system",
     "invoice",
     "metadata",

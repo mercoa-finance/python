@@ -27,4 +27,11 @@ class PaymentDestinationOptions_BankAccount(pydantic_v1.BaseModel):
         smart_union = True
 
 
+"""
+from mercoa import PaymentDestinationOptions_Check
+
+PaymentDestinationOptions_Check(
+    delivery="MAIL",
+)
+"""
 PaymentDestinationOptions = typing.Union[PaymentDestinationOptions_Check, PaymentDestinationOptions_BankAccount]

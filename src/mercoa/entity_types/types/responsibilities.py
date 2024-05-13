@@ -8,6 +8,17 @@ from ...core.pydantic_utilities import pydantic_v1
 
 
 class Responsibilities(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    from mercoa import Responsibilities
+
+    Responsibilities(
+        is_owner=True,
+        ownership_percentage=40,
+    )
+    """
+
     job_title: typing.Optional[str] = pydantic_v1.Field(alias="jobTitle", default=None)
     is_controller: typing.Optional[bool] = pydantic_v1.Field(alias="isController", default=None)
     """

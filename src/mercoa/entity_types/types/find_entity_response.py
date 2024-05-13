@@ -29,7 +29,8 @@ class FindEntityResponse(pydantic_v1.BaseModel):
         has_more=False,
         data=[
             EntityWithPaymentMethodResponse(
-                id="ent_123",
+                id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                foreign_id="MY-DB-ID-12345",
                 name="Acme Inc.",
                 email="customer@acme.com",
                 accepted_tos=True,
@@ -55,6 +56,7 @@ class FindEntityResponse(pydantic_v1.BaseModel):
                         ),
                         address=Address(
                             address_line_1="123 Main St",
+                            address_line_2="Unit 1",
                             city="San Francisco",
                             state_or_province="CA",
                             postal_code="94105",
@@ -66,7 +68,7 @@ class FindEntityResponse(pydantic_v1.BaseModel):
                 ),
                 payment_methods=[
                     PaymentMethodResponse_BankAccount(
-                        id="pm_12345",
+                        id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
                         account_name="My Checking Account",
                         bank_name="Chase",
                         routing_number="12345678",

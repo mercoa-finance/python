@@ -8,6 +8,18 @@ from ...core.pydantic_utilities import pydantic_v1
 
 
 class DocumentResponse(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    from mercoa import DocumentResponse
+
+    DocumentResponse(
+        id="doc_1234",
+        mime_type="application/pdf",
+        uri="https://example.com/invoice.pdf",
+    )
+    """
+
     id: typing.Optional[str] = pydantic_v1.Field(default=None)
     """
     ID of the document. If not provided, this is a dynamic document that is generated on the fly.

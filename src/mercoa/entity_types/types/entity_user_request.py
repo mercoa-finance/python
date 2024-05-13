@@ -8,6 +8,19 @@ from ...core.pydantic_utilities import pydantic_v1
 
 
 class EntityUserRequest(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    from mercoa import EntityUserRequest
+
+    EntityUserRequest(
+        foreign_id="MY-DB-ID-12345",
+        email="john.doe@acme.com",
+        name="John Doe",
+        roles=["admin", "approver"],
+    )
+    """
+
     foreign_id: typing.Optional[str] = pydantic_v1.Field(alias="foreignId", default=None)
     """
     The ID used to identify this user in your system.

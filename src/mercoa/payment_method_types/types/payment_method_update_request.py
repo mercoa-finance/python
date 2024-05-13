@@ -78,6 +78,14 @@ class PaymentMethodUpdateRequest_OffPlatform(pydantic_v1.BaseModel):
         populate_by_name = True
 
 
+"""
+from mercoa import PaymentMethodUpdateRequest_BankAccount
+
+PaymentMethodUpdateRequest_BankAccount(
+    default_source=True,
+    default_destination=True,
+)
+"""
 PaymentMethodUpdateRequest = typing.Union[
     PaymentMethodUpdateRequest_Custom,
     PaymentMethodUpdateRequest_BankAccount,

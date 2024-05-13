@@ -64,8 +64,8 @@ class ApprovalClient:
         client.invoice.approval.add_approver(
             invoice_id="string",
             request=AddApproverRequest(
-                approval_slot_id="string",
-                user_id="string",
+                approval_slot_id="inap_9bb311c9-7c15-4c9e-8148-63814e0abec6",
+                user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
             ),
         )
         """
@@ -154,8 +154,8 @@ class ApprovalClient:
         client.invoice.approval.approve(
             invoice_id="string",
             request=ApprovalRequest(
-                text="string",
-                user_id="string",
+                text="This is an approval",
+                user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
             ),
         )
         """
@@ -244,8 +244,8 @@ class ApprovalClient:
         client.invoice.approval.reject(
             invoice_id="string",
             request=ApprovalRequest(
-                text="string",
-                user_id="string",
+                text="This is an approval",
+                user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
             ),
         )
         """
@@ -341,8 +341,8 @@ class AsyncApprovalClient:
         await client.invoice.approval.add_approver(
             invoice_id="string",
             request=AddApproverRequest(
-                approval_slot_id="string",
-                user_id="string",
+                approval_slot_id="inap_9bb311c9-7c15-4c9e-8148-63814e0abec6",
+                user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
             ),
         )
         """
@@ -431,8 +431,8 @@ class AsyncApprovalClient:
         await client.invoice.approval.approve(
             invoice_id="string",
             request=ApprovalRequest(
-                text="string",
-                user_id="string",
+                text="This is an approval",
+                user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
             ),
         )
         """
@@ -521,8 +521,8 @@ class AsyncApprovalClient:
         await client.invoice.approval.reject(
             invoice_id="string",
             request=ApprovalRequest(
-                text="string",
-                user_id="string",
+                text="This is an approval",
+                user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
             ),
         )
         """

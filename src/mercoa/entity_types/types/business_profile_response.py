@@ -26,6 +26,7 @@ class BusinessProfileResponse(pydantic_v1.BaseModel):
         ),
         address=Address(
             address_line_1="123 Main St",
+            address_line_2="Unit 1",
             city="San Francisco",
             state_or_province="CA",
             postal_code="94105",

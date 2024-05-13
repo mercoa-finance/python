@@ -9,6 +9,17 @@ from ...entity_types.types.entity_user_id import EntityUserId
 
 
 class CommentRequest(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    from mercoa import CommentRequest
+
+    CommentRequest(
+        text="This is a comment",
+        user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+    )
+    """
+
     text: str
     user_id: typing.Optional[EntityUserId] = pydantic_v1.Field(alias="userId", default=None)
 

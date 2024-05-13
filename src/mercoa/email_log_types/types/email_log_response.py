@@ -9,14 +9,40 @@ from .email_log import EmailLog
 
 
 class EmailLogResponse(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    import datetime
+
+    from mercoa import EmailLog, EmailLogResponse
+
+    EmailLogResponse(
+        count=1,
+        has_more=False,
+        data=[
+            EmailLog(
+                id="1234",
+                subject="Invoice #1234",
+                from_="John Doe <john.doe@example.com>",
+                to="Jane Doe <jane.doe@example.com>",
+                html_body="<html><body><p>Hi Jane,</p><p>Please find attached the invoice for your recent purchase.</p><p>Thanks,</p><p>John</p></body></html>",
+                text_body="Hi Jane,\n\nPlease find attached the invoice for your recent purchase.\n\nThanks,\nJohn",
+                created_at=datetime.datetime.fromisoformat(
+                    "2021-01-01 00:00:00+00:00",
+                ),
+            )
+        ],
+    )
+    """
+
     count: int = pydantic_v1.Field()
     """
-    Total number of logs for the given start and end date filters. This value is not limited by the limit parameter. It is provided so that you can determine how many pages of results are available.
+    Total number of logs for the given filters. This value is not limited by the limit parameter. It is provided so that you can determine how many pages of results are available.
     """
 
     has_more: bool = pydantic_v1.Field(alias="hasMore")
     """
-    True if there are more logs available for the given start and end date filters.
+    True if there are more logs available for the given filters.
     """
 
     data: typing.List[EmailLog]

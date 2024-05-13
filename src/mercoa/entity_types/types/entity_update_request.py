@@ -10,6 +10,53 @@ from .profile_request import ProfileRequest
 
 
 class EntityUpdateRequest(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    from mercoa import (
+        Address,
+        BusinessProfileRequest,
+        Ein,
+        EntityUpdateRequest,
+        PhoneNumber,
+        ProfileRequest,
+        TaxId,
+    )
+
+    EntityUpdateRequest(
+        is_customer=True,
+        is_payor=True,
+        is_payee=False,
+        account_type="business",
+        foreign_id="MY-DB-ID-12345",
+        profile=ProfileRequest(
+            business=BusinessProfileRequest(
+                email="customer@acme.com",
+                legal_business_name="Acme Inc.",
+                website="http://www.acme.com",
+                business_type="llc",
+                phone=PhoneNumber(
+                    country_code="1",
+                    number="4155551234",
+                ),
+                address=Address(
+                    address_line_1="123 Main St",
+                    address_line_2="Unit 1",
+                    city="San Francisco",
+                    state_or_province="CA",
+                    postal_code="94105",
+                    country="US",
+                ),
+                tax_id=TaxId(
+                    ein=Ein(
+                        number="12-3456789",
+                    ),
+                ),
+            ),
+        ),
+    )
+    """
+
     foreign_id: typing.Optional[str] = pydantic_v1.Field(alias="foreignId", default=None)
     """
     The ID used to identify this entity in your system. This ID must be unique across all entities in your system.

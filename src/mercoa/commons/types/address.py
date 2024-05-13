@@ -8,6 +8,21 @@ from ...core.pydantic_utilities import pydantic_v1
 
 
 class Address(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    from mercoa import Address
+
+    Address(
+        address_line_1="123 Main St",
+        address_line_2="Unit 1",
+        city="San Francisco",
+        state_or_province="CA",
+        postal_code="94105",
+        country="US",
+    )
+    """
+
     address_line_1: str = pydantic_v1.Field(alias="addressLine1")
     address_line_2: typing.Optional[str] = pydantic_v1.Field(alias="addressLine2", default=None)
     city: str

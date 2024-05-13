@@ -5,8 +5,6 @@ from .codat_provider_request import CodatProviderRequest
 from .codat_provider_response import CodatProviderResponse
 from .color_scheme_request import ColorSchemeRequest
 from .color_scheme_response import ColorSchemeResponse
-from .email_log import EmailLog
-from .email_log_response import EmailLogResponse
 from .email_provider_request import EmailProviderRequest
 from .email_provider_response import EmailProviderResponse
 from .email_sender_provider import EmailSenderProvider
@@ -15,11 +13,14 @@ from .email_sender_response import EmailSenderResponse
 from .external_accounting_system_provider_request import (
     ExternalAccountingSystemProviderRequest,
     ExternalAccountingSystemProviderRequest_Codat,
+    ExternalAccountingSystemProviderRequest_None,
+    ExternalAccountingSystemProviderRequest_Rutter,
 )
 from .external_accounting_system_provider_response import (
     ExternalAccountingSystemProviderResponse,
     ExternalAccountingSystemProviderResponse_Codat,
     ExternalAccountingSystemProviderResponse_None,
+    ExternalAccountingSystemProviderResponse_Rutter,
 )
 from .individual_onboarding_options import IndividualOnboardingOptions
 from .invoice_notification_configuration_request import InvoiceNotificationConfigurationRequest
@@ -47,6 +48,8 @@ from .payment_rail_markup import PaymentRailMarkup
 from .payment_rail_markup_type import PaymentRailMarkupType
 from .payment_rail_request import PaymentRailRequest
 from .payment_rail_response import PaymentRailResponse
+from .rutter_provider_request import RutterProviderRequest
+from .rutter_provider_response import RutterProviderResponse
 
 __all__ = [
     "BusinessOnboardingOptions",
@@ -54,8 +57,6 @@ __all__ = [
     "CodatProviderResponse",
     "ColorSchemeRequest",
     "ColorSchemeResponse",
-    "EmailLog",
-    "EmailLogResponse",
     "EmailProviderRequest",
     "EmailProviderResponse",
     "EmailSenderProvider",
@@ -63,9 +64,12 @@ __all__ = [
     "EmailSenderResponse",
     "ExternalAccountingSystemProviderRequest",
     "ExternalAccountingSystemProviderRequest_Codat",
+    "ExternalAccountingSystemProviderRequest_None",
+    "ExternalAccountingSystemProviderRequest_Rutter",
     "ExternalAccountingSystemProviderResponse",
     "ExternalAccountingSystemProviderResponse_Codat",
     "ExternalAccountingSystemProviderResponse_None",
+    "ExternalAccountingSystemProviderResponse_Rutter",
     "IndividualOnboardingOptions",
     "InvoiceNotificationConfigurationRequest",
     "InvoiceNotificationConfigurationResponse",
@@ -88,4 +92,6 @@ __all__ = [
     "PaymentRailMarkupType",
     "PaymentRailRequest",
     "PaymentRailResponse",
+    "RutterProviderRequest",
+    "RutterProviderResponse",
 ]

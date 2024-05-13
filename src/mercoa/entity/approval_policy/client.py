@@ -128,7 +128,12 @@ class ApprovalPolicyClient:
 
         Examples
         --------
-        from mercoa import ApprovalPolicyRequest, Rule_Approver, Trigger_Amount
+        from mercoa import (
+            ApprovalPolicyRequest,
+            IdentifierList_RolesList,
+            Rule_Approver,
+            Trigger_Amount,
+        )
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -138,7 +143,10 @@ class ApprovalPolicyClient:
             entity_id="string",
             request=ApprovalPolicyRequest(
                 trigger=[Trigger_Amount()],
-                rule=Rule_Approver(),
+                rule=Rule_Approver(
+                    num_approvers=1,
+                    identifier_list=IdentifierList_RolesList(value=["admin"]),
+                ),
                 upstream_policy_id="string",
             ),
         )
@@ -307,7 +315,12 @@ class ApprovalPolicyClient:
 
         Examples
         --------
-        from mercoa import ApprovalPolicyUpdateRequest, Rule_Approver, Trigger_Amount
+        from mercoa import (
+            ApprovalPolicyUpdateRequest,
+            IdentifierList_RolesList,
+            Rule_Approver,
+            Trigger_Amount,
+        )
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -318,7 +331,10 @@ class ApprovalPolicyClient:
             policy_id="string",
             request=ApprovalPolicyUpdateRequest(
                 trigger=[Trigger_Amount()],
-                rule=Rule_Approver(),
+                rule=Rule_Approver(
+                    num_approvers=1,
+                    identifier_list=IdentifierList_RolesList(value=["admin"]),
+                ),
                 upstream_policy_id="string",
             ),
         )
@@ -561,7 +577,12 @@ class AsyncApprovalPolicyClient:
 
         Examples
         --------
-        from mercoa import ApprovalPolicyRequest, Rule_Approver, Trigger_Amount
+        from mercoa import (
+            ApprovalPolicyRequest,
+            IdentifierList_RolesList,
+            Rule_Approver,
+            Trigger_Amount,
+        )
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -571,7 +592,10 @@ class AsyncApprovalPolicyClient:
             entity_id="string",
             request=ApprovalPolicyRequest(
                 trigger=[Trigger_Amount()],
-                rule=Rule_Approver(),
+                rule=Rule_Approver(
+                    num_approvers=1,
+                    identifier_list=IdentifierList_RolesList(value=["admin"]),
+                ),
                 upstream_policy_id="string",
             ),
         )
@@ -740,7 +764,12 @@ class AsyncApprovalPolicyClient:
 
         Examples
         --------
-        from mercoa import ApprovalPolicyUpdateRequest, Rule_Approver, Trigger_Amount
+        from mercoa import (
+            ApprovalPolicyUpdateRequest,
+            IdentifierList_RolesList,
+            Rule_Approver,
+            Trigger_Amount,
+        )
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -751,7 +780,10 @@ class AsyncApprovalPolicyClient:
             policy_id="string",
             request=ApprovalPolicyUpdateRequest(
                 trigger=[Trigger_Amount()],
-                rule=Rule_Approver(),
+                rule=Rule_Approver(
+                    num_approvers=1,
+                    identifier_list=IdentifierList_RolesList(value=["admin"]),
+                ),
                 upstream_policy_id="string",
             ),
         )

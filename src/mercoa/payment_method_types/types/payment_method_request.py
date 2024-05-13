@@ -98,6 +98,16 @@ class PaymentMethodRequest_OffPlatform(pydantic_v1.BaseModel):
         populate_by_name = True
 
 
+"""
+from mercoa import PaymentMethodRequest_BankAccount
+
+PaymentMethodRequest_BankAccount(
+    bank_name="Chase",
+    routing_number="12345678",
+    account_number="99988767623",
+    account_type="CHECKING",
+)
+"""
 PaymentMethodRequest = typing.Union[
     PaymentMethodRequest_BankAccount,
     PaymentMethodRequest_Card,

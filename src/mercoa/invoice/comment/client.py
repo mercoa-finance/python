@@ -130,8 +130,8 @@ class CommentClient:
         client.invoice.comment.create(
             invoice_id="string",
             request=CommentRequest(
-                text="string",
-                user_id="string",
+                text="This is a comment",
+                user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
             ),
         )
         """
@@ -295,8 +295,8 @@ class CommentClient:
             invoice_id="string",
             comment_id="string",
             request=CommentRequest(
-                text="string",
-                user_id="string",
+                text="This is a comment",
+                user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
             ),
         )
         """
@@ -531,8 +531,8 @@ class AsyncCommentClient:
         await client.invoice.comment.create(
             invoice_id="string",
             request=CommentRequest(
-                text="string",
-                user_id="string",
+                text="This is a comment",
+                user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
             ),
         )
         """
@@ -696,8 +696,8 @@ class AsyncCommentClient:
             invoice_id="string",
             comment_id="string",
             request=CommentRequest(
-                text="string",
-                user_id="string",
+                text="This is a comment",
+                user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
             ),
         )
         """

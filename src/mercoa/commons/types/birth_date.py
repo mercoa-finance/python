@@ -8,6 +8,18 @@ from ...core.pydantic_utilities import pydantic_v1
 
 
 class BirthDate(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    from mercoa import BirthDate
+
+    BirthDate(
+        day="1",
+        month="1",
+        year="1980",
+    )
+    """
+
     day: typing.Optional[str] = None
     month: typing.Optional[str] = None
     year: typing.Optional[str] = None

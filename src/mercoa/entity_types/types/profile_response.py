@@ -10,6 +10,39 @@ from .individual_profile_response import IndividualProfileResponse
 
 
 class ProfileResponse(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    from mercoa import (
+        Address,
+        BusinessProfileResponse,
+        PhoneNumber,
+        ProfileResponse,
+    )
+
+    ProfileResponse(
+        business=BusinessProfileResponse(
+            email="customer@acme.com",
+            legal_business_name="Acme Inc.",
+            business_type="llc",
+            phone=PhoneNumber(
+                country_code="1",
+                number="4155551234",
+            ),
+            address=Address(
+                address_line_1="123 Main St",
+                address_line_2="Unit 1",
+                city="San Francisco",
+                state_or_province="CA",
+                postal_code="94105",
+                country="US",
+            ),
+            tax_id_provided=True,
+            owners_provided=True,
+        ),
+    )
+    """
+
     business: typing.Optional[BusinessProfileResponse] = pydantic_v1.Field(default=None)
     """
     Will be set if the entity is a business

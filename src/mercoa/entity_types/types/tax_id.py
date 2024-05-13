@@ -9,6 +9,18 @@ from .ein import Ein
 
 
 class TaxId(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    from mercoa import Ein, TaxId
+
+    TaxId(
+        ein=Ein(
+            number="12-3456789",
+        ),
+    )
+    """
+
     ein: Ein
 
     def json(self, **kwargs: typing.Any) -> str:

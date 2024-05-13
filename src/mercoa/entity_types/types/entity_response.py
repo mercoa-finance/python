@@ -26,7 +26,8 @@ class EntityResponse(pydantic_v1.BaseModel):
     )
 
     EntityResponse(
-        id="ent_123",
+        id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+        foreign_id="MY-DB-ID-12345",
         name="Acme Inc.",
         email="customer@acme.com",
         accepted_tos=True,
@@ -52,6 +53,7 @@ class EntityResponse(pydantic_v1.BaseModel):
                 ),
                 address=Address(
                     address_line_1="123 Main St",
+                    address_line_2="Unit 1",
                     city="San Francisco",
                     state_or_province="CA",
                     postal_code="94105",

@@ -9,6 +9,31 @@ from ...payment_method_types.types.currency_code import CurrencyCode
 
 
 class InvoiceLineItemRequest(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    import datetime
+
+    from mercoa import InvoiceLineItemRequest
+
+    InvoiceLineItemRequest(
+        amount=100.0,
+        currency="USD",
+        description="Product A",
+        name="Product A",
+        quantity=1,
+        unit_price=100.0,
+        service_start_date=datetime.datetime.fromisoformat(
+            "2021-01-01 00:00:00+00:00",
+        ),
+        service_end_date=datetime.datetime.fromisoformat(
+            "2021-01-31 00:00:00+00:00",
+        ),
+        metadata={"key1": "value1", "key2": "value2"},
+        gl_account_id="600394",
+    )
+    """
+
     id: typing.Optional[str] = pydantic_v1.Field(default=None)
     """
     If provided, will overwrite line item on the invoice with this ID. If not provided, will create a new line item.
