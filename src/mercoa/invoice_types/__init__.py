@@ -28,14 +28,14 @@ from .types import (
     InvoiceMetricsPerDateResponse,
     InvoiceMetricsResponse,
     InvoiceOrderByField,
-    InvoiceRequest,
+    InvoiceRequestBase,
     InvoiceResponse,
     InvoiceStatus,
+    InvoiceUpdateRequest,
     PaymentDestinationOptions,
     PaymentDestinationOptions_BankAccount,
     PaymentDestinationOptions_Check,
 )
-from .errors import DuplicateInvoiceNumber, InvoiceError, InvoiceQueryError, InvoiceStatusError, VendorNotFound
 
 __all__ = [
     "AddApproverRequest",
@@ -53,10 +53,8 @@ __all__ = [
     "CommentRequest",
     "CommentResponse",
     "DocumentResponse",
-    "DuplicateInvoiceNumber",
     "FindInvoiceResponse",
     "InvoiceCreationRequest",
-    "InvoiceError",
     "InvoiceFailureType",
     "InvoiceFeesResponse",
     "InvoiceId",
@@ -67,13 +65,11 @@ __all__ = [
     "InvoiceMetricsPerDateResponse",
     "InvoiceMetricsResponse",
     "InvoiceOrderByField",
-    "InvoiceQueryError",
-    "InvoiceRequest",
+    "InvoiceRequestBase",
     "InvoiceResponse",
     "InvoiceStatus",
-    "InvoiceStatusError",
+    "InvoiceUpdateRequest",
     "PaymentDestinationOptions",
     "PaymentDestinationOptions_BankAccount",
     "PaymentDestinationOptions_Check",
-    "VendorNotFound",
 ]

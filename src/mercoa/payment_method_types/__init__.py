@@ -48,7 +48,6 @@ from .types import (
     PaymentMethodUpdateRequest_OffPlatform,
     PlaidLinkRequest,
 )
-from .errors import PaymentMethodError
 
 __all__ = [
     "BankAccountCheckOptions",
@@ -76,7 +75,6 @@ __all__ = [
     "PaymentMethodBalanceStatus",
     "PaymentMethodBaseRequest",
     "PaymentMethodBaseResponse",
-    "PaymentMethodError",
     "PaymentMethodId",
     "PaymentMethodRequest",
     "PaymentMethodRequest_BankAccount",

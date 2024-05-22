@@ -5,9 +5,10 @@ import typing
 import urllib.parse
 from json.decoder import JSONDecodeError
 
-from ....commons.errors.auth_header_malformed_error import AuthHeaderMalformedError
-from ....commons.errors.auth_header_missing_error import AuthHeaderMissingError
+from ....commons.errors.bad_request import BadRequest
+from ....commons.errors.conflict import Conflict
 from ....commons.errors.forbidden import Forbidden
+from ....commons.errors.internal_server_error import InternalServerError
 from ....commons.errors.not_found import NotFound
 from ....commons.errors.unauthorized import Unauthorized
 from ....commons.errors.unimplemented import Unimplemented
@@ -144,16 +145,18 @@ class NotificationsClient:
         if 200 <= _response.status_code < 300:
             return pydantic_v1.parse_obj_as(FindNotificationResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
-            if _response_json["errorName"] == "AuthHeaderMissingError":
-                raise AuthHeaderMissingError()
-            if _response_json["errorName"] == "AuthHeaderMalformedError":
-                raise AuthHeaderMalformedError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unauthorized":
                 raise Unauthorized(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Forbidden":
                 raise Forbidden(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "NotFound":
                 raise NotFound(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unimplemented":
                 raise Unimplemented(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
@@ -225,16 +228,18 @@ class NotificationsClient:
         if 200 <= _response.status_code < 300:
             return pydantic_v1.parse_obj_as(NotificationResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
-            if _response_json["errorName"] == "AuthHeaderMissingError":
-                raise AuthHeaderMissingError()
-            if _response_json["errorName"] == "AuthHeaderMalformedError":
-                raise AuthHeaderMalformedError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unauthorized":
                 raise Unauthorized(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Forbidden":
                 raise Forbidden(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "NotFound":
                 raise NotFound(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unimplemented":
                 raise Unimplemented(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
@@ -357,16 +362,18 @@ class AsyncNotificationsClient:
         if 200 <= _response.status_code < 300:
             return pydantic_v1.parse_obj_as(FindNotificationResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
-            if _response_json["errorName"] == "AuthHeaderMissingError":
-                raise AuthHeaderMissingError()
-            if _response_json["errorName"] == "AuthHeaderMalformedError":
-                raise AuthHeaderMalformedError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unauthorized":
                 raise Unauthorized(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Forbidden":
                 raise Forbidden(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "NotFound":
                 raise NotFound(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unimplemented":
                 raise Unimplemented(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
@@ -438,16 +445,18 @@ class AsyncNotificationsClient:
         if 200 <= _response.status_code < 300:
             return pydantic_v1.parse_obj_as(NotificationResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
-            if _response_json["errorName"] == "AuthHeaderMissingError":
-                raise AuthHeaderMissingError()
-            if _response_json["errorName"] == "AuthHeaderMalformedError":
-                raise AuthHeaderMalformedError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unauthorized":
                 raise Unauthorized(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Forbidden":
                 raise Forbidden(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "NotFound":
                 raise NotFound(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unimplemented":
                 raise Unimplemented(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)

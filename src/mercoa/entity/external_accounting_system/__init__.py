@@ -11,6 +11,7 @@ from .types import (
     ExternalAccountingSystemCompanyResponse_Rutter,
     RutterCompanyCreationRequest,
     RutterCompanyResponse,
+    SyncType,
 )
 
 __all__ = [
@@ -24,4 +25,5 @@ __all__ = [
     "ExternalAccountingSystemCompanyResponse_Rutter",
     "RutterCompanyCreationRequest",
     "RutterCompanyResponse",
+    "SyncType",
 ]

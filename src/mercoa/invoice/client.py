@@ -5,9 +5,10 @@ import typing
 import urllib.parse
 from json.decoder import JSONDecodeError
 
-from ..commons.errors.auth_header_malformed_error import AuthHeaderMalformedError
-from ..commons.errors.auth_header_missing_error import AuthHeaderMissingError
+from ..commons.errors.bad_request import BadRequest
+from ..commons.errors.conflict import Conflict
 from ..commons.errors.forbidden import Forbidden
+from ..commons.errors.internal_server_error import InternalServerError
 from ..commons.errors.not_found import NotFound
 from ..commons.errors.unauthorized import Unauthorized
 from ..commons.errors.unimplemented import Unimplemented
@@ -21,19 +22,15 @@ from ..core.remove_none_from_dict import remove_none_from_dict
 from ..core.request_options import RequestOptions
 from ..entity_types.types.entity_id import EntityId
 from ..entity_types.types.entity_user_id import EntityUserId
-from ..invoice_types.errors.duplicate_invoice_number import DuplicateInvoiceNumber
-from ..invoice_types.errors.invoice_error import InvoiceError
-from ..invoice_types.errors.invoice_query_error import InvoiceQueryError
-from ..invoice_types.errors.invoice_status_error import InvoiceStatusError
 from ..invoice_types.types.approver_action import ApproverAction
 from ..invoice_types.types.find_invoice_response import FindInvoiceResponse
 from ..invoice_types.types.invoice_creation_request import InvoiceCreationRequest
 from ..invoice_types.types.invoice_id import InvoiceId
 from ..invoice_types.types.invoice_metadata_filter import InvoiceMetadataFilter
 from ..invoice_types.types.invoice_order_by_field import InvoiceOrderByField
-from ..invoice_types.types.invoice_request import InvoiceRequest
 from ..invoice_types.types.invoice_response import InvoiceResponse
 from ..invoice_types.types.invoice_status import InvoiceStatus
+from ..invoice_types.types.invoice_update_request import InvoiceUpdateRequest
 from .approval.client import ApprovalClient, AsyncApprovalClient
 from .comment.client import AsyncCommentClient, CommentClient
 from .document.client import AsyncDocumentClient, DocumentClient
@@ -194,18 +191,18 @@ class InvoiceClient:
         if 200 <= _response.status_code < 300:
             return pydantic_v1.parse_obj_as(FindInvoiceResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
-            if _response_json["errorName"] == "InvoiceQueryError":
-                raise InvoiceQueryError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "AuthHeaderMissingError":
-                raise AuthHeaderMissingError()
-            if _response_json["errorName"] == "AuthHeaderMalformedError":
-                raise AuthHeaderMalformedError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unauthorized":
                 raise Unauthorized(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Forbidden":
                 raise Forbidden(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "NotFound":
                 raise NotFound(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unimplemented":
                 raise Unimplemented(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
@@ -227,14 +224,65 @@ class InvoiceClient:
 
         Examples
         --------
-        from mercoa import InvoiceCreationRequest
+        import datetime
+
+        from mercoa import (
+            InvoiceCreationRequest,
+            InvoiceLineItemRequest,
+            PaymentDestinationOptions_Check,
+        )
         from mercoa.client import Mercoa
 
         client = Mercoa(
             token="YOUR_TOKEN",
         )
         client.invoice.create(
-            request=InvoiceCreationRequest(),
+            request=InvoiceCreationRequest(
+                status="DRAFT",
+                amount=100.0,
+                currency="USD",
+                invoice_date=datetime.datetime.fromisoformat(
+                    "2021-01-01 00:00:00+00:00",
+                ),
+                due_date=datetime.datetime.fromisoformat(
+                    "2021-01-31 00:00:00+00:00",
+                ),
+                invoice_number="INV-123",
+                note_to_self="For the month of January",
+                service_start_date=datetime.datetime.fromisoformat(
+                    "2021-01-01 00:00:00+00:00",
+                ),
+                service_end_date=datetime.datetime.fromisoformat(
+                    "2021-01-31 00:00:00+00:00",
+                ),
+                payer_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                payment_source_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                vendor_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+                payment_destination_id="pm_5fde2f4a-facc-48ef-8f0d-6b7d087c7b18",
+                payment_destination_options=PaymentDestinationOptions_Check(
+                    delivery="MAIL",
+                ),
+                line_items=[
+                    InvoiceLineItemRequest(
+                        amount=100.0,
+                        currency="USD",
+                        description="Product A",
+                        name="Product A",
+                        quantity=1,
+                        unit_price=100.0,
+                        service_start_date=datetime.datetime.fromisoformat(
+                            "2021-01-01 00:00:00+00:00",
+                        ),
+                        service_end_date=datetime.datetime.fromisoformat(
+                            "2021-01-31 00:00:00+00:00",
+                        ),
+                        metadata={"key1": "value1", "key2": "value2"},
+                        gl_account_id="600394",
+                    )
+                ],
+                creator_entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                creator_user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+            ),
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -270,20 +318,18 @@ class InvoiceClient:
         if 200 <= _response.status_code < 300:
             return pydantic_v1.parse_obj_as(InvoiceResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
-            if _response_json["errorName"] == "DuplicateInvoiceNumber":
-                raise DuplicateInvoiceNumber(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "InvoiceError":
-                raise InvoiceError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "AuthHeaderMissingError":
-                raise AuthHeaderMissingError()
-            if _response_json["errorName"] == "AuthHeaderMalformedError":
-                raise AuthHeaderMalformedError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unauthorized":
                 raise Unauthorized(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Forbidden":
                 raise Forbidden(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "NotFound":
                 raise NotFound(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unimplemented":
                 raise Unimplemented(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
@@ -359,29 +405,35 @@ class InvoiceClient:
         if 200 <= _response.status_code < 300:
             return pydantic_v1.parse_obj_as(InvoiceResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
-            if _response_json["errorName"] == "AuthHeaderMissingError":
-                raise AuthHeaderMissingError()
-            if _response_json["errorName"] == "AuthHeaderMalformedError":
-                raise AuthHeaderMalformedError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unauthorized":
                 raise Unauthorized(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Forbidden":
                 raise Forbidden(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "NotFound":
                 raise NotFound(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unimplemented":
                 raise Unimplemented(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def update(
-        self, invoice_id: InvoiceId, *, request: InvoiceRequest, request_options: typing.Optional[RequestOptions] = None
+        self,
+        invoice_id: InvoiceId,
+        *,
+        request: InvoiceUpdateRequest,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> InvoiceResponse:
         """
         Parameters
         ----------
         invoice_id : InvoiceId
 
-        request : InvoiceRequest
+        request : InvoiceUpdateRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -396,7 +448,7 @@ class InvoiceClient:
 
         from mercoa import (
             InvoiceLineItemRequest,
-            InvoiceRequest,
+            InvoiceUpdateRequest,
             PaymentDestinationOptions_Check,
         )
         from mercoa.client import Mercoa
@@ -406,7 +458,7 @@ class InvoiceClient:
         )
         client.invoice.update(
             invoice_id="inv_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            request=InvoiceRequest(
+            request=InvoiceUpdateRequest(
                 status="DRAFT",
                 amount=100.0,
                 currency="USD",
@@ -489,20 +541,18 @@ class InvoiceClient:
         if 200 <= _response.status_code < 300:
             return pydantic_v1.parse_obj_as(InvoiceResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
-            if _response_json["errorName"] == "DuplicateInvoiceNumber":
-                raise DuplicateInvoiceNumber(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "InvoiceError":
-                raise InvoiceError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "AuthHeaderMissingError":
-                raise AuthHeaderMissingError()
-            if _response_json["errorName"] == "AuthHeaderMalformedError":
-                raise AuthHeaderMalformedError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unauthorized":
                 raise Unauthorized(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Forbidden":
                 raise Forbidden(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "NotFound":
                 raise NotFound(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unimplemented":
                 raise Unimplemented(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
@@ -562,18 +612,18 @@ class InvoiceClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if "errorName" in _response_json:
-            if _response_json["errorName"] == "InvoiceStatusError":
-                raise InvoiceStatusError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "AuthHeaderMissingError":
-                raise AuthHeaderMissingError()
-            if _response_json["errorName"] == "AuthHeaderMalformedError":
-                raise AuthHeaderMalformedError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unauthorized":
                 raise Unauthorized(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Forbidden":
                 raise Forbidden(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "NotFound":
                 raise NotFound(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unimplemented":
                 raise Unimplemented(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
@@ -730,18 +780,18 @@ class AsyncInvoiceClient:
         if 200 <= _response.status_code < 300:
             return pydantic_v1.parse_obj_as(FindInvoiceResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
-            if _response_json["errorName"] == "InvoiceQueryError":
-                raise InvoiceQueryError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "AuthHeaderMissingError":
-                raise AuthHeaderMissingError()
-            if _response_json["errorName"] == "AuthHeaderMalformedError":
-                raise AuthHeaderMalformedError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unauthorized":
                 raise Unauthorized(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Forbidden":
                 raise Forbidden(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "NotFound":
                 raise NotFound(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unimplemented":
                 raise Unimplemented(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
@@ -763,14 +813,65 @@ class AsyncInvoiceClient:
 
         Examples
         --------
-        from mercoa import InvoiceCreationRequest
+        import datetime
+
+        from mercoa import (
+            InvoiceCreationRequest,
+            InvoiceLineItemRequest,
+            PaymentDestinationOptions_Check,
+        )
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
         await client.invoice.create(
-            request=InvoiceCreationRequest(),
+            request=InvoiceCreationRequest(
+                status="DRAFT",
+                amount=100.0,
+                currency="USD",
+                invoice_date=datetime.datetime.fromisoformat(
+                    "2021-01-01 00:00:00+00:00",
+                ),
+                due_date=datetime.datetime.fromisoformat(
+                    "2021-01-31 00:00:00+00:00",
+                ),
+                invoice_number="INV-123",
+                note_to_self="For the month of January",
+                service_start_date=datetime.datetime.fromisoformat(
+                    "2021-01-01 00:00:00+00:00",
+                ),
+                service_end_date=datetime.datetime.fromisoformat(
+                    "2021-01-31 00:00:00+00:00",
+                ),
+                payer_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                payment_source_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                vendor_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+                payment_destination_id="pm_5fde2f4a-facc-48ef-8f0d-6b7d087c7b18",
+                payment_destination_options=PaymentDestinationOptions_Check(
+                    delivery="MAIL",
+                ),
+                line_items=[
+                    InvoiceLineItemRequest(
+                        amount=100.0,
+                        currency="USD",
+                        description="Product A",
+                        name="Product A",
+                        quantity=1,
+                        unit_price=100.0,
+                        service_start_date=datetime.datetime.fromisoformat(
+                            "2021-01-01 00:00:00+00:00",
+                        ),
+                        service_end_date=datetime.datetime.fromisoformat(
+                            "2021-01-31 00:00:00+00:00",
+                        ),
+                        metadata={"key1": "value1", "key2": "value2"},
+                        gl_account_id="600394",
+                    )
+                ],
+                creator_entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                creator_user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+            ),
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -806,20 +907,18 @@ class AsyncInvoiceClient:
         if 200 <= _response.status_code < 300:
             return pydantic_v1.parse_obj_as(InvoiceResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
-            if _response_json["errorName"] == "DuplicateInvoiceNumber":
-                raise DuplicateInvoiceNumber(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "InvoiceError":
-                raise InvoiceError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "AuthHeaderMissingError":
-                raise AuthHeaderMissingError()
-            if _response_json["errorName"] == "AuthHeaderMalformedError":
-                raise AuthHeaderMalformedError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unauthorized":
                 raise Unauthorized(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Forbidden":
                 raise Forbidden(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "NotFound":
                 raise NotFound(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unimplemented":
                 raise Unimplemented(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
@@ -895,29 +994,35 @@ class AsyncInvoiceClient:
         if 200 <= _response.status_code < 300:
             return pydantic_v1.parse_obj_as(InvoiceResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
-            if _response_json["errorName"] == "AuthHeaderMissingError":
-                raise AuthHeaderMissingError()
-            if _response_json["errorName"] == "AuthHeaderMalformedError":
-                raise AuthHeaderMalformedError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unauthorized":
                 raise Unauthorized(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Forbidden":
                 raise Forbidden(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "NotFound":
                 raise NotFound(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unimplemented":
                 raise Unimplemented(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def update(
-        self, invoice_id: InvoiceId, *, request: InvoiceRequest, request_options: typing.Optional[RequestOptions] = None
+        self,
+        invoice_id: InvoiceId,
+        *,
+        request: InvoiceUpdateRequest,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> InvoiceResponse:
         """
         Parameters
         ----------
         invoice_id : InvoiceId
 
-        request : InvoiceRequest
+        request : InvoiceUpdateRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -932,7 +1037,7 @@ class AsyncInvoiceClient:
 
         from mercoa import (
             InvoiceLineItemRequest,
-            InvoiceRequest,
+            InvoiceUpdateRequest,
             PaymentDestinationOptions_Check,
         )
         from mercoa.client import AsyncMercoa
@@ -942,7 +1047,7 @@ class AsyncInvoiceClient:
         )
         await client.invoice.update(
             invoice_id="inv_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            request=InvoiceRequest(
+            request=InvoiceUpdateRequest(
                 status="DRAFT",
                 amount=100.0,
                 currency="USD",
@@ -1025,20 +1130,18 @@ class AsyncInvoiceClient:
         if 200 <= _response.status_code < 300:
             return pydantic_v1.parse_obj_as(InvoiceResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
-            if _response_json["errorName"] == "DuplicateInvoiceNumber":
-                raise DuplicateInvoiceNumber(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "InvoiceError":
-                raise InvoiceError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "AuthHeaderMissingError":
-                raise AuthHeaderMissingError()
-            if _response_json["errorName"] == "AuthHeaderMalformedError":
-                raise AuthHeaderMalformedError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unauthorized":
                 raise Unauthorized(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Forbidden":
                 raise Forbidden(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "NotFound":
                 raise NotFound(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unimplemented":
                 raise Unimplemented(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
@@ -1098,18 +1201,18 @@ class AsyncInvoiceClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if "errorName" in _response_json:
-            if _response_json["errorName"] == "InvoiceStatusError":
-                raise InvoiceStatusError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "AuthHeaderMissingError":
-                raise AuthHeaderMissingError()
-            if _response_json["errorName"] == "AuthHeaderMalformedError":
-                raise AuthHeaderMalformedError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unauthorized":
                 raise Unauthorized(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Forbidden":
                 raise Forbidden(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "NotFound":
                 raise NotFound(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unimplemented":
                 raise Unimplemented(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)

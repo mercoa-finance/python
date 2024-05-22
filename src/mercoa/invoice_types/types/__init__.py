@@ -27,9 +27,10 @@ from .invoice_metrics_per_date_group_by import InvoiceMetricsPerDateGroupBy
 from .invoice_metrics_per_date_response import InvoiceMetricsPerDateResponse
 from .invoice_metrics_response import InvoiceMetricsResponse
 from .invoice_order_by_field import InvoiceOrderByField
-from .invoice_request import InvoiceRequest
+from .invoice_request_base import InvoiceRequestBase
 from .invoice_response import InvoiceResponse
 from .invoice_status import InvoiceStatus
+from .invoice_update_request import InvoiceUpdateRequest
 from .payment_destination_options import (
     PaymentDestinationOptions,
     PaymentDestinationOptions_BankAccount,
@@ -64,9 +65,10 @@ __all__ = [
     "InvoiceMetricsPerDateResponse",
     "InvoiceMetricsResponse",
     "InvoiceOrderByField",
-    "InvoiceRequest",
+    "InvoiceRequestBase",
     "InvoiceResponse",
     "InvoiceStatus",
+    "InvoiceUpdateRequest",
     "PaymentDestinationOptions",
     "PaymentDestinationOptions_BankAccount",
     "PaymentDestinationOptions_Check",

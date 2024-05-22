@@ -9,19 +9,19 @@ from ...entity_types.types.entity_id import EntityId
 from .invoice_request_base import InvoiceRequestBase
 
 
-class InvoiceCreationRequest(InvoiceRequestBase):
+class InvoiceUpdateRequest(InvoiceRequestBase):
     """
     Examples
     --------
     import datetime
 
     from mercoa import (
-        InvoiceCreationRequest,
         InvoiceLineItemRequest,
+        InvoiceUpdateRequest,
         PaymentDestinationOptions_Check,
     )
 
-    InvoiceCreationRequest(
+    InvoiceUpdateRequest(
         status="DRAFT",
         amount=100.0,
         currency="USD",
@@ -69,9 +69,9 @@ class InvoiceCreationRequest(InvoiceRequestBase):
     )
     """
 
-    creator_entity_id: EntityId = pydantic_v1.Field(alias="creatorEntityId")
+    creator_entity_id: typing.Optional[EntityId] = pydantic_v1.Field(alias="creatorEntityId", default=None)
     """
-    ID of entity who created this invoice.
+    ID of entity who created this invoice. If creating a payable invoice (AP), this must be the same as the payerId. If creating a receivable invoice (AR), this must be the same as the vendorId.
     """
 
     def json(self, **kwargs: typing.Any) -> str:

@@ -25,9 +25,11 @@ from .external_accounting_system_provider_response import (
 from .individual_onboarding_options import IndividualOnboardingOptions
 from .invoice_notification_configuration_request import InvoiceNotificationConfigurationRequest
 from .invoice_notification_configuration_response import InvoiceNotificationConfigurationResponse
+from .metadata_regex_validation_rule import MetadataRegexValidationRule
 from .metadata_schema import MetadataSchema
 from .metadata_show_conditions import MetadataShowConditions
 from .metadata_type import MetadataType
+from .metadata_validation_rule import MetadataValidationRule, MetadataValidationRule_Regex
 from .notification_configuration_request import (
     NotificationConfigurationRequest,
     NotificationConfigurationRequest_Invoice,
@@ -73,9 +75,12 @@ __all__ = [
     "IndividualOnboardingOptions",
     "InvoiceNotificationConfigurationRequest",
     "InvoiceNotificationConfigurationResponse",
+    "MetadataRegexValidationRule",
     "MetadataSchema",
     "MetadataShowConditions",
     "MetadataType",
+    "MetadataValidationRule",
+    "MetadataValidationRule_Regex",
     "NotificationConfigurationRequest",
     "NotificationConfigurationRequest_Invoice",
     "NotificationConfigurationResponse",

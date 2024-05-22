@@ -14,6 +14,7 @@ from .external_accounting_system_company_response import (
 )
 from .rutter_company_creation_request import RutterCompanyCreationRequest
 from .rutter_company_response import RutterCompanyResponse
+from .sync_type import SyncType
 
 __all__ = [
     "CodatCompanyCreationRequest",
@@ -26,4 +27,5 @@ __all__ = [
     "ExternalAccountingSystemCompanyResponse_Rutter",
     "RutterCompanyCreationRequest",
     "RutterCompanyResponse",
+    "SyncType",
 ]

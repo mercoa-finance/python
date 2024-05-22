@@ -7,6 +7,7 @@ from ...core.datetime_utils import serialize_datetime
 from ...core.pydantic_utilities import pydantic_v1
 from .metadata_show_conditions import MetadataShowConditions
 from .metadata_type import MetadataType
+from .metadata_validation_rule import MetadataValidationRule
 
 
 class MetadataSchema(pydantic_v1.BaseModel):
@@ -22,6 +23,11 @@ class MetadataSchema(pydantic_v1.BaseModel):
     allow_multiple: typing.Optional[bool] = pydantic_v1.Field(alias="allowMultiple", default=None)
     """
     Whether or not multiple values are allowed for this field. Defaults to false. If true, the value will be a list of the specified type.
+    """
+
+    validation_rules: typing.Optional[MetadataValidationRule] = pydantic_v1.Field(alias="validationRules", default=None)
+    """
+    Validation rules are currently only supported for STRING types.
     """
 
     show_conditions: typing.Optional[MetadataShowConditions] = pydantic_v1.Field(alias="showConditions", default=None)

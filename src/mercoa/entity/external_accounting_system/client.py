@@ -4,9 +4,10 @@ import typing
 import urllib.parse
 from json.decoder import JSONDecodeError
 
-from ...commons.errors.auth_header_malformed_error import AuthHeaderMalformedError
-from ...commons.errors.auth_header_missing_error import AuthHeaderMissingError
+from ...commons.errors.bad_request import BadRequest
+from ...commons.errors.conflict import Conflict
 from ...commons.errors.forbidden import Forbidden
+from ...commons.errors.internal_server_error import InternalServerError
 from ...commons.errors.not_found import NotFound
 from ...commons.errors.unauthorized import Unauthorized
 from ...commons.errors.unimplemented import Unimplemented
@@ -19,6 +20,7 @@ from ...core.request_options import RequestOptions
 from ...entity_types.types.entity_id import EntityId
 from .types.external_accounting_system_company_creation_request import ExternalAccountingSystemCompanyCreationRequest
 from .types.external_accounting_system_company_response import ExternalAccountingSystemCompanyResponse
+from .types.sync_type import SyncType
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -102,16 +104,18 @@ class ExternalAccountingSystemClient:
         if 200 <= _response.status_code < 300:
             return pydantic_v1.parse_obj_as(ExternalAccountingSystemCompanyResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
-            if _response_json["errorName"] == "AuthHeaderMissingError":
-                raise AuthHeaderMissingError()
-            if _response_json["errorName"] == "AuthHeaderMalformedError":
-                raise AuthHeaderMalformedError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unauthorized":
                 raise Unauthorized(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Forbidden":
                 raise Forbidden(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "NotFound":
                 raise NotFound(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unimplemented":
                 raise Unimplemented(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
@@ -172,27 +176,46 @@ class ExternalAccountingSystemClient:
         if 200 <= _response.status_code < 300:
             return pydantic_v1.parse_obj_as(str, _response_json)  # type: ignore
         if "errorName" in _response_json:
-            if _response_json["errorName"] == "AuthHeaderMissingError":
-                raise AuthHeaderMissingError()
-            if _response_json["errorName"] == "AuthHeaderMalformedError":
-                raise AuthHeaderMalformedError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unauthorized":
                 raise Unauthorized(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Forbidden":
                 raise Forbidden(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "NotFound":
                 raise NotFound(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unimplemented":
                 raise Unimplemented(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def sync(self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+    def sync(
+        self,
+        entity_id: EntityId,
+        *,
+        vendors: typing.Optional[SyncType] = None,
+        bills: typing.Optional[SyncType] = None,
+        gl_accounts: typing.Optional[SyncType] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
         """
         Sync an entity with an external accounting system. Will sync customers/vendors and invoices.
 
         Parameters
         ----------
         entity_id : EntityId
+
+        vendors : typing.Optional[SyncType]
+            Sync vendors from external accounting system. Default is to pull vendors from external system.
+
+        bills : typing.Optional[SyncType]
+            Sync bills from external accounting system. Default is to not sync bills.
+
+        gl_accounts : typing.Optional[SyncType]
+            Sync GL accounts from external accounting system. Default is to pull GL accounts from external system. Pushing GL accounts is not supported.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -210,6 +233,9 @@ class ExternalAccountingSystemClient:
         )
         client.entity.external_accounting_system.sync(
             entity_id="string",
+            vendors="none",
+            bills="none",
+            gl_accounts="none",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -219,7 +245,18 @@ class ExternalAccountingSystemClient:
                 f"entity/{jsonable_encoder(entity_id)}/external-accounting-system/sync",
             ),
             params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+                remove_none_from_dict(
+                    {
+                        "vendors": vendors,
+                        "bills": bills,
+                        "glAccounts": gl_accounts,
+                        **(
+                            request_options.get("additional_query_parameters", {})
+                            if request_options is not None
+                            else {}
+                        ),
+                    }
+                )
             ),
             headers=jsonable_encoder(
                 remove_none_from_dict(
@@ -242,16 +279,18 @@ class ExternalAccountingSystemClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if "errorName" in _response_json:
-            if _response_json["errorName"] == "AuthHeaderMissingError":
-                raise AuthHeaderMissingError()
-            if _response_json["errorName"] == "AuthHeaderMalformedError":
-                raise AuthHeaderMalformedError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unauthorized":
                 raise Unauthorized(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Forbidden":
                 raise Forbidden(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "NotFound":
                 raise NotFound(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unimplemented":
                 raise Unimplemented(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
@@ -335,16 +374,18 @@ class AsyncExternalAccountingSystemClient:
         if 200 <= _response.status_code < 300:
             return pydantic_v1.parse_obj_as(ExternalAccountingSystemCompanyResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
-            if _response_json["errorName"] == "AuthHeaderMissingError":
-                raise AuthHeaderMissingError()
-            if _response_json["errorName"] == "AuthHeaderMalformedError":
-                raise AuthHeaderMalformedError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unauthorized":
                 raise Unauthorized(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Forbidden":
                 raise Forbidden(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "NotFound":
                 raise NotFound(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unimplemented":
                 raise Unimplemented(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
@@ -405,27 +446,46 @@ class AsyncExternalAccountingSystemClient:
         if 200 <= _response.status_code < 300:
             return pydantic_v1.parse_obj_as(str, _response_json)  # type: ignore
         if "errorName" in _response_json:
-            if _response_json["errorName"] == "AuthHeaderMissingError":
-                raise AuthHeaderMissingError()
-            if _response_json["errorName"] == "AuthHeaderMalformedError":
-                raise AuthHeaderMalformedError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unauthorized":
                 raise Unauthorized(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Forbidden":
                 raise Forbidden(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "NotFound":
                 raise NotFound(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unimplemented":
                 raise Unimplemented(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def sync(self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+    async def sync(
+        self,
+        entity_id: EntityId,
+        *,
+        vendors: typing.Optional[SyncType] = None,
+        bills: typing.Optional[SyncType] = None,
+        gl_accounts: typing.Optional[SyncType] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
         """
         Sync an entity with an external accounting system. Will sync customers/vendors and invoices.
 
         Parameters
         ----------
         entity_id : EntityId
+
+        vendors : typing.Optional[SyncType]
+            Sync vendors from external accounting system. Default is to pull vendors from external system.
+
+        bills : typing.Optional[SyncType]
+            Sync bills from external accounting system. Default is to not sync bills.
+
+        gl_accounts : typing.Optional[SyncType]
+            Sync GL accounts from external accounting system. Default is to pull GL accounts from external system. Pushing GL accounts is not supported.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -443,6 +503,9 @@ class AsyncExternalAccountingSystemClient:
         )
         await client.entity.external_accounting_system.sync(
             entity_id="string",
+            vendors="none",
+            bills="none",
+            gl_accounts="none",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -452,7 +515,18 @@ class AsyncExternalAccountingSystemClient:
                 f"entity/{jsonable_encoder(entity_id)}/external-accounting-system/sync",
             ),
             params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
+                remove_none_from_dict(
+                    {
+                        "vendors": vendors,
+                        "bills": bills,
+                        "glAccounts": gl_accounts,
+                        **(
+                            request_options.get("additional_query_parameters", {})
+                            if request_options is not None
+                            else {}
+                        ),
+                    }
+                )
             ),
             headers=jsonable_encoder(
                 remove_none_from_dict(
@@ -475,16 +549,18 @@ class AsyncExternalAccountingSystemClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if "errorName" in _response_json:
-            if _response_json["errorName"] == "AuthHeaderMissingError":
-                raise AuthHeaderMissingError()
-            if _response_json["errorName"] == "AuthHeaderMalformedError":
-                raise AuthHeaderMalformedError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unauthorized":
                 raise Unauthorized(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Forbidden":
                 raise Forbidden(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "NotFound":
                 raise NotFound(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
             if _response_json["errorName"] == "Unimplemented":
                 raise Unimplemented(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)

@@ -3,6 +3,6 @@
 from ...core.api_error import ApiError
 
 
-class EntityError(ApiError):
+class BadRequest(ApiError):
     def __init__(self, body: str):
         super().__init__(status_code=400, body=body)

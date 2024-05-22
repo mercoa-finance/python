@@ -7,36 +7,16 @@ from ...core.datetime_utils import serialize_datetime
 from ...core.pydantic_utilities import pydantic_v1
 
 
-class Address(pydantic_v1.BaseModel):
+class MetadataRegexValidationRule(pydantic_v1.BaseModel):
+    regex: str = pydantic_v1.Field()
     """
-    Examples
-    --------
-    from mercoa import Address
-
-    Address(
-        address_line_1="123 Main St",
-        address_line_2="Unit 1",
-        city="San Francisco",
-        state_or_province="CA",
-        postal_code="94105",
-        country="US",
-    )
+    A regular expression that the value must match.
     """
 
-    address_line_1: str = pydantic_v1.Field(alias="addressLine1")
-    address_line_2: typing.Optional[str] = pydantic_v1.Field(alias="addressLine2", default=None)
-    city: str
-    state_or_province: str = pydantic_v1.Field(alias="stateOrProvince")
+    error_message: str = pydantic_v1.Field(alias="errorMessage")
     """
-    State or province code. Must be in the format XX.
+    The error message to display if the value does not match the regular expression.
     """
-
-    postal_code: str = pydantic_v1.Field(alias="postalCode")
-    """
-    Postal code. Must be in the format XXXXX or XXXXX-XXXX.
-    """
-
-    country: typing.Optional[str] = None
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

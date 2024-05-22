@@ -70,7 +70,6 @@ from .types import (
     VendorNetwork,
     VendorTrigger,
 )
-from .errors import EntityError, EntityForeignIdAlreadyExists, InvalidTaxId, TokenGenerationFailed
 
 __all__ = [
     "AccountType",
@@ -90,8 +89,6 @@ __all__ = [
     "Ein",
     "EntityAddPayeesRequest",
     "EntityAddPayorsRequest",
-    "EntityError",
-    "EntityForeignIdAlreadyExists",
     "EntityHidePayeesRequest",
     "EntityHidePayorsRequest",
     "EntityId",
@@ -113,7 +110,6 @@ __all__ = [
     "IdentifierList_UserList",
     "IndividualProfileRequest",
     "IndividualProfileResponse",
-    "InvalidTaxId",
     "LineItemAvailabilities",
     "MetadataTrigger",
     "NotificationId",
@@ -131,7 +127,6 @@ __all__ = [
     "Rule_Approver",
     "TaxId",
     "TokenGenerationEntityOptions",
-    "TokenGenerationFailed",
     "TokenGenerationInvoiceOptions",
     "TokenGenerationOptions",
     "TokenGenerationPagesOptions",

@@ -12,7 +12,6 @@ from . import (
     representative,
     user,
 )
-from .approval_policy import NumApproverLessThanOneError, NumApproversUserListMismatchError
 from .external_accounting_system import (
     CodatCompanyCreationRequest,
     CodatCompanyResponse,
@@ -24,6 +23,7 @@ from .external_accounting_system import (
     ExternalAccountingSystemCompanyResponse_Rutter,
     RutterCompanyCreationRequest,
     RutterCompanyResponse,
+    SyncType,
 )
 
 __all__ = [
@@ -35,10 +35,9 @@ __all__ = [
     "ExternalAccountingSystemCompanyResponse",
     "ExternalAccountingSystemCompanyResponse_Codat",
     "ExternalAccountingSystemCompanyResponse_Rutter",
-    "NumApproverLessThanOneError",
-    "NumApproversUserListMismatchError",
     "RutterCompanyCreationRequest",
     "RutterCompanyResponse",
+    "SyncType",
     "approval_policy",
     "counterparty",
     "email_log",
