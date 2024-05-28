@@ -11,6 +11,25 @@ from .trigger import Trigger
 
 
 class ApprovalPolicyUpdateRequest(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    from mercoa import (
+        ApprovalPolicyUpdateRequest,
+        IdentifierList_RolesList,
+        Rule_Approver,
+    )
+
+    ApprovalPolicyUpdateRequest(
+        trigger=[],
+        rule=Rule_Approver(
+            num_approvers=1,
+            identifier_list=IdentifierList_RolesList(value=["admin"]),
+        ),
+        upstream_policy_id="root",
+    )
+    """
+
     trigger: typing.Optional[typing.List[Trigger]] = None
     rule: typing.Optional[Rule] = None
     upstream_policy_id: typing.Optional[ApprovalPolicyId] = pydantic_v1.Field(alias="upstreamPolicyId", default=None)

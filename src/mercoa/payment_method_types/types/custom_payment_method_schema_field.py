@@ -9,6 +9,19 @@ from .custom_payment_method_schema_field_type import CustomPaymentMethodSchemaFi
 
 
 class CustomPaymentMethodSchemaField(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    from mercoa import CustomPaymentMethodSchemaField
+
+    CustomPaymentMethodSchemaField(
+        name="payToTheOrderOf",
+        display_name="Pay To The Order Of",
+        type="text",
+        optional=False,
+    )
+    """
+
     name: str
     display_name: typing.Optional[str] = pydantic_v1.Field(alias="displayName", default=None)
     type: CustomPaymentMethodSchemaFieldType

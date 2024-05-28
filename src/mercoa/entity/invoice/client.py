@@ -29,7 +29,6 @@ from ...invoice_types.types.invoice_metadata_filter import InvoiceMetadataFilter
 from ...invoice_types.types.invoice_metrics_per_date_group_by import InvoiceMetricsPerDateGroupBy
 from ...invoice_types.types.invoice_metrics_response import InvoiceMetricsResponse
 from ...invoice_types.types.invoice_order_by_field import InvoiceOrderByField
-from ...invoice_types.types.invoice_response import InvoiceResponse
 from ...invoice_types.types.invoice_status import InvoiceStatus
 from ...payment_method_types.types.currency_code import CurrencyCode
 
@@ -128,40 +127,17 @@ class InvoiceClient:
 
         Examples
         --------
-        import datetime
-
-        from mercoa import InvoiceMetadataFilter
         from mercoa.client import Mercoa
 
         client = Mercoa(
             token="YOUR_TOKEN",
         )
         client.entity.invoice.find(
-            entity_id="string",
-            exclude_payables=True,
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             exclude_receivables=True,
-            start_date=datetime.datetime.fromisoformat(
-                "2024-01-15 09:30:00+00:00",
-            ),
-            end_date=datetime.datetime.fromisoformat(
-                "2024-01-15 09:30:00+00:00",
-            ),
-            order_by="AMOUNT",
+            order_by="CREATED_AT",
             order_direction="ASC",
-            limit=1,
-            starting_after="string",
-            metadata=InvoiceMetadataFilter(
-                key="string",
-                value="string",
-            ),
-            search="string",
-            payer_id="string",
-            vendor_id="string",
-            approver_id="string",
-            approver_action="NONE",
-            invoice_id="string",
-            status="DRAFT",
-            include_fees=True,
+            limit=10,
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -217,100 +193,6 @@ class InvoiceClient:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
             return pydantic_v1.parse_obj_as(FindInvoiceResponse, _response_json)  # type: ignore
-        if "errorName" in _response_json:
-            if _response_json["errorName"] == "BadRequest":
-                raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unauthorized":
-                raise Unauthorized(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Forbidden":
-                raise Forbidden(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "NotFound":
-                raise NotFound(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Conflict":
-                raise Conflict(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "InternalServerError":
-                raise InternalServerError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unimplemented":
-                raise Unimplemented(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    def get(
-        self,
-        entity_id: EntityId,
-        invoice_id: InvoiceId,
-        *,
-        include_fees: typing.Optional[bool] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> InvoiceResponse:
-        """
-        Parameters
-        ----------
-        entity_id : EntityId
-
-        invoice_id : InvoiceId
-            ID of the invoice to retrieve. This can be the full invoice ID (in_11aa2b77-6391-49e4-8c3f-b198009202c1) or the first 8 characters of the ID (11aa2b77).
-
-        include_fees : typing.Optional[bool]
-            DEPRECATED. Fees are now included by default in the response.
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        InvoiceResponse
-
-        Examples
-        --------
-        from mercoa.client import Mercoa
-
-        client = Mercoa(
-            token="YOUR_TOKEN",
-        )
-        client.entity.invoice.get(
-            entity_id="string",
-            invoice_id="string",
-            include_fees=True,
-        )
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            method="GET",
-            url=urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/",
-                f"entity/{jsonable_encoder(entity_id)}/invoice/{jsonable_encoder(invoice_id)}",
-            ),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "includeFees": include_fees,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
-                )
-            ),
-            headers=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        **self._client_wrapper.get_headers(),
-                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
-                    }
-                )
-            ),
-            timeout=request_options.get("timeout_in_seconds")
-            if request_options is not None and request_options.get("timeout_in_seconds") is not None
-            else self._client_wrapper.get_timeout(),
-            retries=0,
-            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
-        )
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if 200 <= _response.status_code < 300:
-            return pydantic_v1.parse_obj_as(InvoiceResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "BadRequest":
                 raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
@@ -414,29 +296,17 @@ class InvoiceClient:
             token="YOUR_TOKEN",
         )
         client.entity.invoice.metrics(
-            entity_id="string",
-            search="string",
-            exclude_payables=True,
-            exclude_receivables=True,
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             return_by_date="CREATION_DATE",
-            payer_id="string",
-            vendor_id="string",
-            approver_id="string",
-            invoice_id="string",
-            status="DRAFT",
-            due_date_start=datetime.datetime.fromisoformat(
-                "2024-01-15 09:30:00+00:00",
-            ),
-            due_date_end=datetime.datetime.fromisoformat(
-                "2024-01-15 09:30:00+00:00",
-            ),
+            exclude_receivables=True,
             created_date_start=datetime.datetime.fromisoformat(
-                "2024-01-15 09:30:00+00:00",
+                "2021-01-01 00:00:00+00:00",
             ),
             created_date_end=datetime.datetime.fromisoformat(
-                "2024-01-15 09:30:00+00:00",
+                "2021-01-31 23:59:59.999000+00:00",
             ),
-            currency="AED",
+            currency="USD",
+            status="NEW",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -605,40 +475,17 @@ class AsyncInvoiceClient:
 
         Examples
         --------
-        import datetime
-
-        from mercoa import InvoiceMetadataFilter
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
         await client.entity.invoice.find(
-            entity_id="string",
-            exclude_payables=True,
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             exclude_receivables=True,
-            start_date=datetime.datetime.fromisoformat(
-                "2024-01-15 09:30:00+00:00",
-            ),
-            end_date=datetime.datetime.fromisoformat(
-                "2024-01-15 09:30:00+00:00",
-            ),
-            order_by="AMOUNT",
+            order_by="CREATED_AT",
             order_direction="ASC",
-            limit=1,
-            starting_after="string",
-            metadata=InvoiceMetadataFilter(
-                key="string",
-                value="string",
-            ),
-            search="string",
-            payer_id="string",
-            vendor_id="string",
-            approver_id="string",
-            approver_action="NONE",
-            invoice_id="string",
-            status="DRAFT",
-            include_fees=True,
+            limit=10,
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -694,100 +541,6 @@ class AsyncInvoiceClient:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
             return pydantic_v1.parse_obj_as(FindInvoiceResponse, _response_json)  # type: ignore
-        if "errorName" in _response_json:
-            if _response_json["errorName"] == "BadRequest":
-                raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unauthorized":
-                raise Unauthorized(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Forbidden":
-                raise Forbidden(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "NotFound":
-                raise NotFound(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Conflict":
-                raise Conflict(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "InternalServerError":
-                raise InternalServerError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unimplemented":
-                raise Unimplemented(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    async def get(
-        self,
-        entity_id: EntityId,
-        invoice_id: InvoiceId,
-        *,
-        include_fees: typing.Optional[bool] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> InvoiceResponse:
-        """
-        Parameters
-        ----------
-        entity_id : EntityId
-
-        invoice_id : InvoiceId
-            ID of the invoice to retrieve. This can be the full invoice ID (in_11aa2b77-6391-49e4-8c3f-b198009202c1) or the first 8 characters of the ID (11aa2b77).
-
-        include_fees : typing.Optional[bool]
-            DEPRECATED. Fees are now included by default in the response.
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        InvoiceResponse
-
-        Examples
-        --------
-        from mercoa.client import AsyncMercoa
-
-        client = AsyncMercoa(
-            token="YOUR_TOKEN",
-        )
-        await client.entity.invoice.get(
-            entity_id="string",
-            invoice_id="string",
-            include_fees=True,
-        )
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            method="GET",
-            url=urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/",
-                f"entity/{jsonable_encoder(entity_id)}/invoice/{jsonable_encoder(invoice_id)}",
-            ),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "includeFees": include_fees,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
-                )
-            ),
-            headers=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        **self._client_wrapper.get_headers(),
-                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
-                    }
-                )
-            ),
-            timeout=request_options.get("timeout_in_seconds")
-            if request_options is not None and request_options.get("timeout_in_seconds") is not None
-            else self._client_wrapper.get_timeout(),
-            retries=0,
-            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
-        )
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if 200 <= _response.status_code < 300:
-            return pydantic_v1.parse_obj_as(InvoiceResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "BadRequest":
                 raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
@@ -891,29 +644,17 @@ class AsyncInvoiceClient:
             token="YOUR_TOKEN",
         )
         await client.entity.invoice.metrics(
-            entity_id="string",
-            search="string",
-            exclude_payables=True,
-            exclude_receivables=True,
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             return_by_date="CREATION_DATE",
-            payer_id="string",
-            vendor_id="string",
-            approver_id="string",
-            invoice_id="string",
-            status="DRAFT",
-            due_date_start=datetime.datetime.fromisoformat(
-                "2024-01-15 09:30:00+00:00",
-            ),
-            due_date_end=datetime.datetime.fromisoformat(
-                "2024-01-15 09:30:00+00:00",
-            ),
+            exclude_receivables=True,
             created_date_start=datetime.datetime.fromisoformat(
-                "2024-01-15 09:30:00+00:00",
+                "2021-01-01 00:00:00+00:00",
             ),
             created_date_end=datetime.datetime.fromisoformat(
-                "2024-01-15 09:30:00+00:00",
+                "2021-01-31 23:59:59.999000+00:00",
             ),
-            currency="AED",
+            currency="USD",
+            status="NEW",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(

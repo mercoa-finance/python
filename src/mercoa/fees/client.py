@@ -47,7 +47,7 @@ class FeesClient:
 
         Examples
         --------
-        from mercoa import CalculateFeesRequest, PaymentDestinationOptions_Check
+        from mercoa import CalculateFeesRequest
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -55,13 +55,9 @@ class FeesClient:
         )
         client.fees.calculate(
             request=CalculateFeesRequest(
-                amount=1.1,
-                currency="AED",
-                payment_source_id="string",
-                payment_destination_id="string",
-                payment_destination_options=PaymentDestinationOptions_Check(
-                    delivery="MAIL",
-                ),
+                amount=100.0,
+                payment_source_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                payment_destination_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
             ),
         )
         """
@@ -138,7 +134,7 @@ class AsyncFeesClient:
 
         Examples
         --------
-        from mercoa import CalculateFeesRequest, PaymentDestinationOptions_Check
+        from mercoa import CalculateFeesRequest
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -146,13 +142,9 @@ class AsyncFeesClient:
         )
         await client.fees.calculate(
             request=CalculateFeesRequest(
-                amount=1.1,
-                currency="AED",
-                payment_source_id="string",
-                payment_destination_id="string",
-                payment_destination_options=PaymentDestinationOptions_Check(
-                    delivery="MAIL",
-                ),
+                amount=100.0,
+                payment_source_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                payment_destination_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
             ),
         )
         """

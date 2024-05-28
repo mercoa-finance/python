@@ -55,7 +55,7 @@ class CommentClient:
             token="YOUR_TOKEN",
         )
         client.invoice.comment.get_all(
-            invoice_id="string",
+            invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -131,7 +131,7 @@ class CommentClient:
             token="YOUR_TOKEN",
         )
         client.invoice.comment.create(
-            invoice_id="string",
+            invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
             request=CommentRequest(
                 text="This is a comment",
                 user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
@@ -214,8 +214,8 @@ class CommentClient:
             token="YOUR_TOKEN",
         )
         client.invoice.comment.get(
-            invoice_id="string",
-            comment_id="string",
+            invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
+            comment_id="ic_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -299,8 +299,8 @@ class CommentClient:
             token="YOUR_TOKEN",
         )
         client.invoice.comment.update(
-            invoice_id="string",
-            comment_id="string",
+            invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
+            comment_id="ic_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
             request=CommentRequest(
                 text="This is a comment",
                 user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
@@ -386,8 +386,8 @@ class CommentClient:
             token="YOUR_TOKEN",
         )
         client.invoice.comment.delete(
-            invoice_id="string",
-            comment_id="string",
+            invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
+            comment_id="ic_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -466,7 +466,7 @@ class AsyncCommentClient:
             token="YOUR_TOKEN",
         )
         await client.invoice.comment.get_all(
-            invoice_id="string",
+            invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -542,7 +542,7 @@ class AsyncCommentClient:
             token="YOUR_TOKEN",
         )
         await client.invoice.comment.create(
-            invoice_id="string",
+            invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
             request=CommentRequest(
                 text="This is a comment",
                 user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
@@ -625,8 +625,8 @@ class AsyncCommentClient:
             token="YOUR_TOKEN",
         )
         await client.invoice.comment.get(
-            invoice_id="string",
-            comment_id="string",
+            invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
+            comment_id="ic_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -710,8 +710,8 @@ class AsyncCommentClient:
             token="YOUR_TOKEN",
         )
         await client.invoice.comment.update(
-            invoice_id="string",
-            comment_id="string",
+            invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
+            comment_id="ic_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
             request=CommentRequest(
                 text="This is a comment",
                 user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
@@ -797,8 +797,8 @@ class AsyncCommentClient:
             token="YOUR_TOKEN",
         )
         await client.invoice.comment.delete(
-            invoice_id="string",
-            comment_id="string",
+            invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
+            comment_id="ic_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(

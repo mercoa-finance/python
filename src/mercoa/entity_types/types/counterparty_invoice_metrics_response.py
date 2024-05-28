@@ -9,6 +9,37 @@ from .counterparty_invoice_metrics_status_response import CounterpartyInvoiceMet
 
 
 class CounterpartyInvoiceMetricsResponse(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    from mercoa import (
+        CounterpartyInvoiceMetricsResponse,
+        CounterpartyInvoiceMetricsStatusResponse,
+    )
+
+    CounterpartyInvoiceMetricsResponse(
+        total_count=17,
+        total_amount=1700.0,
+        statuses=[
+            CounterpartyInvoiceMetricsStatusResponse(
+                status="PAID",
+                total_count=10,
+                total_amount=1000.0,
+            ),
+            CounterpartyInvoiceMetricsStatusResponse(
+                status="PENDING",
+                total_count=5,
+                total_amount=500.0,
+            ),
+            CounterpartyInvoiceMetricsStatusResponse(
+                status="APPROVED",
+                total_count=2,
+                total_amount=200.0,
+            ),
+        ],
+    )
+    """
+
     total_count: int = pydantic_v1.Field(alias="totalCount")
     total_amount: float = pydantic_v1.Field(alias="totalAmount")
     statuses: typing.List[CounterpartyInvoiceMetricsStatusResponse]

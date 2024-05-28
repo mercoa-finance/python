@@ -337,8 +337,8 @@ class RepresentativeClient:
             token="YOUR_TOKEN",
         )
         client.entity.representative.delete(
-            entity_id="string",
-            representative_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            representative_id="rep_7df2974a-4069-454c-912f-7e58ebe030fb",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -699,8 +699,8 @@ class AsyncRepresentativeClient:
             token="YOUR_TOKEN",
         )
         await client.entity.representative.delete(
-            entity_id="string",
-            representative_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            representative_id="rep_7df2974a-4069-454c-912f-7e58ebe030fb",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(

@@ -56,15 +56,15 @@ class ExternalAccountingSystemClient:
         Examples
         --------
         from mercoa.client import Mercoa
-        from mercoa.entity import ExternalAccountingSystemCompanyCreationRequest_Codat
+        from mercoa.entity import ExternalAccountingSystemCompanyCreationRequest_Rutter
 
         client = Mercoa(
             token="YOUR_TOKEN",
         )
         client.entity.external_accounting_system.create(
-            entity_id="string",
-            request=ExternalAccountingSystemCompanyCreationRequest_Codat(
-                company_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            request=ExternalAccountingSystemCompanyCreationRequest_Rutter(
+                access_token="123",
             ),
         )
         """
@@ -143,7 +143,7 @@ class ExternalAccountingSystemClient:
             token="YOUR_TOKEN",
         )
         client.entity.external_accounting_system.connect(
-            entity_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -232,10 +232,10 @@ class ExternalAccountingSystemClient:
             token="YOUR_TOKEN",
         )
         client.entity.external_accounting_system.sync(
-            entity_id="string",
-            vendors="none",
-            bills="none",
-            gl_accounts="none",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            vendors="pull",
+            bills="push",
+            gl_accounts="pull",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -326,15 +326,15 @@ class AsyncExternalAccountingSystemClient:
         Examples
         --------
         from mercoa.client import AsyncMercoa
-        from mercoa.entity import ExternalAccountingSystemCompanyCreationRequest_Codat
+        from mercoa.entity import ExternalAccountingSystemCompanyCreationRequest_Rutter
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
         await client.entity.external_accounting_system.create(
-            entity_id="string",
-            request=ExternalAccountingSystemCompanyCreationRequest_Codat(
-                company_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            request=ExternalAccountingSystemCompanyCreationRequest_Rutter(
+                access_token="123",
             ),
         )
         """
@@ -413,7 +413,7 @@ class AsyncExternalAccountingSystemClient:
             token="YOUR_TOKEN",
         )
         await client.entity.external_accounting_system.connect(
-            entity_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -502,10 +502,10 @@ class AsyncExternalAccountingSystemClient:
             token="YOUR_TOKEN",
         )
         await client.entity.external_accounting_system.sync(
-            entity_id="string",
-            vendors="none",
-            bills="none",
-            gl_accounts="none",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            vendors="pull",
+            bills="push",
+            gl_accounts="pull",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(

@@ -91,14 +91,10 @@ class CounterpartyClient:
             token="YOUR_TOKEN",
         )
         client.entity.counterparty.find_payees(
-            entity_id="string",
-            name="string",
-            network_type="ENTITY",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            name="Big Box",
             payment_methods=True,
             invoice_metrics=True,
-            counterparty_id="string",
-            limit=1,
-            starting_after="string",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -219,14 +215,10 @@ class CounterpartyClient:
             token="YOUR_TOKEN",
         )
         client.entity.counterparty.find_payors(
-            entity_id="string",
-            name="string",
-            network_type="ENTITY",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            name="Big Box",
             payment_methods=True,
             invoice_metrics=True,
-            counterparty_id="string",
-            limit=1,
-            starting_after="string",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -321,9 +313,9 @@ class CounterpartyClient:
             token="YOUR_TOKEN",
         )
         client.entity.counterparty.add_payees(
-            entity_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             request=EntityAddPayeesRequest(
-                payees=["string"],
+                payees=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
             ),
         )
         """
@@ -410,9 +402,9 @@ class CounterpartyClient:
             token="YOUR_TOKEN",
         )
         client.entity.counterparty.hide_payees(
-            entity_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             request=EntityHidePayeesRequest(
-                payees=["string"],
+                payees=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
             ),
         )
         """
@@ -499,9 +491,9 @@ class CounterpartyClient:
             token="YOUR_TOKEN",
         )
         client.entity.counterparty.add_payors(
-            entity_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             request=EntityAddPayorsRequest(
-                payors=["string"],
+                payors=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
             ),
         )
         """
@@ -588,9 +580,9 @@ class CounterpartyClient:
             token="YOUR_TOKEN",
         )
         client.entity.counterparty.hide_payors(
-            entity_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             request=EntityHidePayorsRequest(
-                payors=["string"],
+                payors=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
             ),
         )
         """
@@ -708,14 +700,10 @@ class AsyncCounterpartyClient:
             token="YOUR_TOKEN",
         )
         await client.entity.counterparty.find_payees(
-            entity_id="string",
-            name="string",
-            network_type="ENTITY",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            name="Big Box",
             payment_methods=True,
             invoice_metrics=True,
-            counterparty_id="string",
-            limit=1,
-            starting_after="string",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -836,14 +824,10 @@ class AsyncCounterpartyClient:
             token="YOUR_TOKEN",
         )
         await client.entity.counterparty.find_payors(
-            entity_id="string",
-            name="string",
-            network_type="ENTITY",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            name="Big Box",
             payment_methods=True,
             invoice_metrics=True,
-            counterparty_id="string",
-            limit=1,
-            starting_after="string",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -938,9 +922,9 @@ class AsyncCounterpartyClient:
             token="YOUR_TOKEN",
         )
         await client.entity.counterparty.add_payees(
-            entity_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             request=EntityAddPayeesRequest(
-                payees=["string"],
+                payees=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
             ),
         )
         """
@@ -1027,9 +1011,9 @@ class AsyncCounterpartyClient:
             token="YOUR_TOKEN",
         )
         await client.entity.counterparty.hide_payees(
-            entity_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             request=EntityHidePayeesRequest(
-                payees=["string"],
+                payees=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
             ),
         )
         """
@@ -1116,9 +1100,9 @@ class AsyncCounterpartyClient:
             token="YOUR_TOKEN",
         )
         await client.entity.counterparty.add_payors(
-            entity_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             request=EntityAddPayorsRequest(
-                payors=["string"],
+                payors=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
             ),
         )
         """
@@ -1205,9 +1189,9 @@ class AsyncCounterpartyClient:
             token="YOUR_TOKEN",
         )
         await client.entity.counterparty.hide_payors(
-            entity_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             request=EntityHidePayorsRequest(
-                payors=["string"],
+                payors=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
             ),
         )
         """

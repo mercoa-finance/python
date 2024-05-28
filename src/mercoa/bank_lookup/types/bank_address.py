@@ -8,6 +8,20 @@ from ...core.pydantic_utilities import pydantic_v1
 
 
 class BankAddress(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    from mercoa import BankAddress
+
+    BankAddress(
+        address="123 Main St",
+        city="Anytown",
+        state="CA",
+        postal_code="12345",
+        postal_code_extension="6789",
+    )
+    """
+
     address: str
     city: str
     state: str

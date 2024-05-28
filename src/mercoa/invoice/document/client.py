@@ -54,7 +54,7 @@ class DocumentClient:
             token="YOUR_TOKEN",
         )
         client.invoice.document.get_all(
-            invoice_id="string",
+            invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -134,8 +134,8 @@ class DocumentClient:
             token="YOUR_TOKEN",
         )
         client.invoice.document.upload(
-            invoice_id="string",
-            document="string",
+            invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
+            document="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII",
         )
         """
         _request: typing.Dict[str, typing.Any] = {}
@@ -219,8 +219,8 @@ class DocumentClient:
             token="YOUR_TOKEN",
         )
         client.invoice.document.delete(
-            invoice_id="string",
-            document_id="string",
+            invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
+            document_id="doc_37e6af0a-e637-48fd-b825-d6947b38c4e2",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -295,7 +295,7 @@ class DocumentClient:
             token="YOUR_TOKEN",
         )
         client.invoice.document.generate_invoice_pdf(
-            invoice_id="string",
+            invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -369,7 +369,7 @@ class DocumentClient:
             token="YOUR_TOKEN",
         )
         client.invoice.document.generate_check_pdf(
-            invoice_id="string",
+            invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -442,7 +442,7 @@ class DocumentClient:
             token="YOUR_TOKEN",
         )
         client.invoice.document.get_source_email(
-            invoice_id="string",
+            invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -520,7 +520,7 @@ class AsyncDocumentClient:
             token="YOUR_TOKEN",
         )
         await client.invoice.document.get_all(
-            invoice_id="string",
+            invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -600,8 +600,8 @@ class AsyncDocumentClient:
             token="YOUR_TOKEN",
         )
         await client.invoice.document.upload(
-            invoice_id="string",
-            document="string",
+            invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
+            document="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII",
         )
         """
         _request: typing.Dict[str, typing.Any] = {}
@@ -685,8 +685,8 @@ class AsyncDocumentClient:
             token="YOUR_TOKEN",
         )
         await client.invoice.document.delete(
-            invoice_id="string",
-            document_id="string",
+            invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
+            document_id="doc_37e6af0a-e637-48fd-b825-d6947b38c4e2",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -761,7 +761,7 @@ class AsyncDocumentClient:
             token="YOUR_TOKEN",
         )
         await client.invoice.document.generate_invoice_pdf(
-            invoice_id="string",
+            invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -835,7 +835,7 @@ class AsyncDocumentClient:
             token="YOUR_TOKEN",
         )
         await client.invoice.document.generate_check_pdf(
-            invoice_id="string",
+            invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -908,7 +908,7 @@ class AsyncDocumentClient:
             token="YOUR_TOKEN",
         )
         await client.invoice.document.get_source_email(
-            invoice_id="string",
+            invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(

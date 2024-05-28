@@ -53,7 +53,7 @@ class MetadataClient:
             token="YOUR_TOKEN",
         )
         client.entity.metadata.get_all(
-            entity_id="string",
+            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -128,8 +128,8 @@ class MetadataClient:
             token="YOUR_TOKEN",
         )
         client.entity.metadata.get(
-            entity_id="string",
-            key="string",
+            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+            key="projectId",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -214,7 +214,10 @@ class MetadataClient:
         client.entity.metadata.update(
             entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
             key="propertyId",
-            request=["prop_123", "prop_456"],
+            request=[
+                "{key: 'prop_123', value: 'Beach Rental'}",
+                "{key: 'prop_456', value: 'City Rental'}",
+            ],
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -294,8 +297,8 @@ class MetadataClient:
             token="YOUR_TOKEN",
         )
         client.entity.metadata.delete(
-            entity_id="string",
-            key="string",
+            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+            key="propertyId",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -374,7 +377,7 @@ class AsyncMetadataClient:
             token="YOUR_TOKEN",
         )
         await client.entity.metadata.get_all(
-            entity_id="string",
+            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -449,8 +452,8 @@ class AsyncMetadataClient:
             token="YOUR_TOKEN",
         )
         await client.entity.metadata.get(
-            entity_id="string",
-            key="string",
+            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+            key="projectId",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -535,7 +538,10 @@ class AsyncMetadataClient:
         await client.entity.metadata.update(
             entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
             key="propertyId",
-            request=["prop_123", "prop_456"],
+            request=[
+                "{key: 'prop_123', value: 'Beach Rental'}",
+                "{key: 'prop_456', value: 'City Rental'}",
+            ],
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -617,8 +623,8 @@ class AsyncMetadataClient:
             token="YOUR_TOKEN",
         )
         await client.entity.metadata.delete(
-            entity_id="string",
-            key="string",
+            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+            key="propertyId",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(

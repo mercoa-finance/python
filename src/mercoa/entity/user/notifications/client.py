@@ -79,26 +79,14 @@ class NotificationsClient:
 
         Examples
         --------
-        import datetime
-
         from mercoa.client import Mercoa
 
         client = Mercoa(
             token="YOUR_TOKEN",
         )
         client.entity.user.notifications.find(
-            entity_id="string",
-            user_id="string",
-            start_date=datetime.datetime.fromisoformat(
-                "2024-01-15 09:30:00+00:00",
-            ),
-            end_date=datetime.datetime.fromisoformat(
-                "2024-01-15 09:30:00+00:00",
-            ),
-            order_direction="ASC",
-            limit=1,
-            starting_after="string",
-            notification_type="INVOICE_APPROVAL_NEEDED",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -193,9 +181,9 @@ class NotificationsClient:
             token="YOUR_TOKEN",
         )
         client.entity.user.notifications.get(
-            entity_id="string",
-            user_id="string",
-            notification_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+            notification_id="notif_7df2974a-4069-454c-912f-7e58ebe030fb",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -296,26 +284,14 @@ class AsyncNotificationsClient:
 
         Examples
         --------
-        import datetime
-
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
         await client.entity.user.notifications.find(
-            entity_id="string",
-            user_id="string",
-            start_date=datetime.datetime.fromisoformat(
-                "2024-01-15 09:30:00+00:00",
-            ),
-            end_date=datetime.datetime.fromisoformat(
-                "2024-01-15 09:30:00+00:00",
-            ),
-            order_direction="ASC",
-            limit=1,
-            starting_after="string",
-            notification_type="INVOICE_APPROVAL_NEEDED",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -410,9 +386,9 @@ class AsyncNotificationsClient:
             token="YOUR_TOKEN",
         )
         await client.entity.user.notifications.get(
-            entity_id="string",
-            user_id="string",
-            notification_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+            notification_id="notif_7df2974a-4069-454c-912f-7e58ebe030fb",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(

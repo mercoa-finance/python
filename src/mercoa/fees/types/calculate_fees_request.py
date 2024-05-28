@@ -11,6 +11,18 @@ from ...payment_method_types.types.payment_method_id import PaymentMethodId
 
 
 class CalculateFeesRequest(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    from mercoa import CalculateFeesRequest
+
+    CalculateFeesRequest(
+        amount=100.0,
+        payment_source_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+        payment_destination_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+    )
+    """
+
     amount: float = pydantic_v1.Field()
     """
     Total amount in major units. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.

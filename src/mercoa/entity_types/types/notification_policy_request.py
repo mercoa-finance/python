@@ -8,6 +8,17 @@ from ...core.pydantic_utilities import pydantic_v1
 
 
 class NotificationPolicyRequest(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    from mercoa import NotificationPolicyRequest
+
+    NotificationPolicyRequest(
+        disabled=False,
+        additional_roles=["admin", "approver"],
+    )
+    """
+
     disabled: typing.Optional[bool] = pydantic_v1.Field(default=None)
     """
     Set to true if the selected notification type should be disabled for this entity

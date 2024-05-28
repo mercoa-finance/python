@@ -55,7 +55,7 @@ class NotificationPolicyClient:
             token="YOUR_TOKEN",
         )
         client.entity.notification_policy.get_all(
-            entity_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -134,7 +134,7 @@ class NotificationPolicyClient:
             token="YOUR_TOKEN",
         )
         client.entity.notification_policy.get(
-            entity_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             notification_type="INVOICE_APPROVAL_NEEDED",
         )
         """
@@ -219,11 +219,11 @@ class NotificationPolicyClient:
             token="YOUR_TOKEN",
         )
         client.entity.notification_policy.update(
-            entity_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             notification_type="INVOICE_APPROVAL_NEEDED",
             request=NotificationPolicyRequest(
-                disabled=True,
-                additional_roles=["string"],
+                disabled=False,
+                additional_roles=["admin", "approver"],
             ),
         )
         """
@@ -309,7 +309,7 @@ class AsyncNotificationPolicyClient:
             token="YOUR_TOKEN",
         )
         await client.entity.notification_policy.get_all(
-            entity_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -388,7 +388,7 @@ class AsyncNotificationPolicyClient:
             token="YOUR_TOKEN",
         )
         await client.entity.notification_policy.get(
-            entity_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             notification_type="INVOICE_APPROVAL_NEEDED",
         )
         """
@@ -473,11 +473,11 @@ class AsyncNotificationPolicyClient:
             token="YOUR_TOKEN",
         )
         await client.entity.notification_policy.update(
-            entity_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             notification_type="INVOICE_APPROVAL_NEEDED",
             request=NotificationPolicyRequest(
-                disabled=True,
-                additional_roles=["string"],
+                disabled=False,
+                additional_roles=["admin", "approver"],
             ),
         )
         """

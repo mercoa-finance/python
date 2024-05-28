@@ -8,6 +8,18 @@ from ...core.pydantic_utilities import pydantic_v1
 
 
 class UserNotificationPolicyRequest(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    from mercoa import UserNotificationPolicyRequest
+
+    UserNotificationPolicyRequest(
+        disabled=False,
+        digest=True,
+        immediate=False,
+    )
+    """
+
     disabled: typing.Optional[bool] = pydantic_v1.Field(default=None)
     """
     Set to true if the selected notification type should be disabled for this user

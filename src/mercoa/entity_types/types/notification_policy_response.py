@@ -9,6 +9,18 @@ from .notification_type import NotificationType
 
 
 class NotificationPolicyResponse(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    from mercoa import NotificationPolicyResponse
+
+    NotificationPolicyResponse(
+        disabled=False,
+        additional_roles=["admin", "approver"],
+        type="INVOICE_APPROVAL_NEEDED",
+    )
+    """
+
     disabled: bool = pydantic_v1.Field()
     """
     True if the selected notification type is disabled for this entity

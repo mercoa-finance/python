@@ -8,6 +8,19 @@ from ...core.pydantic_utilities import pydantic_v1
 
 
 class InvoiceFeesResponse(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    from mercoa import InvoiceFeesResponse
+
+    InvoiceFeesResponse(
+        source_payment_method_fee=0.1,
+        source_platform_markup_fee=0.2,
+        destination_payment_method_fee=1.0,
+        destination_platform_markup_fee=1.5,
+    )
+    """
+
     source_payment_method_fee: float = pydantic_v1.Field(alias="sourcePaymentMethodFee")
     """
     Fee charged to the platform (C1) for processing the source payment method. For example, credit card interchange and acquiring fees.

@@ -12,6 +12,33 @@ from .payment_method_base_response import PaymentMethodBaseResponse
 
 
 class BankAccountResponse(PaymentMethodBaseResponse):
+    """
+    Examples
+    --------
+    import datetime
+
+    from mercoa import BankAccountResponse
+
+    BankAccountResponse(
+        id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+        account_name="My Checking Account",
+        bank_name="Chase",
+        routing_number="12345678",
+        account_number="99988767623",
+        account_type="CHECKING",
+        status="VERIFIED",
+        is_default_source=True,
+        is_default_destination=True,
+        supported_currencies=["USD"],
+        created_at=datetime.datetime.fromisoformat(
+            "2021-01-01 00:00:00+00:00",
+        ),
+        updated_at=datetime.datetime.fromisoformat(
+            "2021-01-01 00:00:00+00:00",
+        ),
+    )
+    """
+
     account_name: str = pydantic_v1.Field(alias="accountName")
     bank_name: str = pydantic_v1.Field(alias="bankName")
     routing_number: str = pydantic_v1.Field(alias="routingNumber")

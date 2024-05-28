@@ -9,6 +9,16 @@ from .entity_id import EntityId
 
 
 class EntityAddPayorsRequest(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    from mercoa import EntityAddPayorsRequest
+
+    EntityAddPayorsRequest(
+        payors=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
+    )
+    """
+
     payors: typing.List[EntityId] = pydantic_v1.Field()
     """
     List of payor entity IDs to associate with the entity

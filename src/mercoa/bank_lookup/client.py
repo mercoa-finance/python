@@ -50,7 +50,7 @@ class BankLookupClient:
             token="YOUR_TOKEN",
         )
         client.bank_lookup.find(
-            routing_number="string",
+            routing_number="026009593",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -136,7 +136,7 @@ class AsyncBankLookupClient:
             token="YOUR_TOKEN",
         )
         await client.bank_lookup.find(
-            routing_number="string",
+            routing_number="026009593",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(

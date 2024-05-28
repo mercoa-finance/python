@@ -15,7 +15,7 @@ class CommentResponse(pydantic_v1.BaseModel):
     --------
     import datetime
 
-    from mercoa import AssociatedApprovalAction, CommentResponse, EntityUserResponse
+    from mercoa import CommentResponse, EntityUserResponse
 
     CommentResponse(
         id="ic_b3525b66-da94-4525-9f31-426bcf657128",
@@ -32,10 +32,6 @@ class CommentResponse(pydantic_v1.BaseModel):
             updated_at=datetime.datetime.fromisoformat(
                 "2024-01-01 00:00:00+00:00",
             ),
-        ),
-        associated_approval_action=AssociatedApprovalAction(
-            user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
-            action="APPROVE",
         ),
         created_at=datetime.datetime.fromisoformat(
             "2021-01-01 00:00:00+00:00",

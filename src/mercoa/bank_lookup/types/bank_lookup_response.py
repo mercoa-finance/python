@@ -9,6 +9,23 @@ from .bank_address import BankAddress
 
 
 class BankLookupResponse(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    from mercoa import BankAddress, BankLookupResponse
+
+    BankLookupResponse(
+        bank_name="Bank of America",
+        bank_address=BankAddress(
+            address="123 Main St",
+            city="Anytown",
+            state="CA",
+            postal_code="12345",
+            postal_code_extension="6789",
+        ),
+    )
+    """
+
     bank_name: str = pydantic_v1.Field(alias="bankName")
     bank_address: BankAddress = pydantic_v1.Field(alias="bankAddress")
 

@@ -61,7 +61,7 @@ class ApprovalClient:
             token="YOUR_TOKEN",
         )
         client.invoice.approval.add_approver(
-            invoice_id="string",
+            invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
             request=AddApproverRequest(
                 approval_slot_id="inap_9bb311c9-7c15-4c9e-8148-63814e0abec6",
                 user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
@@ -149,9 +149,9 @@ class ApprovalClient:
             token="YOUR_TOKEN",
         )
         client.invoice.approval.approve(
-            invoice_id="string",
+            invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
             request=ApprovalRequest(
-                text="This is an approval",
+                text="This is a reason for my action",
                 user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
             ),
         )
@@ -237,9 +237,9 @@ class ApprovalClient:
             token="YOUR_TOKEN",
         )
         client.invoice.approval.reject(
-            invoice_id="string",
+            invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
             request=ApprovalRequest(
-                text="This is an approval",
+                text="This is a reason for my action",
                 user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
             ),
         )
@@ -332,7 +332,7 @@ class AsyncApprovalClient:
             token="YOUR_TOKEN",
         )
         await client.invoice.approval.add_approver(
-            invoice_id="string",
+            invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
             request=AddApproverRequest(
                 approval_slot_id="inap_9bb311c9-7c15-4c9e-8148-63814e0abec6",
                 user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
@@ -420,9 +420,9 @@ class AsyncApprovalClient:
             token="YOUR_TOKEN",
         )
         await client.invoice.approval.approve(
-            invoice_id="string",
+            invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
             request=ApprovalRequest(
-                text="This is an approval",
+                text="This is a reason for my action",
                 user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
             ),
         )
@@ -508,9 +508,9 @@ class AsyncApprovalClient:
             token="YOUR_TOKEN",
         )
         await client.invoice.approval.reject(
-            invoice_id="string",
+            invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
             request=ApprovalRequest(
-                text="This is an approval",
+                text="This is a reason for my action",
                 user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
             ),
         )

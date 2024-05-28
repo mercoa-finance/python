@@ -10,6 +10,50 @@ from .invoice_metrics_per_date_response import InvoiceMetricsPerDateResponse
 
 
 class InvoiceMetricsResponse(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    import datetime
+
+    from mercoa import InvoiceMetricsPerDateResponse, InvoiceMetricsResponse
+
+    InvoiceMetricsResponse(
+        total_amount=1000.0,
+        total_count=10,
+        average_amount=100.0,
+        currency="USD",
+        dates={
+            "2021-01-01T00:00:00Z": InvoiceMetricsPerDateResponse(
+                date=datetime.datetime.fromisoformat(
+                    "2021-01-01 00:00:00+00:00",
+                ),
+                total_amount=100.0,
+                total_count=1,
+                average_amount=100.0,
+                currency="USD",
+            ),
+            "2021-01-02T00:00:00Z": InvoiceMetricsPerDateResponse(
+                date=datetime.datetime.fromisoformat(
+                    "2021-01-02 00:00:00+00:00",
+                ),
+                total_amount=200.0,
+                total_count=2,
+                average_amount=100.0,
+                currency="USD",
+            ),
+            "2021-01-03T00:00:00Z": InvoiceMetricsPerDateResponse(
+                date=datetime.datetime.fromisoformat(
+                    "2021-01-03 00:00:00+00:00",
+                ),
+                total_amount=400.0,
+                total_count=2,
+                average_amount=200.0,
+                currency="USD",
+            ),
+        },
+    )
+    """
+
     total_amount: float = pydantic_v1.Field(alias="totalAmount")
     total_count: int = pydantic_v1.Field(alias="totalCount")
     average_amount: float = pydantic_v1.Field(alias="averageAmount")

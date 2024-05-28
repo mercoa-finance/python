@@ -318,7 +318,7 @@ class EntityClient:
             token="YOUR_TOKEN",
         )
         client.entity.get(
-            entity_id="string",
+            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -404,7 +404,7 @@ class EntityClient:
             token="YOUR_TOKEN",
         )
         client.entity.update(
-            entity_id="string",
+            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
             request=EntityUpdateRequest(
                 is_customer=True,
                 is_payor=True,
@@ -721,6 +721,8 @@ class EntityClient:
         """
         Generate a JWT token for an entity with the given options. This token can be used to authenticate the entity in the Mercoa API and iFrame.
 
+        <Warning>We recommend using [this endpoint](/api-reference/entity/user/get-token). This will enable features such as approvals and comments.</Warning>
+
         Parameters
         ----------
         entity_id : EntityId
@@ -930,10 +932,9 @@ class EntityClient:
             token="YOUR_TOKEN",
         )
         client.entity.get_onboarding_link(
-            entity_id="string",
-            type="PAYEE",
-            expires_in="string",
-            connected_entity_id="string",
+            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+            type="PAYOR",
+            expires_in="1h",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -1377,7 +1378,7 @@ class AsyncEntityClient:
             token="YOUR_TOKEN",
         )
         await client.entity.get(
-            entity_id="string",
+            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1463,7 +1464,7 @@ class AsyncEntityClient:
             token="YOUR_TOKEN",
         )
         await client.entity.update(
-            entity_id="string",
+            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
             request=EntityUpdateRequest(
                 is_customer=True,
                 is_payor=True,
@@ -1782,6 +1783,8 @@ class AsyncEntityClient:
         """
         Generate a JWT token for an entity with the given options. This token can be used to authenticate the entity in the Mercoa API and iFrame.
 
+        <Warning>We recommend using [this endpoint](/api-reference/entity/user/get-token). This will enable features such as approvals and comments.</Warning>
+
         Parameters
         ----------
         entity_id : EntityId
@@ -1991,10 +1994,9 @@ class AsyncEntityClient:
             token="YOUR_TOKEN",
         )
         await client.entity.get_onboarding_link(
-            entity_id="string",
-            type="PAYEE",
-            expires_in="string",
-            connected_entity_id="string",
+            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+            type="PAYOR",
+            expires_in="1h",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(

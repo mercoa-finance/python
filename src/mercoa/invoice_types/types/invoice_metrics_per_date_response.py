@@ -9,6 +9,24 @@ from ...payment_method_types.types.currency_code import CurrencyCode
 
 
 class InvoiceMetricsPerDateResponse(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    import datetime
+
+    from mercoa import InvoiceMetricsPerDateResponse
+
+    InvoiceMetricsPerDateResponse(
+        date=datetime.datetime.fromisoformat(
+            "2021-01-01 00:00:00+00:00",
+        ),
+        total_amount=100.0,
+        total_count=1,
+        average_amount=100.0,
+        currency="USD",
+    )
+    """
+
     date: dt.datetime
     total_amount: float = pydantic_v1.Field(alias="totalAmount")
     total_count: int = pydantic_v1.Field(alias="totalCount")

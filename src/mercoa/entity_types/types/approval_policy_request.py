@@ -11,6 +11,25 @@ from .trigger import Trigger
 
 
 class ApprovalPolicyRequest(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    from mercoa import (
+        ApprovalPolicyRequest,
+        IdentifierList_RolesList,
+        Rule_Approver,
+    )
+
+    ApprovalPolicyRequest(
+        trigger=[],
+        rule=Rule_Approver(
+            num_approvers=1,
+            identifier_list=IdentifierList_RolesList(value=["admin"]),
+        ),
+        upstream_policy_id="root",
+    )
+    """
+
     trigger: typing.List[Trigger] = pydantic_v1.Field()
     """
     List of triggers that will cause this policy to be evaluated. If no triggers are provided, the policy will be evaluated for all invoices.

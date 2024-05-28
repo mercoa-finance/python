@@ -180,7 +180,7 @@ class FindInvoiceResponse(pydantic_v1.BaseModel):
                 comments=[
                     CommentResponse(
                         id="ic_b3525b66-da94-4525-9f31-426bcf657128",
-                        text="This is a comment",
+                        text="This is an approval comment",
                         user=EntityUserResponse(
                             id="user_ec3aafc8-ea86-408a-a6c1-545497badbbb",
                             foreign_id="MY-DB-ID-12345",

@@ -9,6 +9,34 @@ from .payment_method_base_response import PaymentMethodBaseResponse
 
 
 class CheckResponse(PaymentMethodBaseResponse):
+    """
+    Examples
+    --------
+    import datetime
+
+    from mercoa import CheckResponse
+
+    CheckResponse(
+        id="pm_5fde2f4a-facc-48ef-8f0d-6b7d087c7b18",
+        pay_to_the_order_of="John Doe",
+        address_line_1="123 Main St",
+        address_line_2="Apt 1",
+        city="New York",
+        state_or_province="NY",
+        postal_code="10001",
+        country="US",
+        is_default_source=False,
+        is_default_destination=True,
+        supported_currencies=["USD"],
+        created_at=datetime.datetime.fromisoformat(
+            "2021-01-01 00:00:00+00:00",
+        ),
+        updated_at=datetime.datetime.fromisoformat(
+            "2021-01-01 00:00:00+00:00",
+        ),
+    )
+    """
+
     pay_to_the_order_of: str = pydantic_v1.Field(alias="payToTheOrderOf")
     address_line_1: str = pydantic_v1.Field(alias="addressLine1")
     address_line_2: typing.Optional[str] = pydantic_v1.Field(alias="addressLine2", default=None)

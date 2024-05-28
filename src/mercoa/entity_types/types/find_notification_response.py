@@ -9,6 +9,37 @@ from .notification_response import NotificationResponse
 
 
 class FindNotificationResponse(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    import datetime
+
+    from mercoa import FindNotificationResponse, NotificationResponse
+
+    FindNotificationResponse(
+        count=2,
+        has_more=False,
+        data=[
+            NotificationResponse(
+                id="notif_7df2974a-4069-454c-912f-7e58ebe030fb",
+                invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
+                type="INVOICE_APPROVAL_NEEDED",
+                created_at=datetime.datetime.fromisoformat(
+                    "2024-01-01 00:00:00+00:00",
+                ),
+            ),
+            NotificationResponse(
+                id="notif_958c4ffb-dc06-494c-a0e0-1b4946c6bb0f",
+                invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
+                type="INVOICE_APPROVED",
+                created_at=datetime.datetime.fromisoformat(
+                    "2024-01-01 00:00:00+00:00",
+                ),
+            ),
+        ],
+    )
+    """
+
     count: int = pydantic_v1.Field()
     """
     Total number of notifications for the given start and end date filters. This value is not limited by the limit parameter. It is provided so that you can determine how many pages of results are available.

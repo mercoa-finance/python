@@ -12,6 +12,68 @@ from .entity_response import EntityResponse
 
 
 class CounterpartyResponse(EntityResponse):
+    """
+    Examples
+    --------
+    import datetime
+
+    from mercoa import (
+        BusinessProfileResponse,
+        CounterpartyResponse,
+        PaymentMethodResponse_BankAccount,
+        ProfileResponse,
+    )
+
+    CounterpartyResponse(
+        id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+        foreign_id="MY-DB-ID-90909",
+        name="Big Box Store",
+        email="vendor@bigboxstore.com",
+        accepted_tos=False,
+        status="unverified",
+        is_customer=False,
+        is_payor=False,
+        is_payee=True,
+        account_type="business",
+        updated_at=datetime.datetime.fromisoformat(
+            "2024-01-02 00:00:00+00:00",
+        ),
+        created_at=datetime.datetime.fromisoformat(
+            "2024-01-01 00:00:00+00:00",
+        ),
+        profile=ProfileResponse(
+            business=BusinessProfileResponse(
+                email="vendor@bigboxstore.com",
+                legal_business_name="Big Box Store",
+                business_type="publicCorporation",
+                tax_id_provided=False,
+                owners_provided=False,
+            ),
+        ),
+        payment_methods=[
+            PaymentMethodResponse_BankAccount(
+                id="pm_7610541f-4619-4033-8620-cfccfb811293",
+                account_name="Vendor Checking Account",
+                bank_name="Chase",
+                routing_number="66554433",
+                account_number="55934059697648",
+                account_type="CHECKING",
+                status="NEW",
+                is_default_source=True,
+                is_default_destination=True,
+                supported_currencies=["USD"],
+                created_at=datetime.datetime.fromisoformat(
+                    "2021-01-01 00:00:00+00:00",
+                ),
+                updated_at=datetime.datetime.fromisoformat(
+                    "2021-01-01 00:00:00+00:00",
+                ),
+            )
+        ],
+        counterparty_type=["ENTITY", "NETWORK"],
+    )
+    """
+
     payment_methods: typing.List[PaymentMethodResponse] = pydantic_v1.Field(alias="paymentMethods")
     counterparty_type: typing.List[CounterpartyNetworkType] = pydantic_v1.Field(alias="counterpartyType")
     invoice_metrics: typing.Optional[CounterpartyInvoiceMetricsResponse] = pydantic_v1.Field(

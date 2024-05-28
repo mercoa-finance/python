@@ -140,7 +140,7 @@ from .invoice_types import (
     PaymentDestinationOptions_BankAccount,
     PaymentDestinationOptions_Check,
 )
-from .ocr import OcrAsyncResponse, OcrJobResponse, OcrJobStatus, OcrResponse
+from .ocr import OcrAsyncResponse, OcrJobResponse, OcrJobStatus, OcrRequest, OcrResponse
 from .organization_types import (
     BusinessOnboardingOptions,
     CodatProviderRequest,
@@ -386,6 +386,7 @@ __all__ = [
     "OcrAsyncResponse",
     "OcrJobResponse",
     "OcrJobStatus",
+    "OcrRequest",
     "OcrResponse",
     "OnboardingOption",
     "OnboardingOptionsRequest",

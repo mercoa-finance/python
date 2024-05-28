@@ -60,7 +60,7 @@ class UserClient:
             token="YOUR_TOKEN",
         )
         client.entity.user.get_all(
-            entity_id="string",
+            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -138,7 +138,7 @@ class UserClient:
             token="YOUR_TOKEN",
         )
         client.entity.user.create(
-            entity_id="string",
+            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
             request=EntityUserRequest(
                 foreign_id="MY-DB-ID-12345",
                 email="john.doe@acme.com",
@@ -225,8 +225,8 @@ class UserClient:
             token="YOUR_TOKEN",
         )
         client.entity.user.get(
-            entity_id="string",
-            user_id="string",
+            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+            user_id="user_ec3aafc8-ea86-408a-a6c1-545497badbbb",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -310,8 +310,8 @@ class UserClient:
             token="YOUR_TOKEN",
         )
         client.entity.user.update(
-            entity_id="string",
-            user_id="string",
+            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+            user_id="user_ec3aafc8-ea86-408a-a6c1-545497badbbb",
             request=EntityUserRequest(
                 foreign_id="MY-DB-ID-12345",
                 email="john.doe@acme.com",
@@ -575,7 +575,7 @@ class AsyncUserClient:
             token="YOUR_TOKEN",
         )
         await client.entity.user.get_all(
-            entity_id="string",
+            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -653,7 +653,7 @@ class AsyncUserClient:
             token="YOUR_TOKEN",
         )
         await client.entity.user.create(
-            entity_id="string",
+            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
             request=EntityUserRequest(
                 foreign_id="MY-DB-ID-12345",
                 email="john.doe@acme.com",
@@ -740,8 +740,8 @@ class AsyncUserClient:
             token="YOUR_TOKEN",
         )
         await client.entity.user.get(
-            entity_id="string",
-            user_id="string",
+            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+            user_id="user_ec3aafc8-ea86-408a-a6c1-545497badbbb",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -825,8 +825,8 @@ class AsyncUserClient:
             token="YOUR_TOKEN",
         )
         await client.entity.user.update(
-            entity_id="string",
-            user_id="string",
+            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+            user_id="user_ec3aafc8-ea86-408a-a6c1-545497badbbb",
             request=EntityUserRequest(
                 foreign_id="MY-DB-ID-12345",
                 email="john.doe@acme.com",

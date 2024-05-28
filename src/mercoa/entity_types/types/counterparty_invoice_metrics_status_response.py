@@ -9,6 +9,18 @@ from ...invoice_types.types.invoice_status import InvoiceStatus
 
 
 class CounterpartyInvoiceMetricsStatusResponse(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    from mercoa import CounterpartyInvoiceMetricsStatusResponse
+
+    CounterpartyInvoiceMetricsStatusResponse(
+        status="PAID",
+        total_count=10,
+        total_amount=1000.0,
+    )
+    """
+
     status: InvoiceStatus
     total_count: int = pydantic_v1.Field(alias="totalCount")
     total_amount: float = pydantic_v1.Field(alias="totalAmount")

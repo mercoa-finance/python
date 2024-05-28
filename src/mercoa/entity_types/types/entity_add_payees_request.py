@@ -9,6 +9,16 @@ from .entity_id import EntityId
 
 
 class EntityAddPayeesRequest(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    from mercoa import EntityAddPayeesRequest
+
+    EntityAddPayeesRequest(
+        payees=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
+    )
+    """
+
     payees: typing.List[EntityId] = pydantic_v1.Field()
     """
     List of payee entity IDs to associate with the entity

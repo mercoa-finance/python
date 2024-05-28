@@ -126,11 +126,32 @@ class CustomPaymentMethodSchemaClient:
         )
         client.custom_payment_method_schema.create(
             request=CustomPaymentMethodSchemaRequest(
-                name="string",
-                is_source=True,
+                name="Wire",
+                is_source=False,
                 is_destination=True,
-                supported_currencies=["AED"],
-                fields=[CustomPaymentMethodSchemaField()],
+                supported_currencies=["USD", "EUR"],
+                fields=[
+                    CustomPaymentMethodSchemaField(
+                        name="accountName",
+                        display_name="Account Name",
+                        type="text",
+                        optional=False,
+                        use_as_account_name=True,
+                    ),
+                    CustomPaymentMethodSchemaField(
+                        name="accountNumber",
+                        display_name="Account Number",
+                        type="number",
+                        optional=False,
+                        use_as_account_number=True,
+                    ),
+                    CustomPaymentMethodSchemaField(
+                        name="routingNumber",
+                        display_name="Routing Number",
+                        type="number",
+                        optional=False,
+                    ),
+                ],
             ),
         )
         """
@@ -218,13 +239,39 @@ class CustomPaymentMethodSchemaClient:
             token="YOUR_TOKEN",
         )
         client.custom_payment_method_schema.update(
-            schema_id="string",
+            schema_id="cpms_14f78dcd-4614-426e-a37a-7af262431d41",
             request=CustomPaymentMethodSchemaRequest(
-                name="string",
-                is_source=True,
+                name="Check",
+                is_source=False,
                 is_destination=True,
-                supported_currencies=["AED"],
-                fields=[CustomPaymentMethodSchemaField()],
+                supported_currencies=["USD"],
+                fields=[
+                    CustomPaymentMethodSchemaField(
+                        name="payToTheOrderOf",
+                        display_name="Pay To The Order Of",
+                        type="text",
+                        optional=False,
+                    ),
+                    CustomPaymentMethodSchemaField(
+                        name="accountNumber",
+                        display_name="Account Number",
+                        type="number",
+                        optional=False,
+                        use_as_account_number=True,
+                    ),
+                    CustomPaymentMethodSchemaField(
+                        name="routingNumber",
+                        display_name="Routing Number",
+                        type="number",
+                        optional=False,
+                    ),
+                    CustomPaymentMethodSchemaField(
+                        name="address",
+                        display_name="Address",
+                        type="address",
+                        optional=False,
+                    ),
+                ],
             ),
         )
         """
@@ -304,7 +351,7 @@ class CustomPaymentMethodSchemaClient:
             token="YOUR_TOKEN",
         )
         client.custom_payment_method_schema.get(
-            schema_id="string",
+            schema_id="cpms_14f78dcd-4614-426e-a37a-7af262431d41",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -377,7 +424,7 @@ class CustomPaymentMethodSchemaClient:
             token="YOUR_TOKEN",
         )
         client.custom_payment_method_schema.delete(
-            schema_id="string",
+            schema_id="cpms_14f78dcd-4614-426e-a37a-7af262431d41",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -527,11 +574,32 @@ class AsyncCustomPaymentMethodSchemaClient:
         )
         await client.custom_payment_method_schema.create(
             request=CustomPaymentMethodSchemaRequest(
-                name="string",
-                is_source=True,
+                name="Wire",
+                is_source=False,
                 is_destination=True,
-                supported_currencies=["AED"],
-                fields=[CustomPaymentMethodSchemaField()],
+                supported_currencies=["USD", "EUR"],
+                fields=[
+                    CustomPaymentMethodSchemaField(
+                        name="accountName",
+                        display_name="Account Name",
+                        type="text",
+                        optional=False,
+                        use_as_account_name=True,
+                    ),
+                    CustomPaymentMethodSchemaField(
+                        name="accountNumber",
+                        display_name="Account Number",
+                        type="number",
+                        optional=False,
+                        use_as_account_number=True,
+                    ),
+                    CustomPaymentMethodSchemaField(
+                        name="routingNumber",
+                        display_name="Routing Number",
+                        type="number",
+                        optional=False,
+                    ),
+                ],
             ),
         )
         """
@@ -619,13 +687,39 @@ class AsyncCustomPaymentMethodSchemaClient:
             token="YOUR_TOKEN",
         )
         await client.custom_payment_method_schema.update(
-            schema_id="string",
+            schema_id="cpms_14f78dcd-4614-426e-a37a-7af262431d41",
             request=CustomPaymentMethodSchemaRequest(
-                name="string",
-                is_source=True,
+                name="Check",
+                is_source=False,
                 is_destination=True,
-                supported_currencies=["AED"],
-                fields=[CustomPaymentMethodSchemaField()],
+                supported_currencies=["USD"],
+                fields=[
+                    CustomPaymentMethodSchemaField(
+                        name="payToTheOrderOf",
+                        display_name="Pay To The Order Of",
+                        type="text",
+                        optional=False,
+                    ),
+                    CustomPaymentMethodSchemaField(
+                        name="accountNumber",
+                        display_name="Account Number",
+                        type="number",
+                        optional=False,
+                        use_as_account_number=True,
+                    ),
+                    CustomPaymentMethodSchemaField(
+                        name="routingNumber",
+                        display_name="Routing Number",
+                        type="number",
+                        optional=False,
+                    ),
+                    CustomPaymentMethodSchemaField(
+                        name="address",
+                        display_name="Address",
+                        type="address",
+                        optional=False,
+                    ),
+                ],
             ),
         )
         """
@@ -705,7 +799,7 @@ class AsyncCustomPaymentMethodSchemaClient:
             token="YOUR_TOKEN",
         )
         await client.custom_payment_method_schema.get(
-            schema_id="string",
+            schema_id="cpms_14f78dcd-4614-426e-a37a-7af262431d41",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -778,7 +872,7 @@ class AsyncCustomPaymentMethodSchemaClient:
             token="YOUR_TOKEN",
         )
         await client.custom_payment_method_schema.delete(
-            schema_id="string",
+            schema_id="cpms_14f78dcd-4614-426e-a37a-7af262431d41",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(

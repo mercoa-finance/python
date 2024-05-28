@@ -56,7 +56,7 @@ class ApprovalPolicyClient:
             token="YOUR_TOKEN",
         )
         client.entity.approval_policy.get_all(
-            entity_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -133,7 +133,6 @@ class ApprovalPolicyClient:
             ApprovalPolicyRequest,
             IdentifierList_RolesList,
             Rule_Approver,
-            Trigger_Amount,
         )
         from mercoa.client import Mercoa
 
@@ -141,14 +140,14 @@ class ApprovalPolicyClient:
             token="YOUR_TOKEN",
         )
         client.entity.approval_policy.create(
-            entity_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             request=ApprovalPolicyRequest(
-                trigger=[Trigger_Amount()],
+                trigger=[],
                 rule=Rule_Approver(
                     num_approvers=1,
                     identifier_list=IdentifierList_RolesList(value=["admin"]),
                 ),
-                upstream_policy_id="string",
+                upstream_policy_id="root",
             ),
         )
         """
@@ -234,8 +233,8 @@ class ApprovalPolicyClient:
             token="YOUR_TOKEN",
         )
         client.entity.approval_policy.get(
-            entity_id="string",
-            policy_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            policy_id="apvl_5ce50275-1789-42ea-bc60-bb7e6d03635c",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -316,7 +315,6 @@ class ApprovalPolicyClient:
             ApprovalPolicyUpdateRequest,
             IdentifierList_RolesList,
             Rule_Approver,
-            Trigger_Amount,
         )
         from mercoa.client import Mercoa
 
@@ -324,15 +322,15 @@ class ApprovalPolicyClient:
             token="YOUR_TOKEN",
         )
         client.entity.approval_policy.update(
-            entity_id="string",
-            policy_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            policy_id="apvl_5ce50275-1789-42ea-bc60-bb7e6d03635c",
             request=ApprovalPolicyUpdateRequest(
-                trigger=[Trigger_Amount()],
+                trigger=[],
                 rule=Rule_Approver(
                     num_approvers=1,
                     identifier_list=IdentifierList_RolesList(value=["admin"]),
                 ),
-                upstream_policy_id="string",
+                upstream_policy_id="root",
             ),
         )
         """
@@ -419,8 +417,8 @@ class ApprovalPolicyClient:
             token="YOUR_TOKEN",
         )
         client.entity.approval_policy.delete(
-            entity_id="string",
-            policy_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            policy_id="apvl_5ce50275-1789-42ea-bc60-bb7e6d03635c",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -499,7 +497,7 @@ class AsyncApprovalPolicyClient:
             token="YOUR_TOKEN",
         )
         await client.entity.approval_policy.get_all(
-            entity_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -576,7 +574,6 @@ class AsyncApprovalPolicyClient:
             ApprovalPolicyRequest,
             IdentifierList_RolesList,
             Rule_Approver,
-            Trigger_Amount,
         )
         from mercoa.client import AsyncMercoa
 
@@ -584,14 +581,14 @@ class AsyncApprovalPolicyClient:
             token="YOUR_TOKEN",
         )
         await client.entity.approval_policy.create(
-            entity_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             request=ApprovalPolicyRequest(
-                trigger=[Trigger_Amount()],
+                trigger=[],
                 rule=Rule_Approver(
                     num_approvers=1,
                     identifier_list=IdentifierList_RolesList(value=["admin"]),
                 ),
-                upstream_policy_id="string",
+                upstream_policy_id="root",
             ),
         )
         """
@@ -677,8 +674,8 @@ class AsyncApprovalPolicyClient:
             token="YOUR_TOKEN",
         )
         await client.entity.approval_policy.get(
-            entity_id="string",
-            policy_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            policy_id="apvl_5ce50275-1789-42ea-bc60-bb7e6d03635c",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -759,7 +756,6 @@ class AsyncApprovalPolicyClient:
             ApprovalPolicyUpdateRequest,
             IdentifierList_RolesList,
             Rule_Approver,
-            Trigger_Amount,
         )
         from mercoa.client import AsyncMercoa
 
@@ -767,15 +763,15 @@ class AsyncApprovalPolicyClient:
             token="YOUR_TOKEN",
         )
         await client.entity.approval_policy.update(
-            entity_id="string",
-            policy_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            policy_id="apvl_5ce50275-1789-42ea-bc60-bb7e6d03635c",
             request=ApprovalPolicyUpdateRequest(
-                trigger=[Trigger_Amount()],
+                trigger=[],
                 rule=Rule_Approver(
                     num_approvers=1,
                     identifier_list=IdentifierList_RolesList(value=["admin"]),
                 ),
-                upstream_policy_id="string",
+                upstream_policy_id="root",
             ),
         )
         """
@@ -862,8 +858,8 @@ class AsyncApprovalPolicyClient:
             token="YOUR_TOKEN",
         )
         await client.entity.approval_policy.delete(
-            entity_id="string",
-            policy_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            policy_id="apvl_5ce50275-1789-42ea-bc60-bb7e6d03635c",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(

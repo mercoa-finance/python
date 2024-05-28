@@ -41,7 +41,7 @@ class EmailLogClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EmailLogResponse:
         """
-        Get entity users
+        Get all incoming invoice emails for an entity.
 
         Parameters
         ----------
@@ -69,24 +69,13 @@ class EmailLogClient:
 
         Examples
         --------
-        import datetime
-
         from mercoa.client import Mercoa
 
         client = Mercoa(
             token="YOUR_TOKEN",
         )
         client.entity.email_log.find(
-            entity_id="string",
-            start_date=datetime.datetime.fromisoformat(
-                "2024-01-15 09:30:00+00:00",
-            ),
-            end_date=datetime.datetime.fromisoformat(
-                "2024-01-15 09:30:00+00:00",
-            ),
-            limit=1,
-            starting_after="string",
-            search="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -151,7 +140,7 @@ class EmailLogClient:
         self, entity_id: EntityId, log_id: EmailLogId, *, request_options: typing.Optional[RequestOptions] = None
     ) -> EmailLog:
         """
-        Get email log
+        Get an email log by ID
 
         Parameters
         ----------
@@ -174,8 +163,8 @@ class EmailLogClient:
             token="YOUR_TOKEN",
         )
         client.entity.email_log.get(
-            entity_id="string",
-            log_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            log_id="log_8545a84e-a45f-41bf-bdf1-33b42a55812c",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -241,7 +230,7 @@ class AsyncEmailLogClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EmailLogResponse:
         """
-        Get entity users
+        Get all incoming invoice emails for an entity.
 
         Parameters
         ----------
@@ -269,24 +258,13 @@ class AsyncEmailLogClient:
 
         Examples
         --------
-        import datetime
-
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
         await client.entity.email_log.find(
-            entity_id="string",
-            start_date=datetime.datetime.fromisoformat(
-                "2024-01-15 09:30:00+00:00",
-            ),
-            end_date=datetime.datetime.fromisoformat(
-                "2024-01-15 09:30:00+00:00",
-            ),
-            limit=1,
-            starting_after="string",
-            search="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -351,7 +329,7 @@ class AsyncEmailLogClient:
         self, entity_id: EntityId, log_id: EmailLogId, *, request_options: typing.Optional[RequestOptions] = None
     ) -> EmailLog:
         """
-        Get email log
+        Get an email log by ID
 
         Parameters
         ----------
@@ -374,8 +352,8 @@ class AsyncEmailLogClient:
             token="YOUR_TOKEN",
         )
         await client.entity.email_log.get(
-            entity_id="string",
-            log_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            log_id="log_8545a84e-a45f-41bf-bdf1-33b42a55812c",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(

@@ -11,6 +11,53 @@ from .custom_payment_method_schema_id import CustomPaymentMethodSchemaId
 
 
 class CustomPaymentMethodSchemaResponse(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    import datetime
+
+    from mercoa import (
+        CustomPaymentMethodSchemaField,
+        CustomPaymentMethodSchemaResponse,
+    )
+
+    CustomPaymentMethodSchemaResponse(
+        id="cpms_4794d597-70dc-4fec-b6ec-c5988e759769",
+        name="Wire",
+        is_source=False,
+        is_destination=True,
+        supported_currencies=["USD", "EUR"],
+        fields=[
+            CustomPaymentMethodSchemaField(
+                name="accountName",
+                display_name="Account Name",
+                type="text",
+                optional=False,
+                use_as_account_name=True,
+            ),
+            CustomPaymentMethodSchemaField(
+                name="accountNumber",
+                display_name="Account Number",
+                type="number",
+                optional=False,
+                use_as_account_number=True,
+            ),
+            CustomPaymentMethodSchemaField(
+                name="routingNumber",
+                display_name="Routing Number",
+                type="number",
+                optional=False,
+            ),
+        ],
+        created_at=datetime.datetime.fromisoformat(
+            "2021-01-01 00:00:00+00:00",
+        ),
+        updated_at=datetime.datetime.fromisoformat(
+            "2021-01-01 00:00:00+00:00",
+        ),
+    )
+    """
+
     id: CustomPaymentMethodSchemaId
     name: str
     is_source: bool = pydantic_v1.Field(alias="isSource")

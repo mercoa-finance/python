@@ -14,9 +14,9 @@ class DocumentResponse(pydantic_v1.BaseModel):
     from mercoa import DocumentResponse
 
     DocumentResponse(
-        id="doc_1234",
+        id="doc_37e6af0a-e637-48fd-b825-d6947b38c4e2",
         mime_type="application/pdf",
-        uri="https://example.com/invoice.pdf",
+        uri="https://mercoa.com/pdf/not-real.pdf",
     )
     """
 

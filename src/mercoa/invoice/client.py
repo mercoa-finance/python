@@ -238,7 +238,7 @@ class InvoiceClient:
         )
         client.invoice.create(
             request=InvoiceCreationRequest(
-                status="DRAFT",
+                status="NEW",
                 amount=100.0,
                 currency="USD",
                 invoice_date=datetime.datetime.fromisoformat(
@@ -249,12 +249,6 @@ class InvoiceClient:
                 ),
                 invoice_number="INV-123",
                 note_to_self="For the month of January",
-                service_start_date=datetime.datetime.fromisoformat(
-                    "2021-01-01 00:00:00+00:00",
-                ),
-                service_end_date=datetime.datetime.fromisoformat(
-                    "2021-01-31 00:00:00+00:00",
-                ),
                 payer_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
                 payment_source_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
                 vendor_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
@@ -459,7 +453,7 @@ class InvoiceClient:
         client.invoice.update(
             invoice_id="inv_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             request=InvoiceUpdateRequest(
-                status="DRAFT",
+                status="NEW",
                 amount=100.0,
                 currency="USD",
                 invoice_date=datetime.datetime.fromisoformat(
@@ -470,12 +464,6 @@ class InvoiceClient:
                 ),
                 invoice_number="INV-123",
                 note_to_self="For the month of January",
-                service_start_date=datetime.datetime.fromisoformat(
-                    "2021-01-01 00:00:00+00:00",
-                ),
-                service_end_date=datetime.datetime.fromisoformat(
-                    "2021-01-31 00:00:00+00:00",
-                ),
                 payer_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
                 payment_source_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
                 vendor_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
@@ -827,7 +815,7 @@ class AsyncInvoiceClient:
         )
         await client.invoice.create(
             request=InvoiceCreationRequest(
-                status="DRAFT",
+                status="NEW",
                 amount=100.0,
                 currency="USD",
                 invoice_date=datetime.datetime.fromisoformat(
@@ -838,12 +826,6 @@ class AsyncInvoiceClient:
                 ),
                 invoice_number="INV-123",
                 note_to_self="For the month of January",
-                service_start_date=datetime.datetime.fromisoformat(
-                    "2021-01-01 00:00:00+00:00",
-                ),
-                service_end_date=datetime.datetime.fromisoformat(
-                    "2021-01-31 00:00:00+00:00",
-                ),
                 payer_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
                 payment_source_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
                 vendor_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
@@ -1048,7 +1030,7 @@ class AsyncInvoiceClient:
         await client.invoice.update(
             invoice_id="inv_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             request=InvoiceUpdateRequest(
-                status="DRAFT",
+                status="NEW",
                 amount=100.0,
                 currency="USD",
                 invoice_date=datetime.datetime.fromisoformat(
@@ -1059,12 +1041,6 @@ class AsyncInvoiceClient:
                 ),
                 invoice_number="INV-123",
                 note_to_self="For the month of January",
-                service_start_date=datetime.datetime.fromisoformat(
-                    "2021-01-01 00:00:00+00:00",
-                ),
-                service_end_date=datetime.datetime.fromisoformat(
-                    "2021-01-31 00:00:00+00:00",
-                ),
                 payer_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
                 payment_source_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
                 vendor_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",

@@ -11,6 +11,23 @@ from .notification_type import NotificationType
 
 
 class NotificationResponse(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    import datetime
+
+    from mercoa import NotificationResponse
+
+    NotificationResponse(
+        id="notif_7df2974a-4069-454c-912f-7e58ebe030fb",
+        invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
+        type="INVOICE_APPROVAL_NEEDED",
+        created_at=datetime.datetime.fromisoformat(
+            "2024-01-01 00:00:00+00:00",
+        ),
+    )
+    """
+
     id: NotificationId
     invoice_id: typing.Optional[InvoiceId] = pydantic_v1.Field(alias="invoiceId", default=None)
     """

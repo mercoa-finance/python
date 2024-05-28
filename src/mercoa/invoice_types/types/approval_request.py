@@ -15,7 +15,7 @@ class ApprovalRequest(pydantic_v1.BaseModel):
     from mercoa import ApprovalRequest
 
     ApprovalRequest(
-        text="This is an approval",
+        text="This is a reason for my action",
         user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
     )
     """

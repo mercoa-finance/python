@@ -10,6 +10,44 @@ from .custom_payment_method_schema_field import CustomPaymentMethodSchemaField
 
 
 class CustomPaymentMethodSchemaRequest(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    from mercoa import (
+        CustomPaymentMethodSchemaField,
+        CustomPaymentMethodSchemaRequest,
+    )
+
+    CustomPaymentMethodSchemaRequest(
+        name="Wire",
+        is_source=False,
+        is_destination=True,
+        supported_currencies=["USD", "EUR"],
+        fields=[
+            CustomPaymentMethodSchemaField(
+                name="accountName",
+                display_name="Account Name",
+                type="text",
+                optional=False,
+                use_as_account_name=True,
+            ),
+            CustomPaymentMethodSchemaField(
+                name="accountNumber",
+                display_name="Account Number",
+                type="number",
+                optional=False,
+                use_as_account_number=True,
+            ),
+            CustomPaymentMethodSchemaField(
+                name="routingNumber",
+                display_name="Routing Number",
+                type="number",
+                optional=False,
+            ),
+        ],
+    )
+    """
+
     name: str
     is_source: bool = pydantic_v1.Field(alias="isSource")
     """
