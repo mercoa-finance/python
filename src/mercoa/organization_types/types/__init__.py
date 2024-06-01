@@ -46,8 +46,6 @@ from .organization_request import OrganizationRequest
 from .organization_response import OrganizationResponse
 from .payment_methods_request import PaymentMethodsRequest
 from .payment_methods_response import PaymentMethodsResponse
-from .payment_rail_markup import PaymentRailMarkup
-from .payment_rail_markup_type import PaymentRailMarkupType
 from .payment_rail_request import PaymentRailRequest
 from .payment_rail_response import PaymentRailResponse
 from .rutter_provider_request import RutterProviderRequest
@@ -93,8 +91,6 @@ __all__ = [
     "OrganizationResponse",
     "PaymentMethodsRequest",
     "PaymentMethodsResponse",
-    "PaymentRailMarkup",
-    "PaymentRailMarkupType",
     "PaymentRailRequest",
     "PaymentRailResponse",
     "RutterProviderRequest",

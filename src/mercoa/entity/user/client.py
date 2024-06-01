@@ -21,6 +21,7 @@ from ...entity_types.types.entity_id import EntityId
 from ...entity_types.types.entity_user_id import EntityUserId
 from ...entity_types.types.entity_user_request import EntityUserRequest
 from ...entity_types.types.entity_user_response import EntityUserResponse
+from ...entity_types.types.find_entity_user_response import FindEntityUserResponse
 from ...entity_types.types.token_generation_options import TokenGenerationOptions
 from .notification_policy.client import AsyncNotificationPolicyClient, NotificationPolicyClient
 from .notifications.client import AsyncNotificationsClient, NotificationsClient
@@ -91,6 +92,124 @@ class UserClient:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
             return pydantic_v1.parse_obj_as(typing.List[EntityUserResponse], _response_json)  # type: ignore
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def find(
+        self,
+        entity_id: EntityId,
+        *,
+        foreign_id: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        role: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        name: typing.Optional[str] = None,
+        email: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        starting_after: typing.Optional[EntityUserId] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> FindEntityUserResponse:
+        """
+        Get all entity users
+
+        Parameters
+        ----------
+        entity_id : EntityId
+
+        foreign_id : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            ID used to identify user in your system
+
+        role : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter users by role. If multiple roles are provided, users with any of the roles will be returned.
+
+        name : typing.Optional[str]
+            Filter users by name. Partial matches are supported.
+
+        email : typing.Optional[str]
+            Filter users by email. Partial matches are supported.
+
+        limit : typing.Optional[int]
+            Number of entities to return. Limit can range between 1 and 100, and the default is 10.
+
+        starting_after : typing.Optional[EntityUserId]
+            The ID of the user to start after. If not provided, the first page of entities will be returned.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        FindEntityUserResponse
+
+        Examples
+        --------
+        from mercoa.client import Mercoa
+
+        client = Mercoa(
+            token="YOUR_TOKEN",
+        )
+        client.entity.user.find(
+            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+            name="John",
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            method="PUT",
+            url=urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/users"
+            ),
+            params=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        "foreignId": foreign_id,
+                        "role": role,
+                        "name": name,
+                        "email": email,
+                        "limit": limit,
+                        "startingAfter": starting_after,
+                        **(
+                            request_options.get("additional_query_parameters", {})
+                            if request_options is not None
+                            else {}
+                        ),
+                    }
+                )
+            ),
+            json=jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))
+            if request_options is not None
+            else None,
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else self._client_wrapper.get_timeout(),
+            retries=0,
+            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return pydantic_v1.parse_obj_as(FindEntityUserResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "BadRequest":
                 raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
@@ -606,6 +725,124 @@ class AsyncUserClient:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
             return pydantic_v1.parse_obj_as(typing.List[EntityUserResponse], _response_json)  # type: ignore
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def find(
+        self,
+        entity_id: EntityId,
+        *,
+        foreign_id: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        role: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        name: typing.Optional[str] = None,
+        email: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        starting_after: typing.Optional[EntityUserId] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> FindEntityUserResponse:
+        """
+        Get all entity users
+
+        Parameters
+        ----------
+        entity_id : EntityId
+
+        foreign_id : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            ID used to identify user in your system
+
+        role : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter users by role. If multiple roles are provided, users with any of the roles will be returned.
+
+        name : typing.Optional[str]
+            Filter users by name. Partial matches are supported.
+
+        email : typing.Optional[str]
+            Filter users by email. Partial matches are supported.
+
+        limit : typing.Optional[int]
+            Number of entities to return. Limit can range between 1 and 100, and the default is 10.
+
+        starting_after : typing.Optional[EntityUserId]
+            The ID of the user to start after. If not provided, the first page of entities will be returned.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        FindEntityUserResponse
+
+        Examples
+        --------
+        from mercoa.client import AsyncMercoa
+
+        client = AsyncMercoa(
+            token="YOUR_TOKEN",
+        )
+        await client.entity.user.find(
+            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+            name="John",
+        )
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            method="PUT",
+            url=urllib.parse.urljoin(
+                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/users"
+            ),
+            params=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        "foreignId": foreign_id,
+                        "role": role,
+                        "name": name,
+                        "email": email,
+                        "limit": limit,
+                        "startingAfter": starting_after,
+                        **(
+                            request_options.get("additional_query_parameters", {})
+                            if request_options is not None
+                            else {}
+                        ),
+                    }
+                )
+            ),
+            json=jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))
+            if request_options is not None
+            else None,
+            headers=jsonable_encoder(
+                remove_none_from_dict(
+                    {
+                        **self._client_wrapper.get_headers(),
+                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
+                    }
+                )
+            ),
+            timeout=request_options.get("timeout_in_seconds")
+            if request_options is not None and request_options.get("timeout_in_seconds") is not None
+            else self._client_wrapper.get_timeout(),
+            retries=0,
+            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return pydantic_v1.parse_obj_as(FindEntityUserResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "BadRequest":
                 raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore

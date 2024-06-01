@@ -14,8 +14,8 @@ class NotificationPolicyRequest(pydantic_v1.BaseModel):
     from mercoa import NotificationPolicyRequest
 
     NotificationPolicyRequest(
-        disabled=False,
-        additional_roles=["admin", "approver"],
+        disabled=True,
+        additional_roles=[],
     )
     """
 

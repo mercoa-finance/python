@@ -29,11 +29,16 @@ class CustomPaymentMethodSchemaResponse(pydantic_v1.BaseModel):
         supported_currencies=["USD", "EUR"],
         fields=[
             CustomPaymentMethodSchemaField(
-                name="accountName",
-                display_name="Account Name",
+                name="bankName",
+                display_name="Bank Name",
                 type="text",
                 optional=False,
-                use_as_account_name=True,
+            ),
+            CustomPaymentMethodSchemaField(
+                name="recipientName",
+                display_name="Recipient Name",
+                type="text",
+                optional=False,
             ),
             CustomPaymentMethodSchemaField(
                 name="accountNumber",

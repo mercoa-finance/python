@@ -5,12 +5,29 @@ import typing
 
 from ...core.datetime_utils import serialize_datetime
 from ...core.pydantic_utilities import pydantic_v1
-from .payment_rail_markup_type import PaymentRailMarkupType
 
 
-class PaymentRailMarkup(pydantic_v1.BaseModel):
-    type: PaymentRailMarkupType
-    amount: float
+class MetadataCustomizationRequest(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    from mercoa import MetadataCustomizationRequest
+
+    MetadataCustomizationRequest(
+        key="my_custom_field",
+        disabled=True,
+    )
+    """
+
+    key: str = pydantic_v1.Field()
+    """
+    The key of the metadata field. This must be defined at the organization level, otherwise an error will be returned.
+    """
+
+    disabled: bool = pydantic_v1.Field()
+    """
+    If true, this field will not be available to the entity.
+    """
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

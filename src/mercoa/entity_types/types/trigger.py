@@ -40,4 +40,12 @@ class Trigger_Metadata(pydantic_v1.BaseModel):
         smart_union = True
 
 
+"""
+from mercoa import Trigger_Amount
+
+Trigger_Amount(
+    amount=100.0,
+    currency="USD",
+)
+"""
 Trigger = typing.Union[Trigger_Amount, Trigger_Vendor, Trigger_Metadata]

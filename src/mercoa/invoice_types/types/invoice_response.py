@@ -46,6 +46,7 @@ class InvoiceResponse(pydantic_v1.BaseModel):
         PhoneNumber,
         ProfileResponse,
         Rule_Approver,
+        Trigger_Amount,
     )
 
     InvoiceResponse(
@@ -256,10 +257,17 @@ class InvoiceResponse(pydantic_v1.BaseModel):
         approval_policy=[
             ApprovalPolicyResponse(
                 id="apvl_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-                trigger=[],
+                trigger=[
+                    Trigger_Amount(
+                        amount=100.0,
+                        currency="USD",
+                    )
+                ],
                 rule=Rule_Approver(
-                    num_approvers=1,
-                    identifier_list=IdentifierList_RolesList(value=["admin"]),
+                    num_approvers=2,
+                    identifier_list=IdentifierList_RolesList(
+                        value=["Admin", "Controller"]
+                    ),
                 ),
                 upstream_policy_id="root",
             )

@@ -5,32 +5,30 @@ import typing
 
 from ...core.datetime_utils import serialize_datetime
 from ...core.pydantic_utilities import pydantic_v1
+from ...payment_method_types.types.payment_method_type import PaymentMethodType
 
 
-class UserNotificationPolicyRequest(pydantic_v1.BaseModel):
+class PaymentMethodCustomizationRequest(pydantic_v1.BaseModel):
     """
     Examples
     --------
-    from mercoa import UserNotificationPolicyRequest
+    from mercoa import PaymentMethodCustomizationRequest
 
-    UserNotificationPolicyRequest(
+    PaymentMethodCustomizationRequest(
+        type="bankAccount",
         disabled=True,
     )
     """
 
-    disabled: typing.Optional[bool] = pydantic_v1.Field(default=None)
+    type: PaymentMethodType
+    schema_id: typing.Optional[str] = pydantic_v1.Field(alias="schemaId", default=None)
     """
-    Set to true if the selected notification type should be disabled for this user
-    """
-
-    digest: typing.Optional[bool] = pydantic_v1.Field(default=None)
-    """
-    Set to true if the selected notification type should be sent as a digest. Default is false.
+    If type is custom, this is the ID of the schema to use for this payment method.
     """
 
-    immediate: typing.Optional[bool] = pydantic_v1.Field(default=None)
+    disabled: bool = pydantic_v1.Field()
     """
-    Set to true if the selected notification type should be sent immediately. Default is true.
+    If true, this method will will not be available to the entity.
     """
 
     def json(self, **kwargs: typing.Any) -> str:
@@ -44,5 +42,7 @@ class UserNotificationPolicyRequest(pydantic_v1.BaseModel):
     class Config:
         frozen = True
         smart_union = True
+        allow_population_by_field_name = True
+        populate_by_name = True
         extra = pydantic_v1.Extra.allow
         json_encoders = {dt.datetime: serialize_datetime}

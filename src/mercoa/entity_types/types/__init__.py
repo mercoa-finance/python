@@ -17,6 +17,8 @@ from .counterparty_response import CounterpartyResponse
 from .ein import Ein
 from .entity_add_payees_request import EntityAddPayeesRequest
 from .entity_add_payors_request import EntityAddPayorsRequest
+from .entity_customization_request import EntityCustomizationRequest
+from .entity_customization_response import EntityCustomizationResponse
 from .entity_hide_payees_request import EntityHidePayeesRequest
 from .entity_hide_payors_request import EntityHidePayorsRequest
 from .entity_id import EntityId
@@ -32,17 +34,20 @@ from .entity_user_response import EntityUserResponse
 from .entity_with_payment_method_response import EntityWithPaymentMethodResponse
 from .find_counterparties_response import FindCounterpartiesResponse
 from .find_entity_response import FindEntityResponse
+from .find_entity_user_response import FindEntityUserResponse
 from .find_notification_response import FindNotificationResponse
 from .identifier_list import IdentifierList, IdentifierList_RolesList, IdentifierList_UserList
 from .individual_profile_request import IndividualProfileRequest
 from .individual_profile_response import IndividualProfileResponse
 from .line_item_availabilities import LineItemAvailabilities
+from .metadata_customization_request import MetadataCustomizationRequest
 from .metadata_trigger import MetadataTrigger
 from .notification_id import NotificationId
 from .notification_policy_request import NotificationPolicyRequest
 from .notification_policy_response import NotificationPolicyResponse
 from .notification_response import NotificationResponse
 from .notification_type import NotificationType
+from .payment_method_customization_request import PaymentMethodCustomizationRequest
 from .profile_request import ProfileRequest
 from .profile_response import ProfileResponse
 from .representative_id import RepresentativeId
@@ -81,6 +86,8 @@ __all__ = [
     "Ein",
     "EntityAddPayeesRequest",
     "EntityAddPayorsRequest",
+    "EntityCustomizationRequest",
+    "EntityCustomizationResponse",
     "EntityHidePayeesRequest",
     "EntityHidePayorsRequest",
     "EntityId",
@@ -96,6 +103,7 @@ __all__ = [
     "EntityWithPaymentMethodResponse",
     "FindCounterpartiesResponse",
     "FindEntityResponse",
+    "FindEntityUserResponse",
     "FindNotificationResponse",
     "IdentifierList",
     "IdentifierList_RolesList",
@@ -103,12 +111,14 @@ __all__ = [
     "IndividualProfileRequest",
     "IndividualProfileResponse",
     "LineItemAvailabilities",
+    "MetadataCustomizationRequest",
     "MetadataTrigger",
     "NotificationId",
     "NotificationPolicyRequest",
     "NotificationPolicyResponse",
     "NotificationResponse",
     "NotificationType",
+    "PaymentMethodCustomizationRequest",
     "ProfileRequest",
     "ProfileResponse",
     "RepresentativeId",

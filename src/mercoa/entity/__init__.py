@@ -3,6 +3,7 @@
 from . import (
     approval_policy,
     counterparty,
+    customization,
     email_log,
     external_accounting_system,
     invoice,
@@ -40,6 +41,7 @@ __all__ = [
     "SyncType",
     "approval_policy",
     "counterparty",
+    "customization",
     "email_log",
     "external_accounting_system",
     "invoice",

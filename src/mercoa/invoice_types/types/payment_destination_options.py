@@ -21,6 +21,7 @@ class PaymentDestinationOptions_Check(pydantic_v1.BaseModel):
 class PaymentDestinationOptions_BankAccount(pydantic_v1.BaseModel):
     type: typing.Literal["bankAccount"] = "bankAccount"
     delivery: typing.Optional[BankDeliveryMethod]
+    description: typing.Optional[str]
 
     class Config:
         frozen = True

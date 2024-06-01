@@ -132,11 +132,16 @@ class CustomPaymentMethodSchemaClient:
                 supported_currencies=["USD", "EUR"],
                 fields=[
                     CustomPaymentMethodSchemaField(
-                        name="accountName",
-                        display_name="Account Name",
+                        name="bankName",
+                        display_name="Bank Name",
                         type="text",
                         optional=False,
-                        use_as_account_name=True,
+                    ),
+                    CustomPaymentMethodSchemaField(
+                        name="recipientName",
+                        display_name="Recipient Name",
+                        type="text",
+                        optional=False,
                     ),
                     CustomPaymentMethodSchemaField(
                         name="accountNumber",
@@ -580,11 +585,16 @@ class AsyncCustomPaymentMethodSchemaClient:
                 supported_currencies=["USD", "EUR"],
                 fields=[
                     CustomPaymentMethodSchemaField(
-                        name="accountName",
-                        display_name="Account Name",
+                        name="bankName",
+                        display_name="Bank Name",
                         type="text",
                         optional=False,
-                        use_as_account_name=True,
+                    ),
+                    CustomPaymentMethodSchemaField(
+                        name="recipientName",
+                        display_name="Recipient Name",
+                        type="text",
+                        optional=False,
                     ),
                     CustomPaymentMethodSchemaField(
                         name="accountNumber",

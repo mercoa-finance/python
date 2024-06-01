@@ -10,6 +10,25 @@ from .payment_method_base_request import PaymentMethodBaseRequest
 
 
 class CustomPaymentMethodRequest(PaymentMethodBaseRequest):
+    """
+    Examples
+    --------
+    from mercoa import CustomPaymentMethodRequest
+
+    CustomPaymentMethodRequest(
+        foreign_id="DB_FOREIGN_ID",
+        account_name="Vendor Wire Account",
+        account_number="123456789",
+        schema_id="cpms_4794d597-70dc-4fec-b6ec-c5988e759769",
+        data={
+            "bankName": "Chase",
+            "recipientName": "John Doe",
+            "routingNumber": "123456789",
+            "accountNumber": "99988767623",
+        },
+    )
+    """
+
     foreign_id: str = pydantic_v1.Field(alias="foreignId")
     """
     ID for this payment method in your system

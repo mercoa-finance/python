@@ -6,18 +6,15 @@ import typing
 from ...core.datetime_utils import serialize_datetime
 from ...core.pydantic_utilities import pydantic_v1
 from ...payment_method_types.types.payment_method_type import PaymentMethodType
-from .payment_rail_markup import PaymentRailMarkup
 
 
 class PaymentRailRequest(pydantic_v1.BaseModel):
     type: PaymentMethodType
-    name: str = pydantic_v1.Field()
+    name: typing.Optional[str] = pydantic_v1.Field(default=None)
     """
-    Name of the payment method. For custom payment methods, this is the ID of the schema.
+    For custom payment methods, this is the ID of the schema.
     """
 
-    markup: typing.Optional[PaymentRailMarkup] = None
-    description: typing.Optional[str] = None
     active: bool
 
     def json(self, **kwargs: typing.Any) -> str:

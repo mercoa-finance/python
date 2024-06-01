@@ -152,7 +152,6 @@ class PaymentMethodClient:
         client.entity.payment_method.create(
             entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             request=PaymentMethodRequest_BankAccount(
-                bank_name="Chase",
                 routing_number="12345678",
                 account_number="99988767623",
                 account_type="CHECKING",
@@ -846,7 +845,6 @@ class AsyncPaymentMethodClient:
         await client.entity.payment_method.create(
             entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             request=PaymentMethodRequest_BankAccount(
-                bank_name="Chase",
                 routing_number="12345678",
                 account_number="99988767623",
                 account_type="CHECKING",

@@ -133,6 +133,7 @@ class ApprovalPolicyClient:
             ApprovalPolicyRequest,
             IdentifierList_RolesList,
             Rule_Approver,
+            Trigger_Amount,
         )
         from mercoa.client import Mercoa
 
@@ -142,10 +143,17 @@ class ApprovalPolicyClient:
         client.entity.approval_policy.create(
             entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             request=ApprovalPolicyRequest(
-                trigger=[],
+                trigger=[
+                    Trigger_Amount(
+                        amount=100.0,
+                        currency="USD",
+                    )
+                ],
                 rule=Rule_Approver(
-                    num_approvers=1,
-                    identifier_list=IdentifierList_RolesList(value=["admin"]),
+                    num_approvers=2,
+                    identifier_list=IdentifierList_RolesList(
+                        value=["Admin", "Controller"]
+                    ),
                 ),
                 upstream_policy_id="root",
             ),
@@ -315,6 +323,7 @@ class ApprovalPolicyClient:
             ApprovalPolicyUpdateRequest,
             IdentifierList_RolesList,
             Rule_Approver,
+            Trigger_Amount,
         )
         from mercoa.client import Mercoa
 
@@ -325,10 +334,17 @@ class ApprovalPolicyClient:
             entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             policy_id="apvl_5ce50275-1789-42ea-bc60-bb7e6d03635c",
             request=ApprovalPolicyUpdateRequest(
-                trigger=[],
+                trigger=[
+                    Trigger_Amount(
+                        amount=100.0,
+                        currency="USD",
+                    )
+                ],
                 rule=Rule_Approver(
-                    num_approvers=1,
-                    identifier_list=IdentifierList_RolesList(value=["admin"]),
+                    num_approvers=2,
+                    identifier_list=IdentifierList_RolesList(
+                        value=["Admin", "Controller"]
+                    ),
                 ),
                 upstream_policy_id="root",
             ),
@@ -574,6 +590,7 @@ class AsyncApprovalPolicyClient:
             ApprovalPolicyRequest,
             IdentifierList_RolesList,
             Rule_Approver,
+            Trigger_Amount,
         )
         from mercoa.client import AsyncMercoa
 
@@ -583,10 +600,17 @@ class AsyncApprovalPolicyClient:
         await client.entity.approval_policy.create(
             entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             request=ApprovalPolicyRequest(
-                trigger=[],
+                trigger=[
+                    Trigger_Amount(
+                        amount=100.0,
+                        currency="USD",
+                    )
+                ],
                 rule=Rule_Approver(
-                    num_approvers=1,
-                    identifier_list=IdentifierList_RolesList(value=["admin"]),
+                    num_approvers=2,
+                    identifier_list=IdentifierList_RolesList(
+                        value=["Admin", "Controller"]
+                    ),
                 ),
                 upstream_policy_id="root",
             ),
@@ -756,6 +780,7 @@ class AsyncApprovalPolicyClient:
             ApprovalPolicyUpdateRequest,
             IdentifierList_RolesList,
             Rule_Approver,
+            Trigger_Amount,
         )
         from mercoa.client import AsyncMercoa
 
@@ -766,10 +791,17 @@ class AsyncApprovalPolicyClient:
             entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             policy_id="apvl_5ce50275-1789-42ea-bc60-bb7e6d03635c",
             request=ApprovalPolicyUpdateRequest(
-                trigger=[],
+                trigger=[
+                    Trigger_Amount(
+                        amount=100.0,
+                        currency="USD",
+                    )
+                ],
                 rule=Rule_Approver(
-                    num_approvers=1,
-                    identifier_list=IdentifierList_RolesList(value=["admin"]),
+                    num_approvers=2,
+                    identifier_list=IdentifierList_RolesList(
+                        value=["Admin", "Controller"]
+                    ),
                 ),
                 upstream_policy_id="root",
             ),

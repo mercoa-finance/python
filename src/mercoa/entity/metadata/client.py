@@ -129,7 +129,7 @@ class MetadataClient:
         )
         client.entity.metadata.get(
             entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-            key="projectId",
+            key="propertyId",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -453,7 +453,7 @@ class AsyncMetadataClient:
         )
         await client.entity.metadata.get(
             entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-            key="projectId",
+            key="propertyId",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(

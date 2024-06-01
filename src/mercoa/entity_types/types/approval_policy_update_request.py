@@ -18,13 +18,19 @@ class ApprovalPolicyUpdateRequest(pydantic_v1.BaseModel):
         ApprovalPolicyUpdateRequest,
         IdentifierList_RolesList,
         Rule_Approver,
+        Trigger_Amount,
     )
 
     ApprovalPolicyUpdateRequest(
-        trigger=[],
+        trigger=[
+            Trigger_Amount(
+                amount=100.0,
+                currency="USD",
+            )
+        ],
         rule=Rule_Approver(
-            num_approvers=1,
-            identifier_list=IdentifierList_RolesList(value=["admin"]),
+            num_approvers=2,
+            identifier_list=IdentifierList_RolesList(value=["Admin", "Controller"]),
         ),
         upstream_policy_id="root",
     )

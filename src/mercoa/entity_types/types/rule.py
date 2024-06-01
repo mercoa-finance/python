@@ -24,8 +24,8 @@ class Rule_Approver(pydantic_v1.BaseModel):
 from mercoa import IdentifierList_RolesList, Rule_Approver
 
 Rule_Approver(
-    num_approvers=1,
-    identifier_list=IdentifierList_RolesList(value=["admin"]),
+    num_approvers=2,
+    identifier_list=IdentifierList_RolesList(value=["Admin", "Controller"]),
 )
 """
 Rule = typing.Union[Rule_Approver]

@@ -15,10 +15,10 @@ class UserNotificationPolicyResponse(pydantic_v1.BaseModel):
     from mercoa import UserNotificationPolicyResponse
 
     UserNotificationPolicyResponse(
-        disabled=False,
-        digest=True,
-        immediate=False,
-        type="INVOICE_APPROVAL_NEEDED",
+        disabled=True,
+        digest=False,
+        immediate=True,
+        type="INVOICE_APPROVED",
     )
     """
 
