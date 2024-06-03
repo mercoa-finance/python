@@ -2,80 +2,217 @@
 
 from __future__ import annotations
 
+import datetime as dt
 import typing
 
-from ...core.pydantic_utilities import pydantic_v1
+from ...core.datetime_utils import serialize_datetime
+from ...core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
 from .bank_account_check_options import BankAccountCheckOptions
 from .custom_payment_method_schema_id import CustomPaymentMethodSchemaId
 from .plaid_link_request import PlaidLinkRequest
 
 
 class PaymentMethodUpdateRequest_Custom(pydantic_v1.BaseModel):
+    """
+    Update a payment method. for non custom payment methods.
+
+    Examples
+    --------
+    from mercoa import PaymentMethodUpdateRequest_BankAccount
+
+    PaymentMethodUpdateRequest_BankAccount(
+        default_source=True,
+        default_destination=True,
+    )
+    """
+
+    foreign_id: typing.Optional[str] = pydantic_v1.Field(alias="foreignId", default=None)
+    account_name: typing.Optional[str] = pydantic_v1.Field(alias="accountName", default=None)
+    account_number: typing.Optional[str] = pydantic_v1.Field(alias="accountNumber", default=None)
+    schema_id: typing.Optional[CustomPaymentMethodSchemaId] = pydantic_v1.Field(alias="schemaId", default=None)
+    data: typing.Optional[typing.Dict[str, str]] = None
+    default_source: typing.Optional[bool] = pydantic_v1.Field(alias="defaultSource", default=None)
+    default_destination: typing.Optional[bool] = pydantic_v1.Field(alias="defaultDestination", default=None)
     type: typing.Literal["custom"] = "custom"
-    foreign_id: typing.Optional[str] = pydantic_v1.Field(alias="foreignId")
-    account_name: typing.Optional[str] = pydantic_v1.Field(alias="accountName")
-    account_number: typing.Optional[str] = pydantic_v1.Field(alias="accountNumber")
-    schema_id: typing.Optional[CustomPaymentMethodSchemaId] = pydantic_v1.Field(alias="schemaId")
-    data: typing.Optional[typing.Dict[str, str]]
-    default_source: typing.Optional[bool] = pydantic_v1.Field(alias="defaultSource")
-    default_destination: typing.Optional[bool] = pydantic_v1.Field(alias="defaultDestination")
+
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults_exclude_unset: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
+        kwargs_with_defaults_exclude_none: typing.Any = {"by_alias": True, "exclude_none": True, **kwargs}
+
+        return deep_union_pydantic_dicts(
+            super().dict(**kwargs_with_defaults_exclude_unset), super().dict(**kwargs_with_defaults_exclude_none)
+        )
 
     class Config:
         frozen = True
         smart_union = True
         allow_population_by_field_name = True
         populate_by_name = True
+        extra = pydantic_v1.Extra.allow
+        json_encoders = {dt.datetime: serialize_datetime}
 
 
 class PaymentMethodUpdateRequest_BankAccount(pydantic_v1.BaseModel):
+    """
+    Update a payment method. for non custom payment methods.
+
+    Examples
+    --------
+    from mercoa import PaymentMethodUpdateRequest_BankAccount
+
+    PaymentMethodUpdateRequest_BankAccount(
+        default_source=True,
+        default_destination=True,
+    )
+    """
+
+    account_name: typing.Optional[str] = pydantic_v1.Field(alias="accountName", default=None)
+    plaid: typing.Optional[PlaidLinkRequest] = None
+    check_options: typing.Optional[BankAccountCheckOptions] = pydantic_v1.Field(alias="checkOptions", default=None)
+    default_source: typing.Optional[bool] = pydantic_v1.Field(alias="defaultSource", default=None)
+    default_destination: typing.Optional[bool] = pydantic_v1.Field(alias="defaultDestination", default=None)
     type: typing.Literal["bankAccount"] = "bankAccount"
-    account_name: typing.Optional[str] = pydantic_v1.Field(alias="accountName")
-    plaid: typing.Optional[PlaidLinkRequest]
-    check_options: typing.Optional[BankAccountCheckOptions] = pydantic_v1.Field(alias="checkOptions")
-    default_source: typing.Optional[bool] = pydantic_v1.Field(alias="defaultSource")
-    default_destination: typing.Optional[bool] = pydantic_v1.Field(alias="defaultDestination")
+
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults_exclude_unset: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
+        kwargs_with_defaults_exclude_none: typing.Any = {"by_alias": True, "exclude_none": True, **kwargs}
+
+        return deep_union_pydantic_dicts(
+            super().dict(**kwargs_with_defaults_exclude_unset), super().dict(**kwargs_with_defaults_exclude_none)
+        )
 
     class Config:
         frozen = True
         smart_union = True
         allow_population_by_field_name = True
         populate_by_name = True
+        extra = pydantic_v1.Extra.allow
+        json_encoders = {dt.datetime: serialize_datetime}
 
 
 class PaymentMethodUpdateRequest_Card(pydantic_v1.BaseModel):
+    """
+    Update a payment method. for non custom payment methods.
+
+    Examples
+    --------
+    from mercoa import PaymentMethodUpdateRequest_BankAccount
+
+    PaymentMethodUpdateRequest_BankAccount(
+        default_source=True,
+        default_destination=True,
+    )
+    """
+
+    default_source: typing.Optional[bool] = pydantic_v1.Field(alias="defaultSource", default=None)
+    default_destination: typing.Optional[bool] = pydantic_v1.Field(alias="defaultDestination", default=None)
     type: typing.Literal["card"] = "card"
-    default_source: typing.Optional[bool] = pydantic_v1.Field(alias="defaultSource")
-    default_destination: typing.Optional[bool] = pydantic_v1.Field(alias="defaultDestination")
+
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults_exclude_unset: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
+        kwargs_with_defaults_exclude_none: typing.Any = {"by_alias": True, "exclude_none": True, **kwargs}
+
+        return deep_union_pydantic_dicts(
+            super().dict(**kwargs_with_defaults_exclude_unset), super().dict(**kwargs_with_defaults_exclude_none)
+        )
 
     class Config:
         frozen = True
         smart_union = True
         allow_population_by_field_name = True
         populate_by_name = True
+        extra = pydantic_v1.Extra.allow
+        json_encoders = {dt.datetime: serialize_datetime}
 
 
 class PaymentMethodUpdateRequest_Check(pydantic_v1.BaseModel):
+    """
+    Update a payment method. for non custom payment methods.
+
+    Examples
+    --------
+    from mercoa import PaymentMethodUpdateRequest_BankAccount
+
+    PaymentMethodUpdateRequest_BankAccount(
+        default_source=True,
+        default_destination=True,
+    )
+    """
+
+    default_source: typing.Optional[bool] = pydantic_v1.Field(alias="defaultSource", default=None)
+    default_destination: typing.Optional[bool] = pydantic_v1.Field(alias="defaultDestination", default=None)
     type: typing.Literal["check"] = "check"
-    default_source: typing.Optional[bool] = pydantic_v1.Field(alias="defaultSource")
-    default_destination: typing.Optional[bool] = pydantic_v1.Field(alias="defaultDestination")
+
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults_exclude_unset: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
+        kwargs_with_defaults_exclude_none: typing.Any = {"by_alias": True, "exclude_none": True, **kwargs}
+
+        return deep_union_pydantic_dicts(
+            super().dict(**kwargs_with_defaults_exclude_unset), super().dict(**kwargs_with_defaults_exclude_none)
+        )
 
     class Config:
         frozen = True
         smart_union = True
         allow_population_by_field_name = True
         populate_by_name = True
+        extra = pydantic_v1.Extra.allow
+        json_encoders = {dt.datetime: serialize_datetime}
 
 
 class PaymentMethodUpdateRequest_OffPlatform(pydantic_v1.BaseModel):
+    """
+    Update a payment method. for non custom payment methods.
+
+    Examples
+    --------
+    from mercoa import PaymentMethodUpdateRequest_BankAccount
+
+    PaymentMethodUpdateRequest_BankAccount(
+        default_source=True,
+        default_destination=True,
+    )
+    """
+
+    default_source: typing.Optional[bool] = pydantic_v1.Field(alias="defaultSource", default=None)
+    default_destination: typing.Optional[bool] = pydantic_v1.Field(alias="defaultDestination", default=None)
     type: typing.Literal["offPlatform"] = "offPlatform"
-    default_source: typing.Optional[bool] = pydantic_v1.Field(alias="defaultSource")
-    default_destination: typing.Optional[bool] = pydantic_v1.Field(alias="defaultDestination")
+
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults_exclude_unset: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
+        kwargs_with_defaults_exclude_none: typing.Any = {"by_alias": True, "exclude_none": True, **kwargs}
+
+        return deep_union_pydantic_dicts(
+            super().dict(**kwargs_with_defaults_exclude_unset), super().dict(**kwargs_with_defaults_exclude_none)
+        )
 
     class Config:
         frozen = True
         smart_union = True
         allow_population_by_field_name = True
         populate_by_name = True
+        extra = pydantic_v1.Extra.allow
+        json_encoders = {dt.datetime: serialize_datetime}
 
 
 """

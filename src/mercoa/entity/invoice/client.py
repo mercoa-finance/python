@@ -2,7 +2,6 @@
 
 import datetime as dt
 import typing
-import urllib.parse
 from json.decoder import JSONDecodeError
 
 from ...commons.errors.bad_request import BadRequest
@@ -18,7 +17,6 @@ from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ...core.datetime_utils import serialize_datetime
 from ...core.jsonable_encoder import jsonable_encoder
 from ...core.pydantic_utilities import pydantic_v1
-from ...core.remove_none_from_dict import remove_none_from_dict
 from ...core.request_options import RequestOptions
 from ...entity_types.types.entity_id import EntityId
 from ...entity_types.types.entity_user_id import EntityUserId
@@ -141,51 +139,28 @@ class InvoiceClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
+            f"entity/{jsonable_encoder(entity_id)}/invoices",
             method="GET",
-            url=urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/invoices"
-            ),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "excludePayables": exclude_payables,
-                        "excludeReceivables": exclude_receivables,
-                        "startDate": serialize_datetime(start_date) if start_date is not None else None,
-                        "endDate": serialize_datetime(end_date) if end_date is not None else None,
-                        "orderBy": order_by,
-                        "orderDirection": order_direction,
-                        "limit": limit,
-                        "startingAfter": starting_after,
-                        "metadata": jsonable_encoder(metadata),
-                        "search": search,
-                        "payerId": payer_id,
-                        "vendorId": vendor_id,
-                        "approverId": approver_id,
-                        "approverAction": approver_action,
-                        "invoiceId": invoice_id,
-                        "status": status,
-                        "includeFees": include_fees,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
-                )
-            ),
-            headers=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        **self._client_wrapper.get_headers(),
-                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
-                    }
-                )
-            ),
-            timeout=request_options.get("timeout_in_seconds")
-            if request_options is not None and request_options.get("timeout_in_seconds") is not None
-            else self._client_wrapper.get_timeout(),
-            retries=0,
-            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+            params={
+                "excludePayables": exclude_payables,
+                "excludeReceivables": exclude_receivables,
+                "startDate": serialize_datetime(start_date) if start_date is not None else None,
+                "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                "orderBy": order_by,
+                "orderDirection": order_direction,
+                "limit": limit,
+                "startingAfter": starting_after,
+                "metadata": jsonable_encoder(metadata),
+                "search": search,
+                "payerId": payer_id,
+                "vendorId": vendor_id,
+                "approverId": approver_id,
+                "approverAction": approver_action,
+                "invoiceId": invoice_id,
+                "status": status,
+                "includeFees": include_fees,
+            },
+            request_options=request_options,
         )
         try:
             _response_json = _response.json()
@@ -310,52 +285,25 @@ class InvoiceClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
+            f"entity/{jsonable_encoder(entity_id)}/invoice-metrics",
             method="GET",
-            url=urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/invoice-metrics"
-            ),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "search": search,
-                        "excludePayables": exclude_payables,
-                        "excludeReceivables": exclude_receivables,
-                        "returnByDate": return_by_date,
-                        "payerId": payer_id,
-                        "vendorId": vendor_id,
-                        "approverId": approver_id,
-                        "invoiceId": invoice_id,
-                        "status": status,
-                        "dueDateStart": serialize_datetime(due_date_start) if due_date_start is not None else None,
-                        "dueDateEnd": serialize_datetime(due_date_end) if due_date_end is not None else None,
-                        "createdDateStart": serialize_datetime(created_date_start)
-                        if created_date_start is not None
-                        else None,
-                        "createdDateEnd": serialize_datetime(created_date_end)
-                        if created_date_end is not None
-                        else None,
-                        "currency": currency,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
-                )
-            ),
-            headers=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        **self._client_wrapper.get_headers(),
-                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
-                    }
-                )
-            ),
-            timeout=request_options.get("timeout_in_seconds")
-            if request_options is not None and request_options.get("timeout_in_seconds") is not None
-            else self._client_wrapper.get_timeout(),
-            retries=0,
-            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+            params={
+                "search": search,
+                "excludePayables": exclude_payables,
+                "excludeReceivables": exclude_receivables,
+                "returnByDate": return_by_date,
+                "payerId": payer_id,
+                "vendorId": vendor_id,
+                "approverId": approver_id,
+                "invoiceId": invoice_id,
+                "status": status,
+                "dueDateStart": serialize_datetime(due_date_start) if due_date_start is not None else None,
+                "dueDateEnd": serialize_datetime(due_date_end) if due_date_end is not None else None,
+                "createdDateStart": serialize_datetime(created_date_start) if created_date_start is not None else None,
+                "createdDateEnd": serialize_datetime(created_date_end) if created_date_end is not None else None,
+                "currency": currency,
+            },
+            request_options=request_options,
         )
         try:
             _response_json = _response.json()
@@ -489,51 +437,28 @@ class AsyncInvoiceClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
+            f"entity/{jsonable_encoder(entity_id)}/invoices",
             method="GET",
-            url=urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/invoices"
-            ),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "excludePayables": exclude_payables,
-                        "excludeReceivables": exclude_receivables,
-                        "startDate": serialize_datetime(start_date) if start_date is not None else None,
-                        "endDate": serialize_datetime(end_date) if end_date is not None else None,
-                        "orderBy": order_by,
-                        "orderDirection": order_direction,
-                        "limit": limit,
-                        "startingAfter": starting_after,
-                        "metadata": jsonable_encoder(metadata),
-                        "search": search,
-                        "payerId": payer_id,
-                        "vendorId": vendor_id,
-                        "approverId": approver_id,
-                        "approverAction": approver_action,
-                        "invoiceId": invoice_id,
-                        "status": status,
-                        "includeFees": include_fees,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
-                )
-            ),
-            headers=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        **self._client_wrapper.get_headers(),
-                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
-                    }
-                )
-            ),
-            timeout=request_options.get("timeout_in_seconds")
-            if request_options is not None and request_options.get("timeout_in_seconds") is not None
-            else self._client_wrapper.get_timeout(),
-            retries=0,
-            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+            params={
+                "excludePayables": exclude_payables,
+                "excludeReceivables": exclude_receivables,
+                "startDate": serialize_datetime(start_date) if start_date is not None else None,
+                "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                "orderBy": order_by,
+                "orderDirection": order_direction,
+                "limit": limit,
+                "startingAfter": starting_after,
+                "metadata": jsonable_encoder(metadata),
+                "search": search,
+                "payerId": payer_id,
+                "vendorId": vendor_id,
+                "approverId": approver_id,
+                "approverAction": approver_action,
+                "invoiceId": invoice_id,
+                "status": status,
+                "includeFees": include_fees,
+            },
+            request_options=request_options,
         )
         try:
             _response_json = _response.json()
@@ -658,52 +583,25 @@ class AsyncInvoiceClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
+            f"entity/{jsonable_encoder(entity_id)}/invoice-metrics",
             method="GET",
-            url=urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/invoice-metrics"
-            ),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "search": search,
-                        "excludePayables": exclude_payables,
-                        "excludeReceivables": exclude_receivables,
-                        "returnByDate": return_by_date,
-                        "payerId": payer_id,
-                        "vendorId": vendor_id,
-                        "approverId": approver_id,
-                        "invoiceId": invoice_id,
-                        "status": status,
-                        "dueDateStart": serialize_datetime(due_date_start) if due_date_start is not None else None,
-                        "dueDateEnd": serialize_datetime(due_date_end) if due_date_end is not None else None,
-                        "createdDateStart": serialize_datetime(created_date_start)
-                        if created_date_start is not None
-                        else None,
-                        "createdDateEnd": serialize_datetime(created_date_end)
-                        if created_date_end is not None
-                        else None,
-                        "currency": currency,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
-                )
-            ),
-            headers=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        **self._client_wrapper.get_headers(),
-                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
-                    }
-                )
-            ),
-            timeout=request_options.get("timeout_in_seconds")
-            if request_options is not None and request_options.get("timeout_in_seconds") is not None
-            else self._client_wrapper.get_timeout(),
-            retries=0,
-            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+            params={
+                "search": search,
+                "excludePayables": exclude_payables,
+                "excludeReceivables": exclude_receivables,
+                "returnByDate": return_by_date,
+                "payerId": payer_id,
+                "vendorId": vendor_id,
+                "approverId": approver_id,
+                "invoiceId": invoice_id,
+                "status": status,
+                "dueDateStart": serialize_datetime(due_date_start) if due_date_start is not None else None,
+                "dueDateEnd": serialize_datetime(due_date_end) if due_date_end is not None else None,
+                "createdDateStart": serialize_datetime(created_date_start) if created_date_start is not None else None,
+                "createdDateEnd": serialize_datetime(created_date_end) if created_date_end is not None else None,
+                "currency": currency,
+            },
+            request_options=request_options,
         )
         try:
             _response_json = _response.json()

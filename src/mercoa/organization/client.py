@@ -2,7 +2,6 @@
 
 import datetime as dt
 import typing
-import urllib.parse
 from json.decoder import JSONDecodeError
 
 from ..commons.errors.bad_request import BadRequest
@@ -15,13 +14,18 @@ from ..commons.errors.unimplemented import Unimplemented
 from ..core.api_error import ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.datetime_utils import serialize_datetime
-from ..core.jsonable_encoder import jsonable_encoder
 from ..core.pydantic_utilities import pydantic_v1
-from ..core.remove_none_from_dict import remove_none_from_dict
 from ..core.request_options import RequestOptions
 from ..email_log_types.types.email_log_response import EmailLogResponse
-from ..organization_types.types.organization_request import OrganizationRequest
+from ..organization_types.types.color_scheme_request import ColorSchemeRequest
+from ..organization_types.types.email_provider_request import EmailProviderRequest
+from ..organization_types.types.external_accounting_system_provider_request import (
+    ExternalAccountingSystemProviderRequest,
+)
+from ..organization_types.types.metadata_schema import MetadataSchema
+from ..organization_types.types.onboarding_options_request import OnboardingOptionsRequest
 from ..organization_types.types.organization_response import OrganizationResponse
+from ..organization_types.types.payment_methods_request import PaymentMethodsRequest
 from .notification_configuration.client import AsyncNotificationConfigurationClient, NotificationConfigurationClient
 
 # this is used as the default value for optional parameters
@@ -43,7 +47,7 @@ class OrganizationClient:
         payee_onboarding_options: typing.Optional[bool] = None,
         payor_onboarding_options: typing.Optional[bool] = None,
         metadata_schema: typing.Optional[bool] = None,
-        request_options: typing.Optional[RequestOptions] = None,
+        request_options: typing.Optional[RequestOptions] = None
     ) -> OrganizationResponse:
         """
         Get current organization information
@@ -96,39 +100,18 @@ class OrganizationClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
+            "organization",
             method="GET",
-            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "organization"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "paymentMethods": payment_methods,
-                        "emailProvider": email_provider,
-                        "externalAccountingSystemProvider": external_accounting_system_provider,
-                        "colorScheme": color_scheme,
-                        "payeeOnboardingOptions": payee_onboarding_options,
-                        "payorOnboardingOptions": payor_onboarding_options,
-                        "metadataSchema": metadata_schema,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
-                )
-            ),
-            headers=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        **self._client_wrapper.get_headers(),
-                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
-                    }
-                )
-            ),
-            timeout=request_options.get("timeout_in_seconds")
-            if request_options is not None and request_options.get("timeout_in_seconds") is not None
-            else self._client_wrapper.get_timeout(),
-            retries=0,
-            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+            params={
+                "paymentMethods": payment_methods,
+                "emailProvider": email_provider,
+                "externalAccountingSystemProvider": external_accounting_system_provider,
+                "colorScheme": color_scheme,
+                "payeeOnboardingOptions": payee_onboarding_options,
+                "payorOnboardingOptions": payor_onboarding_options,
+                "metadataSchema": metadata_schema,
+            },
+            request_options=request_options,
         )
         try:
             _response_json = _response.json()
@@ -154,14 +137,47 @@ class OrganizationClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def update(
-        self, *, request: OrganizationRequest, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        name: typing.Optional[str] = OMIT,
+        logo: typing.Optional[str] = OMIT,
+        website_url: typing.Optional[str] = OMIT,
+        support_email: typing.Optional[str] = OMIT,
+        payment_methods: typing.Optional[PaymentMethodsRequest] = OMIT,
+        email_provider: typing.Optional[EmailProviderRequest] = OMIT,
+        external_accounting_system_provider: typing.Optional[ExternalAccountingSystemProviderRequest] = OMIT,
+        color_scheme: typing.Optional[ColorSchemeRequest] = OMIT,
+        payee_onboarding_options: typing.Optional[OnboardingOptionsRequest] = OMIT,
+        payor_onboarding_options: typing.Optional[OnboardingOptionsRequest] = OMIT,
+        metadata_schema: typing.Optional[typing.Sequence[MetadataSchema]] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None
     ) -> OrganizationResponse:
         """
         Update current organization
 
         Parameters
         ----------
-        request : OrganizationRequest
+        name : typing.Optional[str]
+
+        logo : typing.Optional[str]
+
+        website_url : typing.Optional[str]
+
+        support_email : typing.Optional[str]
+
+        payment_methods : typing.Optional[PaymentMethodsRequest]
+
+        email_provider : typing.Optional[EmailProviderRequest]
+
+        external_accounting_system_provider : typing.Optional[ExternalAccountingSystemProviderRequest]
+
+        color_scheme : typing.Optional[ColorSchemeRequest]
+
+        payee_onboarding_options : typing.Optional[OnboardingOptionsRequest]
+
+        payor_onboarding_options : typing.Optional[OnboardingOptionsRequest]
+
+        metadata_schema : typing.Optional[typing.Sequence[MetadataSchema]]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -178,7 +194,6 @@ class OrganizationClient:
             ExternalAccountingSystemProviderRequest_None,
             MetadataSchema,
             OnboardingOptionsRequest,
-            OrganizationRequest,
             PaymentMethodsRequest,
         )
         from mercoa.client import Mercoa
@@ -187,46 +202,37 @@ class OrganizationClient:
             token="YOUR_TOKEN",
         )
         client.organization.update(
-            request=OrganizationRequest(
-                name="string",
-                logo="string",
-                website_url="string",
-                support_email="string",
-                payment_methods=PaymentMethodsRequest(),
-                email_provider=EmailProviderRequest(),
-                external_accounting_system_provider=ExternalAccountingSystemProviderRequest_None(),
-                color_scheme=ColorSchemeRequest(),
-                payee_onboarding_options=OnboardingOptionsRequest(),
-                payor_onboarding_options=OnboardingOptionsRequest(),
-                metadata_schema=[MetadataSchema()],
-            ),
+            name="string",
+            logo="string",
+            website_url="string",
+            support_email="string",
+            payment_methods=PaymentMethodsRequest(),
+            email_provider=EmailProviderRequest(),
+            external_accounting_system_provider=ExternalAccountingSystemProviderRequest_None(),
+            color_scheme=ColorSchemeRequest(),
+            payee_onboarding_options=OnboardingOptionsRequest(),
+            payor_onboarding_options=OnboardingOptionsRequest(),
+            metadata_schema=[MetadataSchema()],
         )
         """
         _response = self._client_wrapper.httpx_client.request(
+            "organization",
             method="POST",
-            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "organization"),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
-            ),
-            json=jsonable_encoder(request)
-            if request_options is None or request_options.get("additional_body_parameters") is None
-            else {
-                **jsonable_encoder(request),
-                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            json={
+                "name": name,
+                "logo": logo,
+                "websiteUrl": website_url,
+                "supportEmail": support_email,
+                "paymentMethods": payment_methods,
+                "emailProvider": email_provider,
+                "externalAccountingSystemProvider": external_accounting_system_provider,
+                "colorScheme": color_scheme,
+                "payeeOnboardingOptions": payee_onboarding_options,
+                "payorOnboardingOptions": payor_onboarding_options,
+                "metadataSchema": metadata_schema,
             },
-            headers=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        **self._client_wrapper.get_headers(),
-                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
-                    }
-                )
-            ),
-            timeout=request_options.get("timeout_in_seconds")
-            if request_options is not None and request_options.get("timeout_in_seconds") is not None
-            else self._client_wrapper.get_timeout(),
-            retries=0,
-            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+            request_options=request_options,
+            omit=OMIT,
         )
         try:
             _response_json = _response.json()
@@ -258,7 +264,7 @@ class OrganizationClient:
         end_date: typing.Optional[dt.datetime] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[str] = None,
-        request_options: typing.Optional[RequestOptions] = None,
+        request_options: typing.Optional[RequestOptions] = None
     ) -> EmailLogResponse:
         """
         Get log of all emails sent to this organization. Content format subject to change.
@@ -303,36 +309,15 @@ class OrganizationClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
+            "organization/emailLog",
             method="GET",
-            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "organization/emailLog"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "startDate": serialize_datetime(start_date) if start_date is not None else None,
-                        "endDate": serialize_datetime(end_date) if end_date is not None else None,
-                        "limit": limit,
-                        "startingAfter": starting_after,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
-                )
-            ),
-            headers=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        **self._client_wrapper.get_headers(),
-                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
-                    }
-                )
-            ),
-            timeout=request_options.get("timeout_in_seconds")
-            if request_options is not None and request_options.get("timeout_in_seconds") is not None
-            else self._client_wrapper.get_timeout(),
-            retries=0,
-            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+            params={
+                "startDate": serialize_datetime(start_date) if start_date is not None else None,
+                "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                "limit": limit,
+                "startingAfter": starting_after,
+            },
+            request_options=request_options,
         )
         try:
             _response_json = _response.json()
@@ -373,7 +358,7 @@ class AsyncOrganizationClient:
         payee_onboarding_options: typing.Optional[bool] = None,
         payor_onboarding_options: typing.Optional[bool] = None,
         metadata_schema: typing.Optional[bool] = None,
-        request_options: typing.Optional[RequestOptions] = None,
+        request_options: typing.Optional[RequestOptions] = None
     ) -> OrganizationResponse:
         """
         Get current organization information
@@ -426,39 +411,18 @@ class AsyncOrganizationClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
+            "organization",
             method="GET",
-            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "organization"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "paymentMethods": payment_methods,
-                        "emailProvider": email_provider,
-                        "externalAccountingSystemProvider": external_accounting_system_provider,
-                        "colorScheme": color_scheme,
-                        "payeeOnboardingOptions": payee_onboarding_options,
-                        "payorOnboardingOptions": payor_onboarding_options,
-                        "metadataSchema": metadata_schema,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
-                )
-            ),
-            headers=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        **self._client_wrapper.get_headers(),
-                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
-                    }
-                )
-            ),
-            timeout=request_options.get("timeout_in_seconds")
-            if request_options is not None and request_options.get("timeout_in_seconds") is not None
-            else self._client_wrapper.get_timeout(),
-            retries=0,
-            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+            params={
+                "paymentMethods": payment_methods,
+                "emailProvider": email_provider,
+                "externalAccountingSystemProvider": external_accounting_system_provider,
+                "colorScheme": color_scheme,
+                "payeeOnboardingOptions": payee_onboarding_options,
+                "payorOnboardingOptions": payor_onboarding_options,
+                "metadataSchema": metadata_schema,
+            },
+            request_options=request_options,
         )
         try:
             _response_json = _response.json()
@@ -484,14 +448,47 @@ class AsyncOrganizationClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def update(
-        self, *, request: OrganizationRequest, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        name: typing.Optional[str] = OMIT,
+        logo: typing.Optional[str] = OMIT,
+        website_url: typing.Optional[str] = OMIT,
+        support_email: typing.Optional[str] = OMIT,
+        payment_methods: typing.Optional[PaymentMethodsRequest] = OMIT,
+        email_provider: typing.Optional[EmailProviderRequest] = OMIT,
+        external_accounting_system_provider: typing.Optional[ExternalAccountingSystemProviderRequest] = OMIT,
+        color_scheme: typing.Optional[ColorSchemeRequest] = OMIT,
+        payee_onboarding_options: typing.Optional[OnboardingOptionsRequest] = OMIT,
+        payor_onboarding_options: typing.Optional[OnboardingOptionsRequest] = OMIT,
+        metadata_schema: typing.Optional[typing.Sequence[MetadataSchema]] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None
     ) -> OrganizationResponse:
         """
         Update current organization
 
         Parameters
         ----------
-        request : OrganizationRequest
+        name : typing.Optional[str]
+
+        logo : typing.Optional[str]
+
+        website_url : typing.Optional[str]
+
+        support_email : typing.Optional[str]
+
+        payment_methods : typing.Optional[PaymentMethodsRequest]
+
+        email_provider : typing.Optional[EmailProviderRequest]
+
+        external_accounting_system_provider : typing.Optional[ExternalAccountingSystemProviderRequest]
+
+        color_scheme : typing.Optional[ColorSchemeRequest]
+
+        payee_onboarding_options : typing.Optional[OnboardingOptionsRequest]
+
+        payor_onboarding_options : typing.Optional[OnboardingOptionsRequest]
+
+        metadata_schema : typing.Optional[typing.Sequence[MetadataSchema]]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -508,7 +505,6 @@ class AsyncOrganizationClient:
             ExternalAccountingSystemProviderRequest_None,
             MetadataSchema,
             OnboardingOptionsRequest,
-            OrganizationRequest,
             PaymentMethodsRequest,
         )
         from mercoa.client import AsyncMercoa
@@ -517,46 +513,37 @@ class AsyncOrganizationClient:
             token="YOUR_TOKEN",
         )
         await client.organization.update(
-            request=OrganizationRequest(
-                name="string",
-                logo="string",
-                website_url="string",
-                support_email="string",
-                payment_methods=PaymentMethodsRequest(),
-                email_provider=EmailProviderRequest(),
-                external_accounting_system_provider=ExternalAccountingSystemProviderRequest_None(),
-                color_scheme=ColorSchemeRequest(),
-                payee_onboarding_options=OnboardingOptionsRequest(),
-                payor_onboarding_options=OnboardingOptionsRequest(),
-                metadata_schema=[MetadataSchema()],
-            ),
+            name="string",
+            logo="string",
+            website_url="string",
+            support_email="string",
+            payment_methods=PaymentMethodsRequest(),
+            email_provider=EmailProviderRequest(),
+            external_accounting_system_provider=ExternalAccountingSystemProviderRequest_None(),
+            color_scheme=ColorSchemeRequest(),
+            payee_onboarding_options=OnboardingOptionsRequest(),
+            payor_onboarding_options=OnboardingOptionsRequest(),
+            metadata_schema=[MetadataSchema()],
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
+            "organization",
             method="POST",
-            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "organization"),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
-            ),
-            json=jsonable_encoder(request)
-            if request_options is None or request_options.get("additional_body_parameters") is None
-            else {
-                **jsonable_encoder(request),
-                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            json={
+                "name": name,
+                "logo": logo,
+                "websiteUrl": website_url,
+                "supportEmail": support_email,
+                "paymentMethods": payment_methods,
+                "emailProvider": email_provider,
+                "externalAccountingSystemProvider": external_accounting_system_provider,
+                "colorScheme": color_scheme,
+                "payeeOnboardingOptions": payee_onboarding_options,
+                "payorOnboardingOptions": payor_onboarding_options,
+                "metadataSchema": metadata_schema,
             },
-            headers=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        **self._client_wrapper.get_headers(),
-                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
-                    }
-                )
-            ),
-            timeout=request_options.get("timeout_in_seconds")
-            if request_options is not None and request_options.get("timeout_in_seconds") is not None
-            else self._client_wrapper.get_timeout(),
-            retries=0,
-            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+            request_options=request_options,
+            omit=OMIT,
         )
         try:
             _response_json = _response.json()
@@ -588,7 +575,7 @@ class AsyncOrganizationClient:
         end_date: typing.Optional[dt.datetime] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[str] = None,
-        request_options: typing.Optional[RequestOptions] = None,
+        request_options: typing.Optional[RequestOptions] = None
     ) -> EmailLogResponse:
         """
         Get log of all emails sent to this organization. Content format subject to change.
@@ -633,36 +620,15 @@ class AsyncOrganizationClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
+            "organization/emailLog",
             method="GET",
-            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "organization/emailLog"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "startDate": serialize_datetime(start_date) if start_date is not None else None,
-                        "endDate": serialize_datetime(end_date) if end_date is not None else None,
-                        "limit": limit,
-                        "startingAfter": starting_after,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
-                )
-            ),
-            headers=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        **self._client_wrapper.get_headers(),
-                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
-                    }
-                )
-            ),
-            timeout=request_options.get("timeout_in_seconds")
-            if request_options is not None and request_options.get("timeout_in_seconds") is not None
-            else self._client_wrapper.get_timeout(),
-            retries=0,
-            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+            params={
+                "startDate": serialize_datetime(start_date) if start_date is not None else None,
+                "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                "limit": limit,
+                "startingAfter": starting_after,
+            },
+            request_options=request_options,
         )
         try:
             _response_json = _response.json()

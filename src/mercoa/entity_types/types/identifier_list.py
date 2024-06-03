@@ -9,8 +9,8 @@ from .entity_user_id import EntityUserId
 
 
 class IdentifierList_RolesList(pydantic_v1.BaseModel):
-    type: typing.Literal["rolesList"] = "rolesList"
     value: typing.List[str]
+    type: typing.Literal["rolesList"] = "rolesList"
 
     class Config:
         frozen = True
@@ -18,8 +18,8 @@ class IdentifierList_RolesList(pydantic_v1.BaseModel):
 
 
 class IdentifierList_UserList(pydantic_v1.BaseModel):
-    type: typing.Literal["userList"] = "userList"
     value: typing.List[EntityUserId]
+    type: typing.Literal["userList"] = "userList"
 
     class Config:
         frozen = True

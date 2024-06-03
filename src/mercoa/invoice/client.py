@@ -2,7 +2,6 @@
 
 import datetime as dt
 import typing
-import urllib.parse
 from json.decoder import JSONDecodeError
 
 from ..commons.errors.bad_request import BadRequest
@@ -18,19 +17,21 @@ from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.datetime_utils import serialize_datetime
 from ..core.jsonable_encoder import jsonable_encoder
 from ..core.pydantic_utilities import pydantic_v1
-from ..core.remove_none_from_dict import remove_none_from_dict
 from ..core.request_options import RequestOptions
 from ..entity_types.types.entity_id import EntityId
 from ..entity_types.types.entity_user_id import EntityUserId
+from ..invoice_types.types.approval_slot_assignment import ApprovalSlotAssignment
 from ..invoice_types.types.approver_action import ApproverAction
 from ..invoice_types.types.find_invoice_response import FindInvoiceResponse
-from ..invoice_types.types.invoice_creation_request import InvoiceCreationRequest
 from ..invoice_types.types.invoice_id import InvoiceId
+from ..invoice_types.types.invoice_line_item_request import InvoiceLineItemRequest
 from ..invoice_types.types.invoice_metadata_filter import InvoiceMetadataFilter
 from ..invoice_types.types.invoice_order_by_field import InvoiceOrderByField
 from ..invoice_types.types.invoice_response import InvoiceResponse
 from ..invoice_types.types.invoice_status import InvoiceStatus
-from ..invoice_types.types.invoice_update_request import InvoiceUpdateRequest
+from ..invoice_types.types.payment_destination_options import PaymentDestinationOptions
+from ..payment_method_types.types.currency_code import CurrencyCode
+from ..payment_method_types.types.payment_method_id import PaymentMethodId
 from .approval.client import ApprovalClient, AsyncApprovalClient
 from .comment.client import AsyncCommentClient, CommentClient
 from .document.client import AsyncDocumentClient, DocumentClient
@@ -141,48 +142,27 @@ class InvoiceClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
+            "invoices",
             method="GET",
-            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "invoices"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "entityId": entity_id,
-                        "startDate": serialize_datetime(start_date) if start_date is not None else None,
-                        "endDate": serialize_datetime(end_date) if end_date is not None else None,
-                        "orderBy": order_by,
-                        "orderDirection": order_direction,
-                        "limit": limit,
-                        "startingAfter": starting_after,
-                        "search": search,
-                        "metadata": jsonable_encoder(metadata),
-                        "payerId": payer_id,
-                        "vendorId": vendor_id,
-                        "approverId": approver_id,
-                        "approverAction": approver_action,
-                        "invoiceId": invoice_id,
-                        "status": status,
-                        "includeFees": include_fees,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
-                )
-            ),
-            headers=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        **self._client_wrapper.get_headers(),
-                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
-                    }
-                )
-            ),
-            timeout=request_options.get("timeout_in_seconds")
-            if request_options is not None and request_options.get("timeout_in_seconds") is not None
-            else self._client_wrapper.get_timeout(),
-            retries=0,
-            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+            params={
+                "entityId": entity_id,
+                "startDate": serialize_datetime(start_date) if start_date is not None else None,
+                "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                "orderBy": order_by,
+                "orderDirection": order_direction,
+                "limit": limit,
+                "startingAfter": starting_after,
+                "search": search,
+                "metadata": jsonable_encoder(metadata),
+                "payerId": payer_id,
+                "vendorId": vendor_id,
+                "approverId": approver_id,
+                "approverAction": approver_action,
+                "invoiceId": invoice_id,
+                "status": status,
+                "includeFees": include_fees,
+            },
+            request_options=request_options,
         )
         try:
             _response_json = _response.json()
@@ -208,12 +188,101 @@ class InvoiceClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def create(
-        self, *, request: InvoiceCreationRequest, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        creator_entity_id: EntityId,
+        status: typing.Optional[InvoiceStatus] = OMIT,
+        amount: typing.Optional[float] = OMIT,
+        currency: typing.Optional[CurrencyCode] = OMIT,
+        invoice_date: typing.Optional[dt.datetime] = OMIT,
+        deduction_date: typing.Optional[dt.datetime] = OMIT,
+        settlement_date: typing.Optional[dt.datetime] = OMIT,
+        due_date: typing.Optional[dt.datetime] = OMIT,
+        invoice_number: typing.Optional[str] = OMIT,
+        note_to_self: typing.Optional[str] = OMIT,
+        service_start_date: typing.Optional[dt.datetime] = OMIT,
+        service_end_date: typing.Optional[dt.datetime] = OMIT,
+        payer_id: typing.Optional[EntityId] = OMIT,
+        payment_source_id: typing.Optional[PaymentMethodId] = OMIT,
+        vendor_id: typing.Optional[EntityId] = OMIT,
+        payment_destination_id: typing.Optional[PaymentMethodId] = OMIT,
+        payment_destination_options: typing.Optional[PaymentDestinationOptions] = OMIT,
+        approvers: typing.Optional[typing.Sequence[ApprovalSlotAssignment]] = OMIT,
+        line_items: typing.Optional[typing.Sequence[InvoiceLineItemRequest]] = OMIT,
+        metadata: typing.Optional[typing.Dict[str, str]] = OMIT,
+        foreign_id: typing.Optional[str] = OMIT,
+        document: typing.Optional[str] = OMIT,
+        uploaded_image: typing.Optional[str] = OMIT,
+        creator_user_id: typing.Optional[EntityUserId] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> InvoiceResponse:
         """
         Parameters
         ----------
-        request : InvoiceCreationRequest
+        creator_entity_id : EntityId
+            ID of entity who created this invoice.
+
+        status : typing.Optional[InvoiceStatus]
+
+        amount : typing.Optional[float]
+            Total amount of invoice in major units. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.
+
+        currency : typing.Optional[CurrencyCode]
+            Currency code for the amount. Defaults to USD.
+
+        invoice_date : typing.Optional[dt.datetime]
+            Date the invoice was issued.
+
+        deduction_date : typing.Optional[dt.datetime]
+            Date when funds will be deducted from payer's account.
+
+        settlement_date : typing.Optional[dt.datetime]
+            Date of funds settlement.
+
+        due_date : typing.Optional[dt.datetime]
+            Due date of invoice.
+
+        invoice_number : typing.Optional[str]
+
+        note_to_self : typing.Optional[str]
+            Note to self or memo on invoice.
+
+        service_start_date : typing.Optional[dt.datetime]
+
+        service_end_date : typing.Optional[dt.datetime]
+
+        payer_id : typing.Optional[EntityId]
+
+        payment_source_id : typing.Optional[PaymentMethodId]
+            ID of payment source for this invoice. If not provided, will attempt to use the default payment source for the payer when creating an invoice if a default payment source exists for the payer.
+
+        vendor_id : typing.Optional[EntityId]
+
+        payment_destination_id : typing.Optional[PaymentMethodId]
+            ID of payment destination for this invoice. If not provided, will attempt to use the default payment destination for the vendor when creating an invoice if a default payment destination exists for the vendor.
+
+        payment_destination_options : typing.Optional[PaymentDestinationOptions]
+            Options for the payment destination. Depending on the payment destination, this may include things such as check delivery method.
+
+        approvers : typing.Optional[typing.Sequence[ApprovalSlotAssignment]]
+            Set approvers for this invoice.
+
+        line_items : typing.Optional[typing.Sequence[InvoiceLineItemRequest]]
+
+        metadata : typing.Optional[typing.Dict[str, str]]
+            Metadata associated with this invoice. You can specify up to 10 keys, with key names up to 40 characters long and values up to 200 characters long.
+
+        foreign_id : typing.Optional[str]
+            The ID used to identify this invoice in your system. This ID must be unique within each creatorEntity in your system, e.g. two invoices with the same creatorEntity may not have the same foreign ID.
+
+        document : typing.Optional[str]
+            Base64 encoded image or PDF of invoice document. PNG, JPG, and PDF are supported. 10MB max. If the invoice already has a document, this will add a new document to the invoice.
+
+        uploaded_image : typing.Optional[str]
+            DEPRECATED. Use document field instead.
+
+        creator_user_id : typing.Optional[EntityUserId]
+            ID of entity user who created this invoice.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -226,84 +295,84 @@ class InvoiceClient:
         --------
         import datetime
 
-        from mercoa import (
-            InvoiceCreationRequest,
-            InvoiceLineItemRequest,
-            PaymentDestinationOptions_Check,
-        )
+        from mercoa import InvoiceLineItemRequest, PaymentDestinationOptions_Check
         from mercoa.client import Mercoa
 
         client = Mercoa(
             token="YOUR_TOKEN",
         )
         client.invoice.create(
-            request=InvoiceCreationRequest(
-                status="NEW",
-                amount=100.0,
-                currency="USD",
-                invoice_date=datetime.datetime.fromisoformat(
-                    "2021-01-01 00:00:00+00:00",
-                ),
-                due_date=datetime.datetime.fromisoformat(
-                    "2021-01-31 00:00:00+00:00",
-                ),
-                invoice_number="INV-123",
-                note_to_self="For the month of January",
-                payer_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-                payment_source_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
-                vendor_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
-                payment_destination_id="pm_5fde2f4a-facc-48ef-8f0d-6b7d087c7b18",
-                payment_destination_options=PaymentDestinationOptions_Check(
-                    delivery="MAIL",
-                ),
-                line_items=[
-                    InvoiceLineItemRequest(
-                        amount=100.0,
-                        currency="USD",
-                        description="Product A",
-                        name="Product A",
-                        quantity=1,
-                        unit_price=100.0,
-                        service_start_date=datetime.datetime.fromisoformat(
-                            "2021-01-01 00:00:00+00:00",
-                        ),
-                        service_end_date=datetime.datetime.fromisoformat(
-                            "2021-01-31 00:00:00+00:00",
-                        ),
-                        metadata={"key1": "value1", "key2": "value2"},
-                        gl_account_id="600394",
-                    )
-                ],
-                creator_entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-                creator_user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+            status="NEW",
+            amount=100.0,
+            currency="USD",
+            invoice_date=datetime.datetime.fromisoformat(
+                "2021-01-01 00:00:00+00:00",
             ),
+            due_date=datetime.datetime.fromisoformat(
+                "2021-01-31 00:00:00+00:00",
+            ),
+            invoice_number="INV-123",
+            note_to_self="For the month of January",
+            payer_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            payment_source_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+            vendor_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+            payment_destination_id="pm_5fde2f4a-facc-48ef-8f0d-6b7d087c7b18",
+            payment_destination_options=PaymentDestinationOptions_Check(
+                delivery="MAIL",
+            ),
+            line_items=[
+                InvoiceLineItemRequest(
+                    amount=100.0,
+                    currency="USD",
+                    description="Product A",
+                    name="Product A",
+                    quantity=1,
+                    unit_price=100.0,
+                    service_start_date=datetime.datetime.fromisoformat(
+                        "2021-01-01 00:00:00+00:00",
+                    ),
+                    service_end_date=datetime.datetime.fromisoformat(
+                        "2021-01-31 00:00:00+00:00",
+                    ),
+                    metadata={"key1": "value1", "key2": "value2"},
+                    gl_account_id="600394",
+                )
+            ],
+            creator_entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            creator_user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
+            "invoice",
             method="POST",
-            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "invoice"),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
-            ),
-            json=jsonable_encoder(request)
-            if request_options is None or request_options.get("additional_body_parameters") is None
-            else {
-                **jsonable_encoder(request),
-                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            json={
+                "creatorEntityId": creator_entity_id,
+                "status": status,
+                "amount": amount,
+                "currency": currency,
+                "invoiceDate": invoice_date,
+                "deductionDate": deduction_date,
+                "settlementDate": settlement_date,
+                "dueDate": due_date,
+                "invoiceNumber": invoice_number,
+                "noteToSelf": note_to_self,
+                "serviceStartDate": service_start_date,
+                "serviceEndDate": service_end_date,
+                "payerId": payer_id,
+                "paymentSourceId": payment_source_id,
+                "vendorId": vendor_id,
+                "paymentDestinationId": payment_destination_id,
+                "paymentDestinationOptions": payment_destination_options,
+                "approvers": approvers,
+                "lineItems": line_items,
+                "metadata": metadata,
+                "foreignId": foreign_id,
+                "document": document,
+                "uploadedImage": uploaded_image,
+                "creatorUserId": creator_user_id,
             },
-            headers=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        **self._client_wrapper.get_headers(),
-                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
-                    }
-                )
-            ),
-            timeout=request_options.get("timeout_in_seconds")
-            if request_options is not None and request_options.get("timeout_in_seconds") is not None
-            else self._client_wrapper.get_timeout(),
-            retries=0,
-            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+            request_options=request_options,
+            omit=OMIT,
         )
         try:
             _response_json = _response.json()
@@ -362,35 +431,10 @@ class InvoiceClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
+            f"invoice/{jsonable_encoder(invoice_id)}",
             method="GET",
-            url=urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}"
-            ),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "includeFees": include_fees,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
-                )
-            ),
-            headers=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        **self._client_wrapper.get_headers(),
-                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
-                    }
-                )
-            ),
-            timeout=request_options.get("timeout_in_seconds")
-            if request_options is not None and request_options.get("timeout_in_seconds") is not None
-            else self._client_wrapper.get_timeout(),
-            retries=0,
-            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+            params={"includeFees": include_fees},
+            request_options=request_options,
         )
         try:
             _response_json = _response.json()
@@ -419,7 +463,30 @@ class InvoiceClient:
         self,
         invoice_id: InvoiceId,
         *,
-        request: InvoiceUpdateRequest,
+        creator_entity_id: typing.Optional[EntityId] = OMIT,
+        status: typing.Optional[InvoiceStatus] = OMIT,
+        amount: typing.Optional[float] = OMIT,
+        currency: typing.Optional[CurrencyCode] = OMIT,
+        invoice_date: typing.Optional[dt.datetime] = OMIT,
+        deduction_date: typing.Optional[dt.datetime] = OMIT,
+        settlement_date: typing.Optional[dt.datetime] = OMIT,
+        due_date: typing.Optional[dt.datetime] = OMIT,
+        invoice_number: typing.Optional[str] = OMIT,
+        note_to_self: typing.Optional[str] = OMIT,
+        service_start_date: typing.Optional[dt.datetime] = OMIT,
+        service_end_date: typing.Optional[dt.datetime] = OMIT,
+        payer_id: typing.Optional[EntityId] = OMIT,
+        payment_source_id: typing.Optional[PaymentMethodId] = OMIT,
+        vendor_id: typing.Optional[EntityId] = OMIT,
+        payment_destination_id: typing.Optional[PaymentMethodId] = OMIT,
+        payment_destination_options: typing.Optional[PaymentDestinationOptions] = OMIT,
+        approvers: typing.Optional[typing.Sequence[ApprovalSlotAssignment]] = OMIT,
+        line_items: typing.Optional[typing.Sequence[InvoiceLineItemRequest]] = OMIT,
+        metadata: typing.Optional[typing.Dict[str, str]] = OMIT,
+        foreign_id: typing.Optional[str] = OMIT,
+        document: typing.Optional[str] = OMIT,
+        uploaded_image: typing.Optional[str] = OMIT,
+        creator_user_id: typing.Optional[EntityUserId] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> InvoiceResponse:
         """
@@ -427,7 +494,70 @@ class InvoiceClient:
         ----------
         invoice_id : InvoiceId
 
-        request : InvoiceUpdateRequest
+        creator_entity_id : typing.Optional[EntityId]
+            ID of entity who created this invoice. If creating a payable invoice (AP), this must be the same as the payerId. If creating a receivable invoice (AR), this must be the same as the vendorId.
+
+        status : typing.Optional[InvoiceStatus]
+
+        amount : typing.Optional[float]
+            Total amount of invoice in major units. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.
+
+        currency : typing.Optional[CurrencyCode]
+            Currency code for the amount. Defaults to USD.
+
+        invoice_date : typing.Optional[dt.datetime]
+            Date the invoice was issued.
+
+        deduction_date : typing.Optional[dt.datetime]
+            Date when funds will be deducted from payer's account.
+
+        settlement_date : typing.Optional[dt.datetime]
+            Date of funds settlement.
+
+        due_date : typing.Optional[dt.datetime]
+            Due date of invoice.
+
+        invoice_number : typing.Optional[str]
+
+        note_to_self : typing.Optional[str]
+            Note to self or memo on invoice.
+
+        service_start_date : typing.Optional[dt.datetime]
+
+        service_end_date : typing.Optional[dt.datetime]
+
+        payer_id : typing.Optional[EntityId]
+
+        payment_source_id : typing.Optional[PaymentMethodId]
+            ID of payment source for this invoice. If not provided, will attempt to use the default payment source for the payer when creating an invoice if a default payment source exists for the payer.
+
+        vendor_id : typing.Optional[EntityId]
+
+        payment_destination_id : typing.Optional[PaymentMethodId]
+            ID of payment destination for this invoice. If not provided, will attempt to use the default payment destination for the vendor when creating an invoice if a default payment destination exists for the vendor.
+
+        payment_destination_options : typing.Optional[PaymentDestinationOptions]
+            Options for the payment destination. Depending on the payment destination, this may include things such as check delivery method.
+
+        approvers : typing.Optional[typing.Sequence[ApprovalSlotAssignment]]
+            Set approvers for this invoice.
+
+        line_items : typing.Optional[typing.Sequence[InvoiceLineItemRequest]]
+
+        metadata : typing.Optional[typing.Dict[str, str]]
+            Metadata associated with this invoice. You can specify up to 10 keys, with key names up to 40 characters long and values up to 200 characters long.
+
+        foreign_id : typing.Optional[str]
+            The ID used to identify this invoice in your system. This ID must be unique within each creatorEntity in your system, e.g. two invoices with the same creatorEntity may not have the same foreign ID.
+
+        document : typing.Optional[str]
+            Base64 encoded image or PDF of invoice document. PNG, JPG, and PDF are supported. 10MB max. If the invoice already has a document, this will add a new document to the invoice.
+
+        uploaded_image : typing.Optional[str]
+            DEPRECATED. Use document field instead.
+
+        creator_user_id : typing.Optional[EntityUserId]
+            ID of entity user who created this invoice.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -440,11 +570,7 @@ class InvoiceClient:
         --------
         import datetime
 
-        from mercoa import (
-            InvoiceLineItemRequest,
-            InvoiceUpdateRequest,
-            PaymentDestinationOptions_Check,
-        )
+        from mercoa import InvoiceLineItemRequest, PaymentDestinationOptions_Check
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -452,75 +578,77 @@ class InvoiceClient:
         )
         client.invoice.update(
             invoice_id="inv_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            request=InvoiceUpdateRequest(
-                status="NEW",
-                amount=100.0,
-                currency="USD",
-                invoice_date=datetime.datetime.fromisoformat(
-                    "2021-01-01 00:00:00+00:00",
-                ),
-                due_date=datetime.datetime.fromisoformat(
-                    "2021-01-31 00:00:00+00:00",
-                ),
-                invoice_number="INV-123",
-                note_to_self="For the month of January",
-                payer_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-                payment_source_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
-                vendor_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
-                payment_destination_id="pm_5fde2f4a-facc-48ef-8f0d-6b7d087c7b18",
-                payment_destination_options=PaymentDestinationOptions_Check(
-                    delivery="MAIL",
-                ),
-                line_items=[
-                    InvoiceLineItemRequest(
-                        amount=100.0,
-                        currency="USD",
-                        description="Product A",
-                        name="Product A",
-                        quantity=1,
-                        unit_price=100.0,
-                        service_start_date=datetime.datetime.fromisoformat(
-                            "2021-01-01 00:00:00+00:00",
-                        ),
-                        service_end_date=datetime.datetime.fromisoformat(
-                            "2021-01-31 00:00:00+00:00",
-                        ),
-                        metadata={"key1": "value1", "key2": "value2"},
-                        gl_account_id="600394",
-                    )
-                ],
-                creator_entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-                creator_user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+            status="NEW",
+            amount=100.0,
+            currency="USD",
+            invoice_date=datetime.datetime.fromisoformat(
+                "2021-01-01 00:00:00+00:00",
             ),
+            due_date=datetime.datetime.fromisoformat(
+                "2021-01-31 00:00:00+00:00",
+            ),
+            invoice_number="INV-123",
+            note_to_self="For the month of January",
+            payer_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            payment_source_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+            vendor_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+            payment_destination_id="pm_5fde2f4a-facc-48ef-8f0d-6b7d087c7b18",
+            payment_destination_options=PaymentDestinationOptions_Check(
+                delivery="MAIL",
+            ),
+            line_items=[
+                InvoiceLineItemRequest(
+                    amount=100.0,
+                    currency="USD",
+                    description="Product A",
+                    name="Product A",
+                    quantity=1,
+                    unit_price=100.0,
+                    service_start_date=datetime.datetime.fromisoformat(
+                        "2021-01-01 00:00:00+00:00",
+                    ),
+                    service_end_date=datetime.datetime.fromisoformat(
+                        "2021-01-31 00:00:00+00:00",
+                    ),
+                    metadata={"key1": "value1", "key2": "value2"},
+                    gl_account_id="600394",
+                )
+            ],
+            creator_entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            creator_user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
+            f"invoice/{jsonable_encoder(invoice_id)}",
             method="POST",
-            url=urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}"
-            ),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
-            ),
-            json=jsonable_encoder(request)
-            if request_options is None or request_options.get("additional_body_parameters") is None
-            else {
-                **jsonable_encoder(request),
-                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            json={
+                "creatorEntityId": creator_entity_id,
+                "status": status,
+                "amount": amount,
+                "currency": currency,
+                "invoiceDate": invoice_date,
+                "deductionDate": deduction_date,
+                "settlementDate": settlement_date,
+                "dueDate": due_date,
+                "invoiceNumber": invoice_number,
+                "noteToSelf": note_to_self,
+                "serviceStartDate": service_start_date,
+                "serviceEndDate": service_end_date,
+                "payerId": payer_id,
+                "paymentSourceId": payment_source_id,
+                "vendorId": vendor_id,
+                "paymentDestinationId": payment_destination_id,
+                "paymentDestinationOptions": payment_destination_options,
+                "approvers": approvers,
+                "lineItems": line_items,
+                "metadata": metadata,
+                "foreignId": foreign_id,
+                "document": document,
+                "uploadedImage": uploaded_image,
+                "creatorUserId": creator_user_id,
             },
-            headers=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        **self._client_wrapper.get_headers(),
-                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
-                    }
-                )
-            ),
-            timeout=request_options.get("timeout_in_seconds")
-            if request_options is not None and request_options.get("timeout_in_seconds") is not None
-            else self._client_wrapper.get_timeout(),
-            retries=0,
-            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+            request_options=request_options,
+            omit=OMIT,
         )
         try:
             _response_json = _response.json()
@@ -572,26 +700,7 @@ class InvoiceClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            method="DELETE",
-            url=urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}"
-            ),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
-            ),
-            headers=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        **self._client_wrapper.get_headers(),
-                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
-                    }
-                )
-            ),
-            timeout=request_options.get("timeout_in_seconds")
-            if request_options is not None and request_options.get("timeout_in_seconds") is not None
-            else self._client_wrapper.get_timeout(),
-            retries=0,
-            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+            f"invoice/{jsonable_encoder(invoice_id)}", method="DELETE", request_options=request_options
         )
         if 200 <= _response.status_code < 300:
             return
@@ -718,48 +827,27 @@ class AsyncInvoiceClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
+            "invoices",
             method="GET",
-            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "invoices"),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "entityId": entity_id,
-                        "startDate": serialize_datetime(start_date) if start_date is not None else None,
-                        "endDate": serialize_datetime(end_date) if end_date is not None else None,
-                        "orderBy": order_by,
-                        "orderDirection": order_direction,
-                        "limit": limit,
-                        "startingAfter": starting_after,
-                        "search": search,
-                        "metadata": jsonable_encoder(metadata),
-                        "payerId": payer_id,
-                        "vendorId": vendor_id,
-                        "approverId": approver_id,
-                        "approverAction": approver_action,
-                        "invoiceId": invoice_id,
-                        "status": status,
-                        "includeFees": include_fees,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
-                )
-            ),
-            headers=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        **self._client_wrapper.get_headers(),
-                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
-                    }
-                )
-            ),
-            timeout=request_options.get("timeout_in_seconds")
-            if request_options is not None and request_options.get("timeout_in_seconds") is not None
-            else self._client_wrapper.get_timeout(),
-            retries=0,
-            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+            params={
+                "entityId": entity_id,
+                "startDate": serialize_datetime(start_date) if start_date is not None else None,
+                "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                "orderBy": order_by,
+                "orderDirection": order_direction,
+                "limit": limit,
+                "startingAfter": starting_after,
+                "search": search,
+                "metadata": jsonable_encoder(metadata),
+                "payerId": payer_id,
+                "vendorId": vendor_id,
+                "approverId": approver_id,
+                "approverAction": approver_action,
+                "invoiceId": invoice_id,
+                "status": status,
+                "includeFees": include_fees,
+            },
+            request_options=request_options,
         )
         try:
             _response_json = _response.json()
@@ -785,12 +873,101 @@ class AsyncInvoiceClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def create(
-        self, *, request: InvoiceCreationRequest, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        creator_entity_id: EntityId,
+        status: typing.Optional[InvoiceStatus] = OMIT,
+        amount: typing.Optional[float] = OMIT,
+        currency: typing.Optional[CurrencyCode] = OMIT,
+        invoice_date: typing.Optional[dt.datetime] = OMIT,
+        deduction_date: typing.Optional[dt.datetime] = OMIT,
+        settlement_date: typing.Optional[dt.datetime] = OMIT,
+        due_date: typing.Optional[dt.datetime] = OMIT,
+        invoice_number: typing.Optional[str] = OMIT,
+        note_to_self: typing.Optional[str] = OMIT,
+        service_start_date: typing.Optional[dt.datetime] = OMIT,
+        service_end_date: typing.Optional[dt.datetime] = OMIT,
+        payer_id: typing.Optional[EntityId] = OMIT,
+        payment_source_id: typing.Optional[PaymentMethodId] = OMIT,
+        vendor_id: typing.Optional[EntityId] = OMIT,
+        payment_destination_id: typing.Optional[PaymentMethodId] = OMIT,
+        payment_destination_options: typing.Optional[PaymentDestinationOptions] = OMIT,
+        approvers: typing.Optional[typing.Sequence[ApprovalSlotAssignment]] = OMIT,
+        line_items: typing.Optional[typing.Sequence[InvoiceLineItemRequest]] = OMIT,
+        metadata: typing.Optional[typing.Dict[str, str]] = OMIT,
+        foreign_id: typing.Optional[str] = OMIT,
+        document: typing.Optional[str] = OMIT,
+        uploaded_image: typing.Optional[str] = OMIT,
+        creator_user_id: typing.Optional[EntityUserId] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> InvoiceResponse:
         """
         Parameters
         ----------
-        request : InvoiceCreationRequest
+        creator_entity_id : EntityId
+            ID of entity who created this invoice.
+
+        status : typing.Optional[InvoiceStatus]
+
+        amount : typing.Optional[float]
+            Total amount of invoice in major units. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.
+
+        currency : typing.Optional[CurrencyCode]
+            Currency code for the amount. Defaults to USD.
+
+        invoice_date : typing.Optional[dt.datetime]
+            Date the invoice was issued.
+
+        deduction_date : typing.Optional[dt.datetime]
+            Date when funds will be deducted from payer's account.
+
+        settlement_date : typing.Optional[dt.datetime]
+            Date of funds settlement.
+
+        due_date : typing.Optional[dt.datetime]
+            Due date of invoice.
+
+        invoice_number : typing.Optional[str]
+
+        note_to_self : typing.Optional[str]
+            Note to self or memo on invoice.
+
+        service_start_date : typing.Optional[dt.datetime]
+
+        service_end_date : typing.Optional[dt.datetime]
+
+        payer_id : typing.Optional[EntityId]
+
+        payment_source_id : typing.Optional[PaymentMethodId]
+            ID of payment source for this invoice. If not provided, will attempt to use the default payment source for the payer when creating an invoice if a default payment source exists for the payer.
+
+        vendor_id : typing.Optional[EntityId]
+
+        payment_destination_id : typing.Optional[PaymentMethodId]
+            ID of payment destination for this invoice. If not provided, will attempt to use the default payment destination for the vendor when creating an invoice if a default payment destination exists for the vendor.
+
+        payment_destination_options : typing.Optional[PaymentDestinationOptions]
+            Options for the payment destination. Depending on the payment destination, this may include things such as check delivery method.
+
+        approvers : typing.Optional[typing.Sequence[ApprovalSlotAssignment]]
+            Set approvers for this invoice.
+
+        line_items : typing.Optional[typing.Sequence[InvoiceLineItemRequest]]
+
+        metadata : typing.Optional[typing.Dict[str, str]]
+            Metadata associated with this invoice. You can specify up to 10 keys, with key names up to 40 characters long and values up to 200 characters long.
+
+        foreign_id : typing.Optional[str]
+            The ID used to identify this invoice in your system. This ID must be unique within each creatorEntity in your system, e.g. two invoices with the same creatorEntity may not have the same foreign ID.
+
+        document : typing.Optional[str]
+            Base64 encoded image or PDF of invoice document. PNG, JPG, and PDF are supported. 10MB max. If the invoice already has a document, this will add a new document to the invoice.
+
+        uploaded_image : typing.Optional[str]
+            DEPRECATED. Use document field instead.
+
+        creator_user_id : typing.Optional[EntityUserId]
+            ID of entity user who created this invoice.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -803,84 +980,84 @@ class AsyncInvoiceClient:
         --------
         import datetime
 
-        from mercoa import (
-            InvoiceCreationRequest,
-            InvoiceLineItemRequest,
-            PaymentDestinationOptions_Check,
-        )
+        from mercoa import InvoiceLineItemRequest, PaymentDestinationOptions_Check
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
         await client.invoice.create(
-            request=InvoiceCreationRequest(
-                status="NEW",
-                amount=100.0,
-                currency="USD",
-                invoice_date=datetime.datetime.fromisoformat(
-                    "2021-01-01 00:00:00+00:00",
-                ),
-                due_date=datetime.datetime.fromisoformat(
-                    "2021-01-31 00:00:00+00:00",
-                ),
-                invoice_number="INV-123",
-                note_to_self="For the month of January",
-                payer_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-                payment_source_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
-                vendor_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
-                payment_destination_id="pm_5fde2f4a-facc-48ef-8f0d-6b7d087c7b18",
-                payment_destination_options=PaymentDestinationOptions_Check(
-                    delivery="MAIL",
-                ),
-                line_items=[
-                    InvoiceLineItemRequest(
-                        amount=100.0,
-                        currency="USD",
-                        description="Product A",
-                        name="Product A",
-                        quantity=1,
-                        unit_price=100.0,
-                        service_start_date=datetime.datetime.fromisoformat(
-                            "2021-01-01 00:00:00+00:00",
-                        ),
-                        service_end_date=datetime.datetime.fromisoformat(
-                            "2021-01-31 00:00:00+00:00",
-                        ),
-                        metadata={"key1": "value1", "key2": "value2"},
-                        gl_account_id="600394",
-                    )
-                ],
-                creator_entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-                creator_user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+            status="NEW",
+            amount=100.0,
+            currency="USD",
+            invoice_date=datetime.datetime.fromisoformat(
+                "2021-01-01 00:00:00+00:00",
             ),
+            due_date=datetime.datetime.fromisoformat(
+                "2021-01-31 00:00:00+00:00",
+            ),
+            invoice_number="INV-123",
+            note_to_self="For the month of January",
+            payer_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            payment_source_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+            vendor_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+            payment_destination_id="pm_5fde2f4a-facc-48ef-8f0d-6b7d087c7b18",
+            payment_destination_options=PaymentDestinationOptions_Check(
+                delivery="MAIL",
+            ),
+            line_items=[
+                InvoiceLineItemRequest(
+                    amount=100.0,
+                    currency="USD",
+                    description="Product A",
+                    name="Product A",
+                    quantity=1,
+                    unit_price=100.0,
+                    service_start_date=datetime.datetime.fromisoformat(
+                        "2021-01-01 00:00:00+00:00",
+                    ),
+                    service_end_date=datetime.datetime.fromisoformat(
+                        "2021-01-31 00:00:00+00:00",
+                    ),
+                    metadata={"key1": "value1", "key2": "value2"},
+                    gl_account_id="600394",
+                )
+            ],
+            creator_entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            creator_user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
+            "invoice",
             method="POST",
-            url=urllib.parse.urljoin(f"{self._client_wrapper.get_base_url()}/", "invoice"),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
-            ),
-            json=jsonable_encoder(request)
-            if request_options is None or request_options.get("additional_body_parameters") is None
-            else {
-                **jsonable_encoder(request),
-                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            json={
+                "creatorEntityId": creator_entity_id,
+                "status": status,
+                "amount": amount,
+                "currency": currency,
+                "invoiceDate": invoice_date,
+                "deductionDate": deduction_date,
+                "settlementDate": settlement_date,
+                "dueDate": due_date,
+                "invoiceNumber": invoice_number,
+                "noteToSelf": note_to_self,
+                "serviceStartDate": service_start_date,
+                "serviceEndDate": service_end_date,
+                "payerId": payer_id,
+                "paymentSourceId": payment_source_id,
+                "vendorId": vendor_id,
+                "paymentDestinationId": payment_destination_id,
+                "paymentDestinationOptions": payment_destination_options,
+                "approvers": approvers,
+                "lineItems": line_items,
+                "metadata": metadata,
+                "foreignId": foreign_id,
+                "document": document,
+                "uploadedImage": uploaded_image,
+                "creatorUserId": creator_user_id,
             },
-            headers=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        **self._client_wrapper.get_headers(),
-                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
-                    }
-                )
-            ),
-            timeout=request_options.get("timeout_in_seconds")
-            if request_options is not None and request_options.get("timeout_in_seconds") is not None
-            else self._client_wrapper.get_timeout(),
-            retries=0,
-            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+            request_options=request_options,
+            omit=OMIT,
         )
         try:
             _response_json = _response.json()
@@ -939,35 +1116,10 @@ class AsyncInvoiceClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
+            f"invoice/{jsonable_encoder(invoice_id)}",
             method="GET",
-            url=urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}"
-            ),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "includeFees": include_fees,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
-                )
-            ),
-            headers=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        **self._client_wrapper.get_headers(),
-                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
-                    }
-                )
-            ),
-            timeout=request_options.get("timeout_in_seconds")
-            if request_options is not None and request_options.get("timeout_in_seconds") is not None
-            else self._client_wrapper.get_timeout(),
-            retries=0,
-            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+            params={"includeFees": include_fees},
+            request_options=request_options,
         )
         try:
             _response_json = _response.json()
@@ -996,7 +1148,30 @@ class AsyncInvoiceClient:
         self,
         invoice_id: InvoiceId,
         *,
-        request: InvoiceUpdateRequest,
+        creator_entity_id: typing.Optional[EntityId] = OMIT,
+        status: typing.Optional[InvoiceStatus] = OMIT,
+        amount: typing.Optional[float] = OMIT,
+        currency: typing.Optional[CurrencyCode] = OMIT,
+        invoice_date: typing.Optional[dt.datetime] = OMIT,
+        deduction_date: typing.Optional[dt.datetime] = OMIT,
+        settlement_date: typing.Optional[dt.datetime] = OMIT,
+        due_date: typing.Optional[dt.datetime] = OMIT,
+        invoice_number: typing.Optional[str] = OMIT,
+        note_to_self: typing.Optional[str] = OMIT,
+        service_start_date: typing.Optional[dt.datetime] = OMIT,
+        service_end_date: typing.Optional[dt.datetime] = OMIT,
+        payer_id: typing.Optional[EntityId] = OMIT,
+        payment_source_id: typing.Optional[PaymentMethodId] = OMIT,
+        vendor_id: typing.Optional[EntityId] = OMIT,
+        payment_destination_id: typing.Optional[PaymentMethodId] = OMIT,
+        payment_destination_options: typing.Optional[PaymentDestinationOptions] = OMIT,
+        approvers: typing.Optional[typing.Sequence[ApprovalSlotAssignment]] = OMIT,
+        line_items: typing.Optional[typing.Sequence[InvoiceLineItemRequest]] = OMIT,
+        metadata: typing.Optional[typing.Dict[str, str]] = OMIT,
+        foreign_id: typing.Optional[str] = OMIT,
+        document: typing.Optional[str] = OMIT,
+        uploaded_image: typing.Optional[str] = OMIT,
+        creator_user_id: typing.Optional[EntityUserId] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> InvoiceResponse:
         """
@@ -1004,7 +1179,70 @@ class AsyncInvoiceClient:
         ----------
         invoice_id : InvoiceId
 
-        request : InvoiceUpdateRequest
+        creator_entity_id : typing.Optional[EntityId]
+            ID of entity who created this invoice. If creating a payable invoice (AP), this must be the same as the payerId. If creating a receivable invoice (AR), this must be the same as the vendorId.
+
+        status : typing.Optional[InvoiceStatus]
+
+        amount : typing.Optional[float]
+            Total amount of invoice in major units. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.
+
+        currency : typing.Optional[CurrencyCode]
+            Currency code for the amount. Defaults to USD.
+
+        invoice_date : typing.Optional[dt.datetime]
+            Date the invoice was issued.
+
+        deduction_date : typing.Optional[dt.datetime]
+            Date when funds will be deducted from payer's account.
+
+        settlement_date : typing.Optional[dt.datetime]
+            Date of funds settlement.
+
+        due_date : typing.Optional[dt.datetime]
+            Due date of invoice.
+
+        invoice_number : typing.Optional[str]
+
+        note_to_self : typing.Optional[str]
+            Note to self or memo on invoice.
+
+        service_start_date : typing.Optional[dt.datetime]
+
+        service_end_date : typing.Optional[dt.datetime]
+
+        payer_id : typing.Optional[EntityId]
+
+        payment_source_id : typing.Optional[PaymentMethodId]
+            ID of payment source for this invoice. If not provided, will attempt to use the default payment source for the payer when creating an invoice if a default payment source exists for the payer.
+
+        vendor_id : typing.Optional[EntityId]
+
+        payment_destination_id : typing.Optional[PaymentMethodId]
+            ID of payment destination for this invoice. If not provided, will attempt to use the default payment destination for the vendor when creating an invoice if a default payment destination exists for the vendor.
+
+        payment_destination_options : typing.Optional[PaymentDestinationOptions]
+            Options for the payment destination. Depending on the payment destination, this may include things such as check delivery method.
+
+        approvers : typing.Optional[typing.Sequence[ApprovalSlotAssignment]]
+            Set approvers for this invoice.
+
+        line_items : typing.Optional[typing.Sequence[InvoiceLineItemRequest]]
+
+        metadata : typing.Optional[typing.Dict[str, str]]
+            Metadata associated with this invoice. You can specify up to 10 keys, with key names up to 40 characters long and values up to 200 characters long.
+
+        foreign_id : typing.Optional[str]
+            The ID used to identify this invoice in your system. This ID must be unique within each creatorEntity in your system, e.g. two invoices with the same creatorEntity may not have the same foreign ID.
+
+        document : typing.Optional[str]
+            Base64 encoded image or PDF of invoice document. PNG, JPG, and PDF are supported. 10MB max. If the invoice already has a document, this will add a new document to the invoice.
+
+        uploaded_image : typing.Optional[str]
+            DEPRECATED. Use document field instead.
+
+        creator_user_id : typing.Optional[EntityUserId]
+            ID of entity user who created this invoice.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1017,11 +1255,7 @@ class AsyncInvoiceClient:
         --------
         import datetime
 
-        from mercoa import (
-            InvoiceLineItemRequest,
-            InvoiceUpdateRequest,
-            PaymentDestinationOptions_Check,
-        )
+        from mercoa import InvoiceLineItemRequest, PaymentDestinationOptions_Check
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -1029,75 +1263,77 @@ class AsyncInvoiceClient:
         )
         await client.invoice.update(
             invoice_id="inv_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            request=InvoiceUpdateRequest(
-                status="NEW",
-                amount=100.0,
-                currency="USD",
-                invoice_date=datetime.datetime.fromisoformat(
-                    "2021-01-01 00:00:00+00:00",
-                ),
-                due_date=datetime.datetime.fromisoformat(
-                    "2021-01-31 00:00:00+00:00",
-                ),
-                invoice_number="INV-123",
-                note_to_self="For the month of January",
-                payer_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-                payment_source_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
-                vendor_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
-                payment_destination_id="pm_5fde2f4a-facc-48ef-8f0d-6b7d087c7b18",
-                payment_destination_options=PaymentDestinationOptions_Check(
-                    delivery="MAIL",
-                ),
-                line_items=[
-                    InvoiceLineItemRequest(
-                        amount=100.0,
-                        currency="USD",
-                        description="Product A",
-                        name="Product A",
-                        quantity=1,
-                        unit_price=100.0,
-                        service_start_date=datetime.datetime.fromisoformat(
-                            "2021-01-01 00:00:00+00:00",
-                        ),
-                        service_end_date=datetime.datetime.fromisoformat(
-                            "2021-01-31 00:00:00+00:00",
-                        ),
-                        metadata={"key1": "value1", "key2": "value2"},
-                        gl_account_id="600394",
-                    )
-                ],
-                creator_entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-                creator_user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+            status="NEW",
+            amount=100.0,
+            currency="USD",
+            invoice_date=datetime.datetime.fromisoformat(
+                "2021-01-01 00:00:00+00:00",
             ),
+            due_date=datetime.datetime.fromisoformat(
+                "2021-01-31 00:00:00+00:00",
+            ),
+            invoice_number="INV-123",
+            note_to_self="For the month of January",
+            payer_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            payment_source_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+            vendor_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+            payment_destination_id="pm_5fde2f4a-facc-48ef-8f0d-6b7d087c7b18",
+            payment_destination_options=PaymentDestinationOptions_Check(
+                delivery="MAIL",
+            ),
+            line_items=[
+                InvoiceLineItemRequest(
+                    amount=100.0,
+                    currency="USD",
+                    description="Product A",
+                    name="Product A",
+                    quantity=1,
+                    unit_price=100.0,
+                    service_start_date=datetime.datetime.fromisoformat(
+                        "2021-01-01 00:00:00+00:00",
+                    ),
+                    service_end_date=datetime.datetime.fromisoformat(
+                        "2021-01-31 00:00:00+00:00",
+                    ),
+                    metadata={"key1": "value1", "key2": "value2"},
+                    gl_account_id="600394",
+                )
+            ],
+            creator_entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            creator_user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
+            f"invoice/{jsonable_encoder(invoice_id)}",
             method="POST",
-            url=urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}"
-            ),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
-            ),
-            json=jsonable_encoder(request)
-            if request_options is None or request_options.get("additional_body_parameters") is None
-            else {
-                **jsonable_encoder(request),
-                **(jsonable_encoder(remove_none_from_dict(request_options.get("additional_body_parameters", {})))),
+            json={
+                "creatorEntityId": creator_entity_id,
+                "status": status,
+                "amount": amount,
+                "currency": currency,
+                "invoiceDate": invoice_date,
+                "deductionDate": deduction_date,
+                "settlementDate": settlement_date,
+                "dueDate": due_date,
+                "invoiceNumber": invoice_number,
+                "noteToSelf": note_to_self,
+                "serviceStartDate": service_start_date,
+                "serviceEndDate": service_end_date,
+                "payerId": payer_id,
+                "paymentSourceId": payment_source_id,
+                "vendorId": vendor_id,
+                "paymentDestinationId": payment_destination_id,
+                "paymentDestinationOptions": payment_destination_options,
+                "approvers": approvers,
+                "lineItems": line_items,
+                "metadata": metadata,
+                "foreignId": foreign_id,
+                "document": document,
+                "uploadedImage": uploaded_image,
+                "creatorUserId": creator_user_id,
             },
-            headers=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        **self._client_wrapper.get_headers(),
-                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
-                    }
-                )
-            ),
-            timeout=request_options.get("timeout_in_seconds")
-            if request_options is not None and request_options.get("timeout_in_seconds") is not None
-            else self._client_wrapper.get_timeout(),
-            retries=0,
-            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+            request_options=request_options,
+            omit=OMIT,
         )
         try:
             _response_json = _response.json()
@@ -1149,26 +1385,7 @@ class AsyncInvoiceClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
-            method="DELETE",
-            url=urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"invoice/{jsonable_encoder(invoice_id)}"
-            ),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
-            ),
-            headers=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        **self._client_wrapper.get_headers(),
-                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
-                    }
-                )
-            ),
-            timeout=request_options.get("timeout_in_seconds")
-            if request_options is not None and request_options.get("timeout_in_seconds") is not None
-            else self._client_wrapper.get_timeout(),
-            retries=0,
-            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+            f"invoice/{jsonable_encoder(invoice_id)}", method="DELETE", request_options=request_options
         )
         if 200 <= _response.status_code < 300:
             return

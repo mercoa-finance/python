@@ -2,7 +2,6 @@
 
 import datetime as dt
 import typing
-import urllib.parse
 from json.decoder import JSONDecodeError
 
 from ...commons.errors.bad_request import BadRequest
@@ -17,7 +16,6 @@ from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ...core.datetime_utils import serialize_datetime
 from ...core.jsonable_encoder import jsonable_encoder
 from ...core.pydantic_utilities import pydantic_v1
-from ...core.remove_none_from_dict import remove_none_from_dict
 from ...core.request_options import RequestOptions
 from ...email_log_types.types.email_log import EmailLog
 from ...email_log_types.types.email_log_id import EmailLogId
@@ -79,39 +77,16 @@ class EmailLogClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
+            f"entity/{jsonable_encoder(entity_id)}/emailLogs",
             method="GET",
-            url=urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/emailLogs"
-            ),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "startDate": serialize_datetime(start_date) if start_date is not None else None,
-                        "endDate": serialize_datetime(end_date) if end_date is not None else None,
-                        "limit": limit,
-                        "startingAfter": starting_after,
-                        "search": search,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
-                )
-            ),
-            headers=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        **self._client_wrapper.get_headers(),
-                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
-                    }
-                )
-            ),
-            timeout=request_options.get("timeout_in_seconds")
-            if request_options is not None and request_options.get("timeout_in_seconds") is not None
-            else self._client_wrapper.get_timeout(),
-            retries=0,
-            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+            params={
+                "startDate": serialize_datetime(start_date) if start_date is not None else None,
+                "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                "limit": limit,
+                "startingAfter": starting_after,
+                "search": search,
+            },
+            request_options=request_options,
         )
         try:
             _response_json = _response.json()
@@ -168,27 +143,9 @@ class EmailLogClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
+            f"entity/{jsonable_encoder(entity_id)}/emailLog/{jsonable_encoder(log_id)}",
             method="GET",
-            url=urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/",
-                f"entity/{jsonable_encoder(entity_id)}/emailLog/{jsonable_encoder(log_id)}",
-            ),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
-            ),
-            headers=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        **self._client_wrapper.get_headers(),
-                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
-                    }
-                )
-            ),
-            timeout=request_options.get("timeout_in_seconds")
-            if request_options is not None and request_options.get("timeout_in_seconds") is not None
-            else self._client_wrapper.get_timeout(),
-            retries=0,
-            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+            request_options=request_options,
         )
         try:
             _response_json = _response.json()
@@ -268,39 +225,16 @@ class AsyncEmailLogClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
+            f"entity/{jsonable_encoder(entity_id)}/emailLogs",
             method="GET",
-            url=urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/", f"entity/{jsonable_encoder(entity_id)}/emailLogs"
-            ),
-            params=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        "startDate": serialize_datetime(start_date) if start_date is not None else None,
-                        "endDate": serialize_datetime(end_date) if end_date is not None else None,
-                        "limit": limit,
-                        "startingAfter": starting_after,
-                        "search": search,
-                        **(
-                            request_options.get("additional_query_parameters", {})
-                            if request_options is not None
-                            else {}
-                        ),
-                    }
-                )
-            ),
-            headers=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        **self._client_wrapper.get_headers(),
-                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
-                    }
-                )
-            ),
-            timeout=request_options.get("timeout_in_seconds")
-            if request_options is not None and request_options.get("timeout_in_seconds") is not None
-            else self._client_wrapper.get_timeout(),
-            retries=0,
-            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+            params={
+                "startDate": serialize_datetime(start_date) if start_date is not None else None,
+                "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                "limit": limit,
+                "startingAfter": starting_after,
+                "search": search,
+            },
+            request_options=request_options,
         )
         try:
             _response_json = _response.json()
@@ -357,27 +291,9 @@ class AsyncEmailLogClient:
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
+            f"entity/{jsonable_encoder(entity_id)}/emailLog/{jsonable_encoder(log_id)}",
             method="GET",
-            url=urllib.parse.urljoin(
-                f"{self._client_wrapper.get_base_url()}/",
-                f"entity/{jsonable_encoder(entity_id)}/emailLog/{jsonable_encoder(log_id)}",
-            ),
-            params=jsonable_encoder(
-                request_options.get("additional_query_parameters") if request_options is not None else None
-            ),
-            headers=jsonable_encoder(
-                remove_none_from_dict(
-                    {
-                        **self._client_wrapper.get_headers(),
-                        **(request_options.get("additional_headers", {}) if request_options is not None else {}),
-                    }
-                )
-            ),
-            timeout=request_options.get("timeout_in_seconds")
-            if request_options is not None and request_options.get("timeout_in_seconds") is not None
-            else self._client_wrapper.get_timeout(),
-            retries=0,
-            max_retries=request_options.get("max_retries") if request_options is not None else 0,  # type: ignore
+            request_options=request_options,
         )
         try:
             _response_json = _response.json()
