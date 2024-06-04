@@ -57,6 +57,9 @@ class PaymentMethodResponse_BankAccount(pydantic_v1.BaseModel):
     is_default_source: bool = pydantic_v1.Field(alias="isDefaultSource")
     is_default_destination: bool = pydantic_v1.Field(alias="isDefaultDestination")
     supported_currencies: typing.List[CurrencyCode] = pydantic_v1.Field(alias="supportedCurrencies")
+    external_accounting_system_id: typing.Optional[str] = pydantic_v1.Field(
+        alias="externalAccountingSystemId", default=None
+    )
     created_at: dt.datetime = pydantic_v1.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic_v1.Field(alias="updatedAt")
     type: typing.Literal["bankAccount"] = "bankAccount"
@@ -119,6 +122,9 @@ class PaymentMethodResponse_Card(pydantic_v1.BaseModel):
     is_default_source: bool = pydantic_v1.Field(alias="isDefaultSource")
     is_default_destination: bool = pydantic_v1.Field(alias="isDefaultDestination")
     supported_currencies: typing.List[CurrencyCode] = pydantic_v1.Field(alias="supportedCurrencies")
+    external_accounting_system_id: typing.Optional[str] = pydantic_v1.Field(
+        alias="externalAccountingSystemId", default=None
+    )
     created_at: dt.datetime = pydantic_v1.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic_v1.Field(alias="updatedAt")
     type: typing.Literal["card"] = "card"
@@ -183,6 +189,9 @@ class PaymentMethodResponse_Check(pydantic_v1.BaseModel):
     is_default_source: bool = pydantic_v1.Field(alias="isDefaultSource")
     is_default_destination: bool = pydantic_v1.Field(alias="isDefaultDestination")
     supported_currencies: typing.List[CurrencyCode] = pydantic_v1.Field(alias="supportedCurrencies")
+    external_accounting_system_id: typing.Optional[str] = pydantic_v1.Field(
+        alias="externalAccountingSystemId", default=None
+    )
     created_at: dt.datetime = pydantic_v1.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic_v1.Field(alias="updatedAt")
     type: typing.Literal["check"] = "check"
@@ -246,6 +255,9 @@ class PaymentMethodResponse_Custom(pydantic_v1.BaseModel):
     is_default_source: bool = pydantic_v1.Field(alias="isDefaultSource")
     is_default_destination: bool = pydantic_v1.Field(alias="isDefaultDestination")
     supported_currencies: typing.List[CurrencyCode] = pydantic_v1.Field(alias="supportedCurrencies")
+    external_accounting_system_id: typing.Optional[str] = pydantic_v1.Field(
+        alias="externalAccountingSystemId", default=None
+    )
     created_at: dt.datetime = pydantic_v1.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic_v1.Field(alias="updatedAt")
     type: typing.Literal["custom"] = "custom"
@@ -303,6 +315,9 @@ class PaymentMethodResponse_OffPlatform(pydantic_v1.BaseModel):
     is_default_source: bool = pydantic_v1.Field(alias="isDefaultSource")
     is_default_destination: bool = pydantic_v1.Field(alias="isDefaultDestination")
     supported_currencies: typing.List[CurrencyCode] = pydantic_v1.Field(alias="supportedCurrencies")
+    external_accounting_system_id: typing.Optional[str] = pydantic_v1.Field(
+        alias="externalAccountingSystemId", default=None
+    )
     created_at: dt.datetime = pydantic_v1.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic_v1.Field(alias="updatedAt")
     type: typing.Literal["offPlatform"] = "offPlatform"

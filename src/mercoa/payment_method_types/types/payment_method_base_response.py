@@ -22,6 +22,13 @@ class PaymentMethodBaseResponse(pydantic_v1.BaseModel):
     """
 
     supported_currencies: typing.List[CurrencyCode] = pydantic_v1.Field(alias="supportedCurrencies")
+    external_accounting_system_id: typing.Optional[str] = pydantic_v1.Field(
+        alias="externalAccountingSystemId", default=None
+    )
+    """
+    ID for this payment method in the external accounting system (e.g Rutter or Codat)
+    """
+
     created_at: dt.datetime = pydantic_v1.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic_v1.Field(alias="updatedAt")
 
