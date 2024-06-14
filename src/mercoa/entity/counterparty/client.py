@@ -15,6 +15,7 @@ from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ...core.jsonable_encoder import jsonable_encoder
 from ...core.pydantic_utilities import pydantic_v1
 from ...core.request_options import RequestOptions
+from ...entity_types.types.counterparty_customization_request import CounterpartyCustomizationRequest
 from ...entity_types.types.counterparty_network_type import CounterpartyNetworkType
 from ...entity_types.types.entity_id import EntityId
 from ...entity_types.types.find_counterparties_response import FindCounterpartiesResponse
@@ -37,6 +38,7 @@ class CounterpartyClient:
         ] = None,
         payment_methods: typing.Optional[bool] = None,
         invoice_metrics: typing.Optional[bool] = None,
+        logo: typing.Optional[bool] = None,
         counterparty_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
@@ -60,6 +62,9 @@ class CounterpartyClient:
 
         invoice_metrics : typing.Optional[bool]
             If true, will include counterparty invoice metrics as part of the response
+
+        logo : typing.Optional[bool]
+            If true, will include counterparty logo as part of the response
 
         counterparty_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
             Filter by counterparty ids
@@ -99,6 +104,7 @@ class CounterpartyClient:
                 "networkType": network_type,
                 "paymentMethods": payment_methods,
                 "invoiceMetrics": invoice_metrics,
+                "logo": logo,
                 "counterpartyId": counterparty_id,
                 "limit": limit,
                 "startingAfter": starting_after,
@@ -138,6 +144,7 @@ class CounterpartyClient:
         ] = None,
         payment_methods: typing.Optional[bool] = None,
         invoice_metrics: typing.Optional[bool] = None,
+        logo: typing.Optional[bool] = None,
         counterparty_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
@@ -161,6 +168,9 @@ class CounterpartyClient:
 
         invoice_metrics : typing.Optional[bool]
             If true, will include counterparty invoice metrics as part of the response
+
+        logo : typing.Optional[bool]
+            If true, will include counterparty logo as part of the response
 
         counterparty_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
             Filter by counterparty ids
@@ -200,6 +210,7 @@ class CounterpartyClient:
                 "networkType": network_type,
                 "paymentMethods": payment_methods,
                 "invoiceMetrics": invoice_metrics,
+                "logo": logo,
                 "counterpartyId": counterparty_id,
                 "limit": limit,
                 "startingAfter": starting_after,
@@ -234,6 +245,7 @@ class CounterpartyClient:
         entity_id: EntityId,
         *,
         payees: typing.Sequence[EntityId],
+        customizations: typing.Optional[typing.Sequence[CounterpartyCustomizationRequest]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
@@ -246,6 +258,9 @@ class CounterpartyClient:
         payees : typing.Sequence[EntityId]
             List of payee entity IDs to associate with the entity
 
+        customizations : typing.Optional[typing.Sequence[CounterpartyCustomizationRequest]]
+            List of customizations to apply to the payees. If the payee is not currently a counterparty of the entity, the counterparty will be created with the provided customizations.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -255,6 +270,7 @@ class CounterpartyClient:
 
         Examples
         --------
+        from mercoa import CounterpartyCustomizationRequest
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -263,12 +279,18 @@ class CounterpartyClient:
         client.entity.counterparty.add_payees(
             entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             payees=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
+            customizations=[
+                CounterpartyCustomizationRequest(
+                    counterparty_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+                    account_id="85866843",
+                )
+            ],
         )
         """
         _response = self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/addPayees",
             method="POST",
-            json={"payees": payees},
+            json={"payees": payees, "customizations": customizations},
             request_options=request_options,
             omit=OMIT,
         )
@@ -366,6 +388,7 @@ class CounterpartyClient:
         entity_id: EntityId,
         *,
         payors: typing.Sequence[EntityId],
+        customizations: typing.Optional[typing.Sequence[CounterpartyCustomizationRequest]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
@@ -378,6 +401,9 @@ class CounterpartyClient:
         payors : typing.Sequence[EntityId]
             List of payor entity IDs to associate with the entity
 
+        customizations : typing.Optional[typing.Sequence[CounterpartyCustomizationRequest]]
+            List of customizations to apply to the payors. If the payor is not currently a counterparty of the entity, the counterparty will be created with the provided customizations.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -387,6 +413,7 @@ class CounterpartyClient:
 
         Examples
         --------
+        from mercoa import CounterpartyCustomizationRequest
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -395,12 +422,18 @@ class CounterpartyClient:
         client.entity.counterparty.add_payors(
             entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             payors=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
+            customizations=[
+                CounterpartyCustomizationRequest(
+                    counterparty_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+                    account_id="85866843",
+                )
+            ],
         )
         """
         _response = self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/addPayors",
             method="POST",
-            json={"payors": payors},
+            json={"payors": payors, "customizations": customizations},
             request_options=request_options,
             omit=OMIT,
         )
@@ -508,6 +541,7 @@ class AsyncCounterpartyClient:
         ] = None,
         payment_methods: typing.Optional[bool] = None,
         invoice_metrics: typing.Optional[bool] = None,
+        logo: typing.Optional[bool] = None,
         counterparty_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
@@ -531,6 +565,9 @@ class AsyncCounterpartyClient:
 
         invoice_metrics : typing.Optional[bool]
             If true, will include counterparty invoice metrics as part of the response
+
+        logo : typing.Optional[bool]
+            If true, will include counterparty logo as part of the response
 
         counterparty_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
             Filter by counterparty ids
@@ -570,6 +607,7 @@ class AsyncCounterpartyClient:
                 "networkType": network_type,
                 "paymentMethods": payment_methods,
                 "invoiceMetrics": invoice_metrics,
+                "logo": logo,
                 "counterpartyId": counterparty_id,
                 "limit": limit,
                 "startingAfter": starting_after,
@@ -609,6 +647,7 @@ class AsyncCounterpartyClient:
         ] = None,
         payment_methods: typing.Optional[bool] = None,
         invoice_metrics: typing.Optional[bool] = None,
+        logo: typing.Optional[bool] = None,
         counterparty_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
@@ -632,6 +671,9 @@ class AsyncCounterpartyClient:
 
         invoice_metrics : typing.Optional[bool]
             If true, will include counterparty invoice metrics as part of the response
+
+        logo : typing.Optional[bool]
+            If true, will include counterparty logo as part of the response
 
         counterparty_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
             Filter by counterparty ids
@@ -671,6 +713,7 @@ class AsyncCounterpartyClient:
                 "networkType": network_type,
                 "paymentMethods": payment_methods,
                 "invoiceMetrics": invoice_metrics,
+                "logo": logo,
                 "counterpartyId": counterparty_id,
                 "limit": limit,
                 "startingAfter": starting_after,
@@ -705,6 +748,7 @@ class AsyncCounterpartyClient:
         entity_id: EntityId,
         *,
         payees: typing.Sequence[EntityId],
+        customizations: typing.Optional[typing.Sequence[CounterpartyCustomizationRequest]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
@@ -717,6 +761,9 @@ class AsyncCounterpartyClient:
         payees : typing.Sequence[EntityId]
             List of payee entity IDs to associate with the entity
 
+        customizations : typing.Optional[typing.Sequence[CounterpartyCustomizationRequest]]
+            List of customizations to apply to the payees. If the payee is not currently a counterparty of the entity, the counterparty will be created with the provided customizations.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -726,6 +773,7 @@ class AsyncCounterpartyClient:
 
         Examples
         --------
+        from mercoa import CounterpartyCustomizationRequest
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -734,12 +782,18 @@ class AsyncCounterpartyClient:
         await client.entity.counterparty.add_payees(
             entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             payees=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
+            customizations=[
+                CounterpartyCustomizationRequest(
+                    counterparty_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+                    account_id="85866843",
+                )
+            ],
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/addPayees",
             method="POST",
-            json={"payees": payees},
+            json={"payees": payees, "customizations": customizations},
             request_options=request_options,
             omit=OMIT,
         )
@@ -837,6 +891,7 @@ class AsyncCounterpartyClient:
         entity_id: EntityId,
         *,
         payors: typing.Sequence[EntityId],
+        customizations: typing.Optional[typing.Sequence[CounterpartyCustomizationRequest]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
@@ -849,6 +904,9 @@ class AsyncCounterpartyClient:
         payors : typing.Sequence[EntityId]
             List of payor entity IDs to associate with the entity
 
+        customizations : typing.Optional[typing.Sequence[CounterpartyCustomizationRequest]]
+            List of customizations to apply to the payors. If the payor is not currently a counterparty of the entity, the counterparty will be created with the provided customizations.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -858,6 +916,7 @@ class AsyncCounterpartyClient:
 
         Examples
         --------
+        from mercoa import CounterpartyCustomizationRequest
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -866,12 +925,18 @@ class AsyncCounterpartyClient:
         await client.entity.counterparty.add_payors(
             entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             payors=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
+            customizations=[
+                CounterpartyCustomizationRequest(
+                    counterparty_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+                    account_id="85866843",
+                )
+            ],
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/addPayors",
             method="POST",
-            json={"payors": payors},
+            json={"payors": payors, "customizations": customizations},
             request_options=request_options,
             omit=OMIT,
         )

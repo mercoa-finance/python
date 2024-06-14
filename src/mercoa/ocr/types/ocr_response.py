@@ -5,7 +5,7 @@ import typing
 
 from ...core.datetime_utils import serialize_datetime
 from ...core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
-from ...entity_types.types.entity_response import EntityResponse
+from ...entity_types.types.counterparty_response import CounterpartyResponse
 from ...invoice_types.types.invoice_response import InvoiceResponse
 from ...payment_method_types.types.bank_account_response import BankAccountResponse
 from ...payment_method_types.types.check_response import CheckResponse
@@ -22,10 +22,11 @@ class OcrResponse(pydantic_v1.BaseModel):
         BankAccountResponse,
         BusinessProfileResponse,
         CheckResponse,
-        EntityResponse,
+        CounterpartyResponse,
         InvoiceLineItemResponse,
         InvoiceResponse,
         OcrResponse,
+        PaymentMethodResponse_BankAccount,
         PhoneNumber,
         ProfileResponse,
     )
@@ -51,7 +52,7 @@ class OcrResponse(pydantic_v1.BaseModel):
                 "2021-01-31 00:00:00+00:00",
             ),
             payer_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            payer=EntityResponse(
+            payer=CounterpartyResponse(
                 id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
                 foreign_id="MY-DB-ID-12345",
                 name="Acme Inc.",
@@ -61,6 +62,8 @@ class OcrResponse(pydantic_v1.BaseModel):
                 is_customer=True,
                 is_payor=True,
                 is_payee=False,
+                is_network_payor=False,
+                is_network_payee=False,
                 account_type="business",
                 updated_at=datetime.datetime.fromisoformat(
                     "2024-01-02 00:00:00+00:00",
@@ -89,9 +92,30 @@ class OcrResponse(pydantic_v1.BaseModel):
                         owners_provided=True,
                     ),
                 ),
+                payment_methods=[
+                    PaymentMethodResponse_BankAccount(
+                        id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                        account_name="My Checking Account",
+                        bank_name="Chase",
+                        routing_number="12345678",
+                        account_number="99988767623",
+                        account_type="CHECKING",
+                        status="VERIFIED",
+                        is_default_source=True,
+                        is_default_destination=True,
+                        supported_currencies=["USD"],
+                        created_at=datetime.datetime.fromisoformat(
+                            "2021-01-01 00:00:00+00:00",
+                        ),
+                        updated_at=datetime.datetime.fromisoformat(
+                            "2021-01-01 00:00:00+00:00",
+                        ),
+                    )
+                ],
+                counterparty_type=["ENTITY"],
             ),
             vendor_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
-            vendor=EntityResponse(
+            vendor=CounterpartyResponse(
                 id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
                 foreign_id="MY-DB-ID-90909",
                 name="Big Box Store",
@@ -101,6 +125,8 @@ class OcrResponse(pydantic_v1.BaseModel):
                 is_customer=False,
                 is_payor=False,
                 is_payee=True,
+                is_network_payor=False,
+                is_network_payee=False,
                 account_type="business",
                 updated_at=datetime.datetime.fromisoformat(
                     "2024-01-02 00:00:00+00:00",
@@ -117,6 +143,27 @@ class OcrResponse(pydantic_v1.BaseModel):
                         owners_provided=False,
                     ),
                 ),
+                payment_methods=[
+                    PaymentMethodResponse_BankAccount(
+                        id="pm_7610541f-4619-4033-8620-cfccfb811293",
+                        account_name="Vendor Checking Account",
+                        bank_name="Chase",
+                        routing_number="66554433",
+                        account_number="55934059697648",
+                        account_type="CHECKING",
+                        status="NEW",
+                        is_default_source=True,
+                        is_default_destination=True,
+                        supported_currencies=["USD"],
+                        created_at=datetime.datetime.fromisoformat(
+                            "2021-01-01 00:00:00+00:00",
+                        ),
+                        updated_at=datetime.datetime.fromisoformat(
+                            "2021-01-01 00:00:00+00:00",
+                        ),
+                    )
+                ],
+                counterparty_type=["ENTITY"],
             ),
             payment_destination_confirmed=False,
             has_documents=True,
@@ -157,7 +204,7 @@ class OcrResponse(pydantic_v1.BaseModel):
                 "2021-01-01 00:00:00+00:00",
             ),
         ),
-        vendor=EntityResponse(
+        vendor=CounterpartyResponse(
             id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
             foreign_id="MY-DB-ID-90909",
             name="Big Box Store",
@@ -167,6 +214,8 @@ class OcrResponse(pydantic_v1.BaseModel):
             is_customer=False,
             is_payor=False,
             is_payee=True,
+            is_network_payor=False,
+            is_network_payee=False,
             account_type="business",
             updated_at=datetime.datetime.fromisoformat(
                 "2024-01-02 00:00:00+00:00",
@@ -183,6 +232,27 @@ class OcrResponse(pydantic_v1.BaseModel):
                     owners_provided=False,
                 ),
             ),
+            payment_methods=[
+                PaymentMethodResponse_BankAccount(
+                    id="pm_7610541f-4619-4033-8620-cfccfb811293",
+                    account_name="Vendor Checking Account",
+                    bank_name="Chase",
+                    routing_number="66554433",
+                    account_number="55934059697648",
+                    account_type="CHECKING",
+                    status="NEW",
+                    is_default_source=True,
+                    is_default_destination=True,
+                    supported_currencies=["USD"],
+                    created_at=datetime.datetime.fromisoformat(
+                        "2021-01-01 00:00:00+00:00",
+                    ),
+                    updated_at=datetime.datetime.fromisoformat(
+                        "2021-01-01 00:00:00+00:00",
+                    ),
+                )
+            ],
+            counterparty_type=["ENTITY"],
         ),
         check=CheckResponse(
             id="pm_5fde2f4a-facc-48ef-8f0d-6b7d087c7b18",
@@ -225,7 +295,7 @@ class OcrResponse(pydantic_v1.BaseModel):
     """
 
     invoice: InvoiceResponse
-    vendor: EntityResponse
+    vendor: CounterpartyResponse
     check: typing.Optional[CheckResponse] = None
     bank_account: typing.Optional[BankAccountResponse] = pydantic_v1.Field(alias="bankAccount", default=None)
 

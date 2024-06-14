@@ -36,6 +36,8 @@ class FindCounterpartiesResponse(pydantic_v1.BaseModel):
                 is_customer=False,
                 is_payor=False,
                 is_payee=True,
+                is_network_payor=False,
+                is_network_payee=False,
                 account_type="business",
                 updated_at=datetime.datetime.fromisoformat(
                     "2024-01-02 00:00:00+00:00",
@@ -72,7 +74,7 @@ class FindCounterpartiesResponse(pydantic_v1.BaseModel):
                         ),
                     )
                 ],
-                counterparty_type=["ENTITY", "NETWORK"],
+                counterparty_type=["ENTITY"],
             )
         ],
     )

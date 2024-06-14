@@ -89,6 +89,16 @@ class EntityUpdateRequest(pydantic_v1.BaseModel):
     If this entity will be receiving payments, set this to true.
     """
 
+    is_network_payor: typing.Optional[bool] = pydantic_v1.Field(alias="isNetworkPayor", default=None)
+    """
+    Control if this entity should be available as a payor to any entity on your platform. If set to false, this entity will only be available as a payor to entities that have a direct relationship with this entity. Defaults to false.
+    """
+
+    is_network_payee: typing.Optional[bool] = pydantic_v1.Field(alias="isNetworkPayee", default=None)
+    """
+    Control if this entity should be available as a payee to any entity on your platform. If set to false, this entity will only be available as a payee to entities that have a direct relationship with this entity. Defaults to false.
+    """
+
     logo: typing.Optional[str] = pydantic_v1.Field(default=None)
     """
     Base64 encoded PNG image data for the entity logo.

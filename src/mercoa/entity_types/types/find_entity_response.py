@@ -38,6 +38,8 @@ class FindEntityResponse(pydantic_v1.BaseModel):
                 is_customer=True,
                 is_payor=True,
                 is_payee=False,
+                is_network_payor=False,
+                is_network_payee=False,
                 account_type="business",
                 updated_at=datetime.datetime.fromisoformat(
                     "2024-01-02 00:00:00+00:00",

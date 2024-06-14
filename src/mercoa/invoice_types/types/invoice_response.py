@@ -6,8 +6,8 @@ import typing
 from ...core.datetime_utils import serialize_datetime
 from ...core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
 from ...entity_types.types.approval_policy_response import ApprovalPolicyResponse
+from ...entity_types.types.counterparty_response import CounterpartyResponse
 from ...entity_types.types.entity_id import EntityId
-from ...entity_types.types.entity_response import EntityResponse
 from ...entity_types.types.entity_user_response import EntityUserResponse
 from ...payment_method_types.types.currency_code import CurrencyCode
 from ...payment_method_types.types.payment_method_id import PaymentMethodId
@@ -35,7 +35,7 @@ class InvoiceResponse(pydantic_v1.BaseModel):
         AssociatedApprovalAction,
         BusinessProfileResponse,
         CommentResponse,
-        EntityResponse,
+        CounterpartyResponse,
         EntityUserResponse,
         IdentifierList_RolesList,
         InvoiceLineItemResponse,
@@ -75,7 +75,7 @@ class InvoiceResponse(pydantic_v1.BaseModel):
             "2021-01-31 00:00:00+00:00",
         ),
         payer_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-        payer=EntityResponse(
+        payer=CounterpartyResponse(
             id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             foreign_id="MY-DB-ID-12345",
             name="Acme Inc.",
@@ -85,6 +85,8 @@ class InvoiceResponse(pydantic_v1.BaseModel):
             is_customer=True,
             is_payor=True,
             is_payee=False,
+            is_network_payor=False,
+            is_network_payee=False,
             account_type="business",
             updated_at=datetime.datetime.fromisoformat(
                 "2024-01-02 00:00:00+00:00",
@@ -113,6 +115,27 @@ class InvoiceResponse(pydantic_v1.BaseModel):
                     owners_provided=True,
                 ),
             ),
+            payment_methods=[
+                PaymentMethodResponse_BankAccount(
+                    id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                    account_name="My Checking Account",
+                    bank_name="Chase",
+                    routing_number="12345678",
+                    account_number="99988767623",
+                    account_type="CHECKING",
+                    status="VERIFIED",
+                    is_default_source=True,
+                    is_default_destination=True,
+                    supported_currencies=["USD"],
+                    created_at=datetime.datetime.fromisoformat(
+                        "2021-01-01 00:00:00+00:00",
+                    ),
+                    updated_at=datetime.datetime.fromisoformat(
+                        "2021-01-01 00:00:00+00:00",
+                    ),
+                )
+            ],
+            counterparty_type=["ENTITY"],
         ),
         payment_source=PaymentMethodResponse_BankAccount(
             id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
@@ -134,7 +157,7 @@ class InvoiceResponse(pydantic_v1.BaseModel):
         ),
         payment_source_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
         vendor_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
-        vendor=EntityResponse(
+        vendor=CounterpartyResponse(
             id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
             foreign_id="MY-DB-ID-90909",
             name="Big Box Store",
@@ -144,6 +167,8 @@ class InvoiceResponse(pydantic_v1.BaseModel):
             is_customer=False,
             is_payor=False,
             is_payee=True,
+            is_network_payor=False,
+            is_network_payee=False,
             account_type="business",
             updated_at=datetime.datetime.fromisoformat(
                 "2024-01-02 00:00:00+00:00",
@@ -160,6 +185,27 @@ class InvoiceResponse(pydantic_v1.BaseModel):
                     owners_provided=False,
                 ),
             ),
+            payment_methods=[
+                PaymentMethodResponse_BankAccount(
+                    id="pm_7610541f-4619-4033-8620-cfccfb811293",
+                    account_name="Vendor Checking Account",
+                    bank_name="Chase",
+                    routing_number="66554433",
+                    account_number="55934059697648",
+                    account_type="CHECKING",
+                    status="NEW",
+                    is_default_source=True,
+                    is_default_destination=True,
+                    supported_currencies=["USD"],
+                    created_at=datetime.datetime.fromisoformat(
+                        "2021-01-01 00:00:00+00:00",
+                    ),
+                    updated_at=datetime.datetime.fromisoformat(
+                        "2021-01-01 00:00:00+00:00",
+                    ),
+                )
+            ],
+            counterparty_type=["ENTITY"],
         ),
         payment_destination=PaymentMethodResponse_Check(
             id="pm_5fde2f4a-facc-48ef-8f0d-6b7d087c7b18",
@@ -336,11 +382,11 @@ class InvoiceResponse(pydantic_v1.BaseModel):
     service_start_date: typing.Optional[dt.datetime] = pydantic_v1.Field(alias="serviceStartDate", default=None)
     service_end_date: typing.Optional[dt.datetime] = pydantic_v1.Field(alias="serviceEndDate", default=None)
     payer_id: typing.Optional[EntityId] = pydantic_v1.Field(alias="payerId", default=None)
-    payer: typing.Optional[EntityResponse] = None
+    payer: typing.Optional[CounterpartyResponse] = None
     payment_source: typing.Optional[PaymentMethodResponse] = pydantic_v1.Field(alias="paymentSource", default=None)
     payment_source_id: typing.Optional[PaymentMethodId] = pydantic_v1.Field(alias="paymentSourceId", default=None)
     vendor_id: typing.Optional[EntityId] = pydantic_v1.Field(alias="vendorId", default=None)
-    vendor: typing.Optional[EntityResponse] = None
+    vendor: typing.Optional[CounterpartyResponse] = None
     payment_destination: typing.Optional[PaymentMethodResponse] = pydantic_v1.Field(
         alias="paymentDestination", default=None
     )

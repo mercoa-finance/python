@@ -18,22 +18,26 @@ class CounterpartyResponse(EntityResponse):
     import datetime
 
     from mercoa import (
+        Address,
         BusinessProfileResponse,
         CounterpartyResponse,
         PaymentMethodResponse_BankAccount,
+        PhoneNumber,
         ProfileResponse,
     )
 
     CounterpartyResponse(
-        id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
-        foreign_id="MY-DB-ID-90909",
-        name="Big Box Store",
-        email="vendor@bigboxstore.com",
-        accepted_tos=False,
-        status="unverified",
-        is_customer=False,
-        is_payor=False,
-        is_payee=True,
+        id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+        foreign_id="MY-DB-ID-12345",
+        name="Acme Inc.",
+        email="customer@acme.com",
+        accepted_tos=True,
+        status="verified",
+        is_customer=True,
+        is_payor=True,
+        is_payee=False,
+        is_network_payor=False,
+        is_network_payee=False,
         account_type="business",
         updated_at=datetime.datetime.fromisoformat(
             "2024-01-02 00:00:00+00:00",
@@ -43,22 +47,34 @@ class CounterpartyResponse(EntityResponse):
         ),
         profile=ProfileResponse(
             business=BusinessProfileResponse(
-                email="vendor@bigboxstore.com",
-                legal_business_name="Big Box Store",
-                business_type="publicCorporation",
-                tax_id_provided=False,
-                owners_provided=False,
+                email="customer@acme.com",
+                legal_business_name="Acme Inc.",
+                business_type="llc",
+                phone=PhoneNumber(
+                    country_code="1",
+                    number="4155551234",
+                ),
+                address=Address(
+                    address_line_1="123 Main St",
+                    address_line_2="Unit 1",
+                    city="San Francisco",
+                    state_or_province="CA",
+                    postal_code="94105",
+                    country="US",
+                ),
+                tax_id_provided=True,
+                owners_provided=True,
             ),
         ),
         payment_methods=[
             PaymentMethodResponse_BankAccount(
-                id="pm_7610541f-4619-4033-8620-cfccfb811293",
-                account_name="Vendor Checking Account",
+                id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                account_name="My Checking Account",
                 bank_name="Chase",
-                routing_number="66554433",
-                account_number="55934059697648",
+                routing_number="12345678",
+                account_number="99988767623",
                 account_type="CHECKING",
-                status="NEW",
+                status="VERIFIED",
                 is_default_source=True,
                 is_default_destination=True,
                 supported_currencies=["USD"],
@@ -70,12 +86,26 @@ class CounterpartyResponse(EntityResponse):
                 ),
             )
         ],
-        counterparty_type=["ENTITY", "NETWORK"],
+        counterparty_type=["ENTITY"],
     )
     """
 
-    payment_methods: typing.List[PaymentMethodResponse] = pydantic_v1.Field(alias="paymentMethods")
-    counterparty_type: typing.List[CounterpartyNetworkType] = pydantic_v1.Field(alias="counterpartyType")
+    account_id: typing.Optional[str] = pydantic_v1.Field(alias="accountId", default=None)
+    """
+    If the entity searching for counterparties has an Account ID configured in the Payee/Payor relationship, it will be returned
+    """
+
+    logo: typing.Optional[str] = pydantic_v1.Field(default=None)
+    """
+    URL to the entity logo
+    """
+
+    payment_methods: typing.Optional[typing.List[PaymentMethodResponse]] = pydantic_v1.Field(
+        alias="paymentMethods", default=None
+    )
+    counterparty_type: typing.Optional[typing.List[CounterpartyNetworkType]] = pydantic_v1.Field(
+        alias="counterpartyType", default=None
+    )
     invoice_metrics: typing.Optional[CounterpartyInvoiceMetricsResponse] = pydantic_v1.Field(
         alias="invoiceMetrics", default=None
     )

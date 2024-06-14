@@ -10,6 +10,7 @@ from .approver_rule import ApproverRule
 from .business_profile_request import BusinessProfileRequest
 from .business_profile_response import BusinessProfileResponse
 from .business_type import BusinessType
+from .counterparty_customization_request import CounterpartyCustomizationRequest
 from .counterparty_invoice_metrics_response import CounterpartyInvoiceMetricsResponse
 from .counterparty_invoice_metrics_status_response import CounterpartyInvoiceMetricsStatusResponse
 from .counterparty_network_type import CounterpartyNetworkType
@@ -79,6 +80,7 @@ __all__ = [
     "BusinessProfileRequest",
     "BusinessProfileResponse",
     "BusinessType",
+    "CounterpartyCustomizationRequest",
     "CounterpartyInvoiceMetricsResponse",
     "CounterpartyInvoiceMetricsStatusResponse",
     "CounterpartyNetworkType",

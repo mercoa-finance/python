@@ -176,6 +176,8 @@ class EntityClient:
         foreign_id: typing.Optional[str] = OMIT,
         email_to: typing.Optional[str] = OMIT,
         email_to_alias: typing.Optional[typing.Sequence[str]] = OMIT,
+        is_network_payor: typing.Optional[bool] = OMIT,
+        is_network_payee: typing.Optional[bool] = OMIT,
         logo: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityResponse:
@@ -203,6 +205,12 @@ class EntityClient:
 
         email_to_alias : typing.Optional[typing.Sequence[str]]
             Email inbox alias addresses. Used when forwarding emails to the emailTo address from an alias. Include the full email address.
+
+        is_network_payor : typing.Optional[bool]
+            Control if this entity should be available as a payor to any entity on your platform. If set to false, this entity will only be available as a payor to entities that have a direct relationship with this entity. Defaults to false.
+
+        is_network_payee : typing.Optional[bool]
+            Control if this entity should be available as a payee to any entity on your platform. If set to false, this entity will only be available as a payee to entities that have a direct relationship with this entity. Defaults to false.
 
         logo : typing.Optional[str]
             Base64 encoded PNG image data for the entity logo.
@@ -274,6 +282,8 @@ class EntityClient:
                 "profile": profile,
                 "isPayor": is_payor,
                 "isPayee": is_payee,
+                "isNetworkPayor": is_network_payor,
+                "isNetworkPayee": is_network_payee,
                 "logo": logo,
             },
             request_options=request_options,
@@ -364,6 +374,8 @@ class EntityClient:
         profile: typing.Optional[ProfileRequest] = OMIT,
         is_payor: typing.Optional[bool] = OMIT,
         is_payee: typing.Optional[bool] = OMIT,
+        is_network_payor: typing.Optional[bool] = OMIT,
+        is_network_payee: typing.Optional[bool] = OMIT,
         logo: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityResponse:
@@ -393,6 +405,12 @@ class EntityClient:
 
         is_payee : typing.Optional[bool]
             If this entity will be receiving payments, set this to true.
+
+        is_network_payor : typing.Optional[bool]
+            Control if this entity should be available as a payor to any entity on your platform. If set to false, this entity will only be available as a payor to entities that have a direct relationship with this entity. Defaults to false.
+
+        is_network_payee : typing.Optional[bool]
+            Control if this entity should be available as a payee to any entity on your platform. If set to false, this entity will only be available as a payee to entities that have a direct relationship with this entity. Defaults to false.
 
         logo : typing.Optional[str]
             Base64 encoded PNG image data for the entity logo.
@@ -465,6 +483,8 @@ class EntityClient:
                 "profile": profile,
                 "isPayor": is_payor,
                 "isPayee": is_payee,
+                "isNetworkPayor": is_network_payor,
+                "isNetworkPayee": is_network_payee,
                 "logo": logo,
             },
             request_options=request_options,
@@ -495,6 +515,8 @@ class EntityClient:
 
     def delete(self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
+        Will archive the entity. This action cannot be undone, and the entity will no longer be available for use.
+
         Parameters
         ----------
         entity_id : EntityId
@@ -1088,6 +1110,8 @@ class AsyncEntityClient:
         foreign_id: typing.Optional[str] = OMIT,
         email_to: typing.Optional[str] = OMIT,
         email_to_alias: typing.Optional[typing.Sequence[str]] = OMIT,
+        is_network_payor: typing.Optional[bool] = OMIT,
+        is_network_payee: typing.Optional[bool] = OMIT,
         logo: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityResponse:
@@ -1115,6 +1139,12 @@ class AsyncEntityClient:
 
         email_to_alias : typing.Optional[typing.Sequence[str]]
             Email inbox alias addresses. Used when forwarding emails to the emailTo address from an alias. Include the full email address.
+
+        is_network_payor : typing.Optional[bool]
+            Control if this entity should be available as a payor to any entity on your platform. If set to false, this entity will only be available as a payor to entities that have a direct relationship with this entity. Defaults to false.
+
+        is_network_payee : typing.Optional[bool]
+            Control if this entity should be available as a payee to any entity on your platform. If set to false, this entity will only be available as a payee to entities that have a direct relationship with this entity. Defaults to false.
 
         logo : typing.Optional[str]
             Base64 encoded PNG image data for the entity logo.
@@ -1186,6 +1216,8 @@ class AsyncEntityClient:
                 "profile": profile,
                 "isPayor": is_payor,
                 "isPayee": is_payee,
+                "isNetworkPayor": is_network_payor,
+                "isNetworkPayee": is_network_payee,
                 "logo": logo,
             },
             request_options=request_options,
@@ -1278,6 +1310,8 @@ class AsyncEntityClient:
         profile: typing.Optional[ProfileRequest] = OMIT,
         is_payor: typing.Optional[bool] = OMIT,
         is_payee: typing.Optional[bool] = OMIT,
+        is_network_payor: typing.Optional[bool] = OMIT,
+        is_network_payee: typing.Optional[bool] = OMIT,
         logo: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityResponse:
@@ -1307,6 +1341,12 @@ class AsyncEntityClient:
 
         is_payee : typing.Optional[bool]
             If this entity will be receiving payments, set this to true.
+
+        is_network_payor : typing.Optional[bool]
+            Control if this entity should be available as a payor to any entity on your platform. If set to false, this entity will only be available as a payor to entities that have a direct relationship with this entity. Defaults to false.
+
+        is_network_payee : typing.Optional[bool]
+            Control if this entity should be available as a payee to any entity on your platform. If set to false, this entity will only be available as a payee to entities that have a direct relationship with this entity. Defaults to false.
 
         logo : typing.Optional[str]
             Base64 encoded PNG image data for the entity logo.
@@ -1379,6 +1419,8 @@ class AsyncEntityClient:
                 "profile": profile,
                 "isPayor": is_payor,
                 "isPayee": is_payee,
+                "isNetworkPayor": is_network_payor,
+                "isNetworkPayee": is_network_payee,
                 "logo": logo,
             },
             request_options=request_options,
@@ -1409,6 +1451,8 @@ class AsyncEntityClient:
 
     async def delete(self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
+        Will archive the entity. This action cannot be undone, and the entity will no longer be available for use.
+
         Parameters
         ----------
         entity_id : EntityId

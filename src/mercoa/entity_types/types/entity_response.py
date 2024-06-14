@@ -35,6 +35,8 @@ class EntityResponse(pydantic_v1.BaseModel):
         is_customer=True,
         is_payor=True,
         is_payee=False,
+        is_network_payor=False,
+        is_network_payee=False,
         account_type="business",
         updated_at=datetime.datetime.fromisoformat(
             "2024-01-02 00:00:00+00:00",
@@ -105,6 +107,16 @@ class EntityResponse(pydantic_v1.BaseModel):
     is_payee: bool = pydantic_v1.Field(alias="isPayee")
     """
     True if this entity can receive payments.
+    """
+
+    is_network_payor: bool = pydantic_v1.Field(alias="isNetworkPayor")
+    """
+    True if this entity is available as a payor to any entity on your platform. Otherwise this entity will only be available as a payor to entities that have a direct relationship with this entity.
+    """
+
+    is_network_payee: bool = pydantic_v1.Field(alias="isNetworkPayee")
+    """
+    True if this entity is available as a payee to any entity on your platform. Otherwise this entity will only be available as a payee to entities that have a direct relationship with this entity.
     """
 
     created_at: dt.datetime = pydantic_v1.Field(alias="createdAt")

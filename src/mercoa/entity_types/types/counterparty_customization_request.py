@@ -5,35 +5,14 @@ import typing
 
 from ...core.datetime_utils import serialize_datetime
 from ...core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
-from .counterparty_customization_request import CounterpartyCustomizationRequest
 from .entity_id import EntityId
 
 
-class EntityAddPayorsRequest(pydantic_v1.BaseModel):
+class CounterpartyCustomizationRequest(pydantic_v1.BaseModel):
+    counterparty_id: EntityId = pydantic_v1.Field(alias="counterpartyId")
+    account_id: typing.Optional[str] = pydantic_v1.Field(alias="accountId", default=None)
     """
-    Examples
-    --------
-    from mercoa import CounterpartyCustomizationRequest, EntityAddPayorsRequest
-
-    EntityAddPayorsRequest(
-        payors=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
-        customizations=[
-            CounterpartyCustomizationRequest(
-                counterparty_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
-                account_id="85866843",
-            )
-        ],
-    )
-    """
-
-    payors: typing.List[EntityId] = pydantic_v1.Field()
-    """
-    List of payor entity IDs to associate with the entity
-    """
-
-    customizations: typing.Optional[typing.List[CounterpartyCustomizationRequest]] = pydantic_v1.Field(default=None)
-    """
-    List of customizations to apply to the payors. If the payor is not currently a counterparty of the entity, the counterparty will be created with the provided customizations.
+    The ID the counterparty has assigned to this account.
     """
 
     def json(self, **kwargs: typing.Any) -> str:
@@ -51,5 +30,7 @@ class EntityAddPayorsRequest(pydantic_v1.BaseModel):
     class Config:
         frozen = True
         smart_union = True
+        allow_population_by_field_name = True
+        populate_by_name = True
         extra = pydantic_v1.Extra.allow
         json_encoders = {dt.datetime: serialize_datetime}
