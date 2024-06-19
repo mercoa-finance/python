@@ -14,6 +14,7 @@ from . import (
     organization,
     organization_types,
     payment_method_types,
+    webhooks,
 )
 from .bank_lookup import BankAddress, BankLookupResponse
 from .commons import (
@@ -241,6 +242,14 @@ from .payment_method_types import (
     PlaidLinkRequest,
 )
 from .version import __version__
+from .webhooks import (
+    CounterpartyWebhook,
+    EntityWebhook,
+    InvoiceEmailWebhook,
+    InvoiceStatusChangedWebhook,
+    InvoiceWebhook,
+    PaymentMethodWebhook,
+)
 
 __all__ = [
     "AccountType",
@@ -296,6 +305,7 @@ __all__ = [
     "CounterpartyInvoiceMetricsStatusResponse",
     "CounterpartyNetworkType",
     "CounterpartyResponse",
+    "CounterpartyWebhook",
     "CurrencyCode",
     "CustomPaymentMethodRequest",
     "CustomPaymentMethodResponse",
@@ -331,6 +341,7 @@ __all__ = [
     "EntityUserId",
     "EntityUserRequest",
     "EntityUserResponse",
+    "EntityWebhook",
     "EntityWithPaymentMethodResponse",
     "ExternalAccountingSystemProviderRequest",
     "ExternalAccountingSystemProviderRequest_Codat",
@@ -356,6 +367,7 @@ __all__ = [
     "IndividualProfileResponse",
     "InternalServerError",
     "InvoiceCreationRequest",
+    "InvoiceEmailWebhook",
     "InvoiceFailureType",
     "InvoiceFeesResponse",
     "InvoiceId",
@@ -371,7 +383,9 @@ __all__ = [
     "InvoiceRequestBase",
     "InvoiceResponse",
     "InvoiceStatus",
+    "InvoiceStatusChangedWebhook",
     "InvoiceUpdateRequest",
+    "InvoiceWebhook",
     "LineItemAvailabilities",
     "MercoaEnvironment",
     "MetadataCustomizationRequest",
@@ -432,6 +446,7 @@ __all__ = [
     "PaymentMethodUpdateRequest_Check",
     "PaymentMethodUpdateRequest_Custom",
     "PaymentMethodUpdateRequest_OffPlatform",
+    "PaymentMethodWebhook",
     "PaymentMethodsRequest",
     "PaymentMethodsResponse",
     "PaymentRailRequest",
@@ -479,4 +494,5 @@ __all__ = [
     "organization",
     "organization_types",
     "payment_method_types",
+    "webhooks",
 ]

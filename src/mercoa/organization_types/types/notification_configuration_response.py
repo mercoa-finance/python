@@ -36,4 +36,4 @@ class NotificationConfigurationResponse_Invoice(pydantic_v1.BaseModel):
         json_encoders = {dt.datetime: serialize_datetime}
 
 
-NotificationConfigurationResponse = typing.Union[NotificationConfigurationResponse_Invoice]
+NotificationConfigurationResponse = NotificationConfigurationResponse_Invoice

@@ -55,4 +55,4 @@ Rule_Approver(
     identifier_list=IdentifierList_RolesList(value=["Admin", "Controller"]),
 )
 """
-Rule = typing.Union[Rule_Approver]
+Rule = Rule_Approver

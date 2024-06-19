@@ -515,7 +515,7 @@ class EntityClient:
 
     def delete(self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
-        Will archive the entity. This action cannot be undone, and the entity will no longer be available for use.
+        Will archive the entity. This action cannot be undone, and the entity will no longer be available for use. The foreignId on the entity will be cleared as well.
 
         Parameters
         ----------
@@ -1451,7 +1451,7 @@ class AsyncEntityClient:
 
     async def delete(self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
-        Will archive the entity. This action cannot be undone, and the entity will no longer be available for use.
+        Will archive the entity. This action cannot be undone, and the entity will no longer be available for use. The foreignId on the entity will be cleared as well.
 
         Parameters
         ----------
