@@ -60,6 +60,7 @@ class CustomPaymentMethodSchemaResponse(pydantic_v1.BaseModel):
         updated_at=datetime.datetime.fromisoformat(
             "2021-01-01 00:00:00+00:00",
         ),
+        estimated_processing_time=0,
     )
     """
 
@@ -81,6 +82,11 @@ class CustomPaymentMethodSchemaResponse(pydantic_v1.BaseModel):
     """
 
     fields: typing.List[CustomPaymentMethodSchemaField]
+    estimated_processing_time: int = pydantic_v1.Field(alias="estimatedProcessingTime")
+    """
+    Estimated time in days for this payment method to process a payments. 0 is an same-day payment methods, -1 is unknown processing time.
+    """
+
     created_at: dt.datetime = pydantic_v1.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic_v1.Field(alias="updatedAt")
 

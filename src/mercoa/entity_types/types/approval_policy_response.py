@@ -14,6 +14,8 @@ class ApprovalPolicyResponse(pydantic_v1.BaseModel):
     """
     Examples
     --------
+    import datetime
+
     from mercoa import (
         ApprovalPolicyResponse,
         IdentifierList_RolesList,
@@ -34,6 +36,12 @@ class ApprovalPolicyResponse(pydantic_v1.BaseModel):
             identifier_list=IdentifierList_RolesList(value=["Admin", "Controller"]),
         ),
         upstream_policy_id="root",
+        updated_at=datetime.datetime.fromisoformat(
+            "2024-01-02 00:00:00+00:00",
+        ),
+        created_at=datetime.datetime.fromisoformat(
+            "2024-01-01 00:00:00+00:00",
+        ),
     )
     """
 
@@ -41,6 +49,8 @@ class ApprovalPolicyResponse(pydantic_v1.BaseModel):
     trigger: typing.List[Trigger]
     rule: Rule
     upstream_policy_id: ApprovalPolicyId = pydantic_v1.Field(alias="upstreamPolicyId")
+    created_at: dt.datetime = pydantic_v1.Field(alias="createdAt")
+    updated_at: dt.datetime = pydantic_v1.Field(alias="updatedAt")
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

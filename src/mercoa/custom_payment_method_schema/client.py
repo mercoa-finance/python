@@ -85,6 +85,7 @@ class CustomPaymentMethodSchemaClient:
         is_source: bool,
         is_destination: bool,
         fields: typing.Sequence[CustomPaymentMethodSchemaField],
+        estimated_processing_time: typing.Optional[int] = OMIT,
         supported_currencies: typing.Optional[typing.Sequence[CurrencyCode]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CustomPaymentMethodSchemaResponse:
@@ -102,6 +103,9 @@ class CustomPaymentMethodSchemaClient:
             This payment method can be used as a payment destination for an invoice
 
         fields : typing.Sequence[CustomPaymentMethodSchemaField]
+
+        estimated_processing_time : typing.Optional[int]
+            Estimated time in days for this payment method to process a payments. Set as 0 for same-day payment methods, -1 for unknown processing time.
 
         supported_currencies : typing.Optional[typing.Sequence[CurrencyCode]]
             List of currencies that this payment method supports. If not provided, the payment method will support only USD.
@@ -153,6 +157,7 @@ class CustomPaymentMethodSchemaClient:
                     optional=False,
                 ),
             ],
+            estimated_processing_time=0,
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -162,6 +167,7 @@ class CustomPaymentMethodSchemaClient:
                 "name": name,
                 "isSource": is_source,
                 "isDestination": is_destination,
+                "estimatedProcessingTime": estimated_processing_time,
                 "supportedCurrencies": supported_currencies,
                 "fields": fields,
             },
@@ -199,6 +205,7 @@ class CustomPaymentMethodSchemaClient:
         is_source: bool,
         is_destination: bool,
         fields: typing.Sequence[CustomPaymentMethodSchemaField],
+        estimated_processing_time: typing.Optional[int] = OMIT,
         supported_currencies: typing.Optional[typing.Sequence[CurrencyCode]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CustomPaymentMethodSchemaResponse:
@@ -218,6 +225,9 @@ class CustomPaymentMethodSchemaClient:
             This payment method can be used as a payment destination for an invoice
 
         fields : typing.Sequence[CustomPaymentMethodSchemaField]
+
+        estimated_processing_time : typing.Optional[int]
+            Estimated time in days for this payment method to process a payments. Set as 0 for same-day payment methods, -1 for unknown processing time.
 
         supported_currencies : typing.Optional[typing.Sequence[CurrencyCode]]
             List of currencies that this payment method supports. If not provided, the payment method will support only USD.
@@ -270,6 +280,7 @@ class CustomPaymentMethodSchemaClient:
                     optional=False,
                 ),
             ],
+            estimated_processing_time=7,
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -279,6 +290,7 @@ class CustomPaymentMethodSchemaClient:
                 "name": name,
                 "isSource": is_source,
                 "isDestination": is_destination,
+                "estimatedProcessingTime": estimated_processing_time,
                 "supportedCurrencies": supported_currencies,
                 "fields": fields,
             },
@@ -478,6 +490,7 @@ class AsyncCustomPaymentMethodSchemaClient:
         is_source: bool,
         is_destination: bool,
         fields: typing.Sequence[CustomPaymentMethodSchemaField],
+        estimated_processing_time: typing.Optional[int] = OMIT,
         supported_currencies: typing.Optional[typing.Sequence[CurrencyCode]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CustomPaymentMethodSchemaResponse:
@@ -495,6 +508,9 @@ class AsyncCustomPaymentMethodSchemaClient:
             This payment method can be used as a payment destination for an invoice
 
         fields : typing.Sequence[CustomPaymentMethodSchemaField]
+
+        estimated_processing_time : typing.Optional[int]
+            Estimated time in days for this payment method to process a payments. Set as 0 for same-day payment methods, -1 for unknown processing time.
 
         supported_currencies : typing.Optional[typing.Sequence[CurrencyCode]]
             List of currencies that this payment method supports. If not provided, the payment method will support only USD.
@@ -546,6 +562,7 @@ class AsyncCustomPaymentMethodSchemaClient:
                     optional=False,
                 ),
             ],
+            estimated_processing_time=0,
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -555,6 +572,7 @@ class AsyncCustomPaymentMethodSchemaClient:
                 "name": name,
                 "isSource": is_source,
                 "isDestination": is_destination,
+                "estimatedProcessingTime": estimated_processing_time,
                 "supportedCurrencies": supported_currencies,
                 "fields": fields,
             },
@@ -592,6 +610,7 @@ class AsyncCustomPaymentMethodSchemaClient:
         is_source: bool,
         is_destination: bool,
         fields: typing.Sequence[CustomPaymentMethodSchemaField],
+        estimated_processing_time: typing.Optional[int] = OMIT,
         supported_currencies: typing.Optional[typing.Sequence[CurrencyCode]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CustomPaymentMethodSchemaResponse:
@@ -611,6 +630,9 @@ class AsyncCustomPaymentMethodSchemaClient:
             This payment method can be used as a payment destination for an invoice
 
         fields : typing.Sequence[CustomPaymentMethodSchemaField]
+
+        estimated_processing_time : typing.Optional[int]
+            Estimated time in days for this payment method to process a payments. Set as 0 for same-day payment methods, -1 for unknown processing time.
 
         supported_currencies : typing.Optional[typing.Sequence[CurrencyCode]]
             List of currencies that this payment method supports. If not provided, the payment method will support only USD.
@@ -663,6 +685,7 @@ class AsyncCustomPaymentMethodSchemaClient:
                     optional=False,
                 ),
             ],
+            estimated_processing_time=7,
         )
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -672,6 +695,7 @@ class AsyncCustomPaymentMethodSchemaClient:
                 "name": name,
                 "isSource": is_source,
                 "isDestination": is_destination,
+                "estimatedProcessingTime": estimated_processing_time,
                 "supportedCurrencies": supported_currencies,
                 "fields": fields,
             },

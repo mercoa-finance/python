@@ -50,6 +50,7 @@ class CustomPaymentMethodSchemaRequest(pydantic_v1.BaseModel):
                 optional=False,
             ),
         ],
+        estimated_processing_time=0,
     )
     """
 
@@ -62,6 +63,11 @@ class CustomPaymentMethodSchemaRequest(pydantic_v1.BaseModel):
     is_destination: bool = pydantic_v1.Field(alias="isDestination")
     """
     This payment method can be used as a payment destination for an invoice
+    """
+
+    estimated_processing_time: typing.Optional[int] = pydantic_v1.Field(alias="estimatedProcessingTime", default=None)
+    """
+    Estimated time in days for this payment method to process a payments. Set as 0 for same-day payment methods, -1 for unknown processing time.
     """
 
     supported_currencies: typing.Optional[typing.List[CurrencyCode]] = pydantic_v1.Field(

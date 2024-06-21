@@ -306,6 +306,12 @@ class InvoiceEmailWebhook(pydantic_v1.BaseModel):
                         ),
                     ),
                     upstream_policy_id="root",
+                    updated_at=datetime.datetime.fromisoformat(
+                        "2024-01-02 00:00:00+00:00",
+                    ),
+                    created_at=datetime.datetime.fromisoformat(
+                        "2024-01-01 00:00:00+00:00",
+                    ),
                 )
             ],
             metadata={"key1": "value1", "key2": "value2"},
