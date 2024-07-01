@@ -6,6 +6,7 @@ import typing
 from ...core.datetime_utils import serialize_datetime
 from ...core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
 from .currency_code import CurrencyCode
+from .custom_payment_method_schema_fee import CustomPaymentMethodSchemaFee
 from .custom_payment_method_schema_field import CustomPaymentMethodSchemaField
 from .custom_payment_method_schema_id import CustomPaymentMethodSchemaId
 
@@ -43,14 +44,14 @@ class CustomPaymentMethodSchemaResponse(pydantic_v1.BaseModel):
             CustomPaymentMethodSchemaField(
                 name="accountNumber",
                 display_name="Account Number",
-                type="number",
+                type="usBankAccountNumber",
                 optional=False,
                 use_as_account_number=True,
             ),
             CustomPaymentMethodSchemaField(
                 name="routingNumber",
                 display_name="Routing Number",
-                type="number",
+                type="usBankRoutingNumber",
                 optional=False,
             ),
         ],
@@ -87,6 +88,7 @@ class CustomPaymentMethodSchemaResponse(pydantic_v1.BaseModel):
     Estimated time in days for this payment method to process a payments. 0 is an same-day payment methods, -1 is unknown processing time.
     """
 
+    fees: typing.Optional[CustomPaymentMethodSchemaFee] = None
     created_at: dt.datetime = pydantic_v1.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic_v1.Field(alias="updatedAt")
 

@@ -16,6 +16,7 @@ from ..core.jsonable_encoder import jsonable_encoder
 from ..core.pydantic_utilities import pydantic_v1
 from ..core.request_options import RequestOptions
 from ..payment_method_types.types.currency_code import CurrencyCode
+from ..payment_method_types.types.custom_payment_method_schema_fee import CustomPaymentMethodSchemaFee
 from ..payment_method_types.types.custom_payment_method_schema_field import CustomPaymentMethodSchemaField
 from ..payment_method_types.types.custom_payment_method_schema_id import CustomPaymentMethodSchemaId
 from ..payment_method_types.types.custom_payment_method_schema_response import CustomPaymentMethodSchemaResponse
@@ -85,8 +86,9 @@ class CustomPaymentMethodSchemaClient:
         is_source: bool,
         is_destination: bool,
         fields: typing.Sequence[CustomPaymentMethodSchemaField],
-        estimated_processing_time: typing.Optional[int] = OMIT,
         supported_currencies: typing.Optional[typing.Sequence[CurrencyCode]] = OMIT,
+        estimated_processing_time: typing.Optional[int] = OMIT,
+        fees: typing.Optional[CustomPaymentMethodSchemaFee] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CustomPaymentMethodSchemaResponse:
         """
@@ -104,11 +106,13 @@ class CustomPaymentMethodSchemaClient:
 
         fields : typing.Sequence[CustomPaymentMethodSchemaField]
 
+        supported_currencies : typing.Optional[typing.Sequence[CurrencyCode]]
+            List of currencies that this payment method supports. If not provided, the payment method will support only USD.
+
         estimated_processing_time : typing.Optional[int]
             Estimated time in days for this payment method to process a payments. Set as 0 for same-day payment methods, -1 for unknown processing time.
 
-        supported_currencies : typing.Optional[typing.Sequence[CurrencyCode]]
-            List of currencies that this payment method supports. If not provided, the payment method will support only USD.
+        fees : typing.Optional[CustomPaymentMethodSchemaFee]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -146,14 +150,14 @@ class CustomPaymentMethodSchemaClient:
                 CustomPaymentMethodSchemaField(
                     name="accountNumber",
                     display_name="Account Number",
-                    type="number",
+                    type="usBankAccountNumber",
                     optional=False,
                     use_as_account_number=True,
                 ),
                 CustomPaymentMethodSchemaField(
                     name="routingNumber",
                     display_name="Routing Number",
-                    type="number",
+                    type="usBankRoutingNumber",
                     optional=False,
                 ),
             ],
@@ -167,9 +171,10 @@ class CustomPaymentMethodSchemaClient:
                 "name": name,
                 "isSource": is_source,
                 "isDestination": is_destination,
-                "estimatedProcessingTime": estimated_processing_time,
                 "supportedCurrencies": supported_currencies,
                 "fields": fields,
+                "estimatedProcessingTime": estimated_processing_time,
+                "fees": fees,
             },
             request_options=request_options,
             omit=OMIT,
@@ -205,8 +210,9 @@ class CustomPaymentMethodSchemaClient:
         is_source: bool,
         is_destination: bool,
         fields: typing.Sequence[CustomPaymentMethodSchemaField],
-        estimated_processing_time: typing.Optional[int] = OMIT,
         supported_currencies: typing.Optional[typing.Sequence[CurrencyCode]] = OMIT,
+        estimated_processing_time: typing.Optional[int] = OMIT,
+        fees: typing.Optional[CustomPaymentMethodSchemaFee] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CustomPaymentMethodSchemaResponse:
         """
@@ -226,11 +232,13 @@ class CustomPaymentMethodSchemaClient:
 
         fields : typing.Sequence[CustomPaymentMethodSchemaField]
 
+        supported_currencies : typing.Optional[typing.Sequence[CurrencyCode]]
+            List of currencies that this payment method supports. If not provided, the payment method will support only USD.
+
         estimated_processing_time : typing.Optional[int]
             Estimated time in days for this payment method to process a payments. Set as 0 for same-day payment methods, -1 for unknown processing time.
 
-        supported_currencies : typing.Optional[typing.Sequence[CurrencyCode]]
-            List of currencies that this payment method supports. If not provided, the payment method will support only USD.
+        fees : typing.Optional[CustomPaymentMethodSchemaFee]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -263,14 +271,14 @@ class CustomPaymentMethodSchemaClient:
                 CustomPaymentMethodSchemaField(
                     name="accountNumber",
                     display_name="Account Number",
-                    type="number",
+                    type="usBankAccountNumber",
                     optional=False,
                     use_as_account_number=True,
                 ),
                 CustomPaymentMethodSchemaField(
                     name="routingNumber",
                     display_name="Routing Number",
-                    type="number",
+                    type="usBankRoutingNumber",
                     optional=False,
                 ),
                 CustomPaymentMethodSchemaField(
@@ -290,9 +298,10 @@ class CustomPaymentMethodSchemaClient:
                 "name": name,
                 "isSource": is_source,
                 "isDestination": is_destination,
-                "estimatedProcessingTime": estimated_processing_time,
                 "supportedCurrencies": supported_currencies,
                 "fields": fields,
+                "estimatedProcessingTime": estimated_processing_time,
+                "fees": fees,
             },
             request_options=request_options,
             omit=OMIT,
@@ -490,8 +499,9 @@ class AsyncCustomPaymentMethodSchemaClient:
         is_source: bool,
         is_destination: bool,
         fields: typing.Sequence[CustomPaymentMethodSchemaField],
-        estimated_processing_time: typing.Optional[int] = OMIT,
         supported_currencies: typing.Optional[typing.Sequence[CurrencyCode]] = OMIT,
+        estimated_processing_time: typing.Optional[int] = OMIT,
+        fees: typing.Optional[CustomPaymentMethodSchemaFee] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CustomPaymentMethodSchemaResponse:
         """
@@ -509,11 +519,13 @@ class AsyncCustomPaymentMethodSchemaClient:
 
         fields : typing.Sequence[CustomPaymentMethodSchemaField]
 
+        supported_currencies : typing.Optional[typing.Sequence[CurrencyCode]]
+            List of currencies that this payment method supports. If not provided, the payment method will support only USD.
+
         estimated_processing_time : typing.Optional[int]
             Estimated time in days for this payment method to process a payments. Set as 0 for same-day payment methods, -1 for unknown processing time.
 
-        supported_currencies : typing.Optional[typing.Sequence[CurrencyCode]]
-            List of currencies that this payment method supports. If not provided, the payment method will support only USD.
+        fees : typing.Optional[CustomPaymentMethodSchemaFee]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -551,14 +563,14 @@ class AsyncCustomPaymentMethodSchemaClient:
                 CustomPaymentMethodSchemaField(
                     name="accountNumber",
                     display_name="Account Number",
-                    type="number",
+                    type="usBankAccountNumber",
                     optional=False,
                     use_as_account_number=True,
                 ),
                 CustomPaymentMethodSchemaField(
                     name="routingNumber",
                     display_name="Routing Number",
-                    type="number",
+                    type="usBankRoutingNumber",
                     optional=False,
                 ),
             ],
@@ -572,9 +584,10 @@ class AsyncCustomPaymentMethodSchemaClient:
                 "name": name,
                 "isSource": is_source,
                 "isDestination": is_destination,
-                "estimatedProcessingTime": estimated_processing_time,
                 "supportedCurrencies": supported_currencies,
                 "fields": fields,
+                "estimatedProcessingTime": estimated_processing_time,
+                "fees": fees,
             },
             request_options=request_options,
             omit=OMIT,
@@ -610,8 +623,9 @@ class AsyncCustomPaymentMethodSchemaClient:
         is_source: bool,
         is_destination: bool,
         fields: typing.Sequence[CustomPaymentMethodSchemaField],
-        estimated_processing_time: typing.Optional[int] = OMIT,
         supported_currencies: typing.Optional[typing.Sequence[CurrencyCode]] = OMIT,
+        estimated_processing_time: typing.Optional[int] = OMIT,
+        fees: typing.Optional[CustomPaymentMethodSchemaFee] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CustomPaymentMethodSchemaResponse:
         """
@@ -631,11 +645,13 @@ class AsyncCustomPaymentMethodSchemaClient:
 
         fields : typing.Sequence[CustomPaymentMethodSchemaField]
 
+        supported_currencies : typing.Optional[typing.Sequence[CurrencyCode]]
+            List of currencies that this payment method supports. If not provided, the payment method will support only USD.
+
         estimated_processing_time : typing.Optional[int]
             Estimated time in days for this payment method to process a payments. Set as 0 for same-day payment methods, -1 for unknown processing time.
 
-        supported_currencies : typing.Optional[typing.Sequence[CurrencyCode]]
-            List of currencies that this payment method supports. If not provided, the payment method will support only USD.
+        fees : typing.Optional[CustomPaymentMethodSchemaFee]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -668,14 +684,14 @@ class AsyncCustomPaymentMethodSchemaClient:
                 CustomPaymentMethodSchemaField(
                     name="accountNumber",
                     display_name="Account Number",
-                    type="number",
+                    type="usBankAccountNumber",
                     optional=False,
                     use_as_account_number=True,
                 ),
                 CustomPaymentMethodSchemaField(
                     name="routingNumber",
                     display_name="Routing Number",
-                    type="number",
+                    type="usBankRoutingNumber",
                     optional=False,
                 ),
                 CustomPaymentMethodSchemaField(
@@ -695,9 +711,10 @@ class AsyncCustomPaymentMethodSchemaClient:
                 "name": name,
                 "isSource": is_source,
                 "isDestination": is_destination,
-                "estimatedProcessingTime": estimated_processing_time,
                 "supportedCurrencies": supported_currencies,
                 "fields": fields,
+                "estimatedProcessingTime": estimated_processing_time,
+                "fees": fees,
             },
             request_options=request_options,
             omit=OMIT,

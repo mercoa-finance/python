@@ -499,7 +499,7 @@ class PaymentMethodClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PaymentMethodBalanceResponse:
         """
-        Get the available balance of a payment method. Only bank accounts added with Plaid are supported. This endpoint will return a cached value and will refresh the balance when called.
+        Deprecated. Get the available balance of a payment method. Only bank accounts added with Plaid are supported. This endpoint will return a cached value and will refresh the balance when called.
 
         Parameters
         ----------
@@ -1027,7 +1027,7 @@ class AsyncPaymentMethodClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> PaymentMethodBalanceResponse:
         """
-        Get the available balance of a payment method. Only bank accounts added with Plaid are supported. This endpoint will return a cached value and will refresh the balance when called.
+        Deprecated. Get the available balance of a payment method. Only bank accounts added with Plaid are supported. This endpoint will return a cached value and will refresh the balance when called.
 
         Parameters
         ----------

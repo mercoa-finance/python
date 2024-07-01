@@ -6,6 +6,7 @@ import typing
 from ...core.datetime_utils import serialize_datetime
 from ...core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
 from .currency_code import CurrencyCode
+from .custom_payment_method_schema_fee import CustomPaymentMethodSchemaFee
 from .custom_payment_method_schema_field import CustomPaymentMethodSchemaField
 
 
@@ -39,14 +40,14 @@ class CustomPaymentMethodSchemaRequest(pydantic_v1.BaseModel):
             CustomPaymentMethodSchemaField(
                 name="accountNumber",
                 display_name="Account Number",
-                type="number",
+                type="usBankAccountNumber",
                 optional=False,
                 use_as_account_number=True,
             ),
             CustomPaymentMethodSchemaField(
                 name="routingNumber",
                 display_name="Routing Number",
-                type="number",
+                type="usBankRoutingNumber",
                 optional=False,
             ),
         ],
@@ -65,11 +66,6 @@ class CustomPaymentMethodSchemaRequest(pydantic_v1.BaseModel):
     This payment method can be used as a payment destination for an invoice
     """
 
-    estimated_processing_time: typing.Optional[int] = pydantic_v1.Field(alias="estimatedProcessingTime", default=None)
-    """
-    Estimated time in days for this payment method to process a payments. Set as 0 for same-day payment methods, -1 for unknown processing time.
-    """
-
     supported_currencies: typing.Optional[typing.List[CurrencyCode]] = pydantic_v1.Field(
         alias="supportedCurrencies", default=None
     )
@@ -78,6 +74,12 @@ class CustomPaymentMethodSchemaRequest(pydantic_v1.BaseModel):
     """
 
     fields: typing.List[CustomPaymentMethodSchemaField]
+    estimated_processing_time: typing.Optional[int] = pydantic_v1.Field(alias="estimatedProcessingTime", default=None)
+    """
+    Estimated time in days for this payment method to process a payments. Set as 0 for same-day payment methods, -1 for unknown processing time.
+    """
+
+    fees: typing.Optional[CustomPaymentMethodSchemaFee] = None
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

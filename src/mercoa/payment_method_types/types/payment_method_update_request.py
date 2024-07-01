@@ -29,6 +29,7 @@ class PaymentMethodUpdateRequest_Custom(pydantic_v1.BaseModel):
     foreign_id: typing.Optional[str] = pydantic_v1.Field(alias="foreignId", default=None)
     account_name: typing.Optional[str] = pydantic_v1.Field(alias="accountName", default=None)
     account_number: typing.Optional[str] = pydantic_v1.Field(alias="accountNumber", default=None)
+    available_balance: typing.Optional[float] = pydantic_v1.Field(alias="availableBalance", default=None)
     schema_id: typing.Optional[CustomPaymentMethodSchemaId] = pydantic_v1.Field(alias="schemaId", default=None)
     data: typing.Optional[typing.Dict[str, str]] = None
     default_source: typing.Optional[bool] = pydantic_v1.Field(alias="defaultSource", default=None)

@@ -370,7 +370,12 @@ class InvoiceResponse(pydantic_v1.BaseModel):
 
     deduction_date: typing.Optional[dt.datetime] = pydantic_v1.Field(alias="deductionDate", default=None)
     """
-    Date when funds will be deducted from payer's account.
+    Date when funds are scheduled to be deducted from payer's account. The actual deduction date may differ from this date, and will be reflected in the processedAt field.
+    """
+
+    processed_at: typing.Optional[dt.datetime] = pydantic_v1.Field(alias="processedAt", default=None)
+    """
+    Date when the invoice payment was processed.
     """
 
     settlement_date: typing.Optional[dt.datetime] = pydantic_v1.Field(alias="settlementDate", default=None)
@@ -443,7 +448,6 @@ class InvoiceResponse(pydantic_v1.BaseModel):
     If the invoice failed to be paid, this field will be populated with the type of failure.
     """
 
-    processed_at: typing.Optional[dt.datetime] = pydantic_v1.Field(alias="processedAt", default=None)
     created_at: dt.datetime = pydantic_v1.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic_v1.Field(alias="updatedAt")
     fees: typing.Optional[InvoiceFeesResponse] = pydantic_v1.Field(default=None)

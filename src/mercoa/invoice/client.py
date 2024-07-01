@@ -23,6 +23,7 @@ from ..entity_types.types.entity_user_id import EntityUserId
 from ..invoice_types.types.approval_slot_assignment import ApprovalSlotAssignment
 from ..invoice_types.types.approver_action import ApproverAction
 from ..invoice_types.types.find_invoice_response import FindInvoiceResponse
+from ..invoice_types.types.invoice_failure_type import InvoiceFailureType
 from ..invoice_types.types.invoice_id import InvoiceId
 from ..invoice_types.types.invoice_line_item_request import InvoiceLineItemRequest
 from ..invoice_types.types.invoice_metadata_filter import InvoiceMetadataFilter
@@ -214,6 +215,7 @@ class InvoiceClient:
         document: typing.Optional[str] = OMIT,
         uploaded_image: typing.Optional[str] = OMIT,
         creator_user_id: typing.Optional[EntityUserId] = OMIT,
+        failure_type: typing.Optional[InvoiceFailureType] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> InvoiceResponse:
         """
@@ -234,7 +236,7 @@ class InvoiceClient:
             Date the invoice was issued.
 
         deduction_date : typing.Optional[dt.datetime]
-            Date when funds will be deducted from payer's account.
+            Date when funds are scheduled to be deducted from payer's account.
 
         settlement_date : typing.Optional[dt.datetime]
             Date of funds settlement.
@@ -283,6 +285,9 @@ class InvoiceClient:
 
         creator_user_id : typing.Optional[EntityUserId]
             ID of entity user who created this invoice.
+
+        failure_type : typing.Optional[InvoiceFailureType]
+            If the invoice failed to be paid, indicate the failure reason. Only applicable for invoices with custom payment methods.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -370,6 +375,7 @@ class InvoiceClient:
                 "document": document,
                 "uploadedImage": uploaded_image,
                 "creatorUserId": creator_user_id,
+                "failureType": failure_type,
             },
             request_options=request_options,
             omit=OMIT,
@@ -487,6 +493,7 @@ class InvoiceClient:
         document: typing.Optional[str] = OMIT,
         uploaded_image: typing.Optional[str] = OMIT,
         creator_user_id: typing.Optional[EntityUserId] = OMIT,
+        failure_type: typing.Optional[InvoiceFailureType] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> InvoiceResponse:
         """
@@ -509,7 +516,7 @@ class InvoiceClient:
             Date the invoice was issued.
 
         deduction_date : typing.Optional[dt.datetime]
-            Date when funds will be deducted from payer's account.
+            Date when funds are scheduled to be deducted from payer's account.
 
         settlement_date : typing.Optional[dt.datetime]
             Date of funds settlement.
@@ -558,6 +565,9 @@ class InvoiceClient:
 
         creator_user_id : typing.Optional[EntityUserId]
             ID of entity user who created this invoice.
+
+        failure_type : typing.Optional[InvoiceFailureType]
+            If the invoice failed to be paid, indicate the failure reason. Only applicable for invoices with custom payment methods.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -646,6 +656,7 @@ class InvoiceClient:
                 "document": document,
                 "uploadedImage": uploaded_image,
                 "creatorUserId": creator_user_id,
+                "failureType": failure_type,
             },
             request_options=request_options,
             omit=OMIT,
@@ -899,6 +910,7 @@ class AsyncInvoiceClient:
         document: typing.Optional[str] = OMIT,
         uploaded_image: typing.Optional[str] = OMIT,
         creator_user_id: typing.Optional[EntityUserId] = OMIT,
+        failure_type: typing.Optional[InvoiceFailureType] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> InvoiceResponse:
         """
@@ -919,7 +931,7 @@ class AsyncInvoiceClient:
             Date the invoice was issued.
 
         deduction_date : typing.Optional[dt.datetime]
-            Date when funds will be deducted from payer's account.
+            Date when funds are scheduled to be deducted from payer's account.
 
         settlement_date : typing.Optional[dt.datetime]
             Date of funds settlement.
@@ -968,6 +980,9 @@ class AsyncInvoiceClient:
 
         creator_user_id : typing.Optional[EntityUserId]
             ID of entity user who created this invoice.
+
+        failure_type : typing.Optional[InvoiceFailureType]
+            If the invoice failed to be paid, indicate the failure reason. Only applicable for invoices with custom payment methods.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1055,6 +1070,7 @@ class AsyncInvoiceClient:
                 "document": document,
                 "uploadedImage": uploaded_image,
                 "creatorUserId": creator_user_id,
+                "failureType": failure_type,
             },
             request_options=request_options,
             omit=OMIT,
@@ -1172,6 +1188,7 @@ class AsyncInvoiceClient:
         document: typing.Optional[str] = OMIT,
         uploaded_image: typing.Optional[str] = OMIT,
         creator_user_id: typing.Optional[EntityUserId] = OMIT,
+        failure_type: typing.Optional[InvoiceFailureType] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> InvoiceResponse:
         """
@@ -1194,7 +1211,7 @@ class AsyncInvoiceClient:
             Date the invoice was issued.
 
         deduction_date : typing.Optional[dt.datetime]
-            Date when funds will be deducted from payer's account.
+            Date when funds are scheduled to be deducted from payer's account.
 
         settlement_date : typing.Optional[dt.datetime]
             Date of funds settlement.
@@ -1243,6 +1260,9 @@ class AsyncInvoiceClient:
 
         creator_user_id : typing.Optional[EntityUserId]
             ID of entity user who created this invoice.
+
+        failure_type : typing.Optional[InvoiceFailureType]
+            If the invoice failed to be paid, indicate the failure reason. Only applicable for invoices with custom payment methods.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1331,6 +1351,7 @@ class AsyncInvoiceClient:
                 "document": document,
                 "uploadedImage": uploaded_image,
                 "creatorUserId": creator_user_id,
+                "failureType": failure_type,
             },
             request_options=request_options,
             omit=OMIT,

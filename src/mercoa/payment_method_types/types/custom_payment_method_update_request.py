@@ -17,6 +17,11 @@ class CustomPaymentMethodUpdateRequest(PaymentMethodBaseRequest):
 
     account_name: typing.Optional[str] = pydantic_v1.Field(alias="accountName", default=None)
     account_number: typing.Optional[str] = pydantic_v1.Field(alias="accountNumber", default=None)
+    available_balance: typing.Optional[float] = pydantic_v1.Field(alias="availableBalance", default=None)
+    """
+    The available balance for this payment method.
+    """
+
     schema_id: typing.Optional[CustomPaymentMethodSchemaId] = pydantic_v1.Field(alias="schemaId", default=None)
     """
     Payment method schema used for this payment method. Defines the fields that this payment method contains.

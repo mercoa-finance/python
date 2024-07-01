@@ -3,5 +3,17 @@
 import typing
 
 CustomPaymentMethodSchemaFieldType = typing.Union[
-    typing.Literal["text", "number", "select", "date", "phone", "email", "url", "address"], typing.Any
+    typing.Literal[
+        "text",
+        "number",
+        "select",
+        "date",
+        "phone",
+        "email",
+        "url",
+        "address",
+        "usBankRoutingNumber",
+        "usBankAccountNumber",
+    ],
+    typing.Any,
 ]

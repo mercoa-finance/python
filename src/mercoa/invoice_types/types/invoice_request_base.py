@@ -10,6 +10,7 @@ from ...entity_types.types.entity_user_id import EntityUserId
 from ...payment_method_types.types.currency_code import CurrencyCode
 from ...payment_method_types.types.payment_method_id import PaymentMethodId
 from .approval_slot_assignment import ApprovalSlotAssignment
+from .invoice_failure_type import InvoiceFailureType
 from .invoice_line_item_request import InvoiceLineItemRequest
 from .invoice_status import InvoiceStatus
 from .payment_destination_options import PaymentDestinationOptions
@@ -34,7 +35,7 @@ class InvoiceRequestBase(pydantic_v1.BaseModel):
 
     deduction_date: typing.Optional[dt.datetime] = pydantic_v1.Field(alias="deductionDate", default=None)
     """
-    Date when funds will be deducted from payer's account.
+    Date when funds are scheduled to be deducted from payer's account.
     """
 
     settlement_date: typing.Optional[dt.datetime] = pydantic_v1.Field(alias="settlementDate", default=None)
@@ -107,6 +108,11 @@ class InvoiceRequestBase(pydantic_v1.BaseModel):
     creator_user_id: typing.Optional[EntityUserId] = pydantic_v1.Field(alias="creatorUserId", default=None)
     """
     ID of entity user who created this invoice.
+    """
+
+    failure_type: typing.Optional[InvoiceFailureType] = pydantic_v1.Field(alias="failureType", default=None)
+    """
+    If the invoice failed to be paid, indicate the failure reason. Only applicable for invoices with custom payment methods.
     """
 
     def json(self, **kwargs: typing.Any) -> str:

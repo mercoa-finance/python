@@ -6,6 +6,7 @@ import typing
 from ...core.datetime_utils import serialize_datetime
 from ...core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
 from ...entity_types.types.entity_id import EntityId
+from ...entity_types.types.entity_response import EntityResponse
 from ...payment_method_types.types.payment_method_response import PaymentMethodResponse
 
 
@@ -15,7 +16,15 @@ class PaymentMethodWebhook(pydantic_v1.BaseModel):
     --------
     import datetime
 
-    from mercoa import PaymentMethodResponse_BankAccount, PaymentMethodWebhook
+    from mercoa import (
+        Address,
+        BusinessProfileResponse,
+        EntityResponse,
+        PaymentMethodResponse_BankAccount,
+        PaymentMethodWebhook,
+        PhoneNumber,
+        ProfileResponse,
+    )
 
     PaymentMethodWebhook(
         event_type="paymentMethod.created",
@@ -38,12 +47,54 @@ class PaymentMethodWebhook(pydantic_v1.BaseModel):
                 "2021-01-01 00:00:00+00:00",
             ),
         ),
+        entity=EntityResponse(
+            id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            foreign_id="MY-DB-ID-12345",
+            name="Acme Inc.",
+            email="customer@acme.com",
+            accepted_tos=True,
+            status="verified",
+            is_customer=True,
+            is_payor=True,
+            is_payee=False,
+            is_network_payor=False,
+            is_network_payee=False,
+            account_type="business",
+            updated_at=datetime.datetime.fromisoformat(
+                "2024-01-02 00:00:00+00:00",
+            ),
+            created_at=datetime.datetime.fromisoformat(
+                "2024-01-01 00:00:00+00:00",
+            ),
+            profile=ProfileResponse(
+                business=BusinessProfileResponse(
+                    email="customer@acme.com",
+                    legal_business_name="Acme Inc.",
+                    business_type="llc",
+                    phone=PhoneNumber(
+                        country_code="1",
+                        number="4155551234",
+                    ),
+                    address=Address(
+                        address_line_1="123 Main St",
+                        address_line_2="Unit 1",
+                        city="San Francisco",
+                        state_or_province="CA",
+                        postal_code="94105",
+                        country="US",
+                    ),
+                    tax_id_provided=True,
+                    owners_provided=True,
+                ),
+            ),
+        ),
     )
     """
 
     event_type: str = pydantic_v1.Field(alias="eventType")
     entity_id: EntityId = pydantic_v1.Field(alias="entityId")
     payment_method: PaymentMethodResponse = pydantic_v1.Field(alias="paymentMethod")
+    entity: EntityResponse
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
