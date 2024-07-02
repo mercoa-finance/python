@@ -11,7 +11,7 @@ from .payment_method_base_response import PaymentMethodBaseResponse
 
 
 class CustomPaymentMethodResponse(PaymentMethodBaseResponse):
-    foreign_id: str = pydantic_v1.Field(alias="foreignId")
+    foreign_id: typing.Optional[str] = pydantic_v1.Field(alias="foreignId", default=None)
     """
     ID for this payment method in your system
     """
