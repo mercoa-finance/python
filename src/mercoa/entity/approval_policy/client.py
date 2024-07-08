@@ -16,10 +16,10 @@ from ...core.jsonable_encoder import jsonable_encoder
 from ...core.pydantic_utilities import pydantic_v1
 from ...core.request_options import RequestOptions
 from ...entity_types.types.approval_policy_id import ApprovalPolicyId
+from ...entity_types.types.approval_policy_request import ApprovalPolicyRequest
 from ...entity_types.types.approval_policy_response import ApprovalPolicyResponse
+from ...entity_types.types.approval_policy_update_request import ApprovalPolicyUpdateRequest
 from ...entity_types.types.entity_id import EntityId
-from ...entity_types.types.rule import Rule
-from ...entity_types.types.trigger import Trigger
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -87,9 +87,7 @@ class ApprovalPolicyClient:
         self,
         entity_id: EntityId,
         *,
-        trigger: typing.Sequence[Trigger],
-        rule: Rule,
-        upstream_policy_id: ApprovalPolicyId,
+        request: ApprovalPolicyRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ApprovalPolicyResponse:
         """
@@ -99,13 +97,7 @@ class ApprovalPolicyClient:
         ----------
         entity_id : EntityId
 
-        trigger : typing.Sequence[Trigger]
-            List of triggers that will cause this policy to be evaluated. If no triggers are provided, the policy will be evaluated for all invoices.
-
-        rule : Rule
-
-        upstream_policy_id : ApprovalPolicyId
-            The policy ID of the previous approval policy in the chain of policies. Use 'root' if no upstreamPolicyId is intended to be set.
+        request : ApprovalPolicyRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -116,7 +108,12 @@ class ApprovalPolicyClient:
 
         Examples
         --------
-        from mercoa import IdentifierList_RolesList, Rule_Approver, Trigger_Amount
+        from mercoa import (
+            ApprovalPolicyRequest,
+            IdentifierList_RolesList,
+            Rule_Approver,
+            Trigger_Amount,
+        )
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -124,23 +121,27 @@ class ApprovalPolicyClient:
         )
         client.entity.approval_policy.create(
             entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            trigger=[
-                Trigger_Amount(
-                    amount=100.0,
-                    currency="USD",
-                )
-            ],
-            rule=Rule_Approver(
-                num_approvers=2,
-                identifier_list=IdentifierList_RolesList(value=["Admin", "Controller"]),
+            request=ApprovalPolicyRequest(
+                trigger=[
+                    Trigger_Amount(
+                        amount=100.0,
+                        currency="USD",
+                    )
+                ],
+                rule=Rule_Approver(
+                    num_approvers=2,
+                    identifier_list=IdentifierList_RolesList(
+                        value=["Admin", "Controller"]
+                    ),
+                ),
+                upstream_policy_id="root",
             ),
-            upstream_policy_id="root",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/approval-policy",
             method="POST",
-            json={"trigger": trigger, "rule": rule, "upstreamPolicyId": upstream_policy_id},
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )
@@ -235,9 +236,7 @@ class ApprovalPolicyClient:
         entity_id: EntityId,
         policy_id: ApprovalPolicyId,
         *,
-        trigger: typing.Optional[typing.Sequence[Trigger]] = OMIT,
-        rule: typing.Optional[Rule] = OMIT,
-        upstream_policy_id: typing.Optional[ApprovalPolicyId] = OMIT,
+        request: ApprovalPolicyUpdateRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ApprovalPolicyResponse:
         """
@@ -249,11 +248,7 @@ class ApprovalPolicyClient:
 
         policy_id : ApprovalPolicyId
 
-        trigger : typing.Optional[typing.Sequence[Trigger]]
-
-        rule : typing.Optional[Rule]
-
-        upstream_policy_id : typing.Optional[ApprovalPolicyId]
+        request : ApprovalPolicyUpdateRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -264,7 +259,12 @@ class ApprovalPolicyClient:
 
         Examples
         --------
-        from mercoa import IdentifierList_RolesList, Rule_Approver, Trigger_Amount
+        from mercoa import (
+            ApprovalPolicyUpdateRequest,
+            IdentifierList_RolesList,
+            Rule_Approver,
+            Trigger_Amount,
+        )
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -273,23 +273,27 @@ class ApprovalPolicyClient:
         client.entity.approval_policy.update(
             entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             policy_id="apvl_5ce50275-1789-42ea-bc60-bb7e6d03635c",
-            trigger=[
-                Trigger_Amount(
-                    amount=100.0,
-                    currency="USD",
-                )
-            ],
-            rule=Rule_Approver(
-                num_approvers=2,
-                identifier_list=IdentifierList_RolesList(value=["Admin", "Controller"]),
+            request=ApprovalPolicyUpdateRequest(
+                trigger=[
+                    Trigger_Amount(
+                        amount=100.0,
+                        currency="USD",
+                    )
+                ],
+                rule=Rule_Approver(
+                    num_approvers=2,
+                    identifier_list=IdentifierList_RolesList(
+                        value=["Admin", "Controller"]
+                    ),
+                ),
+                upstream_policy_id="root",
             ),
-            upstream_policy_id="root",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/approval-policy/{jsonable_encoder(policy_id)}",
             method="POST",
-            json={"trigger": trigger, "rule": rule, "upstreamPolicyId": upstream_policy_id},
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )
@@ -403,14 +407,22 @@ class AsyncApprovalPolicyClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.approval_policy.get_all(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-        )
+
+
+        async def main() -> None:
+            await client.entity.approval_policy.get_all(
+                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/approval-policies", method="GET", request_options=request_options
@@ -442,9 +454,7 @@ class AsyncApprovalPolicyClient:
         self,
         entity_id: EntityId,
         *,
-        trigger: typing.Sequence[Trigger],
-        rule: Rule,
-        upstream_policy_id: ApprovalPolicyId,
+        request: ApprovalPolicyRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ApprovalPolicyResponse:
         """
@@ -454,13 +464,7 @@ class AsyncApprovalPolicyClient:
         ----------
         entity_id : EntityId
 
-        trigger : typing.Sequence[Trigger]
-            List of triggers that will cause this policy to be evaluated. If no triggers are provided, the policy will be evaluated for all invoices.
-
-        rule : Rule
-
-        upstream_policy_id : ApprovalPolicyId
-            The policy ID of the previous approval policy in the chain of policies. Use 'root' if no upstreamPolicyId is intended to be set.
+        request : ApprovalPolicyRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -471,31 +475,48 @@ class AsyncApprovalPolicyClient:
 
         Examples
         --------
-        from mercoa import IdentifierList_RolesList, Rule_Approver, Trigger_Amount
+        import asyncio
+
+        from mercoa import (
+            ApprovalPolicyRequest,
+            IdentifierList_RolesList,
+            Rule_Approver,
+            Trigger_Amount,
+        )
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.approval_policy.create(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            trigger=[
-                Trigger_Amount(
-                    amount=100.0,
-                    currency="USD",
-                )
-            ],
-            rule=Rule_Approver(
-                num_approvers=2,
-                identifier_list=IdentifierList_RolesList(value=["Admin", "Controller"]),
-            ),
-            upstream_policy_id="root",
-        )
+
+
+        async def main() -> None:
+            await client.entity.approval_policy.create(
+                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                request=ApprovalPolicyRequest(
+                    trigger=[
+                        Trigger_Amount(
+                            amount=100.0,
+                            currency="USD",
+                        )
+                    ],
+                    rule=Rule_Approver(
+                        num_approvers=2,
+                        identifier_list=IdentifierList_RolesList(
+                            value=["Admin", "Controller"]
+                        ),
+                    ),
+                    upstream_policy_id="root",
+                ),
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/approval-policy",
             method="POST",
-            json={"trigger": trigger, "rule": rule, "upstreamPolicyId": upstream_policy_id},
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )
@@ -547,15 +568,23 @@ class AsyncApprovalPolicyClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.approval_policy.get(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            policy_id="apvl_5ce50275-1789-42ea-bc60-bb7e6d03635c",
-        )
+
+
+        async def main() -> None:
+            await client.entity.approval_policy.get(
+                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                policy_id="apvl_5ce50275-1789-42ea-bc60-bb7e6d03635c",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/approval-policy/{jsonable_encoder(policy_id)}",
@@ -590,9 +619,7 @@ class AsyncApprovalPolicyClient:
         entity_id: EntityId,
         policy_id: ApprovalPolicyId,
         *,
-        trigger: typing.Optional[typing.Sequence[Trigger]] = OMIT,
-        rule: typing.Optional[Rule] = OMIT,
-        upstream_policy_id: typing.Optional[ApprovalPolicyId] = OMIT,
+        request: ApprovalPolicyUpdateRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ApprovalPolicyResponse:
         """
@@ -604,11 +631,7 @@ class AsyncApprovalPolicyClient:
 
         policy_id : ApprovalPolicyId
 
-        trigger : typing.Optional[typing.Sequence[Trigger]]
-
-        rule : typing.Optional[Rule]
-
-        upstream_policy_id : typing.Optional[ApprovalPolicyId]
+        request : ApprovalPolicyUpdateRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -619,32 +642,49 @@ class AsyncApprovalPolicyClient:
 
         Examples
         --------
-        from mercoa import IdentifierList_RolesList, Rule_Approver, Trigger_Amount
+        import asyncio
+
+        from mercoa import (
+            ApprovalPolicyUpdateRequest,
+            IdentifierList_RolesList,
+            Rule_Approver,
+            Trigger_Amount,
+        )
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.approval_policy.update(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            policy_id="apvl_5ce50275-1789-42ea-bc60-bb7e6d03635c",
-            trigger=[
-                Trigger_Amount(
-                    amount=100.0,
-                    currency="USD",
-                )
-            ],
-            rule=Rule_Approver(
-                num_approvers=2,
-                identifier_list=IdentifierList_RolesList(value=["Admin", "Controller"]),
-            ),
-            upstream_policy_id="root",
-        )
+
+
+        async def main() -> None:
+            await client.entity.approval_policy.update(
+                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                policy_id="apvl_5ce50275-1789-42ea-bc60-bb7e6d03635c",
+                request=ApprovalPolicyUpdateRequest(
+                    trigger=[
+                        Trigger_Amount(
+                            amount=100.0,
+                            currency="USD",
+                        )
+                    ],
+                    rule=Rule_Approver(
+                        num_approvers=2,
+                        identifier_list=IdentifierList_RolesList(
+                            value=["Admin", "Controller"]
+                        ),
+                    ),
+                    upstream_policy_id="root",
+                ),
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/approval-policy/{jsonable_encoder(policy_id)}",
             method="POST",
-            json={"trigger": trigger, "rule": rule, "upstreamPolicyId": upstream_policy_id},
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )
@@ -696,15 +736,23 @@ class AsyncApprovalPolicyClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.approval_policy.delete(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            policy_id="apvl_5ce50275-1789-42ea-bc60-bb7e6d03635c",
-        )
+
+
+        async def main() -> None:
+            await client.entity.approval_policy.delete(
+                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                policy_id="apvl_5ce50275-1789-42ea-bc60-bb7e6d03635c",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/approval-policy/{jsonable_encoder(policy_id)}",

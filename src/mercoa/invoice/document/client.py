@@ -96,7 +96,7 @@ class DocumentClient:
         invoice_id : InvoiceId
 
         document : typing.Optional[str]
-            Base64 encoded image or PDF of invoice document. PNG, JPG, and PDF are supported. 10MB max.
+            Base64 encoded image or PDF of invoice document. PNG, JPG, WEBP, and PDF are supported. 10MB max.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -394,14 +394,22 @@ class AsyncDocumentClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.invoice.document.get_all(
-            invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
-        )
+
+
+        async def main() -> None:
+            await client.invoice.document.get_all(
+                invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/documents", method="GET", request_options=request_options
@@ -444,7 +452,7 @@ class AsyncDocumentClient:
         invoice_id : InvoiceId
 
         document : typing.Optional[str]
-            Base64 encoded image or PDF of invoice document. PNG, JPG, and PDF are supported. 10MB max.
+            Base64 encoded image or PDF of invoice document. PNG, JPG, WEBP, and PDF are supported. 10MB max.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -455,15 +463,23 @@ class AsyncDocumentClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.invoice.document.upload(
-            invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
-            document="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII",
-        )
+
+
+        async def main() -> None:
+            await client.invoice.document.upload(
+                invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
+                document="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/document",
@@ -516,15 +532,23 @@ class AsyncDocumentClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.invoice.document.delete(
-            invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
-            document_id="doc_37e6af0a-e637-48fd-b825-d6947b38c4e2",
-        )
+
+
+        async def main() -> None:
+            await client.invoice.document.delete(
+                invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
+                document_id="doc_37e6af0a-e637-48fd-b825-d6947b38c4e2",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/document/{jsonable_encoder(document_id)}",
@@ -574,14 +598,22 @@ class AsyncDocumentClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.invoice.document.generate_invoice_pdf(
-            invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
-        )
+
+
+        async def main() -> None:
+            await client.invoice.document.generate_invoice_pdf(
+                invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/pdf/generate", method="GET", request_options=request_options
@@ -629,14 +661,22 @@ class AsyncDocumentClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.invoice.document.generate_check_pdf(
-            invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
-        )
+
+
+        async def main() -> None:
+            await client.invoice.document.generate_check_pdf(
+                invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/check/generate", method="GET", request_options=request_options
@@ -683,14 +723,22 @@ class AsyncDocumentClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.invoice.document.get_source_email(
-            invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
-        )
+
+
+        async def main() -> None:
+            await client.invoice.document.get_source_email(
+                invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/source-email", method="GET", request_options=request_options

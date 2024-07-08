@@ -15,10 +15,9 @@ from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ...core.jsonable_encoder import jsonable_encoder
 from ...core.pydantic_utilities import pydantic_v1
 from ...core.request_options import RequestOptions
+from ...entity_types.types.entity_customization_request import EntityCustomizationRequest
 from ...entity_types.types.entity_customization_response import EntityCustomizationResponse
 from ...entity_types.types.entity_id import EntityId
-from ...entity_types.types.metadata_customization_request import MetadataCustomizationRequest
-from ...entity_types.types.payment_method_customization_request import PaymentMethodCustomizationRequest
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -86,10 +85,7 @@ class CustomizationClient:
         self,
         entity_id: EntityId,
         *,
-        metadata: typing.Sequence[MetadataCustomizationRequest],
-        payment_source: typing.Sequence[PaymentMethodCustomizationRequest],
-        backup_disbursement: typing.Sequence[PaymentMethodCustomizationRequest],
-        payment_destination: typing.Sequence[PaymentMethodCustomizationRequest],
+        request: EntityCustomizationRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityCustomizationResponse:
         """
@@ -99,13 +95,7 @@ class CustomizationClient:
         ----------
         entity_id : EntityId
 
-        metadata : typing.Sequence[MetadataCustomizationRequest]
-
-        payment_source : typing.Sequence[PaymentMethodCustomizationRequest]
-
-        backup_disbursement : typing.Sequence[PaymentMethodCustomizationRequest]
-
-        payment_destination : typing.Sequence[PaymentMethodCustomizationRequest]
+        request : EntityCustomizationRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -117,6 +107,7 @@ class CustomizationClient:
         Examples
         --------
         from mercoa import (
+            EntityCustomizationRequest,
             MetadataCustomizationRequest,
             PaymentMethodCustomizationRequest,
         )
@@ -127,54 +118,51 @@ class CustomizationClient:
         )
         client.entity.customization.update(
             entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-            metadata=[
-                MetadataCustomizationRequest(
-                    key="my_custom_field",
-                    disabled=True,
-                ),
-                MetadataCustomizationRequest(
-                    key="my_other_field",
-                    disabled=False,
-                ),
-            ],
-            payment_source=[
-                PaymentMethodCustomizationRequest(
-                    type="bankAccount",
-                    disabled=True,
-                ),
-                PaymentMethodCustomizationRequest(
-                    type="custom",
-                    schema_id="cpms_7df2974a-4069-454c-912f-7e58ebe030fb",
-                    disabled=True,
-                ),
-            ],
-            backup_disbursement=[
-                PaymentMethodCustomizationRequest(
-                    type="check",
-                    disabled=True,
-                )
-            ],
-            payment_destination=[
-                PaymentMethodCustomizationRequest(
-                    type="bankAccount",
-                    disabled=True,
-                ),
-                PaymentMethodCustomizationRequest(
-                    type="check",
-                    disabled=True,
-                ),
-            ],
+            request=EntityCustomizationRequest(
+                metadata=[
+                    MetadataCustomizationRequest(
+                        key="my_custom_field",
+                        disabled=True,
+                    ),
+                    MetadataCustomizationRequest(
+                        key="my_other_field",
+                        disabled=False,
+                    ),
+                ],
+                payment_source=[
+                    PaymentMethodCustomizationRequest(
+                        type="bankAccount",
+                        disabled=True,
+                    ),
+                    PaymentMethodCustomizationRequest(
+                        type="custom",
+                        schema_id="cpms_7df2974a-4069-454c-912f-7e58ebe030fb",
+                        disabled=True,
+                    ),
+                ],
+                backup_disbursement=[
+                    PaymentMethodCustomizationRequest(
+                        type="check",
+                        disabled=True,
+                    )
+                ],
+                payment_destination=[
+                    PaymentMethodCustomizationRequest(
+                        type="bankAccount",
+                        disabled=True,
+                    ),
+                    PaymentMethodCustomizationRequest(
+                        type="check",
+                        disabled=True,
+                    ),
+                ],
+            ),
         )
         """
         _response = self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/customization",
             method="POST",
-            json={
-                "metadata": metadata,
-                "paymentSource": payment_source,
-                "backupDisbursement": backup_disbursement,
-                "paymentDestination": payment_destination,
-            },
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )
@@ -225,14 +213,22 @@ class AsyncCustomizationClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.customization.get(
-            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-        )
+
+
+        async def main() -> None:
+            await client.entity.customization.get(
+                entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/customization", method="GET", request_options=request_options
@@ -264,10 +260,7 @@ class AsyncCustomizationClient:
         self,
         entity_id: EntityId,
         *,
-        metadata: typing.Sequence[MetadataCustomizationRequest],
-        payment_source: typing.Sequence[PaymentMethodCustomizationRequest],
-        backup_disbursement: typing.Sequence[PaymentMethodCustomizationRequest],
-        payment_destination: typing.Sequence[PaymentMethodCustomizationRequest],
+        request: EntityCustomizationRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityCustomizationResponse:
         """
@@ -277,13 +270,7 @@ class AsyncCustomizationClient:
         ----------
         entity_id : EntityId
 
-        metadata : typing.Sequence[MetadataCustomizationRequest]
-
-        payment_source : typing.Sequence[PaymentMethodCustomizationRequest]
-
-        backup_disbursement : typing.Sequence[PaymentMethodCustomizationRequest]
-
-        payment_destination : typing.Sequence[PaymentMethodCustomizationRequest]
+        request : EntityCustomizationRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -294,7 +281,10 @@ class AsyncCustomizationClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa import (
+            EntityCustomizationRequest,
             MetadataCustomizationRequest,
             PaymentMethodCustomizationRequest,
         )
@@ -303,56 +293,59 @@ class AsyncCustomizationClient:
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.customization.update(
-            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-            metadata=[
-                MetadataCustomizationRequest(
-                    key="my_custom_field",
-                    disabled=True,
+
+
+        async def main() -> None:
+            await client.entity.customization.update(
+                entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+                request=EntityCustomizationRequest(
+                    metadata=[
+                        MetadataCustomizationRequest(
+                            key="my_custom_field",
+                            disabled=True,
+                        ),
+                        MetadataCustomizationRequest(
+                            key="my_other_field",
+                            disabled=False,
+                        ),
+                    ],
+                    payment_source=[
+                        PaymentMethodCustomizationRequest(
+                            type="bankAccount",
+                            disabled=True,
+                        ),
+                        PaymentMethodCustomizationRequest(
+                            type="custom",
+                            schema_id="cpms_7df2974a-4069-454c-912f-7e58ebe030fb",
+                            disabled=True,
+                        ),
+                    ],
+                    backup_disbursement=[
+                        PaymentMethodCustomizationRequest(
+                            type="check",
+                            disabled=True,
+                        )
+                    ],
+                    payment_destination=[
+                        PaymentMethodCustomizationRequest(
+                            type="bankAccount",
+                            disabled=True,
+                        ),
+                        PaymentMethodCustomizationRequest(
+                            type="check",
+                            disabled=True,
+                        ),
+                    ],
                 ),
-                MetadataCustomizationRequest(
-                    key="my_other_field",
-                    disabled=False,
-                ),
-            ],
-            payment_source=[
-                PaymentMethodCustomizationRequest(
-                    type="bankAccount",
-                    disabled=True,
-                ),
-                PaymentMethodCustomizationRequest(
-                    type="custom",
-                    schema_id="cpms_7df2974a-4069-454c-912f-7e58ebe030fb",
-                    disabled=True,
-                ),
-            ],
-            backup_disbursement=[
-                PaymentMethodCustomizationRequest(
-                    type="check",
-                    disabled=True,
-                )
-            ],
-            payment_destination=[
-                PaymentMethodCustomizationRequest(
-                    type="bankAccount",
-                    disabled=True,
-                ),
-                PaymentMethodCustomizationRequest(
-                    type="check",
-                    disabled=True,
-                ),
-            ],
-        )
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/customization",
             method="POST",
-            json={
-                "metadata": metadata,
-                "paymentSource": payment_source,
-                "backupDisbursement": backup_disbursement,
-                "paymentDestination": payment_destination,
-            },
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )

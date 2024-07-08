@@ -583,14 +583,22 @@ class AsyncPaymentMethodClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.payment_method.get_all(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-        )
+
+
+        async def main() -> None:
+            await client.entity.payment_method.get_all(
+                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/paymentMethods",
@@ -644,20 +652,28 @@ class AsyncPaymentMethodClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa import PaymentMethodRequest_BankAccount
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.payment_method.create(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            request=PaymentMethodRequest_BankAccount(
-                routing_number="12345678",
-                account_number="99988767623",
-                account_type="CHECKING",
-            ),
-        )
+
+
+        async def main() -> None:
+            await client.entity.payment_method.create(
+                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                request=PaymentMethodRequest_BankAccount(
+                    routing_number="12345678",
+                    account_number="99988767623",
+                    account_type="CHECKING",
+                ),
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/paymentMethod",
@@ -712,15 +728,23 @@ class AsyncPaymentMethodClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.payment_method.get(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
-        )
+
+
+        async def main() -> None:
+            await client.entity.payment_method.get(
+                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}",
@@ -778,20 +802,28 @@ class AsyncPaymentMethodClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa import PaymentMethodUpdateRequest_BankAccount
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.payment_method.update(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
-            request=PaymentMethodUpdateRequest_BankAccount(
-                default_source=True,
-                default_destination=True,
-            ),
-        )
+
+
+        async def main() -> None:
+            await client.entity.payment_method.update(
+                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                request=PaymentMethodUpdateRequest_BankAccount(
+                    default_source=True,
+                    default_destination=True,
+                ),
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}",
@@ -848,15 +880,23 @@ class AsyncPaymentMethodClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.payment_method.delete(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
-        )
+
+
+        async def main() -> None:
+            await client.entity.payment_method.delete(
+                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}",
@@ -911,15 +951,23 @@ class AsyncPaymentMethodClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.payment_method.initiate_micro_deposits(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
-        )
+
+
+        async def main() -> None:
+            await client.entity.payment_method.initiate_micro_deposits(
+                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}/micro-deposits",
@@ -978,16 +1026,24 @@ class AsyncPaymentMethodClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.payment_method.complete_micro_deposits(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
-            amounts=[40, 2],
-        )
+
+
+        async def main() -> None:
+            await client.entity.payment_method.complete_micro_deposits(
+                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                amounts=[40, 2],
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}/micro-deposits",
@@ -1044,15 +1100,23 @@ class AsyncPaymentMethodClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.payment_method.get_balance(
-            entity_id="string",
-            payment_method_id="string",
-        )
+
+
+        async def main() -> None:
+            await client.entity.payment_method.get_balance(
+                entity_id="string",
+                payment_method_id="string",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}/balance",

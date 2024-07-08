@@ -15,9 +15,7 @@ from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.pydantic_utilities import pydantic_v1
 from ..core.request_options import RequestOptions
 from ..invoice_types.types.invoice_fees_response import InvoiceFeesResponse
-from ..invoice_types.types.payment_destination_options import PaymentDestinationOptions
-from ..payment_method_types.types.currency_code import CurrencyCode
-from ..payment_method_types.types.payment_method_id import PaymentMethodId
+from .types.calculate_fees_request import CalculateFeesRequest
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -28,34 +26,14 @@ class FeesClient:
         self._client_wrapper = client_wrapper
 
     def calculate(
-        self,
-        *,
-        amount: float,
-        payment_source_id: PaymentMethodId,
-        payment_destination_id: PaymentMethodId,
-        currency: typing.Optional[CurrencyCode] = OMIT,
-        payment_destination_options: typing.Optional[PaymentDestinationOptions] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None
+        self, *, request: CalculateFeesRequest, request_options: typing.Optional[RequestOptions] = None
     ) -> InvoiceFeesResponse:
         """
         Calculate the fees associated with an payment given the amount, payment source, and disbursement method. Can be used to calculate fees for a payment before creating an invoice.
 
         Parameters
         ----------
-        amount : float
-            Total amount in major units. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.
-
-        payment_source_id : PaymentMethodId
-            ID of payment source.
-
-        payment_destination_id : PaymentMethodId
-            ID of payment destination.
-
-        currency : typing.Optional[CurrencyCode]
-            Currency code for the amount. Defaults to USD.
-
-        payment_destination_options : typing.Optional[PaymentDestinationOptions]
-            Options for the payment destination. Depending on the payment destination, this may include things such as check delivery method.
+        request : CalculateFeesRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -66,29 +44,22 @@ class FeesClient:
 
         Examples
         --------
+        from mercoa import CalculateFeesRequest
         from mercoa.client import Mercoa
 
         client = Mercoa(
             token="YOUR_TOKEN",
         )
         client.fees.calculate(
-            amount=100.0,
-            payment_source_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
-            payment_destination_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+            request=CalculateFeesRequest(
+                amount=100.0,
+                payment_source_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                payment_destination_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+            ),
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "fees",
-            method="POST",
-            json={
-                "amount": amount,
-                "currency": currency,
-                "paymentSourceId": payment_source_id,
-                "paymentDestinationId": payment_destination_id,
-                "paymentDestinationOptions": payment_destination_options,
-            },
-            request_options=request_options,
-            omit=OMIT,
+            "fees", method="POST", json=request, request_options=request_options, omit=OMIT
         )
         try:
             _response_json = _response.json()
@@ -119,34 +90,14 @@ class AsyncFeesClient:
         self._client_wrapper = client_wrapper
 
     async def calculate(
-        self,
-        *,
-        amount: float,
-        payment_source_id: PaymentMethodId,
-        payment_destination_id: PaymentMethodId,
-        currency: typing.Optional[CurrencyCode] = OMIT,
-        payment_destination_options: typing.Optional[PaymentDestinationOptions] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None
+        self, *, request: CalculateFeesRequest, request_options: typing.Optional[RequestOptions] = None
     ) -> InvoiceFeesResponse:
         """
         Calculate the fees associated with an payment given the amount, payment source, and disbursement method. Can be used to calculate fees for a payment before creating an invoice.
 
         Parameters
         ----------
-        amount : float
-            Total amount in major units. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.
-
-        payment_source_id : PaymentMethodId
-            ID of payment source.
-
-        payment_destination_id : PaymentMethodId
-            ID of payment destination.
-
-        currency : typing.Optional[CurrencyCode]
-            Currency code for the amount. Defaults to USD.
-
-        payment_destination_options : typing.Optional[PaymentDestinationOptions]
-            Options for the payment destination. Depending on the payment destination, this may include things such as check delivery method.
+        request : CalculateFeesRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -157,29 +108,30 @@ class AsyncFeesClient:
 
         Examples
         --------
+        import asyncio
+
+        from mercoa import CalculateFeesRequest
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.fees.calculate(
-            amount=100.0,
-            payment_source_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
-            payment_destination_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
-        )
+
+
+        async def main() -> None:
+            await client.fees.calculate(
+                request=CalculateFeesRequest(
+                    amount=100.0,
+                    payment_source_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                    payment_destination_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                ),
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "fees",
-            method="POST",
-            json={
-                "amount": amount,
-                "currency": currency,
-                "paymentSourceId": payment_source_id,
-                "paymentDestinationId": payment_destination_id,
-                "paymentDestinationOptions": payment_destination_options,
-            },
-            request_options=request_options,
-            omit=OMIT,
+            "fees", method="POST", json=request, request_options=request_options, omit=OMIT
         )
         try:
             _response_json = _response.json()

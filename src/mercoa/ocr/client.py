@@ -15,10 +15,9 @@ from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.jsonable_encoder import jsonable_encoder
 from ..core.pydantic_utilities import pydantic_v1
 from ..core.request_options import RequestOptions
-from ..entity_types.types.entity_id import EntityId
-from ..entity_types.types.vendor_network import VendorNetwork
 from .types.ocr_async_response import OcrAsyncResponse
 from .types.ocr_job_response import OcrJobResponse
+from .types.ocr_request import OcrRequest
 from .types.ocr_response import OcrResponse
 
 # this is used as the default value for optional parameters
@@ -29,31 +28,13 @@ class OcrClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    def ocr(
-        self,
-        *,
-        mime_type: str,
-        image: str,
-        vendor_network: typing.Optional[VendorNetwork] = OMIT,
-        entity_id: typing.Optional[EntityId] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> OcrResponse:
+    def ocr(self, *, request: OcrRequest, request_options: typing.Optional[RequestOptions] = None) -> OcrResponse:
         """
         Run OCR on an Base64 encoded image or PDF. This endpoint will block until the OCR is complete.
 
         Parameters
         ----------
-        mime_type : str
-            MIME type of the image. Supported types are image/png, image/jpeg, and application/pdf.
-
-        image : str
-            Base64 encoded image or PDF. PNG, JPG, and PDF are supported. 10MB max.
-
-        vendor_network : typing.Optional[VendorNetwork]
-            Limit OCR vendor search to a specific network
-
-        entity_id : typing.Optional[EntityId]
-            When using the Entity vendor network, specify the entity to use if. EntityId on an auth token will take precedence over this parameter.
+        request : OcrRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -64,24 +45,23 @@ class OcrClient:
 
         Examples
         --------
+        from mercoa import OcrRequest
         from mercoa.client import Mercoa
 
         client = Mercoa(
             token="YOUR_TOKEN",
         )
         client.ocr.ocr(
-            vendor_network="entity",
-            entity_id="entity_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
-            mime_type="image/png",
-            image="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII",
+            request=OcrRequest(
+                vendor_network="entity",
+                entity_id="entity_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
+                mime_type="image/png",
+                image="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII",
+            ),
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "ocr",
-            method="POST",
-            json={"mimeType": mime_type, "image": image, "vendorNetwork": vendor_network, "entityId": entity_id},
-            request_options=request_options,
-            omit=OMIT,
+            "ocr", method="POST", json=request, request_options=request_options, omit=OMIT
         )
         try:
             _response_json = _response.json()
@@ -107,30 +87,14 @@ class OcrClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def run_async_ocr(
-        self,
-        *,
-        mime_type: str,
-        image: str,
-        vendor_network: typing.Optional[VendorNetwork] = OMIT,
-        entity_id: typing.Optional[EntityId] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, *, request: OcrRequest, request_options: typing.Optional[RequestOptions] = None
     ) -> OcrAsyncResponse:
         """
         Run OCR on an Base64 encoded image or PDF. This endpoint will return immediately and the OCR will be processed asynchronously.
 
         Parameters
         ----------
-        mime_type : str
-            MIME type of the image. Supported types are image/png, image/jpeg, and application/pdf.
-
-        image : str
-            Base64 encoded image or PDF. PNG, JPG, and PDF are supported. 10MB max.
-
-        vendor_network : typing.Optional[VendorNetwork]
-            Limit OCR vendor search to a specific network
-
-        entity_id : typing.Optional[EntityId]
-            When using the Entity vendor network, specify the entity to use if. EntityId on an auth token will take precedence over this parameter.
+        request : OcrRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -141,24 +105,23 @@ class OcrClient:
 
         Examples
         --------
+        from mercoa import OcrRequest
         from mercoa.client import Mercoa
 
         client = Mercoa(
             token="YOUR_TOKEN",
         )
         client.ocr.run_async_ocr(
-            vendor_network="entity",
-            entity_id="entity_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
-            mime_type="image/png",
-            image="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII",
+            request=OcrRequest(
+                vendor_network="entity",
+                entity_id="entity_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
+                mime_type="image/png",
+                image="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII",
+            ),
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "ocr-async",
-            method="POST",
-            json={"mimeType": mime_type, "image": image, "vendorNetwork": vendor_network, "entityId": entity_id},
-            request_options=request_options,
-            omit=OMIT,
+            "ocr-async", method="POST", json=request, request_options=request_options, omit=OMIT
         )
         try:
             _response_json = _response.json()
@@ -240,31 +203,13 @@ class AsyncOcrClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    async def ocr(
-        self,
-        *,
-        mime_type: str,
-        image: str,
-        vendor_network: typing.Optional[VendorNetwork] = OMIT,
-        entity_id: typing.Optional[EntityId] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> OcrResponse:
+    async def ocr(self, *, request: OcrRequest, request_options: typing.Optional[RequestOptions] = None) -> OcrResponse:
         """
         Run OCR on an Base64 encoded image or PDF. This endpoint will block until the OCR is complete.
 
         Parameters
         ----------
-        mime_type : str
-            MIME type of the image. Supported types are image/png, image/jpeg, and application/pdf.
-
-        image : str
-            Base64 encoded image or PDF. PNG, JPG, and PDF are supported. 10MB max.
-
-        vendor_network : typing.Optional[VendorNetwork]
-            Limit OCR vendor search to a specific network
-
-        entity_id : typing.Optional[EntityId]
-            When using the Entity vendor network, specify the entity to use if. EntityId on an auth token will take precedence over this parameter.
+        request : OcrRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -275,24 +220,31 @@ class AsyncOcrClient:
 
         Examples
         --------
+        import asyncio
+
+        from mercoa import OcrRequest
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.ocr.ocr(
-            vendor_network="entity",
-            entity_id="entity_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
-            mime_type="image/png",
-            image="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII",
-        )
+
+
+        async def main() -> None:
+            await client.ocr.ocr(
+                request=OcrRequest(
+                    vendor_network="entity",
+                    entity_id="entity_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
+                    mime_type="image/png",
+                    image="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII",
+                ),
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "ocr",
-            method="POST",
-            json={"mimeType": mime_type, "image": image, "vendorNetwork": vendor_network, "entityId": entity_id},
-            request_options=request_options,
-            omit=OMIT,
+            "ocr", method="POST", json=request, request_options=request_options, omit=OMIT
         )
         try:
             _response_json = _response.json()
@@ -318,30 +270,14 @@ class AsyncOcrClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def run_async_ocr(
-        self,
-        *,
-        mime_type: str,
-        image: str,
-        vendor_network: typing.Optional[VendorNetwork] = OMIT,
-        entity_id: typing.Optional[EntityId] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, *, request: OcrRequest, request_options: typing.Optional[RequestOptions] = None
     ) -> OcrAsyncResponse:
         """
         Run OCR on an Base64 encoded image or PDF. This endpoint will return immediately and the OCR will be processed asynchronously.
 
         Parameters
         ----------
-        mime_type : str
-            MIME type of the image. Supported types are image/png, image/jpeg, and application/pdf.
-
-        image : str
-            Base64 encoded image or PDF. PNG, JPG, and PDF are supported. 10MB max.
-
-        vendor_network : typing.Optional[VendorNetwork]
-            Limit OCR vendor search to a specific network
-
-        entity_id : typing.Optional[EntityId]
-            When using the Entity vendor network, specify the entity to use if. EntityId on an auth token will take precedence over this parameter.
+        request : OcrRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -352,24 +288,31 @@ class AsyncOcrClient:
 
         Examples
         --------
+        import asyncio
+
+        from mercoa import OcrRequest
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.ocr.run_async_ocr(
-            vendor_network="entity",
-            entity_id="entity_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
-            mime_type="image/png",
-            image="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII",
-        )
+
+
+        async def main() -> None:
+            await client.ocr.run_async_ocr(
+                request=OcrRequest(
+                    vendor_network="entity",
+                    entity_id="entity_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
+                    mime_type="image/png",
+                    image="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII",
+                ),
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "ocr-async",
-            method="POST",
-            json={"mimeType": mime_type, "image": image, "vendorNetwork": vendor_network, "entityId": entity_id},
-            request_options=request_options,
-            omit=OMIT,
+            "ocr-async", method="POST", json=request, request_options=request_options, omit=OMIT
         )
         try:
             _response_json = _response.json()
@@ -413,14 +356,22 @@ class AsyncOcrClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.ocr.get_async_ocr(
-            job_id="ocr_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
-        )
+
+
+        async def main() -> None:
+            await client.ocr.get_async_ocr(
+                job_id="ocr_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"ocr-async/{jsonable_encoder(job_id)}", method="GET", request_options=request_options

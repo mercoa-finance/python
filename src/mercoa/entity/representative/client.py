@@ -10,11 +10,6 @@ from ...commons.errors.internal_server_error import InternalServerError
 from ...commons.errors.not_found import NotFound
 from ...commons.errors.unauthorized import Unauthorized
 from ...commons.errors.unimplemented import Unimplemented
-from ...commons.types.address import Address
-from ...commons.types.birth_date import BirthDate
-from ...commons.types.full_name import FullName
-from ...commons.types.individual_government_id import IndividualGovernmentId
-from ...commons.types.phone_number import PhoneNumber
 from ...core.api_error import ApiError
 from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ...core.jsonable_encoder import jsonable_encoder
@@ -22,8 +17,8 @@ from ...core.pydantic_utilities import pydantic_v1
 from ...core.request_options import RequestOptions
 from ...entity_types.types.entity_id import EntityId
 from ...entity_types.types.representative_id import RepresentativeId
+from ...entity_types.types.representative_request import RepresentativeRequest
 from ...entity_types.types.representative_response import RepresentativeResponse
-from ...entity_types.types.responsibilities import Responsibilities
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -91,13 +86,7 @@ class RepresentativeClient:
         self,
         entity_id: EntityId,
         *,
-        name: FullName,
-        phone: PhoneNumber,
-        email: str,
-        address: Address,
-        birth_date: BirthDate,
-        government_id: IndividualGovernmentId,
-        responsibilities: Responsibilities,
+        request: RepresentativeRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> RepresentativeResponse:
         """
@@ -105,19 +94,7 @@ class RepresentativeClient:
         ----------
         entity_id : EntityId
 
-        name : FullName
-
-        phone : PhoneNumber
-
-        email : str
-
-        address : Address
-
-        birth_date : BirthDate
-
-        government_id : IndividualGovernmentId
-
-        responsibilities : Responsibilities
+        request : RepresentativeRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -134,6 +111,7 @@ class RepresentativeClient:
             FullName,
             IndividualGovernmentId,
             PhoneNumber,
+            RepresentativeRequest,
             Responsibilities,
         )
         from mercoa.client import Mercoa
@@ -143,52 +121,46 @@ class RepresentativeClient:
         )
         client.entity.representative.create(
             entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            name=FullName(
-                first_name="John",
-                middle_name="Quincy",
-                last_name="Adams",
-                suffix="Jr.",
-            ),
-            phone=PhoneNumber(
-                country_code="1",
-                number="4155551234",
-            ),
-            email="john.doe@acme.com",
-            address=Address(
-                address_line_1="123 Main St",
-                address_line_2="Unit 1",
-                city="San Francisco",
-                state_or_province="CA",
-                postal_code="94105",
-                country="US",
-            ),
-            birth_date=BirthDate(
-                day="1",
-                month="1",
-                year="1980",
-            ),
-            government_id=IndividualGovernmentId(
-                ssn="123-45-6789",
-            ),
-            responsibilities=Responsibilities(
-                is_owner=True,
-                ownership_percentage=40,
-                is_controller=True,
+            request=RepresentativeRequest(
+                name=FullName(
+                    first_name="John",
+                    middle_name="Quincy",
+                    last_name="Adams",
+                    suffix="Jr.",
+                ),
+                phone=PhoneNumber(
+                    country_code="1",
+                    number="4155551234",
+                ),
+                email="john.doe@acme.com",
+                address=Address(
+                    address_line_1="123 Main St",
+                    address_line_2="Unit 1",
+                    city="San Francisco",
+                    state_or_province="CA",
+                    postal_code="94105",
+                    country="US",
+                ),
+                birth_date=BirthDate(
+                    day="1",
+                    month="1",
+                    year="1980",
+                ),
+                government_id=IndividualGovernmentId(
+                    ssn="123-45-6789",
+                ),
+                responsibilities=Responsibilities(
+                    is_owner=True,
+                    ownership_percentage=40,
+                    is_controller=True,
+                ),
             ),
         )
         """
         _response = self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/representative",
             method="POST",
-            json={
-                "name": name,
-                "phone": phone,
-                "email": email,
-                "address": address,
-                "birthDate": birth_date,
-                "governmentID": government_id,
-                "responsibilities": responsibilities,
-            },
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )
@@ -361,14 +333,22 @@ class AsyncRepresentativeClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.representative.get_all(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-        )
+
+
+        async def main() -> None:
+            await client.entity.representative.get_all(
+                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/representatives", method="GET", request_options=request_options
@@ -400,13 +380,7 @@ class AsyncRepresentativeClient:
         self,
         entity_id: EntityId,
         *,
-        name: FullName,
-        phone: PhoneNumber,
-        email: str,
-        address: Address,
-        birth_date: BirthDate,
-        government_id: IndividualGovernmentId,
-        responsibilities: Responsibilities,
+        request: RepresentativeRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> RepresentativeResponse:
         """
@@ -414,19 +388,7 @@ class AsyncRepresentativeClient:
         ----------
         entity_id : EntityId
 
-        name : FullName
-
-        phone : PhoneNumber
-
-        email : str
-
-        address : Address
-
-        birth_date : BirthDate
-
-        government_id : IndividualGovernmentId
-
-        responsibilities : Responsibilities
+        request : RepresentativeRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -437,12 +399,15 @@ class AsyncRepresentativeClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa import (
             Address,
             BirthDate,
             FullName,
             IndividualGovernmentId,
             PhoneNumber,
+            RepresentativeRequest,
             Responsibilities,
         )
         from mercoa.client import AsyncMercoa
@@ -450,54 +415,54 @@ class AsyncRepresentativeClient:
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.representative.create(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            name=FullName(
-                first_name="John",
-                middle_name="Quincy",
-                last_name="Adams",
-                suffix="Jr.",
-            ),
-            phone=PhoneNumber(
-                country_code="1",
-                number="4155551234",
-            ),
-            email="john.doe@acme.com",
-            address=Address(
-                address_line_1="123 Main St",
-                address_line_2="Unit 1",
-                city="San Francisco",
-                state_or_province="CA",
-                postal_code="94105",
-                country="US",
-            ),
-            birth_date=BirthDate(
-                day="1",
-                month="1",
-                year="1980",
-            ),
-            government_id=IndividualGovernmentId(
-                ssn="123-45-6789",
-            ),
-            responsibilities=Responsibilities(
-                is_owner=True,
-                ownership_percentage=40,
-                is_controller=True,
-            ),
-        )
+
+
+        async def main() -> None:
+            await client.entity.representative.create(
+                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                request=RepresentativeRequest(
+                    name=FullName(
+                        first_name="John",
+                        middle_name="Quincy",
+                        last_name="Adams",
+                        suffix="Jr.",
+                    ),
+                    phone=PhoneNumber(
+                        country_code="1",
+                        number="4155551234",
+                    ),
+                    email="john.doe@acme.com",
+                    address=Address(
+                        address_line_1="123 Main St",
+                        address_line_2="Unit 1",
+                        city="San Francisco",
+                        state_or_province="CA",
+                        postal_code="94105",
+                        country="US",
+                    ),
+                    birth_date=BirthDate(
+                        day="1",
+                        month="1",
+                        year="1980",
+                    ),
+                    government_id=IndividualGovernmentId(
+                        ssn="123-45-6789",
+                    ),
+                    responsibilities=Responsibilities(
+                        is_owner=True,
+                        ownership_percentage=40,
+                        is_controller=True,
+                    ),
+                ),
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/representative",
             method="POST",
-            json={
-                "name": name,
-                "phone": phone,
-                "email": email,
-                "address": address,
-                "birthDate": birth_date,
-                "governmentID": government_id,
-                "responsibilities": responsibilities,
-            },
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )
@@ -547,15 +512,23 @@ class AsyncRepresentativeClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.representative.get(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            representative_id="rep_7df2974a-4069-454c-912f-7e58ebe030fb",
-        )
+
+
+        async def main() -> None:
+            await client.entity.representative.get(
+                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                representative_id="rep_7df2974a-4069-454c-912f-7e58ebe030fb",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/representative/{jsonable_encoder(representative_id)}",
@@ -608,15 +581,23 @@ class AsyncRepresentativeClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.representative.delete(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            representative_id="rep_7df2974a-4069-454c-912f-7e58ebe030fb",
-        )
+
+
+        async def main() -> None:
+            await client.entity.representative.delete(
+                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                representative_id="rep_7df2974a-4069-454c-912f-7e58ebe030fb",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/representative/{jsonable_encoder(representative_id)}",

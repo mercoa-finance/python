@@ -17,15 +17,8 @@ from ..core.datetime_utils import serialize_datetime
 from ..core.pydantic_utilities import pydantic_v1
 from ..core.request_options import RequestOptions
 from ..email_log_types.types.email_log_response import EmailLogResponse
-from ..organization_types.types.color_scheme_request import ColorSchemeRequest
-from ..organization_types.types.email_provider_request import EmailProviderRequest
-from ..organization_types.types.external_accounting_system_provider_request import (
-    ExternalAccountingSystemProviderRequest,
-)
-from ..organization_types.types.metadata_schema import MetadataSchema
-from ..organization_types.types.onboarding_options_request import OnboardingOptionsRequest
+from ..organization_types.types.organization_request import OrganizationRequest
 from ..organization_types.types.organization_response import OrganizationResponse
-from ..organization_types.types.payment_methods_request import PaymentMethodsRequest
 from .notification_configuration.client import AsyncNotificationConfigurationClient, NotificationConfigurationClient
 
 # this is used as the default value for optional parameters
@@ -137,47 +130,14 @@ class OrganizationClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def update(
-        self,
-        *,
-        name: typing.Optional[str] = OMIT,
-        logo: typing.Optional[str] = OMIT,
-        website_url: typing.Optional[str] = OMIT,
-        support_email: typing.Optional[str] = OMIT,
-        payment_methods: typing.Optional[PaymentMethodsRequest] = OMIT,
-        email_provider: typing.Optional[EmailProviderRequest] = OMIT,
-        external_accounting_system_provider: typing.Optional[ExternalAccountingSystemProviderRequest] = OMIT,
-        color_scheme: typing.Optional[ColorSchemeRequest] = OMIT,
-        payee_onboarding_options: typing.Optional[OnboardingOptionsRequest] = OMIT,
-        payor_onboarding_options: typing.Optional[OnboardingOptionsRequest] = OMIT,
-        metadata_schema: typing.Optional[typing.Sequence[MetadataSchema]] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None
+        self, *, request: OrganizationRequest, request_options: typing.Optional[RequestOptions] = None
     ) -> OrganizationResponse:
         """
         Update current organization
 
         Parameters
         ----------
-        name : typing.Optional[str]
-
-        logo : typing.Optional[str]
-
-        website_url : typing.Optional[str]
-
-        support_email : typing.Optional[str]
-
-        payment_methods : typing.Optional[PaymentMethodsRequest]
-
-        email_provider : typing.Optional[EmailProviderRequest]
-
-        external_accounting_system_provider : typing.Optional[ExternalAccountingSystemProviderRequest]
-
-        color_scheme : typing.Optional[ColorSchemeRequest]
-
-        payee_onboarding_options : typing.Optional[OnboardingOptionsRequest]
-
-        payor_onboarding_options : typing.Optional[OnboardingOptionsRequest]
-
-        metadata_schema : typing.Optional[typing.Sequence[MetadataSchema]]
+        request : OrganizationRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -194,6 +154,7 @@ class OrganizationClient:
             ExternalAccountingSystemProviderRequest_None,
             MetadataSchema,
             OnboardingOptionsRequest,
+            OrganizationRequest,
             PaymentMethodsRequest,
         )
         from mercoa.client import Mercoa
@@ -202,37 +163,23 @@ class OrganizationClient:
             token="YOUR_TOKEN",
         )
         client.organization.update(
-            name="string",
-            logo="string",
-            website_url="string",
-            support_email="string",
-            payment_methods=PaymentMethodsRequest(),
-            email_provider=EmailProviderRequest(),
-            external_accounting_system_provider=ExternalAccountingSystemProviderRequest_None(),
-            color_scheme=ColorSchemeRequest(),
-            payee_onboarding_options=OnboardingOptionsRequest(),
-            payor_onboarding_options=OnboardingOptionsRequest(),
-            metadata_schema=[MetadataSchema()],
+            request=OrganizationRequest(
+                name="string",
+                logo="string",
+                website_url="string",
+                support_email="string",
+                payment_methods=PaymentMethodsRequest(),
+                email_provider=EmailProviderRequest(),
+                external_accounting_system_provider=ExternalAccountingSystemProviderRequest_None(),
+                color_scheme=ColorSchemeRequest(),
+                payee_onboarding_options=OnboardingOptionsRequest(),
+                payor_onboarding_options=OnboardingOptionsRequest(),
+                metadata_schema=[MetadataSchema()],
+            ),
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "organization",
-            method="POST",
-            json={
-                "name": name,
-                "logo": logo,
-                "websiteUrl": website_url,
-                "supportEmail": support_email,
-                "paymentMethods": payment_methods,
-                "emailProvider": email_provider,
-                "externalAccountingSystemProvider": external_accounting_system_provider,
-                "colorScheme": color_scheme,
-                "payeeOnboardingOptions": payee_onboarding_options,
-                "payorOnboardingOptions": payor_onboarding_options,
-                "metadataSchema": metadata_schema,
-            },
-            request_options=request_options,
-            omit=OMIT,
+            "organization", method="POST", json=request, request_options=request_options, omit=OMIT
         )
         try:
             _response_json = _response.json()
@@ -395,20 +342,28 @@ class AsyncOrganizationClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.organization.get(
-            payment_methods=True,
-            email_provider=True,
-            external_accounting_system_provider=True,
-            color_scheme=True,
-            payee_onboarding_options=True,
-            payor_onboarding_options=True,
-            metadata_schema=True,
-        )
+
+
+        async def main() -> None:
+            await client.organization.get(
+                payment_methods=True,
+                email_provider=True,
+                external_accounting_system_provider=True,
+                color_scheme=True,
+                payee_onboarding_options=True,
+                payor_onboarding_options=True,
+                metadata_schema=True,
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             "organization",
@@ -448,47 +403,14 @@ class AsyncOrganizationClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def update(
-        self,
-        *,
-        name: typing.Optional[str] = OMIT,
-        logo: typing.Optional[str] = OMIT,
-        website_url: typing.Optional[str] = OMIT,
-        support_email: typing.Optional[str] = OMIT,
-        payment_methods: typing.Optional[PaymentMethodsRequest] = OMIT,
-        email_provider: typing.Optional[EmailProviderRequest] = OMIT,
-        external_accounting_system_provider: typing.Optional[ExternalAccountingSystemProviderRequest] = OMIT,
-        color_scheme: typing.Optional[ColorSchemeRequest] = OMIT,
-        payee_onboarding_options: typing.Optional[OnboardingOptionsRequest] = OMIT,
-        payor_onboarding_options: typing.Optional[OnboardingOptionsRequest] = OMIT,
-        metadata_schema: typing.Optional[typing.Sequence[MetadataSchema]] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None
+        self, *, request: OrganizationRequest, request_options: typing.Optional[RequestOptions] = None
     ) -> OrganizationResponse:
         """
         Update current organization
 
         Parameters
         ----------
-        name : typing.Optional[str]
-
-        logo : typing.Optional[str]
-
-        website_url : typing.Optional[str]
-
-        support_email : typing.Optional[str]
-
-        payment_methods : typing.Optional[PaymentMethodsRequest]
-
-        email_provider : typing.Optional[EmailProviderRequest]
-
-        external_accounting_system_provider : typing.Optional[ExternalAccountingSystemProviderRequest]
-
-        color_scheme : typing.Optional[ColorSchemeRequest]
-
-        payee_onboarding_options : typing.Optional[OnboardingOptionsRequest]
-
-        payor_onboarding_options : typing.Optional[OnboardingOptionsRequest]
-
-        metadata_schema : typing.Optional[typing.Sequence[MetadataSchema]]
+        request : OrganizationRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -499,12 +421,15 @@ class AsyncOrganizationClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa import (
             ColorSchemeRequest,
             EmailProviderRequest,
             ExternalAccountingSystemProviderRequest_None,
             MetadataSchema,
             OnboardingOptionsRequest,
+            OrganizationRequest,
             PaymentMethodsRequest,
         )
         from mercoa.client import AsyncMercoa
@@ -512,38 +437,30 @@ class AsyncOrganizationClient:
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.organization.update(
-            name="string",
-            logo="string",
-            website_url="string",
-            support_email="string",
-            payment_methods=PaymentMethodsRequest(),
-            email_provider=EmailProviderRequest(),
-            external_accounting_system_provider=ExternalAccountingSystemProviderRequest_None(),
-            color_scheme=ColorSchemeRequest(),
-            payee_onboarding_options=OnboardingOptionsRequest(),
-            payor_onboarding_options=OnboardingOptionsRequest(),
-            metadata_schema=[MetadataSchema()],
-        )
+
+
+        async def main() -> None:
+            await client.organization.update(
+                request=OrganizationRequest(
+                    name="string",
+                    logo="string",
+                    website_url="string",
+                    support_email="string",
+                    payment_methods=PaymentMethodsRequest(),
+                    email_provider=EmailProviderRequest(),
+                    external_accounting_system_provider=ExternalAccountingSystemProviderRequest_None(),
+                    color_scheme=ColorSchemeRequest(),
+                    payee_onboarding_options=OnboardingOptionsRequest(),
+                    payor_onboarding_options=OnboardingOptionsRequest(),
+                    metadata_schema=[MetadataSchema()],
+                ),
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "organization",
-            method="POST",
-            json={
-                "name": name,
-                "logo": logo,
-                "websiteUrl": website_url,
-                "supportEmail": support_email,
-                "paymentMethods": payment_methods,
-                "emailProvider": email_provider,
-                "externalAccountingSystemProvider": external_accounting_system_provider,
-                "colorScheme": color_scheme,
-                "payeeOnboardingOptions": payee_onboarding_options,
-                "payorOnboardingOptions": payor_onboarding_options,
-                "metadataSchema": metadata_schema,
-            },
-            request_options=request_options,
-            omit=OMIT,
+            "organization", method="POST", json=request, request_options=request_options, omit=OMIT
         )
         try:
             _response_json = _response.json()
@@ -601,6 +518,7 @@ class AsyncOrganizationClient:
 
         Examples
         --------
+        import asyncio
         import datetime
 
         from mercoa.client import AsyncMercoa
@@ -608,16 +526,22 @@ class AsyncOrganizationClient:
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.organization.email_log(
-            start_date=datetime.datetime.fromisoformat(
-                "2024-01-15 09:30:00+00:00",
-            ),
-            end_date=datetime.datetime.fromisoformat(
-                "2024-01-15 09:30:00+00:00",
-            ),
-            limit=1,
-            starting_after="string",
-        )
+
+
+        async def main() -> None:
+            await client.organization.email_log(
+                start_date=datetime.datetime.fromisoformat(
+                    "2024-01-15 09:30:00+00:00",
+                ),
+                end_date=datetime.datetime.fromisoformat(
+                    "2024-01-15 09:30:00+00:00",
+                ),
+                limit=1,
+                starting_after="string",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             "organization/emailLog",

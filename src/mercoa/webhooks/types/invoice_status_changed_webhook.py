@@ -18,6 +18,7 @@ class InvoiceStatusChangedWebhook(InvoiceWebhook):
         Address,
         BusinessProfileResponse,
         CounterpartyResponse,
+        EntityUserResponse,
         InvoiceResponse,
         InvoiceStatusChangedWebhook,
         PaymentMethodResponse_BankAccount,
@@ -186,6 +187,19 @@ class InvoiceStatusChangedWebhook(InvoiceWebhook):
         ),
         new_status="new",
         previous_status="draft",
+        user=EntityUserResponse(
+            id="user_ec3aafc8-ea86-408a-a6c1-545497badbbb",
+            foreign_id="MY-DB-ID-12345",
+            email="john.doe@acme.com",
+            name="John Doe",
+            roles=["admin", "approver"],
+            created_at=datetime.datetime.fromisoformat(
+                "2024-01-01 00:00:00+00:00",
+            ),
+            updated_at=datetime.datetime.fromisoformat(
+                "2024-01-01 00:00:00+00:00",
+            ),
+        ),
     )
     """
 

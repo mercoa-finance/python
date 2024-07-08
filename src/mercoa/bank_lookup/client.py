@@ -101,14 +101,22 @@ class AsyncBankLookupClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.bank_lookup.find(
-            routing_number="026009593",
-        )
+
+
+        async def main() -> None:
+            await client.bank_lookup.find(
+                routing_number="026009593",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             "bankLookup", method="GET", params={"routingNumber": routing_number}, request_options=request_options

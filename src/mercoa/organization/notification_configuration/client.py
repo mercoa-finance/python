@@ -279,12 +279,20 @@ class AsyncNotificationConfigurationClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.organization.notification_configuration.get_all()
+
+
+        async def main() -> None:
+            await client.organization.notification_configuration.get_all()
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             "organization/notification-configurations", method="GET", request_options=request_options
@@ -331,14 +339,22 @@ class AsyncNotificationConfigurationClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.organization.notification_configuration.get(
-            notification_type="INVOICE_APPROVAL_NEEDED",
-        )
+
+
+        async def main() -> None:
+            await client.organization.notification_configuration.get(
+                notification_type="INVOICE_APPROVAL_NEEDED",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"organization/notification-configuration/{jsonable_encoder(notification_type)}",
@@ -393,18 +409,26 @@ class AsyncNotificationConfigurationClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa import NotificationConfigurationRequest_Invoice
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.organization.notification_configuration.update(
-            notification_type="INVOICE_APPROVAL_NEEDED",
-            request=NotificationConfigurationRequest_Invoice(
-                url="string",
-            ),
-        )
+
+
+        async def main() -> None:
+            await client.organization.notification_configuration.update(
+                notification_type="INVOICE_APPROVAL_NEEDED",
+                request=NotificationConfigurationRequest_Invoice(
+                    url="string",
+                ),
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"organization/notification-configuration/{jsonable_encoder(notification_type)}",
@@ -455,14 +479,22 @@ class AsyncNotificationConfigurationClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.organization.notification_configuration.reset(
-            notification_type="INVOICE_APPROVAL_NEEDED",
-        )
+
+
+        async def main() -> None:
+            await client.organization.notification_configuration.reset(
+                notification_type="INVOICE_APPROVAL_NEEDED",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"organization/notification-configuration/{jsonable_encoder(notification_type)}",

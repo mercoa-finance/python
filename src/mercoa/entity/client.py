@@ -15,18 +15,14 @@ from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.jsonable_encoder import jsonable_encoder
 from ..core.pydantic_utilities import pydantic_v1
 from ..core.request_options import RequestOptions
-from ..entity_types.types.account_type import AccountType
 from ..entity_types.types.entity_id import EntityId
 from ..entity_types.types.entity_onboarding_link_type import EntityOnboardingLinkType
+from ..entity_types.types.entity_request import EntityRequest
 from ..entity_types.types.entity_response import EntityResponse
 from ..entity_types.types.entity_status import EntityStatus
+from ..entity_types.types.entity_update_request import EntityUpdateRequest
 from ..entity_types.types.find_entity_response import FindEntityResponse
-from ..entity_types.types.profile_request import ProfileRequest
-from ..entity_types.types.token_generation_entity_options import TokenGenerationEntityOptions
-from ..entity_types.types.token_generation_invoice_options import TokenGenerationInvoiceOptions
-from ..entity_types.types.token_generation_pages_options import TokenGenerationPagesOptions
-from ..entity_types.types.token_generation_style_options import TokenGenerationStyleOptions
-from ..entity_types.types.token_generation_vendor_options import TokenGenerationVendorOptions
+from ..entity_types.types.token_generation_options import TokenGenerationOptions
 from ..payment_method_types.types.payment_method_id import PaymentMethodId
 from .approval_policy.client import ApprovalPolicyClient, AsyncApprovalPolicyClient
 from .counterparty.client import AsyncCounterpartyClient, CounterpartyClient
@@ -166,54 +162,12 @@ class EntityClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def create(
-        self,
-        *,
-        is_customer: bool,
-        account_type: AccountType,
-        profile: ProfileRequest,
-        is_payor: bool,
-        is_payee: bool,
-        foreign_id: typing.Optional[str] = OMIT,
-        email_to: typing.Optional[str] = OMIT,
-        email_to_alias: typing.Optional[typing.Sequence[str]] = OMIT,
-        is_network_payor: typing.Optional[bool] = OMIT,
-        is_network_payee: typing.Optional[bool] = OMIT,
-        logo: typing.Optional[str] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, *, request: EntityRequest, request_options: typing.Optional[RequestOptions] = None
     ) -> EntityResponse:
         """
         Parameters
         ----------
-        is_customer : bool
-            If this entity has a direct relationship with your organization (e.g your direct customer or client), set this to true. Otherwise, set to false (e.g your customer's vendors).
-
-        account_type : AccountType
-
-        profile : ProfileRequest
-
-        is_payor : bool
-            If this entity will be paying invoices, set this to true.
-
-        is_payee : bool
-            If this entity will be receiving payments, set this to true.
-
-        foreign_id : typing.Optional[str]
-            The ID used to identify this entity in your system. This ID must be unique across all entities in your system.
-
-        email_to : typing.Optional[str]
-            Sets the email address to which to send invoices to be added to the Invoice Inbox. Only provide the local-part/username of the email address, do not include the @domain.com
-
-        email_to_alias : typing.Optional[typing.Sequence[str]]
-            Email inbox alias addresses. Used when forwarding emails to the emailTo address from an alias. Include the full email address.
-
-        is_network_payor : typing.Optional[bool]
-            Control if this entity should be available as a payor to any entity on your platform. If set to false, this entity will only be available as a payor to entities that have a direct relationship with this entity. Defaults to false.
-
-        is_network_payee : typing.Optional[bool]
-            Control if this entity should be available as a payee to any entity on your platform. If set to false, this entity will only be available as a payee to entities that have a direct relationship with this entity. Defaults to false.
-
-        logo : typing.Optional[str]
-            Base64 encoded PNG image data for the entity logo.
+        request : EntityRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -228,6 +182,7 @@ class EntityClient:
             Address,
             BusinessProfileRequest,
             Ein,
+            EntityRequest,
             PhoneNumber,
             ProfileRequest,
             TaxId,
@@ -238,32 +193,34 @@ class EntityClient:
             token="YOUR_TOKEN",
         )
         client.entity.create(
-            is_customer=True,
-            is_payor=True,
-            is_payee=False,
-            account_type="business",
-            foreign_id="MY-DB-ID-12345",
-            profile=ProfileRequest(
-                business=BusinessProfileRequest(
-                    email="customer@acme.com",
-                    legal_business_name="Acme Inc.",
-                    website="http://www.acme.com",
-                    business_type="llc",
-                    phone=PhoneNumber(
-                        country_code="1",
-                        number="4155551234",
-                    ),
-                    address=Address(
-                        address_line_1="123 Main St",
-                        address_line_2="Unit 1",
-                        city="San Francisco",
-                        state_or_province="CA",
-                        postal_code="94105",
-                        country="US",
-                    ),
-                    tax_id=TaxId(
-                        ein=Ein(
-                            number="12-3456789",
+            request=EntityRequest(
+                is_customer=True,
+                is_payor=True,
+                is_payee=False,
+                account_type="business",
+                foreign_id="MY-DB-ID-12345",
+                profile=ProfileRequest(
+                    business=BusinessProfileRequest(
+                        email="customer@acme.com",
+                        legal_business_name="Acme Inc.",
+                        website="http://www.acme.com",
+                        business_type="llc",
+                        phone=PhoneNumber(
+                            country_code="1",
+                            number="4155551234",
+                        ),
+                        address=Address(
+                            address_line_1="123 Main St",
+                            address_line_2="Unit 1",
+                            city="San Francisco",
+                            state_or_province="CA",
+                            postal_code="94105",
+                            country="US",
+                        ),
+                        tax_id=TaxId(
+                            ein=Ein(
+                                number="12-3456789",
+                            ),
                         ),
                     ),
                 ),
@@ -271,23 +228,7 @@ class EntityClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "entity",
-            method="POST",
-            json={
-                "foreignId": foreign_id,
-                "emailTo": email_to,
-                "emailToAlias": email_to_alias,
-                "isCustomer": is_customer,
-                "accountType": account_type,
-                "profile": profile,
-                "isPayor": is_payor,
-                "isPayee": is_payee,
-                "isNetworkPayor": is_network_payor,
-                "isNetworkPayee": is_network_payee,
-                "logo": logo,
-            },
-            request_options=request_options,
-            omit=OMIT,
+            "entity", method="POST", json=request, request_options=request_options, omit=OMIT
         )
         try:
             _response_json = _response.json()
@@ -366,17 +307,7 @@ class EntityClient:
         self,
         entity_id: EntityId,
         *,
-        foreign_id: typing.Optional[str] = OMIT,
-        email_to: typing.Optional[str] = OMIT,
-        email_to_alias: typing.Optional[typing.Sequence[str]] = OMIT,
-        is_customer: typing.Optional[bool] = OMIT,
-        account_type: typing.Optional[AccountType] = OMIT,
-        profile: typing.Optional[ProfileRequest] = OMIT,
-        is_payor: typing.Optional[bool] = OMIT,
-        is_payee: typing.Optional[bool] = OMIT,
-        is_network_payor: typing.Optional[bool] = OMIT,
-        is_network_payee: typing.Optional[bool] = OMIT,
-        logo: typing.Optional[str] = OMIT,
+        request: EntityUpdateRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityResponse:
         """
@@ -384,36 +315,7 @@ class EntityClient:
         ----------
         entity_id : EntityId
 
-        foreign_id : typing.Optional[str]
-            The ID used to identify this entity in your system. This ID must be unique across all entities in your system.
-
-        email_to : typing.Optional[str]
-            Sets the email address to which to send invoices to be added to the Invoice Inbox. Only provide the local-part/username of the email address, do not include the @domain.com
-
-        email_to_alias : typing.Optional[typing.Sequence[str]]
-            Email inbox alias addresses. Used when forwarding emails to the emailTo address from an alias. Include the full email address.
-
-        is_customer : typing.Optional[bool]
-            If this entity has a direct relationship with your organization (e.g your direct customer or client), set this to true. Otherwise, set to false (e.g your customer's vendors).
-
-        account_type : typing.Optional[AccountType]
-
-        profile : typing.Optional[ProfileRequest]
-
-        is_payor : typing.Optional[bool]
-            If this entity will be paying invoices, set this to true.
-
-        is_payee : typing.Optional[bool]
-            If this entity will be receiving payments, set this to true.
-
-        is_network_payor : typing.Optional[bool]
-            Control if this entity should be available as a payor to any entity on your platform. If set to false, this entity will only be available as a payor to entities that have a direct relationship with this entity. Defaults to false.
-
-        is_network_payee : typing.Optional[bool]
-            Control if this entity should be available as a payee to any entity on your platform. If set to false, this entity will only be available as a payee to entities that have a direct relationship with this entity. Defaults to false.
-
-        logo : typing.Optional[str]
-            Base64 encoded PNG image data for the entity logo.
+        request : EntityUpdateRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -428,6 +330,7 @@ class EntityClient:
             Address,
             BusinessProfileRequest,
             Ein,
+            EntityUpdateRequest,
             PhoneNumber,
             ProfileRequest,
             TaxId,
@@ -439,32 +342,34 @@ class EntityClient:
         )
         client.entity.update(
             entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-            is_customer=True,
-            is_payor=True,
-            is_payee=False,
-            account_type="business",
-            foreign_id="MY-DB-ID-12345",
-            profile=ProfileRequest(
-                business=BusinessProfileRequest(
-                    email="customer@acme.com",
-                    legal_business_name="Acme Inc.",
-                    website="http://www.acme.com",
-                    business_type="llc",
-                    phone=PhoneNumber(
-                        country_code="1",
-                        number="4155551234",
-                    ),
-                    address=Address(
-                        address_line_1="123 Main St",
-                        address_line_2="Unit 1",
-                        city="San Francisco",
-                        state_or_province="CA",
-                        postal_code="94105",
-                        country="US",
-                    ),
-                    tax_id=TaxId(
-                        ein=Ein(
-                            number="12-3456789",
+            request=EntityUpdateRequest(
+                is_customer=True,
+                is_payor=True,
+                is_payee=False,
+                account_type="business",
+                foreign_id="MY-DB-ID-12345",
+                profile=ProfileRequest(
+                    business=BusinessProfileRequest(
+                        email="customer@acme.com",
+                        legal_business_name="Acme Inc.",
+                        website="http://www.acme.com",
+                        business_type="llc",
+                        phone=PhoneNumber(
+                            country_code="1",
+                            number="4155551234",
+                        ),
+                        address=Address(
+                            address_line_1="123 Main St",
+                            address_line_2="Unit 1",
+                            city="San Francisco",
+                            state_or_province="CA",
+                            postal_code="94105",
+                            country="US",
+                        ),
+                        tax_id=TaxId(
+                            ein=Ein(
+                                number="12-3456789",
+                            ),
                         ),
                     ),
                 ),
@@ -474,19 +379,7 @@ class EntityClient:
         _response = self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}",
             method="POST",
-            json={
-                "foreignId": foreign_id,
-                "emailTo": email_to,
-                "emailToAlias": email_to_alias,
-                "isCustomer": is_customer,
-                "accountType": account_type,
-                "profile": profile,
-                "isPayor": is_payor,
-                "isPayee": is_payee,
-                "isNetworkPayor": is_network_payor,
-                "isNetworkPayee": is_network_payee,
-                "logo": logo,
-            },
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )
@@ -677,12 +570,7 @@ class EntityClient:
         self,
         entity_id: EntityId,
         *,
-        expires_in: typing.Optional[str] = OMIT,
-        invoice: typing.Optional[TokenGenerationInvoiceOptions] = OMIT,
-        pages: typing.Optional[TokenGenerationPagesOptions] = OMIT,
-        style: typing.Optional[TokenGenerationStyleOptions] = OMIT,
-        vendors: typing.Optional[TokenGenerationVendorOptions] = OMIT,
-        entity: typing.Optional[TokenGenerationEntityOptions] = OMIT,
+        request: TokenGenerationOptions,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> str:
         """
@@ -694,18 +582,7 @@ class EntityClient:
         ----------
         entity_id : EntityId
 
-        expires_in : typing.Optional[str]
-            Expressed in seconds or a string describing a time span. The default is 1h.
-
-        invoice : typing.Optional[TokenGenerationInvoiceOptions]
-
-        pages : typing.Optional[TokenGenerationPagesOptions]
-
-        style : typing.Optional[TokenGenerationStyleOptions]
-
-        vendors : typing.Optional[TokenGenerationVendorOptions]
-
-        entity : typing.Optional[TokenGenerationEntityOptions]
+        request : TokenGenerationOptions
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -716,6 +593,7 @@ class EntityClient:
 
         Examples
         --------
+        from mercoa import TokenGenerationOptions
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -723,20 +601,15 @@ class EntityClient:
         )
         client.entity.get_token(
             entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-            expires_in="1h",
+            request=TokenGenerationOptions(
+                expires_in="1h",
+            ),
         )
         """
         _response = self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/token",
             method="POST",
-            json={
-                "expiresIn": expires_in,
-                "invoice": invoice,
-                "pages": pages,
-                "style": style,
-                "vendors": vendors,
-                "entity": entity,
-            },
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )
@@ -1049,16 +922,24 @@ class AsyncEntityClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.find(
-            is_customer=True,
-            foreign_id="MY-DB-ID-12345",
-            payment_methods=True,
-        )
+
+
+        async def main() -> None:
+            await client.entity.find(
+                is_customer=True,
+                foreign_id="MY-DB-ID-12345",
+                payment_methods=True,
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             "entity",
@@ -1100,54 +981,12 @@ class AsyncEntityClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def create(
-        self,
-        *,
-        is_customer: bool,
-        account_type: AccountType,
-        profile: ProfileRequest,
-        is_payor: bool,
-        is_payee: bool,
-        foreign_id: typing.Optional[str] = OMIT,
-        email_to: typing.Optional[str] = OMIT,
-        email_to_alias: typing.Optional[typing.Sequence[str]] = OMIT,
-        is_network_payor: typing.Optional[bool] = OMIT,
-        is_network_payee: typing.Optional[bool] = OMIT,
-        logo: typing.Optional[str] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, *, request: EntityRequest, request_options: typing.Optional[RequestOptions] = None
     ) -> EntityResponse:
         """
         Parameters
         ----------
-        is_customer : bool
-            If this entity has a direct relationship with your organization (e.g your direct customer or client), set this to true. Otherwise, set to false (e.g your customer's vendors).
-
-        account_type : AccountType
-
-        profile : ProfileRequest
-
-        is_payor : bool
-            If this entity will be paying invoices, set this to true.
-
-        is_payee : bool
-            If this entity will be receiving payments, set this to true.
-
-        foreign_id : typing.Optional[str]
-            The ID used to identify this entity in your system. This ID must be unique across all entities in your system.
-
-        email_to : typing.Optional[str]
-            Sets the email address to which to send invoices to be added to the Invoice Inbox. Only provide the local-part/username of the email address, do not include the @domain.com
-
-        email_to_alias : typing.Optional[typing.Sequence[str]]
-            Email inbox alias addresses. Used when forwarding emails to the emailTo address from an alias. Include the full email address.
-
-        is_network_payor : typing.Optional[bool]
-            Control if this entity should be available as a payor to any entity on your platform. If set to false, this entity will only be available as a payor to entities that have a direct relationship with this entity. Defaults to false.
-
-        is_network_payee : typing.Optional[bool]
-            Control if this entity should be available as a payee to any entity on your platform. If set to false, this entity will only be available as a payee to entities that have a direct relationship with this entity. Defaults to false.
-
-        logo : typing.Optional[str]
-            Base64 encoded PNG image data for the entity logo.
+        request : EntityRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1158,10 +997,13 @@ class AsyncEntityClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa import (
             Address,
             BusinessProfileRequest,
             Ein,
+            EntityRequest,
             PhoneNumber,
             ProfileRequest,
             TaxId,
@@ -1171,57 +1013,49 @@ class AsyncEntityClient:
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.create(
-            is_customer=True,
-            is_payor=True,
-            is_payee=False,
-            account_type="business",
-            foreign_id="MY-DB-ID-12345",
-            profile=ProfileRequest(
-                business=BusinessProfileRequest(
-                    email="customer@acme.com",
-                    legal_business_name="Acme Inc.",
-                    website="http://www.acme.com",
-                    business_type="llc",
-                    phone=PhoneNumber(
-                        country_code="1",
-                        number="4155551234",
-                    ),
-                    address=Address(
-                        address_line_1="123 Main St",
-                        address_line_2="Unit 1",
-                        city="San Francisco",
-                        state_or_province="CA",
-                        postal_code="94105",
-                        country="US",
-                    ),
-                    tax_id=TaxId(
-                        ein=Ein(
-                            number="12-3456789",
+
+
+        async def main() -> None:
+            await client.entity.create(
+                request=EntityRequest(
+                    is_customer=True,
+                    is_payor=True,
+                    is_payee=False,
+                    account_type="business",
+                    foreign_id="MY-DB-ID-12345",
+                    profile=ProfileRequest(
+                        business=BusinessProfileRequest(
+                            email="customer@acme.com",
+                            legal_business_name="Acme Inc.",
+                            website="http://www.acme.com",
+                            business_type="llc",
+                            phone=PhoneNumber(
+                                country_code="1",
+                                number="4155551234",
+                            ),
+                            address=Address(
+                                address_line_1="123 Main St",
+                                address_line_2="Unit 1",
+                                city="San Francisco",
+                                state_or_province="CA",
+                                postal_code="94105",
+                                country="US",
+                            ),
+                            tax_id=TaxId(
+                                ein=Ein(
+                                    number="12-3456789",
+                                ),
+                            ),
                         ),
                     ),
                 ),
-            ),
-        )
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "entity",
-            method="POST",
-            json={
-                "foreignId": foreign_id,
-                "emailTo": email_to,
-                "emailToAlias": email_to_alias,
-                "isCustomer": is_customer,
-                "accountType": account_type,
-                "profile": profile,
-                "isPayor": is_payor,
-                "isPayee": is_payee,
-                "isNetworkPayor": is_network_payor,
-                "isNetworkPayee": is_network_payee,
-                "logo": logo,
-            },
-            request_options=request_options,
-            omit=OMIT,
+            "entity", method="POST", json=request, request_options=request_options, omit=OMIT
         )
         try:
             _response_json = _response.json()
@@ -1263,14 +1097,22 @@ class AsyncEntityClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.get(
-            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-        )
+
+
+        async def main() -> None:
+            await client.entity.get(
+                entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}", method="GET", request_options=request_options
@@ -1302,17 +1144,7 @@ class AsyncEntityClient:
         self,
         entity_id: EntityId,
         *,
-        foreign_id: typing.Optional[str] = OMIT,
-        email_to: typing.Optional[str] = OMIT,
-        email_to_alias: typing.Optional[typing.Sequence[str]] = OMIT,
-        is_customer: typing.Optional[bool] = OMIT,
-        account_type: typing.Optional[AccountType] = OMIT,
-        profile: typing.Optional[ProfileRequest] = OMIT,
-        is_payor: typing.Optional[bool] = OMIT,
-        is_payee: typing.Optional[bool] = OMIT,
-        is_network_payor: typing.Optional[bool] = OMIT,
-        is_network_payee: typing.Optional[bool] = OMIT,
-        logo: typing.Optional[str] = OMIT,
+        request: EntityUpdateRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityResponse:
         """
@@ -1320,36 +1152,7 @@ class AsyncEntityClient:
         ----------
         entity_id : EntityId
 
-        foreign_id : typing.Optional[str]
-            The ID used to identify this entity in your system. This ID must be unique across all entities in your system.
-
-        email_to : typing.Optional[str]
-            Sets the email address to which to send invoices to be added to the Invoice Inbox. Only provide the local-part/username of the email address, do not include the @domain.com
-
-        email_to_alias : typing.Optional[typing.Sequence[str]]
-            Email inbox alias addresses. Used when forwarding emails to the emailTo address from an alias. Include the full email address.
-
-        is_customer : typing.Optional[bool]
-            If this entity has a direct relationship with your organization (e.g your direct customer or client), set this to true. Otherwise, set to false (e.g your customer's vendors).
-
-        account_type : typing.Optional[AccountType]
-
-        profile : typing.Optional[ProfileRequest]
-
-        is_payor : typing.Optional[bool]
-            If this entity will be paying invoices, set this to true.
-
-        is_payee : typing.Optional[bool]
-            If this entity will be receiving payments, set this to true.
-
-        is_network_payor : typing.Optional[bool]
-            Control if this entity should be available as a payor to any entity on your platform. If set to false, this entity will only be available as a payor to entities that have a direct relationship with this entity. Defaults to false.
-
-        is_network_payee : typing.Optional[bool]
-            Control if this entity should be available as a payee to any entity on your platform. If set to false, this entity will only be available as a payee to entities that have a direct relationship with this entity. Defaults to false.
-
-        logo : typing.Optional[str]
-            Base64 encoded PNG image data for the entity logo.
+        request : EntityUpdateRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1360,10 +1163,13 @@ class AsyncEntityClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa import (
             Address,
             BusinessProfileRequest,
             Ein,
+            EntityUpdateRequest,
             PhoneNumber,
             ProfileRequest,
             TaxId,
@@ -1373,56 +1179,52 @@ class AsyncEntityClient:
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.update(
-            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-            is_customer=True,
-            is_payor=True,
-            is_payee=False,
-            account_type="business",
-            foreign_id="MY-DB-ID-12345",
-            profile=ProfileRequest(
-                business=BusinessProfileRequest(
-                    email="customer@acme.com",
-                    legal_business_name="Acme Inc.",
-                    website="http://www.acme.com",
-                    business_type="llc",
-                    phone=PhoneNumber(
-                        country_code="1",
-                        number="4155551234",
-                    ),
-                    address=Address(
-                        address_line_1="123 Main St",
-                        address_line_2="Unit 1",
-                        city="San Francisco",
-                        state_or_province="CA",
-                        postal_code="94105",
-                        country="US",
-                    ),
-                    tax_id=TaxId(
-                        ein=Ein(
-                            number="12-3456789",
+
+
+        async def main() -> None:
+            await client.entity.update(
+                entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+                request=EntityUpdateRequest(
+                    is_customer=True,
+                    is_payor=True,
+                    is_payee=False,
+                    account_type="business",
+                    foreign_id="MY-DB-ID-12345",
+                    profile=ProfileRequest(
+                        business=BusinessProfileRequest(
+                            email="customer@acme.com",
+                            legal_business_name="Acme Inc.",
+                            website="http://www.acme.com",
+                            business_type="llc",
+                            phone=PhoneNumber(
+                                country_code="1",
+                                number="4155551234",
+                            ),
+                            address=Address(
+                                address_line_1="123 Main St",
+                                address_line_2="Unit 1",
+                                city="San Francisco",
+                                state_or_province="CA",
+                                postal_code="94105",
+                                country="US",
+                            ),
+                            tax_id=TaxId(
+                                ein=Ein(
+                                    number="12-3456789",
+                                ),
+                            ),
                         ),
                     ),
                 ),
-            ),
-        )
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}",
             method="POST",
-            json={
-                "foreignId": foreign_id,
-                "emailTo": email_to,
-                "emailToAlias": email_to_alias,
-                "isCustomer": is_customer,
-                "accountType": account_type,
-                "profile": profile,
-                "isPayor": is_payor,
-                "isPayee": is_payee,
-                "isNetworkPayor": is_network_payor,
-                "isNetworkPayee": is_network_payee,
-                "logo": logo,
-            },
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )
@@ -1466,14 +1268,22 @@ class AsyncEntityClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.delete(
-            entity_id="string",
-        )
+
+
+        async def main() -> None:
+            await client.entity.delete(
+                entity_id="string",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}", method="DELETE", request_options=request_options
@@ -1520,14 +1330,22 @@ class AsyncEntityClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.accept_terms_of_service(
-            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-        )
+
+
+        async def main() -> None:
+            await client.entity.accept_terms_of_service(
+                entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/accept-tos", method="POST", request_options=request_options
@@ -1576,14 +1394,22 @@ class AsyncEntityClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.initiate_kyb(
-            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-        )
+
+
+        async def main() -> None:
+            await client.entity.initiate_kyb(
+                entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/request-kyb", method="POST", request_options=request_options
@@ -1615,12 +1441,7 @@ class AsyncEntityClient:
         self,
         entity_id: EntityId,
         *,
-        expires_in: typing.Optional[str] = OMIT,
-        invoice: typing.Optional[TokenGenerationInvoiceOptions] = OMIT,
-        pages: typing.Optional[TokenGenerationPagesOptions] = OMIT,
-        style: typing.Optional[TokenGenerationStyleOptions] = OMIT,
-        vendors: typing.Optional[TokenGenerationVendorOptions] = OMIT,
-        entity: typing.Optional[TokenGenerationEntityOptions] = OMIT,
+        request: TokenGenerationOptions,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> str:
         """
@@ -1632,18 +1453,7 @@ class AsyncEntityClient:
         ----------
         entity_id : EntityId
 
-        expires_in : typing.Optional[str]
-            Expressed in seconds or a string describing a time span. The default is 1h.
-
-        invoice : typing.Optional[TokenGenerationInvoiceOptions]
-
-        pages : typing.Optional[TokenGenerationPagesOptions]
-
-        style : typing.Optional[TokenGenerationStyleOptions]
-
-        vendors : typing.Optional[TokenGenerationVendorOptions]
-
-        entity : typing.Optional[TokenGenerationEntityOptions]
+        request : TokenGenerationOptions
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1654,27 +1464,31 @@ class AsyncEntityClient:
 
         Examples
         --------
+        import asyncio
+
+        from mercoa import TokenGenerationOptions
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.get_token(
-            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-            expires_in="1h",
-        )
+
+
+        async def main() -> None:
+            await client.entity.get_token(
+                entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+                request=TokenGenerationOptions(
+                    expires_in="1h",
+                ),
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/token",
             method="POST",
-            json={
-                "expiresIn": expires_in,
-                "invoice": invoice,
-                "pages": pages,
-                "style": style,
-                "vendors": vendors,
-                "entity": entity,
-            },
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )
@@ -1727,15 +1541,23 @@ class AsyncEntityClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.plaid_link_token(
-            entity_id="string",
-            payment_method_id="string",
-        )
+
+
+        async def main() -> None:
+            await client.entity.plaid_link_token(
+                entity_id="string",
+                payment_method_id="string",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/plaidLinkToken",
@@ -1800,16 +1622,24 @@ class AsyncEntityClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.get_onboarding_link(
-            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-            type="PAYOR",
-            expires_in="1h",
-        )
+
+
+        async def main() -> None:
+            await client.entity.get_onboarding_link(
+                entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+                type="PAYOR",
+                expires_in="1h",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/onboarding",
@@ -1874,17 +1704,25 @@ class AsyncEntityClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.send_onboarding_link(
-            entity_id="string",
-            type="PAYEE",
-            expires_in="string",
-            connected_entity_id="string",
-        )
+
+
+        async def main() -> None:
+            await client.entity.send_onboarding_link(
+                entity_id="string",
+                type="PAYEE",
+                expires_in="string",
+                connected_entity_id="string",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/onboarding",

@@ -18,6 +18,7 @@ from ...core.datetime_utils import serialize_datetime
 from ...core.jsonable_encoder import jsonable_encoder
 from ...core.pydantic_utilities import pydantic_v1
 from ...core.request_options import RequestOptions
+from ...entity_group_types.types.entity_group_id import EntityGroupId
 from ...entity_types.types.entity_id import EntityId
 from ...entity_types.types.entity_user_id import EntityUserId
 from ...invoice_types.types.approver_action import ApproverAction
@@ -37,7 +38,7 @@ class InvoiceClient:
 
     def find(
         self,
-        entity_id: EntityId,
+        entity_group_id: EntityGroupId,
         *,
         exclude_payables: typing.Optional[bool] = None,
         exclude_receivables: typing.Optional[bool] = None,
@@ -58,11 +59,11 @@ class InvoiceClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> FindInvoiceResponse:
         """
-        Get invoices for an entity with the given filters.
+        Get invoices for an entity group with the given filters.
 
         Parameters
         ----------
-        entity_id : EntityId
+        entity_group_id : EntityGroupId
 
         exclude_payables : typing.Optional[bool]
             Return only invoices that are receivable by the entity.
@@ -126,8 +127,8 @@ class InvoiceClient:
         client = Mercoa(
             token="YOUR_TOKEN",
         )
-        client.entity.invoice.find(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+        client.entity_group.invoice.find(
+            entity_group_id="entg_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             exclude_receivables=True,
             order_by="CREATED_AT",
             order_direction="ASC",
@@ -135,7 +136,7 @@ class InvoiceClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"entity/{jsonable_encoder(entity_id)}/invoices",
+            f"entityGroup/{jsonable_encoder(entity_group_id)}/invoices",
             method="GET",
             params={
                 "excludePayables": exclude_payables,
@@ -182,7 +183,7 @@ class InvoiceClient:
 
     def metrics(
         self,
-        entity_id: EntityId,
+        entity_group_id: EntityGroupId,
         *,
         search: typing.Optional[str] = None,
         exclude_payables: typing.Optional[bool] = None,
@@ -201,11 +202,11 @@ class InvoiceClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.List[InvoiceMetricsResponse]:
         """
-        Get invoice metrics for an entity with the given filters. Invoices will be grouped by currency. If none of excludePayables, excludeReceivables, payerId, vendorId, or invoiceId status filters are provided, excludeReceivables will be set to true.
+        Get invoice metrics for an entity group with the given filters. Invoices will be grouped by currency. If none of excludePayables, excludeReceivables, payerId, vendorId, or invoiceId status filters are provided, excludeReceivables will be set to true.
 
         Parameters
         ----------
-        entity_id : EntityId
+        entity_group_id : EntityGroupId
 
         search : typing.Optional[str]
             Find invoices by vendor name, invoice number, or amount. Partial matches are supported.
@@ -265,8 +266,8 @@ class InvoiceClient:
         client = Mercoa(
             token="YOUR_TOKEN",
         )
-        client.entity.invoice.metrics(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+        client.entity_group.invoice.metrics(
+            entity_group_id="entg_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             return_by_date="CREATION_DATE",
             exclude_receivables=True,
             created_date_start=datetime.datetime.fromisoformat(
@@ -280,7 +281,7 @@ class InvoiceClient:
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"entity/{jsonable_encoder(entity_id)}/invoice-metrics",
+            f"entityGroup/{jsonable_encoder(entity_group_id)}/invoice-metrics",
             method="GET",
             params={
                 "search": search,
@@ -330,7 +331,7 @@ class AsyncInvoiceClient:
 
     async def find(
         self,
-        entity_id: EntityId,
+        entity_group_id: EntityGroupId,
         *,
         exclude_payables: typing.Optional[bool] = None,
         exclude_receivables: typing.Optional[bool] = None,
@@ -351,11 +352,11 @@ class AsyncInvoiceClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> FindInvoiceResponse:
         """
-        Get invoices for an entity with the given filters.
+        Get invoices for an entity group with the given filters.
 
         Parameters
         ----------
-        entity_id : EntityId
+        entity_group_id : EntityGroupId
 
         exclude_payables : typing.Optional[bool]
             Return only invoices that are receivable by the entity.
@@ -424,8 +425,8 @@ class AsyncInvoiceClient:
 
 
         async def main() -> None:
-            await client.entity.invoice.find(
-                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            await client.entity_group.invoice.find(
+                entity_group_id="entg_8545a84e-a45f-41bf-bdf1-33b42a55812c",
                 exclude_receivables=True,
                 order_by="CREATED_AT",
                 order_direction="ASC",
@@ -436,7 +437,7 @@ class AsyncInvoiceClient:
         asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"entity/{jsonable_encoder(entity_id)}/invoices",
+            f"entityGroup/{jsonable_encoder(entity_group_id)}/invoices",
             method="GET",
             params={
                 "excludePayables": exclude_payables,
@@ -483,7 +484,7 @@ class AsyncInvoiceClient:
 
     async def metrics(
         self,
-        entity_id: EntityId,
+        entity_group_id: EntityGroupId,
         *,
         search: typing.Optional[str] = None,
         exclude_payables: typing.Optional[bool] = None,
@@ -502,11 +503,11 @@ class AsyncInvoiceClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.List[InvoiceMetricsResponse]:
         """
-        Get invoice metrics for an entity with the given filters. Invoices will be grouped by currency. If none of excludePayables, excludeReceivables, payerId, vendorId, or invoiceId status filters are provided, excludeReceivables will be set to true.
+        Get invoice metrics for an entity group with the given filters. Invoices will be grouped by currency. If none of excludePayables, excludeReceivables, payerId, vendorId, or invoiceId status filters are provided, excludeReceivables will be set to true.
 
         Parameters
         ----------
-        entity_id : EntityId
+        entity_group_id : EntityGroupId
 
         search : typing.Optional[str]
             Find invoices by vendor name, invoice number, or amount. Partial matches are supported.
@@ -570,8 +571,8 @@ class AsyncInvoiceClient:
 
 
         async def main() -> None:
-            await client.entity.invoice.metrics(
-                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            await client.entity_group.invoice.metrics(
+                entity_group_id="entg_8545a84e-a45f-41bf-bdf1-33b42a55812c",
                 return_by_date="CREATION_DATE",
                 exclude_receivables=True,
                 created_date_start=datetime.datetime.fromisoformat(
@@ -588,7 +589,7 @@ class AsyncInvoiceClient:
         asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"entity/{jsonable_encoder(entity_id)}/invoice-metrics",
+            f"entityGroup/{jsonable_encoder(entity_group_id)}/invoice-metrics",
             method="GET",
             params={
                 "search": search,

@@ -3,47 +3,56 @@
 import typing
 from json.decoder import JSONDecodeError
 
-from ...commons.errors.bad_request import BadRequest
-from ...commons.errors.conflict import Conflict
-from ...commons.errors.forbidden import Forbidden
-from ...commons.errors.internal_server_error import InternalServerError
-from ...commons.errors.not_found import NotFound
-from ...commons.errors.unauthorized import Unauthorized
-from ...commons.errors.unimplemented import Unimplemented
-from ...core.api_error import ApiError
-from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
-from ...core.jsonable_encoder import jsonable_encoder
-from ...core.pydantic_utilities import pydantic_v1
-from ...core.request_options import RequestOptions
-from ...entity_types.types.entity_id import EntityId
-from .types.external_accounting_system_company_creation_request import ExternalAccountingSystemCompanyCreationRequest
-from .types.external_accounting_system_company_response import ExternalAccountingSystemCompanyResponse
-from .types.sync_type import SyncType
+from ..commons.errors.bad_request import BadRequest
+from ..commons.errors.conflict import Conflict
+from ..commons.errors.forbidden import Forbidden
+from ..commons.errors.internal_server_error import InternalServerError
+from ..commons.errors.not_found import NotFound
+from ..commons.errors.unauthorized import Unauthorized
+from ..commons.errors.unimplemented import Unimplemented
+from ..core.api_error import ApiError
+from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
+from ..core.jsonable_encoder import jsonable_encoder
+from ..core.pydantic_utilities import pydantic_v1
+from ..core.request_options import RequestOptions
+from ..entity_group_types.types.entity_group_find_response import EntityGroupFindResponse
+from ..entity_group_types.types.entity_group_id import EntityGroupId
+from ..entity_group_types.types.entity_group_request import EntityGroupRequest
+from ..entity_group_types.types.entity_group_response import EntityGroupResponse
+from .invoice.client import AsyncInvoiceClient, InvoiceClient
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
 
 
-class ExternalAccountingSystemClient:
+class EntityGroupClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
+        self.invoice = InvoiceClient(client_wrapper=self._client_wrapper)
 
-    def get(
-        self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> ExternalAccountingSystemCompanyResponse:
+    def get_all(
+        self,
+        *,
+        limit: typing.Optional[int] = None,
+        starting_after: typing.Optional[EntityGroupId] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> EntityGroupFindResponse:
         """
-        Get the external accounting system connected to an entity
+        Get all entity groups. If using a JWT, will return all groups the entity is part of. If using an API key, will return all groups for the organization.
 
         Parameters
         ----------
-        entity_id : EntityId
+        limit : typing.Optional[int]
+            The maximum number of results to return. Defaults to 1. Max is 10.
+
+        starting_after : typing.Optional[EntityGroupId]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        ExternalAccountingSystemCompanyResponse
+        EntityGroupFindResponse
 
         Examples
         --------
@@ -52,13 +61,12 @@ class ExternalAccountingSystemClient:
         client = Mercoa(
             token="YOUR_TOKEN",
         )
-        client.entity.external_accounting_system.get(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-        )
+        client.entity_group.get_all()
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"entity/{jsonable_encoder(entity_id)}/external-accounting-system",
+            "entityGroups",
             method="GET",
+            params={"limit": limit, "startingAfter": starting_after},
             request_options=request_options,
         )
         try:
@@ -66,7 +74,7 @@ class ExternalAccountingSystemClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic_v1.parse_obj_as(ExternalAccountingSystemCompanyResponse, _response_json)  # type: ignore
+            return pydantic_v1.parse_obj_as(EntityGroupFindResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "BadRequest":
                 raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
@@ -85,45 +93,162 @@ class ExternalAccountingSystemClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def create(
-        self,
-        entity_id: EntityId,
-        *,
-        request: ExternalAccountingSystemCompanyCreationRequest,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> ExternalAccountingSystemCompanyResponse:
+        self, *, request: EntityGroupRequest, request_options: typing.Optional[RequestOptions] = None
+    ) -> EntityGroupResponse:
         """
-        Create/Link an entity to an external accounting system like Codat or Rutter. If the entity is already linked to an external accounting system, this will return the existing connection.
+        Create an entity group
 
         Parameters
         ----------
-        entity_id : EntityId
-
-        request : ExternalAccountingSystemCompanyCreationRequest
+        request : EntityGroupRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        ExternalAccountingSystemCompanyResponse
+        EntityGroupResponse
 
         Examples
         --------
+        from mercoa import EntityGroupRequest
         from mercoa.client import Mercoa
-        from mercoa.entity import ExternalAccountingSystemCompanyCreationRequest_Rutter
 
         client = Mercoa(
             token="YOUR_TOKEN",
         )
-        client.entity.external_accounting_system.create(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            request=ExternalAccountingSystemCompanyCreationRequest_Rutter(
-                access_token="123",
+        client.entity_group.create(
+            request=EntityGroupRequest(
+                entity_ids=[
+                    "ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                    "ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+                ],
             ),
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"entity/{jsonable_encoder(entity_id)}/external-accounting-system/create",
+            "entityGroup", method="POST", json=request, request_options=request_options, omit=OMIT
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return pydantic_v1.parse_obj_as(EntityGroupResponse, _response_json)  # type: ignore
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def get(
+        self, entity_group_id: EntityGroupId, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> EntityGroupResponse:
+        """
+        Get an entity group
+
+        Parameters
+        ----------
+        entity_group_id : EntityGroupId
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        EntityGroupResponse
+
+        Examples
+        --------
+        from mercoa.client import Mercoa
+
+        client = Mercoa(
+            token="YOUR_TOKEN",
+        )
+        client.entity_group.get(
+            entity_group_id="entg_a3582b70-fd04-4888-9185-a640ae9048be",
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"entityGroup/{jsonable_encoder(entity_group_id)}", method="GET", request_options=request_options
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return pydantic_v1.parse_obj_as(EntityGroupResponse, _response_json)  # type: ignore
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def update(
+        self,
+        entity_group_id: EntityGroupId,
+        *,
+        request: EntityGroupRequest,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> EntityGroupResponse:
+        """
+        Update an entity group
+
+        Parameters
+        ----------
+        entity_group_id : EntityGroupId
+
+        request : EntityGroupRequest
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        EntityGroupResponse
+
+        Examples
+        --------
+        from mercoa import EntityGroupRequest
+        from mercoa.client import Mercoa
+
+        client = Mercoa(
+            token="YOUR_TOKEN",
+        )
+        client.entity_group.update(
+            entity_group_id="entg_a3582b70-fd04-4888-9185-a640ae9048be",
+            request=EntityGroupRequest(
+                entity_ids=[
+                    "ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                    "ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+                ],
+            ),
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"entityGroup/{jsonable_encoder(entity_group_id)}",
             method="POST",
             json=request,
             request_options=request_options,
@@ -134,7 +259,7 @@ class ExternalAccountingSystemClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic_v1.parse_obj_as(ExternalAccountingSystemCompanyResponse, _response_json)  # type: ignore
+            return pydantic_v1.parse_obj_as(EntityGroupResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "BadRequest":
                 raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
@@ -152,84 +277,15 @@ class ExternalAccountingSystemClient:
                 raise Unimplemented(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def connect(self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None) -> str:
-        """
-        Get a link to connect an entity to an external accounting system like Quickbooks or Xero
-
-        Parameters
-        ----------
-        entity_id : EntityId
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        str
-
-        Examples
-        --------
-        from mercoa.client import Mercoa
-
-        client = Mercoa(
-            token="YOUR_TOKEN",
-        )
-        client.entity.external_accounting_system.connect(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-        )
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            f"entity/{jsonable_encoder(entity_id)}/external-accounting-system/connect",
-            method="GET",
-            request_options=request_options,
-        )
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if 200 <= _response.status_code < 300:
-            return pydantic_v1.parse_obj_as(str, _response_json)  # type: ignore
-        if "errorName" in _response_json:
-            if _response_json["errorName"] == "BadRequest":
-                raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unauthorized":
-                raise Unauthorized(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Forbidden":
-                raise Forbidden(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "NotFound":
-                raise NotFound(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Conflict":
-                raise Conflict(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "InternalServerError":
-                raise InternalServerError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unimplemented":
-                raise Unimplemented(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    def sync(
-        self,
-        entity_id: EntityId,
-        *,
-        vendors: typing.Optional[SyncType] = None,
-        bills: typing.Optional[SyncType] = None,
-        gl_accounts: typing.Optional[SyncType] = None,
-        request_options: typing.Optional[RequestOptions] = None,
+    def delete(
+        self, entity_group_id: EntityGroupId, *, request_options: typing.Optional[RequestOptions] = None
     ) -> None:
         """
-        Sync an entity with an external accounting system. Will sync customers/vendors and invoices.
+        Delete an entity group
 
         Parameters
         ----------
-        entity_id : EntityId
-
-        vendors : typing.Optional[SyncType]
-            Sync vendors from external accounting system. Default is to pull vendors from external system.
-
-        bills : typing.Optional[SyncType]
-            Sync bills from external accounting system. Default is to not sync bills. Invoices that already exist in both systems will not be updated, only new invoices not present in the other system will be created.
-
-        gl_accounts : typing.Optional[SyncType]
-            Sync GL accounts from external accounting system. Default is to pull GL accounts from external system. Pushing GL accounts is not supported.
+        entity_group_id : EntityGroupId
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -245,18 +301,12 @@ class ExternalAccountingSystemClient:
         client = Mercoa(
             token="YOUR_TOKEN",
         )
-        client.entity.external_accounting_system.sync(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            vendors="pull",
-            bills="push",
-            gl_accounts="pull",
+        client.entity_group.delete(
+            entity_group_id="string",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"entity/{jsonable_encoder(entity_id)}/external-accounting-system/sync",
-            method="GET",
-            params={"vendors": vendors, "bills": bills, "glAccounts": gl_accounts},
-            request_options=request_options,
+            f"entityGroup/{jsonable_encoder(entity_group_id)}", method="DELETE", request_options=request_options
         )
         if 200 <= _response.status_code < 300:
             return
@@ -282,26 +332,34 @@ class ExternalAccountingSystemClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
 
-class AsyncExternalAccountingSystemClient:
+class AsyncEntityGroupClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
+        self.invoice = AsyncInvoiceClient(client_wrapper=self._client_wrapper)
 
-    async def get(
-        self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> ExternalAccountingSystemCompanyResponse:
+    async def get_all(
+        self,
+        *,
+        limit: typing.Optional[int] = None,
+        starting_after: typing.Optional[EntityGroupId] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> EntityGroupFindResponse:
         """
-        Get the external accounting system connected to an entity
+        Get all entity groups. If using a JWT, will return all groups the entity is part of. If using an API key, will return all groups for the organization.
 
         Parameters
         ----------
-        entity_id : EntityId
+        limit : typing.Optional[int]
+            The maximum number of results to return. Defaults to 1. Max is 10.
+
+        starting_after : typing.Optional[EntityGroupId]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        ExternalAccountingSystemCompanyResponse
+        EntityGroupFindResponse
 
         Examples
         --------
@@ -315,16 +373,15 @@ class AsyncExternalAccountingSystemClient:
 
 
         async def main() -> None:
-            await client.entity.external_accounting_system.get(
-                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            )
+            await client.entity_group.get_all()
 
 
         asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"entity/{jsonable_encoder(entity_id)}/external-accounting-system",
+            "entityGroups",
             method="GET",
+            params={"limit": limit, "startingAfter": starting_after},
             request_options=request_options,
         )
         try:
@@ -332,7 +389,7 @@ class AsyncExternalAccountingSystemClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic_v1.parse_obj_as(ExternalAccountingSystemCompanyResponse, _response_json)  # type: ignore
+            return pydantic_v1.parse_obj_as(EntityGroupFindResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "BadRequest":
                 raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
@@ -351,34 +408,28 @@ class AsyncExternalAccountingSystemClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def create(
-        self,
-        entity_id: EntityId,
-        *,
-        request: ExternalAccountingSystemCompanyCreationRequest,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> ExternalAccountingSystemCompanyResponse:
+        self, *, request: EntityGroupRequest, request_options: typing.Optional[RequestOptions] = None
+    ) -> EntityGroupResponse:
         """
-        Create/Link an entity to an external accounting system like Codat or Rutter. If the entity is already linked to an external accounting system, this will return the existing connection.
+        Create an entity group
 
         Parameters
         ----------
-        entity_id : EntityId
-
-        request : ExternalAccountingSystemCompanyCreationRequest
+        request : EntityGroupRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        ExternalAccountingSystemCompanyResponse
+        EntityGroupResponse
 
         Examples
         --------
         import asyncio
 
+        from mercoa import EntityGroupRequest
         from mercoa.client import AsyncMercoa
-        from mercoa.entity import ExternalAccountingSystemCompanyCreationRequest_Rutter
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
@@ -386,10 +437,12 @@ class AsyncExternalAccountingSystemClient:
 
 
         async def main() -> None:
-            await client.entity.external_accounting_system.create(
-                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-                request=ExternalAccountingSystemCompanyCreationRequest_Rutter(
-                    access_token="123",
+            await client.entity_group.create(
+                request=EntityGroupRequest(
+                    entity_ids=[
+                        "ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                        "ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+                    ],
                 ),
             )
 
@@ -397,7 +450,144 @@ class AsyncExternalAccountingSystemClient:
         asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"entity/{jsonable_encoder(entity_id)}/external-accounting-system/create",
+            "entityGroup", method="POST", json=request, request_options=request_options, omit=OMIT
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return pydantic_v1.parse_obj_as(EntityGroupResponse, _response_json)  # type: ignore
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def get(
+        self, entity_group_id: EntityGroupId, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> EntityGroupResponse:
+        """
+        Get an entity group
+
+        Parameters
+        ----------
+        entity_group_id : EntityGroupId
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        EntityGroupResponse
+
+        Examples
+        --------
+        import asyncio
+
+        from mercoa.client import AsyncMercoa
+
+        client = AsyncMercoa(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.entity_group.get(
+                entity_group_id="entg_a3582b70-fd04-4888-9185-a640ae9048be",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"entityGroup/{jsonable_encoder(entity_group_id)}", method="GET", request_options=request_options
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return pydantic_v1.parse_obj_as(EntityGroupResponse, _response_json)  # type: ignore
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def update(
+        self,
+        entity_group_id: EntityGroupId,
+        *,
+        request: EntityGroupRequest,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> EntityGroupResponse:
+        """
+        Update an entity group
+
+        Parameters
+        ----------
+        entity_group_id : EntityGroupId
+
+        request : EntityGroupRequest
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        EntityGroupResponse
+
+        Examples
+        --------
+        import asyncio
+
+        from mercoa import EntityGroupRequest
+        from mercoa.client import AsyncMercoa
+
+        client = AsyncMercoa(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.entity_group.update(
+                entity_group_id="entg_a3582b70-fd04-4888-9185-a640ae9048be",
+                request=EntityGroupRequest(
+                    entity_ids=[
+                        "ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                        "ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+                    ],
+                ),
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"entityGroup/{jsonable_encoder(entity_group_id)}",
             method="POST",
             json=request,
             request_options=request_options,
@@ -408,7 +598,7 @@ class AsyncExternalAccountingSystemClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic_v1.parse_obj_as(ExternalAccountingSystemCompanyResponse, _response_json)  # type: ignore
+            return pydantic_v1.parse_obj_as(EntityGroupResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "BadRequest":
                 raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
@@ -426,92 +616,15 @@ class AsyncExternalAccountingSystemClient:
                 raise Unimplemented(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def connect(self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None) -> str:
-        """
-        Get a link to connect an entity to an external accounting system like Quickbooks or Xero
-
-        Parameters
-        ----------
-        entity_id : EntityId
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        str
-
-        Examples
-        --------
-        import asyncio
-
-        from mercoa.client import AsyncMercoa
-
-        client = AsyncMercoa(
-            token="YOUR_TOKEN",
-        )
-
-
-        async def main() -> None:
-            await client.entity.external_accounting_system.connect(
-                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            f"entity/{jsonable_encoder(entity_id)}/external-accounting-system/connect",
-            method="GET",
-            request_options=request_options,
-        )
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if 200 <= _response.status_code < 300:
-            return pydantic_v1.parse_obj_as(str, _response_json)  # type: ignore
-        if "errorName" in _response_json:
-            if _response_json["errorName"] == "BadRequest":
-                raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unauthorized":
-                raise Unauthorized(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Forbidden":
-                raise Forbidden(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "NotFound":
-                raise NotFound(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Conflict":
-                raise Conflict(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "InternalServerError":
-                raise InternalServerError(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
-            if _response_json["errorName"] == "Unimplemented":
-                raise Unimplemented(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    async def sync(
-        self,
-        entity_id: EntityId,
-        *,
-        vendors: typing.Optional[SyncType] = None,
-        bills: typing.Optional[SyncType] = None,
-        gl_accounts: typing.Optional[SyncType] = None,
-        request_options: typing.Optional[RequestOptions] = None,
+    async def delete(
+        self, entity_group_id: EntityGroupId, *, request_options: typing.Optional[RequestOptions] = None
     ) -> None:
         """
-        Sync an entity with an external accounting system. Will sync customers/vendors and invoices.
+        Delete an entity group
 
         Parameters
         ----------
-        entity_id : EntityId
-
-        vendors : typing.Optional[SyncType]
-            Sync vendors from external accounting system. Default is to pull vendors from external system.
-
-        bills : typing.Optional[SyncType]
-            Sync bills from external accounting system. Default is to not sync bills. Invoices that already exist in both systems will not be updated, only new invoices not present in the other system will be created.
-
-        gl_accounts : typing.Optional[SyncType]
-            Sync GL accounts from external accounting system. Default is to pull GL accounts from external system. Pushing GL accounts is not supported.
+        entity_group_id : EntityGroupId
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -532,21 +645,15 @@ class AsyncExternalAccountingSystemClient:
 
 
         async def main() -> None:
-            await client.entity.external_accounting_system.sync(
-                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-                vendors="pull",
-                bills="push",
-                gl_accounts="pull",
+            await client.entity_group.delete(
+                entity_group_id="string",
             )
 
 
         asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"entity/{jsonable_encoder(entity_id)}/external-accounting-system/sync",
-            method="GET",
-            params={"vendors": vendors, "bills": bills, "glAccounts": gl_accounts},
-            request_options=request_options,
+            f"entityGroup/{jsonable_encoder(entity_group_id)}", method="DELETE", request_options=request_options
         )
         if 200 <= _response.status_code < 300:
             return

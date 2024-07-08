@@ -15,8 +15,8 @@ from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ...core.jsonable_encoder import jsonable_encoder
 from ...core.pydantic_utilities import pydantic_v1
 from ...core.request_options import RequestOptions
-from ...entity_types.types.entity_user_id import EntityUserId
-from ...invoice_types.types.approval_slot_id import ApprovalSlotId
+from ...invoice_types.types.add_approver_request import AddApproverRequest
+from ...invoice_types.types.approval_request import ApprovalRequest
 from ...invoice_types.types.invoice_id import InvoiceId
 
 # this is used as the default value for optional parameters
@@ -31,8 +31,7 @@ class ApprovalClient:
         self,
         invoice_id: InvoiceId,
         *,
-        user_id: EntityUserId,
-        approval_slot_id: typing.Optional[ApprovalSlotId] = OMIT,
+        request: AddApproverRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
@@ -42,10 +41,7 @@ class ApprovalClient:
         ----------
         invoice_id : InvoiceId
 
-        user_id : EntityUserId
-
-        approval_slot_id : typing.Optional[ApprovalSlotId]
-            The identifier for the approval slot this user is assigned to.
+        request : AddApproverRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -56,6 +52,7 @@ class ApprovalClient:
 
         Examples
         --------
+        from mercoa import AddApproverRequest
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -63,14 +60,16 @@ class ApprovalClient:
         )
         client.invoice.approval.add_approver(
             invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
-            approval_slot_id="inap_9bb311c9-7c15-4c9e-8148-63814e0abec6",
-            user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+            request=AddApproverRequest(
+                approval_slot_id="inap_9bb311c9-7c15-4c9e-8148-63814e0abec6",
+                user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+            ),
         )
         """
         _response = self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/add-approver",
             method="POST",
-            json={"approvalSlotId": approval_slot_id, "userId": user_id},
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )
@@ -101,8 +100,7 @@ class ApprovalClient:
         self,
         invoice_id: InvoiceId,
         *,
-        user_id: EntityUserId,
-        text: typing.Optional[str] = OMIT,
+        request: ApprovalRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
@@ -110,10 +108,7 @@ class ApprovalClient:
         ----------
         invoice_id : InvoiceId
 
-        user_id : EntityUserId
-
-        text : typing.Optional[str]
-            Comment associated with this approval action.
+        request : ApprovalRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -124,6 +119,7 @@ class ApprovalClient:
 
         Examples
         --------
+        from mercoa import ApprovalRequest
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -131,14 +127,16 @@ class ApprovalClient:
         )
         client.invoice.approval.approve(
             invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
-            text="This is a reason for my action",
-            user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+            request=ApprovalRequest(
+                text="This is a reason for my action",
+                user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+            ),
         )
         """
         _response = self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/approve",
             method="POST",
-            json={"text": text, "userId": user_id},
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )
@@ -169,8 +167,7 @@ class ApprovalClient:
         self,
         invoice_id: InvoiceId,
         *,
-        user_id: EntityUserId,
-        text: typing.Optional[str] = OMIT,
+        request: ApprovalRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
@@ -178,10 +175,7 @@ class ApprovalClient:
         ----------
         invoice_id : InvoiceId
 
-        user_id : EntityUserId
-
-        text : typing.Optional[str]
-            Comment associated with this approval action.
+        request : ApprovalRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -192,6 +186,7 @@ class ApprovalClient:
 
         Examples
         --------
+        from mercoa import ApprovalRequest
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -199,14 +194,16 @@ class ApprovalClient:
         )
         client.invoice.approval.reject(
             invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
-            text="This is a reason for my action",
-            user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+            request=ApprovalRequest(
+                text="This is a reason for my action",
+                user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+            ),
         )
         """
         _response = self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/reject",
             method="POST",
-            json={"text": text, "userId": user_id},
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )
@@ -242,8 +239,7 @@ class AsyncApprovalClient:
         self,
         invoice_id: InvoiceId,
         *,
-        user_id: EntityUserId,
-        approval_slot_id: typing.Optional[ApprovalSlotId] = OMIT,
+        request: AddApproverRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
@@ -253,10 +249,7 @@ class AsyncApprovalClient:
         ----------
         invoice_id : InvoiceId
 
-        user_id : EntityUserId
-
-        approval_slot_id : typing.Optional[ApprovalSlotId]
-            The identifier for the approval slot this user is assigned to.
+        request : AddApproverRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -267,21 +260,32 @@ class AsyncApprovalClient:
 
         Examples
         --------
+        import asyncio
+
+        from mercoa import AddApproverRequest
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.invoice.approval.add_approver(
-            invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
-            approval_slot_id="inap_9bb311c9-7c15-4c9e-8148-63814e0abec6",
-            user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
-        )
+
+
+        async def main() -> None:
+            await client.invoice.approval.add_approver(
+                invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
+                request=AddApproverRequest(
+                    approval_slot_id="inap_9bb311c9-7c15-4c9e-8148-63814e0abec6",
+                    user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+                ),
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/add-approver",
             method="POST",
-            json={"approvalSlotId": approval_slot_id, "userId": user_id},
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )
@@ -312,8 +316,7 @@ class AsyncApprovalClient:
         self,
         invoice_id: InvoiceId,
         *,
-        user_id: EntityUserId,
-        text: typing.Optional[str] = OMIT,
+        request: ApprovalRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
@@ -321,10 +324,7 @@ class AsyncApprovalClient:
         ----------
         invoice_id : InvoiceId
 
-        user_id : EntityUserId
-
-        text : typing.Optional[str]
-            Comment associated with this approval action.
+        request : ApprovalRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -335,21 +335,32 @@ class AsyncApprovalClient:
 
         Examples
         --------
+        import asyncio
+
+        from mercoa import ApprovalRequest
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.invoice.approval.approve(
-            invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
-            text="This is a reason for my action",
-            user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
-        )
+
+
+        async def main() -> None:
+            await client.invoice.approval.approve(
+                invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
+                request=ApprovalRequest(
+                    text="This is a reason for my action",
+                    user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+                ),
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/approve",
             method="POST",
-            json={"text": text, "userId": user_id},
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )
@@ -380,8 +391,7 @@ class AsyncApprovalClient:
         self,
         invoice_id: InvoiceId,
         *,
-        user_id: EntityUserId,
-        text: typing.Optional[str] = OMIT,
+        request: ApprovalRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
@@ -389,10 +399,7 @@ class AsyncApprovalClient:
         ----------
         invoice_id : InvoiceId
 
-        user_id : EntityUserId
-
-        text : typing.Optional[str]
-            Comment associated with this approval action.
+        request : ApprovalRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -403,21 +410,32 @@ class AsyncApprovalClient:
 
         Examples
         --------
+        import asyncio
+
+        from mercoa import ApprovalRequest
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.invoice.approval.reject(
-            invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
-            text="This is a reason for my action",
-            user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
-        )
+
+
+        async def main() -> None:
+            await client.invoice.approval.reject(
+                invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
+                request=ApprovalRequest(
+                    text="This is a reason for my action",
+                    user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+                ),
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/reject",
             method="POST",
-            json={"text": text, "userId": user_id},
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )

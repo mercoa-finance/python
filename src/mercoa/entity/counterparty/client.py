@@ -15,8 +15,11 @@ from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ...core.jsonable_encoder import jsonable_encoder
 from ...core.pydantic_utilities import pydantic_v1
 from ...core.request_options import RequestOptions
-from ...entity_types.types.counterparty_customization_request import CounterpartyCustomizationRequest
 from ...entity_types.types.counterparty_network_type import CounterpartyNetworkType
+from ...entity_types.types.entity_add_payees_request import EntityAddPayeesRequest
+from ...entity_types.types.entity_add_payors_request import EntityAddPayorsRequest
+from ...entity_types.types.entity_hide_payees_request import EntityHidePayeesRequest
+from ...entity_types.types.entity_hide_payors_request import EntityHidePayorsRequest
 from ...entity_types.types.entity_id import EntityId
 from ...entity_types.types.find_counterparties_response import FindCounterpartiesResponse
 
@@ -244,8 +247,7 @@ class CounterpartyClient:
         self,
         entity_id: EntityId,
         *,
-        payees: typing.Sequence[EntityId],
-        customizations: typing.Optional[typing.Sequence[CounterpartyCustomizationRequest]] = OMIT,
+        request: EntityAddPayeesRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
@@ -255,11 +257,7 @@ class CounterpartyClient:
         ----------
         entity_id : EntityId
 
-        payees : typing.Sequence[EntityId]
-            List of payee entity IDs to associate with the entity
-
-        customizations : typing.Optional[typing.Sequence[CounterpartyCustomizationRequest]]
-            List of customizations to apply to the payees. If the payee is not currently a counterparty of the entity, the counterparty will be created with the provided customizations.
+        request : EntityAddPayeesRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -270,7 +268,7 @@ class CounterpartyClient:
 
         Examples
         --------
-        from mercoa import CounterpartyCustomizationRequest
+        from mercoa import CounterpartyCustomizationRequest, EntityAddPayeesRequest
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -278,19 +276,21 @@ class CounterpartyClient:
         )
         client.entity.counterparty.add_payees(
             entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            payees=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
-            customizations=[
-                CounterpartyCustomizationRequest(
-                    counterparty_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
-                    account_id="85866843",
-                )
-            ],
+            request=EntityAddPayeesRequest(
+                payees=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
+                customizations=[
+                    CounterpartyCustomizationRequest(
+                        counterparty_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+                        account_id="85866843",
+                    )
+                ],
+            ),
         )
         """
         _response = self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/addPayees",
             method="POST",
-            json={"payees": payees, "customizations": customizations},
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )
@@ -321,7 +321,7 @@ class CounterpartyClient:
         self,
         entity_id: EntityId,
         *,
-        payees: typing.Sequence[EntityId],
+        request: EntityHidePayeesRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
@@ -331,8 +331,7 @@ class CounterpartyClient:
         ----------
         entity_id : EntityId
 
-        payees : typing.Sequence[EntityId]
-            List of payee entity IDs to hide
+        request : EntityHidePayeesRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -343,6 +342,7 @@ class CounterpartyClient:
 
         Examples
         --------
+        from mercoa import EntityHidePayeesRequest
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -350,13 +350,15 @@ class CounterpartyClient:
         )
         client.entity.counterparty.hide_payees(
             entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            payees=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
+            request=EntityHidePayeesRequest(
+                payees=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
+            ),
         )
         """
         _response = self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/hidePayees",
             method="POST",
-            json={"payees": payees},
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )
@@ -387,8 +389,7 @@ class CounterpartyClient:
         self,
         entity_id: EntityId,
         *,
-        payors: typing.Sequence[EntityId],
-        customizations: typing.Optional[typing.Sequence[CounterpartyCustomizationRequest]] = OMIT,
+        request: EntityAddPayorsRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
@@ -398,11 +399,7 @@ class CounterpartyClient:
         ----------
         entity_id : EntityId
 
-        payors : typing.Sequence[EntityId]
-            List of payor entity IDs to associate with the entity
-
-        customizations : typing.Optional[typing.Sequence[CounterpartyCustomizationRequest]]
-            List of customizations to apply to the payors. If the payor is not currently a counterparty of the entity, the counterparty will be created with the provided customizations.
+        request : EntityAddPayorsRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -413,7 +410,7 @@ class CounterpartyClient:
 
         Examples
         --------
-        from mercoa import CounterpartyCustomizationRequest
+        from mercoa import CounterpartyCustomizationRequest, EntityAddPayorsRequest
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -421,19 +418,21 @@ class CounterpartyClient:
         )
         client.entity.counterparty.add_payors(
             entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            payors=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
-            customizations=[
-                CounterpartyCustomizationRequest(
-                    counterparty_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
-                    account_id="85866843",
-                )
-            ],
+            request=EntityAddPayorsRequest(
+                payors=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
+                customizations=[
+                    CounterpartyCustomizationRequest(
+                        counterparty_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+                        account_id="85866843",
+                    )
+                ],
+            ),
         )
         """
         _response = self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/addPayors",
             method="POST",
-            json={"payors": payors, "customizations": customizations},
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )
@@ -464,7 +463,7 @@ class CounterpartyClient:
         self,
         entity_id: EntityId,
         *,
-        payors: typing.Sequence[EntityId],
+        request: EntityHidePayorsRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
@@ -474,8 +473,7 @@ class CounterpartyClient:
         ----------
         entity_id : EntityId
 
-        payors : typing.Sequence[EntityId]
-            List of payor entity IDs to hide
+        request : EntityHidePayorsRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -486,6 +484,7 @@ class CounterpartyClient:
 
         Examples
         --------
+        from mercoa import EntityHidePayorsRequest
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -493,13 +492,15 @@ class CounterpartyClient:
         )
         client.entity.counterparty.hide_payors(
             entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            payors=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
+            request=EntityHidePayorsRequest(
+                payors=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
+            ),
         )
         """
         _response = self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/hidePayors",
             method="POST",
-            json={"payors": payors},
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )
@@ -587,17 +588,25 @@ class AsyncCounterpartyClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.counterparty.find_payees(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            name="Big Box",
-            payment_methods=True,
-            invoice_metrics=True,
-        )
+
+
+        async def main() -> None:
+            await client.entity.counterparty.find_payees(
+                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                name="Big Box",
+                payment_methods=True,
+                invoice_metrics=True,
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/counterparties/payees",
@@ -693,17 +702,25 @@ class AsyncCounterpartyClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.counterparty.find_payors(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            name="Big Box",
-            payment_methods=True,
-            invoice_metrics=True,
-        )
+
+
+        async def main() -> None:
+            await client.entity.counterparty.find_payors(
+                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                name="Big Box",
+                payment_methods=True,
+                invoice_metrics=True,
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/counterparties/payors",
@@ -747,8 +764,7 @@ class AsyncCounterpartyClient:
         self,
         entity_id: EntityId,
         *,
-        payees: typing.Sequence[EntityId],
-        customizations: typing.Optional[typing.Sequence[CounterpartyCustomizationRequest]] = OMIT,
+        request: EntityAddPayeesRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
@@ -758,11 +774,7 @@ class AsyncCounterpartyClient:
         ----------
         entity_id : EntityId
 
-        payees : typing.Sequence[EntityId]
-            List of payee entity IDs to associate with the entity
-
-        customizations : typing.Optional[typing.Sequence[CounterpartyCustomizationRequest]]
-            List of customizations to apply to the payees. If the payee is not currently a counterparty of the entity, the counterparty will be created with the provided customizations.
+        request : EntityAddPayeesRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -773,27 +785,37 @@ class AsyncCounterpartyClient:
 
         Examples
         --------
-        from mercoa import CounterpartyCustomizationRequest
+        import asyncio
+
+        from mercoa import CounterpartyCustomizationRequest, EntityAddPayeesRequest
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.counterparty.add_payees(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            payees=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
-            customizations=[
-                CounterpartyCustomizationRequest(
-                    counterparty_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
-                    account_id="85866843",
-                )
-            ],
-        )
+
+
+        async def main() -> None:
+            await client.entity.counterparty.add_payees(
+                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                request=EntityAddPayeesRequest(
+                    payees=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
+                    customizations=[
+                        CounterpartyCustomizationRequest(
+                            counterparty_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+                            account_id="85866843",
+                        )
+                    ],
+                ),
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/addPayees",
             method="POST",
-            json={"payees": payees, "customizations": customizations},
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )
@@ -824,7 +846,7 @@ class AsyncCounterpartyClient:
         self,
         entity_id: EntityId,
         *,
-        payees: typing.Sequence[EntityId],
+        request: EntityHidePayeesRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
@@ -834,8 +856,7 @@ class AsyncCounterpartyClient:
         ----------
         entity_id : EntityId
 
-        payees : typing.Sequence[EntityId]
-            List of payee entity IDs to hide
+        request : EntityHidePayeesRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -846,20 +867,31 @@ class AsyncCounterpartyClient:
 
         Examples
         --------
+        import asyncio
+
+        from mercoa import EntityHidePayeesRequest
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.counterparty.hide_payees(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            payees=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
-        )
+
+
+        async def main() -> None:
+            await client.entity.counterparty.hide_payees(
+                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                request=EntityHidePayeesRequest(
+                    payees=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
+                ),
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/hidePayees",
             method="POST",
-            json={"payees": payees},
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )
@@ -890,8 +922,7 @@ class AsyncCounterpartyClient:
         self,
         entity_id: EntityId,
         *,
-        payors: typing.Sequence[EntityId],
-        customizations: typing.Optional[typing.Sequence[CounterpartyCustomizationRequest]] = OMIT,
+        request: EntityAddPayorsRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
@@ -901,11 +932,7 @@ class AsyncCounterpartyClient:
         ----------
         entity_id : EntityId
 
-        payors : typing.Sequence[EntityId]
-            List of payor entity IDs to associate with the entity
-
-        customizations : typing.Optional[typing.Sequence[CounterpartyCustomizationRequest]]
-            List of customizations to apply to the payors. If the payor is not currently a counterparty of the entity, the counterparty will be created with the provided customizations.
+        request : EntityAddPayorsRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -916,27 +943,37 @@ class AsyncCounterpartyClient:
 
         Examples
         --------
-        from mercoa import CounterpartyCustomizationRequest
+        import asyncio
+
+        from mercoa import CounterpartyCustomizationRequest, EntityAddPayorsRequest
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.counterparty.add_payors(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            payors=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
-            customizations=[
-                CounterpartyCustomizationRequest(
-                    counterparty_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
-                    account_id="85866843",
-                )
-            ],
-        )
+
+
+        async def main() -> None:
+            await client.entity.counterparty.add_payors(
+                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                request=EntityAddPayorsRequest(
+                    payors=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
+                    customizations=[
+                        CounterpartyCustomizationRequest(
+                            counterparty_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+                            account_id="85866843",
+                        )
+                    ],
+                ),
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/addPayors",
             method="POST",
-            json={"payors": payors, "customizations": customizations},
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )
@@ -967,7 +1004,7 @@ class AsyncCounterpartyClient:
         self,
         entity_id: EntityId,
         *,
-        payors: typing.Sequence[EntityId],
+        request: EntityHidePayorsRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
@@ -977,8 +1014,7 @@ class AsyncCounterpartyClient:
         ----------
         entity_id : EntityId
 
-        payors : typing.Sequence[EntityId]
-            List of payor entity IDs to hide
+        request : EntityHidePayorsRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -989,20 +1025,31 @@ class AsyncCounterpartyClient:
 
         Examples
         --------
+        import asyncio
+
+        from mercoa import EntityHidePayorsRequest
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.counterparty.hide_payors(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            payors=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
-        )
+
+
+        async def main() -> None:
+            await client.entity.counterparty.hide_payors(
+                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                request=EntityHidePayorsRequest(
+                    payors=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
+                ),
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/hidePayors",
             method="POST",
-            json={"payors": payors},
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )

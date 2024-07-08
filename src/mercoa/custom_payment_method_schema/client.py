@@ -15,10 +15,8 @@ from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.jsonable_encoder import jsonable_encoder
 from ..core.pydantic_utilities import pydantic_v1
 from ..core.request_options import RequestOptions
-from ..payment_method_types.types.currency_code import CurrencyCode
-from ..payment_method_types.types.custom_payment_method_schema_fee import CustomPaymentMethodSchemaFee
-from ..payment_method_types.types.custom_payment_method_schema_field import CustomPaymentMethodSchemaField
 from ..payment_method_types.types.custom_payment_method_schema_id import CustomPaymentMethodSchemaId
+from ..payment_method_types.types.custom_payment_method_schema_request import CustomPaymentMethodSchemaRequest
 from ..payment_method_types.types.custom_payment_method_schema_response import CustomPaymentMethodSchemaResponse
 
 # this is used as the default value for optional parameters
@@ -80,39 +78,14 @@ class CustomPaymentMethodSchemaClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def create(
-        self,
-        *,
-        name: str,
-        is_source: bool,
-        is_destination: bool,
-        fields: typing.Sequence[CustomPaymentMethodSchemaField],
-        supported_currencies: typing.Optional[typing.Sequence[CurrencyCode]] = OMIT,
-        estimated_processing_time: typing.Optional[int] = OMIT,
-        fees: typing.Optional[CustomPaymentMethodSchemaFee] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, *, request: CustomPaymentMethodSchemaRequest, request_options: typing.Optional[RequestOptions] = None
     ) -> CustomPaymentMethodSchemaResponse:
         """
         Create custom payment method schema
 
         Parameters
         ----------
-        name : str
-
-        is_source : bool
-            This payment method can be used as a payment source for an invoice
-
-        is_destination : bool
-            This payment method can be used as a payment destination for an invoice
-
-        fields : typing.Sequence[CustomPaymentMethodSchemaField]
-
-        supported_currencies : typing.Optional[typing.Sequence[CurrencyCode]]
-            List of currencies that this payment method supports. If not provided, the payment method will support only USD.
-
-        estimated_processing_time : typing.Optional[int]
-            Estimated time in days for this payment method to process a payments. Set as 0 for same-day payment methods, -1 for unknown processing time.
-
-        fees : typing.Optional[CustomPaymentMethodSchemaFee]
+        request : CustomPaymentMethodSchemaRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -123,61 +96,54 @@ class CustomPaymentMethodSchemaClient:
 
         Examples
         --------
-        from mercoa import CustomPaymentMethodSchemaField
+        from mercoa import (
+            CustomPaymentMethodSchemaField,
+            CustomPaymentMethodSchemaRequest,
+        )
         from mercoa.client import Mercoa
 
         client = Mercoa(
             token="YOUR_TOKEN",
         )
         client.custom_payment_method_schema.create(
-            name="Wire",
-            is_source=False,
-            is_destination=True,
-            supported_currencies=["USD", "EUR"],
-            fields=[
-                CustomPaymentMethodSchemaField(
-                    name="bankName",
-                    display_name="Bank Name",
-                    type="text",
-                    optional=False,
-                ),
-                CustomPaymentMethodSchemaField(
-                    name="recipientName",
-                    display_name="Recipient Name",
-                    type="text",
-                    optional=False,
-                ),
-                CustomPaymentMethodSchemaField(
-                    name="accountNumber",
-                    display_name="Account Number",
-                    type="usBankAccountNumber",
-                    optional=False,
-                    use_as_account_number=True,
-                ),
-                CustomPaymentMethodSchemaField(
-                    name="routingNumber",
-                    display_name="Routing Number",
-                    type="usBankRoutingNumber",
-                    optional=False,
-                ),
-            ],
-            estimated_processing_time=0,
+            request=CustomPaymentMethodSchemaRequest(
+                name="Wire",
+                is_source=False,
+                is_destination=True,
+                supported_currencies=["USD", "EUR"],
+                fields=[
+                    CustomPaymentMethodSchemaField(
+                        name="bankName",
+                        display_name="Bank Name",
+                        type="text",
+                        optional=False,
+                    ),
+                    CustomPaymentMethodSchemaField(
+                        name="recipientName",
+                        display_name="Recipient Name",
+                        type="text",
+                        optional=False,
+                    ),
+                    CustomPaymentMethodSchemaField(
+                        name="accountNumber",
+                        display_name="Account Number",
+                        type="usBankAccountNumber",
+                        optional=False,
+                        use_as_account_number=True,
+                    ),
+                    CustomPaymentMethodSchemaField(
+                        name="routingNumber",
+                        display_name="Routing Number",
+                        type="usBankRoutingNumber",
+                        optional=False,
+                    ),
+                ],
+                estimated_processing_time=0,
+            ),
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "paymentMethod/schema",
-            method="POST",
-            json={
-                "name": name,
-                "isSource": is_source,
-                "isDestination": is_destination,
-                "supportedCurrencies": supported_currencies,
-                "fields": fields,
-                "estimatedProcessingTime": estimated_processing_time,
-                "fees": fees,
-            },
-            request_options=request_options,
-            omit=OMIT,
+            "paymentMethod/schema", method="POST", json=request, request_options=request_options, omit=OMIT
         )
         try:
             _response_json = _response.json()
@@ -206,13 +172,7 @@ class CustomPaymentMethodSchemaClient:
         self,
         schema_id: CustomPaymentMethodSchemaId,
         *,
-        name: str,
-        is_source: bool,
-        is_destination: bool,
-        fields: typing.Sequence[CustomPaymentMethodSchemaField],
-        supported_currencies: typing.Optional[typing.Sequence[CurrencyCode]] = OMIT,
-        estimated_processing_time: typing.Optional[int] = OMIT,
-        fees: typing.Optional[CustomPaymentMethodSchemaFee] = OMIT,
+        request: CustomPaymentMethodSchemaRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CustomPaymentMethodSchemaResponse:
         """
@@ -222,23 +182,7 @@ class CustomPaymentMethodSchemaClient:
         ----------
         schema_id : CustomPaymentMethodSchemaId
 
-        name : str
-
-        is_source : bool
-            This payment method can be used as a payment source for an invoice
-
-        is_destination : bool
-            This payment method can be used as a payment destination for an invoice
-
-        fields : typing.Sequence[CustomPaymentMethodSchemaField]
-
-        supported_currencies : typing.Optional[typing.Sequence[CurrencyCode]]
-            List of currencies that this payment method supports. If not provided, the payment method will support only USD.
-
-        estimated_processing_time : typing.Optional[int]
-            Estimated time in days for this payment method to process a payments. Set as 0 for same-day payment methods, -1 for unknown processing time.
-
-        fees : typing.Optional[CustomPaymentMethodSchemaFee]
+        request : CustomPaymentMethodSchemaRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -249,7 +193,10 @@ class CustomPaymentMethodSchemaClient:
 
         Examples
         --------
-        from mercoa import CustomPaymentMethodSchemaField
+        from mercoa import (
+            CustomPaymentMethodSchemaField,
+            CustomPaymentMethodSchemaRequest,
+        )
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -257,52 +204,46 @@ class CustomPaymentMethodSchemaClient:
         )
         client.custom_payment_method_schema.update(
             schema_id="cpms_14f78dcd-4614-426e-a37a-7af262431d41",
-            name="Check",
-            is_source=False,
-            is_destination=True,
-            supported_currencies=["USD"],
-            fields=[
-                CustomPaymentMethodSchemaField(
-                    name="payToTheOrderOf",
-                    display_name="Pay To The Order Of",
-                    type="text",
-                    optional=False,
-                ),
-                CustomPaymentMethodSchemaField(
-                    name="accountNumber",
-                    display_name="Account Number",
-                    type="usBankAccountNumber",
-                    optional=False,
-                    use_as_account_number=True,
-                ),
-                CustomPaymentMethodSchemaField(
-                    name="routingNumber",
-                    display_name="Routing Number",
-                    type="usBankRoutingNumber",
-                    optional=False,
-                ),
-                CustomPaymentMethodSchemaField(
-                    name="address",
-                    display_name="Address",
-                    type="address",
-                    optional=False,
-                ),
-            ],
-            estimated_processing_time=7,
+            request=CustomPaymentMethodSchemaRequest(
+                name="Check",
+                is_source=False,
+                is_destination=True,
+                supported_currencies=["USD"],
+                fields=[
+                    CustomPaymentMethodSchemaField(
+                        name="payToTheOrderOf",
+                        display_name="Pay To The Order Of",
+                        type="text",
+                        optional=False,
+                    ),
+                    CustomPaymentMethodSchemaField(
+                        name="accountNumber",
+                        display_name="Account Number",
+                        type="usBankAccountNumber",
+                        optional=False,
+                        use_as_account_number=True,
+                    ),
+                    CustomPaymentMethodSchemaField(
+                        name="routingNumber",
+                        display_name="Routing Number",
+                        type="usBankRoutingNumber",
+                        optional=False,
+                    ),
+                    CustomPaymentMethodSchemaField(
+                        name="address",
+                        display_name="Address",
+                        type="address",
+                        optional=False,
+                    ),
+                ],
+                estimated_processing_time=7,
+            ),
         )
         """
         _response = self._client_wrapper.httpx_client.request(
             f"paymentMethod/schema/{jsonable_encoder(schema_id)}",
             method="POST",
-            json={
-                "name": name,
-                "isSource": is_source,
-                "isDestination": is_destination,
-                "supportedCurrencies": supported_currencies,
-                "fields": fields,
-                "estimatedProcessingTime": estimated_processing_time,
-                "fees": fees,
-            },
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )
@@ -459,12 +400,20 @@ class AsyncCustomPaymentMethodSchemaClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.custom_payment_method_schema.get_all()
+
+
+        async def main() -> None:
+            await client.custom_payment_method_schema.get_all()
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             "paymentMethod/schema", method="GET", request_options=request_options
@@ -493,39 +442,14 @@ class AsyncCustomPaymentMethodSchemaClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def create(
-        self,
-        *,
-        name: str,
-        is_source: bool,
-        is_destination: bool,
-        fields: typing.Sequence[CustomPaymentMethodSchemaField],
-        supported_currencies: typing.Optional[typing.Sequence[CurrencyCode]] = OMIT,
-        estimated_processing_time: typing.Optional[int] = OMIT,
-        fees: typing.Optional[CustomPaymentMethodSchemaFee] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, *, request: CustomPaymentMethodSchemaRequest, request_options: typing.Optional[RequestOptions] = None
     ) -> CustomPaymentMethodSchemaResponse:
         """
         Create custom payment method schema
 
         Parameters
         ----------
-        name : str
-
-        is_source : bool
-            This payment method can be used as a payment source for an invoice
-
-        is_destination : bool
-            This payment method can be used as a payment destination for an invoice
-
-        fields : typing.Sequence[CustomPaymentMethodSchemaField]
-
-        supported_currencies : typing.Optional[typing.Sequence[CurrencyCode]]
-            List of currencies that this payment method supports. If not provided, the payment method will support only USD.
-
-        estimated_processing_time : typing.Optional[int]
-            Estimated time in days for this payment method to process a payments. Set as 0 for same-day payment methods, -1 for unknown processing time.
-
-        fees : typing.Optional[CustomPaymentMethodSchemaFee]
+        request : CustomPaymentMethodSchemaRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -536,61 +460,62 @@ class AsyncCustomPaymentMethodSchemaClient:
 
         Examples
         --------
-        from mercoa import CustomPaymentMethodSchemaField
+        import asyncio
+
+        from mercoa import (
+            CustomPaymentMethodSchemaField,
+            CustomPaymentMethodSchemaRequest,
+        )
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.custom_payment_method_schema.create(
-            name="Wire",
-            is_source=False,
-            is_destination=True,
-            supported_currencies=["USD", "EUR"],
-            fields=[
-                CustomPaymentMethodSchemaField(
-                    name="bankName",
-                    display_name="Bank Name",
-                    type="text",
-                    optional=False,
+
+
+        async def main() -> None:
+            await client.custom_payment_method_schema.create(
+                request=CustomPaymentMethodSchemaRequest(
+                    name="Wire",
+                    is_source=False,
+                    is_destination=True,
+                    supported_currencies=["USD", "EUR"],
+                    fields=[
+                        CustomPaymentMethodSchemaField(
+                            name="bankName",
+                            display_name="Bank Name",
+                            type="text",
+                            optional=False,
+                        ),
+                        CustomPaymentMethodSchemaField(
+                            name="recipientName",
+                            display_name="Recipient Name",
+                            type="text",
+                            optional=False,
+                        ),
+                        CustomPaymentMethodSchemaField(
+                            name="accountNumber",
+                            display_name="Account Number",
+                            type="usBankAccountNumber",
+                            optional=False,
+                            use_as_account_number=True,
+                        ),
+                        CustomPaymentMethodSchemaField(
+                            name="routingNumber",
+                            display_name="Routing Number",
+                            type="usBankRoutingNumber",
+                            optional=False,
+                        ),
+                    ],
+                    estimated_processing_time=0,
                 ),
-                CustomPaymentMethodSchemaField(
-                    name="recipientName",
-                    display_name="Recipient Name",
-                    type="text",
-                    optional=False,
-                ),
-                CustomPaymentMethodSchemaField(
-                    name="accountNumber",
-                    display_name="Account Number",
-                    type="usBankAccountNumber",
-                    optional=False,
-                    use_as_account_number=True,
-                ),
-                CustomPaymentMethodSchemaField(
-                    name="routingNumber",
-                    display_name="Routing Number",
-                    type="usBankRoutingNumber",
-                    optional=False,
-                ),
-            ],
-            estimated_processing_time=0,
-        )
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "paymentMethod/schema",
-            method="POST",
-            json={
-                "name": name,
-                "isSource": is_source,
-                "isDestination": is_destination,
-                "supportedCurrencies": supported_currencies,
-                "fields": fields,
-                "estimatedProcessingTime": estimated_processing_time,
-                "fees": fees,
-            },
-            request_options=request_options,
-            omit=OMIT,
+            "paymentMethod/schema", method="POST", json=request, request_options=request_options, omit=OMIT
         )
         try:
             _response_json = _response.json()
@@ -619,13 +544,7 @@ class AsyncCustomPaymentMethodSchemaClient:
         self,
         schema_id: CustomPaymentMethodSchemaId,
         *,
-        name: str,
-        is_source: bool,
-        is_destination: bool,
-        fields: typing.Sequence[CustomPaymentMethodSchemaField],
-        supported_currencies: typing.Optional[typing.Sequence[CurrencyCode]] = OMIT,
-        estimated_processing_time: typing.Optional[int] = OMIT,
-        fees: typing.Optional[CustomPaymentMethodSchemaFee] = OMIT,
+        request: CustomPaymentMethodSchemaRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CustomPaymentMethodSchemaResponse:
         """
@@ -635,23 +554,7 @@ class AsyncCustomPaymentMethodSchemaClient:
         ----------
         schema_id : CustomPaymentMethodSchemaId
 
-        name : str
-
-        is_source : bool
-            This payment method can be used as a payment source for an invoice
-
-        is_destination : bool
-            This payment method can be used as a payment destination for an invoice
-
-        fields : typing.Sequence[CustomPaymentMethodSchemaField]
-
-        supported_currencies : typing.Optional[typing.Sequence[CurrencyCode]]
-            List of currencies that this payment method supports. If not provided, the payment method will support only USD.
-
-        estimated_processing_time : typing.Optional[int]
-            Estimated time in days for this payment method to process a payments. Set as 0 for same-day payment methods, -1 for unknown processing time.
-
-        fees : typing.Optional[CustomPaymentMethodSchemaFee]
+        request : CustomPaymentMethodSchemaRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -662,60 +565,65 @@ class AsyncCustomPaymentMethodSchemaClient:
 
         Examples
         --------
-        from mercoa import CustomPaymentMethodSchemaField
+        import asyncio
+
+        from mercoa import (
+            CustomPaymentMethodSchemaField,
+            CustomPaymentMethodSchemaRequest,
+        )
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.custom_payment_method_schema.update(
-            schema_id="cpms_14f78dcd-4614-426e-a37a-7af262431d41",
-            name="Check",
-            is_source=False,
-            is_destination=True,
-            supported_currencies=["USD"],
-            fields=[
-                CustomPaymentMethodSchemaField(
-                    name="payToTheOrderOf",
-                    display_name="Pay To The Order Of",
-                    type="text",
-                    optional=False,
+
+
+        async def main() -> None:
+            await client.custom_payment_method_schema.update(
+                schema_id="cpms_14f78dcd-4614-426e-a37a-7af262431d41",
+                request=CustomPaymentMethodSchemaRequest(
+                    name="Check",
+                    is_source=False,
+                    is_destination=True,
+                    supported_currencies=["USD"],
+                    fields=[
+                        CustomPaymentMethodSchemaField(
+                            name="payToTheOrderOf",
+                            display_name="Pay To The Order Of",
+                            type="text",
+                            optional=False,
+                        ),
+                        CustomPaymentMethodSchemaField(
+                            name="accountNumber",
+                            display_name="Account Number",
+                            type="usBankAccountNumber",
+                            optional=False,
+                            use_as_account_number=True,
+                        ),
+                        CustomPaymentMethodSchemaField(
+                            name="routingNumber",
+                            display_name="Routing Number",
+                            type="usBankRoutingNumber",
+                            optional=False,
+                        ),
+                        CustomPaymentMethodSchemaField(
+                            name="address",
+                            display_name="Address",
+                            type="address",
+                            optional=False,
+                        ),
+                    ],
+                    estimated_processing_time=7,
                 ),
-                CustomPaymentMethodSchemaField(
-                    name="accountNumber",
-                    display_name="Account Number",
-                    type="usBankAccountNumber",
-                    optional=False,
-                    use_as_account_number=True,
-                ),
-                CustomPaymentMethodSchemaField(
-                    name="routingNumber",
-                    display_name="Routing Number",
-                    type="usBankRoutingNumber",
-                    optional=False,
-                ),
-                CustomPaymentMethodSchemaField(
-                    name="address",
-                    display_name="Address",
-                    type="address",
-                    optional=False,
-                ),
-            ],
-            estimated_processing_time=7,
-        )
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"paymentMethod/schema/{jsonable_encoder(schema_id)}",
             method="POST",
-            json={
-                "name": name,
-                "isSource": is_source,
-                "isDestination": is_destination,
-                "supportedCurrencies": supported_currencies,
-                "fields": fields,
-                "estimatedProcessingTime": estimated_processing_time,
-                "fees": fees,
-            },
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )
@@ -761,14 +669,22 @@ class AsyncCustomPaymentMethodSchemaClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.custom_payment_method_schema.get(
-            schema_id="cpms_14f78dcd-4614-426e-a37a-7af262431d41",
-        )
+
+
+        async def main() -> None:
+            await client.custom_payment_method_schema.get(
+                schema_id="cpms_14f78dcd-4614-426e-a37a-7af262431d41",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"paymentMethod/schema/{jsonable_encoder(schema_id)}", method="GET", request_options=request_options
@@ -815,14 +731,22 @@ class AsyncCustomPaymentMethodSchemaClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.custom_payment_method_schema.delete(
-            schema_id="cpms_14f78dcd-4614-426e-a37a-7af262431d41",
-        )
+
+
+        async def main() -> None:
+            await client.custom_payment_method_schema.delete(
+                schema_id="cpms_14f78dcd-4614-426e-a37a-7af262431d41",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"paymentMethod/schema/{jsonable_encoder(schema_id)}", method="DELETE", request_options=request_options

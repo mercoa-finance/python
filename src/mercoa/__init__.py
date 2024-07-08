@@ -6,6 +6,8 @@ from . import (
     custom_payment_method_schema,
     email_log_types,
     entity,
+    entity_group,
+    entity_group_types,
     entity_types,
     fees,
     invoice,
@@ -33,6 +35,7 @@ from .commons import (
     Unimplemented,
 )
 from .email_log_types import EmailLog, EmailLogId, EmailLogResponse
+from .entity_group_types import EntityGroupFindResponse, EntityGroupId, EntityGroupRequest, EntityGroupResponse
 from .entity_types import (
     AccountType,
     AmountTrigger,
@@ -333,6 +336,10 @@ __all__ = [
     "EntityAddPayorsRequest",
     "EntityCustomizationRequest",
     "EntityCustomizationResponse",
+    "EntityGroupFindResponse",
+    "EntityGroupId",
+    "EntityGroupRequest",
+    "EntityGroupResponse",
     "EntityHidePayeesRequest",
     "EntityHidePayorsRequest",
     "EntityId",
@@ -490,6 +497,8 @@ __all__ = [
     "custom_payment_method_schema",
     "email_log_types",
     "entity",
+    "entity_group",
+    "entity_group_types",
     "entity_types",
     "fees",
     "invoice",

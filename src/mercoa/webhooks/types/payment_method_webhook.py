@@ -7,6 +7,7 @@ from ...core.datetime_utils import serialize_datetime
 from ...core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
 from ...entity_types.types.entity_id import EntityId
 from ...entity_types.types.entity_response import EntityResponse
+from ...entity_types.types.entity_user_response import EntityUserResponse
 from ...payment_method_types.types.payment_method_response import PaymentMethodResponse
 
 
@@ -20,6 +21,7 @@ class PaymentMethodWebhook(pydantic_v1.BaseModel):
         Address,
         BusinessProfileResponse,
         EntityResponse,
+        EntityUserResponse,
         PaymentMethodResponse_BankAccount,
         PaymentMethodWebhook,
         PhoneNumber,
@@ -88,6 +90,19 @@ class PaymentMethodWebhook(pydantic_v1.BaseModel):
                 ),
             ),
         ),
+        user=EntityUserResponse(
+            id="user_ec3aafc8-ea86-408a-a6c1-545497badbbb",
+            foreign_id="MY-DB-ID-12345",
+            email="john.doe@acme.com",
+            name="John Doe",
+            roles=["admin", "approver"],
+            created_at=datetime.datetime.fromisoformat(
+                "2024-01-01 00:00:00+00:00",
+            ),
+            updated_at=datetime.datetime.fromisoformat(
+                "2024-01-01 00:00:00+00:00",
+            ),
+        ),
     )
     """
 
@@ -95,6 +110,10 @@ class PaymentMethodWebhook(pydantic_v1.BaseModel):
     entity_id: EntityId = pydantic_v1.Field(alias="entityId")
     payment_method: PaymentMethodResponse = pydantic_v1.Field(alias="paymentMethod")
     entity: EntityResponse
+    user: typing.Optional[EntityUserResponse] = pydantic_v1.Field(default=None)
+    """
+    User who initiated the change.
+    """
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

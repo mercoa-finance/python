@@ -17,13 +17,10 @@ from ...core.pydantic_utilities import pydantic_v1
 from ...core.request_options import RequestOptions
 from ...entity_types.types.entity_id import EntityId
 from ...entity_types.types.entity_user_id import EntityUserId
+from ...entity_types.types.entity_user_request import EntityUserRequest
 from ...entity_types.types.entity_user_response import EntityUserResponse
 from ...entity_types.types.find_entity_user_response import FindEntityUserResponse
-from ...entity_types.types.token_generation_entity_options import TokenGenerationEntityOptions
-from ...entity_types.types.token_generation_invoice_options import TokenGenerationInvoiceOptions
-from ...entity_types.types.token_generation_pages_options import TokenGenerationPagesOptions
-from ...entity_types.types.token_generation_style_options import TokenGenerationStyleOptions
-from ...entity_types.types.token_generation_vendor_options import TokenGenerationVendorOptions
+from ...entity_types.types.token_generation_options import TokenGenerationOptions
 from .notification_policy.client import AsyncNotificationPolicyClient, NotificationPolicyClient
 from .notifications.client import AsyncNotificationsClient, NotificationsClient
 
@@ -187,10 +184,7 @@ class UserClient:
         self,
         entity_id: EntityId,
         *,
-        foreign_id: typing.Optional[str] = OMIT,
-        email: typing.Optional[str] = OMIT,
-        name: typing.Optional[str] = OMIT,
-        roles: typing.Optional[typing.Sequence[str]] = OMIT,
+        request: EntityUserRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityUserResponse:
         """
@@ -198,15 +192,7 @@ class UserClient:
         ----------
         entity_id : EntityId
 
-        foreign_id : typing.Optional[str]
-            The ID used to identify this user in your system.
-
-        email : typing.Optional[str]
-
-        name : typing.Optional[str]
-
-        roles : typing.Optional[typing.Sequence[str]]
-            List of roles. A role can be any string. For example: "payer", "approver", "viewer"
+        request : EntityUserRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -217,6 +203,7 @@ class UserClient:
 
         Examples
         --------
+        from mercoa import EntityUserRequest
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -224,16 +211,18 @@ class UserClient:
         )
         client.entity.user.create(
             entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-            foreign_id="MY-DB-ID-12345",
-            email="john.doe@acme.com",
-            name="John Doe",
-            roles=["admin", "approver"],
+            request=EntityUserRequest(
+                foreign_id="MY-DB-ID-12345",
+                email="john.doe@acme.com",
+                name="John Doe",
+                roles=["admin", "approver"],
+            ),
         )
         """
         _response = self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/user",
             method="POST",
-            json={"foreignId": foreign_id, "email": email, "name": name, "roles": roles},
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )
@@ -324,10 +313,7 @@ class UserClient:
         entity_id: EntityId,
         user_id: EntityUserId,
         *,
-        foreign_id: typing.Optional[str] = OMIT,
-        email: typing.Optional[str] = OMIT,
-        name: typing.Optional[str] = OMIT,
-        roles: typing.Optional[typing.Sequence[str]] = OMIT,
+        request: EntityUserRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityUserResponse:
         """
@@ -339,15 +325,7 @@ class UserClient:
 
         user_id : EntityUserId
 
-        foreign_id : typing.Optional[str]
-            The ID used to identify this user in your system.
-
-        email : typing.Optional[str]
-
-        name : typing.Optional[str]
-
-        roles : typing.Optional[typing.Sequence[str]]
-            List of roles. A role can be any string. For example: "payer", "approver", "viewer"
+        request : EntityUserRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -358,6 +336,7 @@ class UserClient:
 
         Examples
         --------
+        from mercoa import EntityUserRequest
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -366,16 +345,18 @@ class UserClient:
         client.entity.user.update(
             entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
             user_id="user_ec3aafc8-ea86-408a-a6c1-545497badbbb",
-            foreign_id="MY-DB-ID-12345",
-            email="john.doe@acme.com",
-            name="John Doe",
-            roles=["admin", "approver"],
+            request=EntityUserRequest(
+                foreign_id="MY-DB-ID-12345",
+                email="john.doe@acme.com",
+                name="John Doe",
+                roles=["admin", "approver"],
+            ),
         )
         """
         _response = self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/user/{jsonable_encoder(user_id)}",
             method="POST",
-            json={"foreignId": foreign_id, "email": email, "name": name, "roles": roles},
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )
@@ -466,12 +447,7 @@ class UserClient:
         entity_id: EntityId,
         user_id: EntityUserId,
         *,
-        expires_in: typing.Optional[str] = OMIT,
-        invoice: typing.Optional[TokenGenerationInvoiceOptions] = OMIT,
-        pages: typing.Optional[TokenGenerationPagesOptions] = OMIT,
-        style: typing.Optional[TokenGenerationStyleOptions] = OMIT,
-        vendors: typing.Optional[TokenGenerationVendorOptions] = OMIT,
-        entity: typing.Optional[TokenGenerationEntityOptions] = OMIT,
+        request: TokenGenerationOptions,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> str:
         """
@@ -483,18 +459,7 @@ class UserClient:
 
         user_id : EntityUserId
 
-        expires_in : typing.Optional[str]
-            Expressed in seconds or a string describing a time span. The default is 1h.
-
-        invoice : typing.Optional[TokenGenerationInvoiceOptions]
-
-        pages : typing.Optional[TokenGenerationPagesOptions]
-
-        style : typing.Optional[TokenGenerationStyleOptions]
-
-        vendors : typing.Optional[TokenGenerationVendorOptions]
-
-        entity : typing.Optional[TokenGenerationEntityOptions]
+        request : TokenGenerationOptions
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -505,6 +470,7 @@ class UserClient:
 
         Examples
         --------
+        from mercoa import TokenGenerationOptions
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -513,20 +479,15 @@ class UserClient:
         client.entity.user.get_token(
             entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
             user_id="user_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-            expires_in="1h",
+            request=TokenGenerationOptions(
+                expires_in="1h",
+            ),
         )
         """
         _response = self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/user/{jsonable_encoder(user_id)}/token",
             method="POST",
-            json={
-                "expiresIn": expires_in,
-                "invoice": invoice,
-                "pages": pages,
-                "style": style,
-                "vendors": vendors,
-                "entity": entity,
-            },
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )
@@ -579,14 +540,22 @@ class AsyncUserClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.user.get_all(
-            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-        )
+
+
+        async def main() -> None:
+            await client.entity.user.get_all(
+                entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/users", method="GET", request_options=request_options
@@ -660,15 +629,23 @@ class AsyncUserClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.user.find(
-            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-            name="John",
-        )
+
+
+        async def main() -> None:
+            await client.entity.user.find(
+                entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+                name="John",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/users",
@@ -710,10 +687,7 @@ class AsyncUserClient:
         self,
         entity_id: EntityId,
         *,
-        foreign_id: typing.Optional[str] = OMIT,
-        email: typing.Optional[str] = OMIT,
-        name: typing.Optional[str] = OMIT,
-        roles: typing.Optional[typing.Sequence[str]] = OMIT,
+        request: EntityUserRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityUserResponse:
         """
@@ -721,15 +695,7 @@ class AsyncUserClient:
         ----------
         entity_id : EntityId
 
-        foreign_id : typing.Optional[str]
-            The ID used to identify this user in your system.
-
-        email : typing.Optional[str]
-
-        name : typing.Optional[str]
-
-        roles : typing.Optional[typing.Sequence[str]]
-            List of roles. A role can be any string. For example: "payer", "approver", "viewer"
+        request : EntityUserRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -740,23 +706,34 @@ class AsyncUserClient:
 
         Examples
         --------
+        import asyncio
+
+        from mercoa import EntityUserRequest
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.user.create(
-            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-            foreign_id="MY-DB-ID-12345",
-            email="john.doe@acme.com",
-            name="John Doe",
-            roles=["admin", "approver"],
-        )
+
+
+        async def main() -> None:
+            await client.entity.user.create(
+                entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+                request=EntityUserRequest(
+                    foreign_id="MY-DB-ID-12345",
+                    email="john.doe@acme.com",
+                    name="John Doe",
+                    roles=["admin", "approver"],
+                ),
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/user",
             method="POST",
-            json={"foreignId": foreign_id, "email": email, "name": name, "roles": roles},
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )
@@ -804,15 +781,23 @@ class AsyncUserClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.user.get(
-            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-            user_id="user_ec3aafc8-ea86-408a-a6c1-545497badbbb",
-        )
+
+
+        async def main() -> None:
+            await client.entity.user.get(
+                entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+                user_id="user_ec3aafc8-ea86-408a-a6c1-545497badbbb",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/user/{jsonable_encoder(user_id)}",
@@ -847,10 +832,7 @@ class AsyncUserClient:
         entity_id: EntityId,
         user_id: EntityUserId,
         *,
-        foreign_id: typing.Optional[str] = OMIT,
-        email: typing.Optional[str] = OMIT,
-        name: typing.Optional[str] = OMIT,
-        roles: typing.Optional[typing.Sequence[str]] = OMIT,
+        request: EntityUserRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityUserResponse:
         """
@@ -862,15 +844,7 @@ class AsyncUserClient:
 
         user_id : EntityUserId
 
-        foreign_id : typing.Optional[str]
-            The ID used to identify this user in your system.
-
-        email : typing.Optional[str]
-
-        name : typing.Optional[str]
-
-        roles : typing.Optional[typing.Sequence[str]]
-            List of roles. A role can be any string. For example: "payer", "approver", "viewer"
+        request : EntityUserRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -881,24 +855,35 @@ class AsyncUserClient:
 
         Examples
         --------
+        import asyncio
+
+        from mercoa import EntityUserRequest
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.user.update(
-            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-            user_id="user_ec3aafc8-ea86-408a-a6c1-545497badbbb",
-            foreign_id="MY-DB-ID-12345",
-            email="john.doe@acme.com",
-            name="John Doe",
-            roles=["admin", "approver"],
-        )
+
+
+        async def main() -> None:
+            await client.entity.user.update(
+                entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+                user_id="user_ec3aafc8-ea86-408a-a6c1-545497badbbb",
+                request=EntityUserRequest(
+                    foreign_id="MY-DB-ID-12345",
+                    email="john.doe@acme.com",
+                    name="John Doe",
+                    roles=["admin", "approver"],
+                ),
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/user/{jsonable_encoder(user_id)}",
             method="POST",
-            json={"foreignId": foreign_id, "email": email, "name": name, "roles": roles},
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )
@@ -946,15 +931,23 @@ class AsyncUserClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.user.delete(
-            entity_id="string",
-            user_id="string",
-        )
+
+
+        async def main() -> None:
+            await client.entity.user.delete(
+                entity_id="string",
+                user_id="string",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/user/{jsonable_encoder(user_id)}",
@@ -989,12 +982,7 @@ class AsyncUserClient:
         entity_id: EntityId,
         user_id: EntityUserId,
         *,
-        expires_in: typing.Optional[str] = OMIT,
-        invoice: typing.Optional[TokenGenerationInvoiceOptions] = OMIT,
-        pages: typing.Optional[TokenGenerationPagesOptions] = OMIT,
-        style: typing.Optional[TokenGenerationStyleOptions] = OMIT,
-        vendors: typing.Optional[TokenGenerationVendorOptions] = OMIT,
-        entity: typing.Optional[TokenGenerationEntityOptions] = OMIT,
+        request: TokenGenerationOptions,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> str:
         """
@@ -1006,18 +994,7 @@ class AsyncUserClient:
 
         user_id : EntityUserId
 
-        expires_in : typing.Optional[str]
-            Expressed in seconds or a string describing a time span. The default is 1h.
-
-        invoice : typing.Optional[TokenGenerationInvoiceOptions]
-
-        pages : typing.Optional[TokenGenerationPagesOptions]
-
-        style : typing.Optional[TokenGenerationStyleOptions]
-
-        vendors : typing.Optional[TokenGenerationVendorOptions]
-
-        entity : typing.Optional[TokenGenerationEntityOptions]
+        request : TokenGenerationOptions
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1028,28 +1005,32 @@ class AsyncUserClient:
 
         Examples
         --------
+        import asyncio
+
+        from mercoa import TokenGenerationOptions
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.user.get_token(
-            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-            user_id="user_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-            expires_in="1h",
-        )
+
+
+        async def main() -> None:
+            await client.entity.user.get_token(
+                entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+                user_id="user_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+                request=TokenGenerationOptions(
+                    expires_in="1h",
+                ),
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/user/{jsonable_encoder(user_id)}/token",
             method="POST",
-            json={
-                "expiresIn": expires_in,
-                "invoice": invoice,
-                "pages": pages,
-                "style": style,
-                "vendors": vendors,
-                "entity": entity,
-            },
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )

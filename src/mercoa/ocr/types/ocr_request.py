@@ -30,7 +30,7 @@ class OcrRequest(pydantic_v1.BaseModel):
 
     image: str = pydantic_v1.Field()
     """
-    Base64 encoded image or PDF. PNG, JPG, and PDF are supported. 10MB max.
+    Base64 encoded image or PDF. PNG, JPG, WEBP, and PDF are supported. 10MB max.
     """
 
     vendor_network: typing.Optional[VendorNetwork] = pydantic_v1.Field(alias="vendorNetwork", default=None)

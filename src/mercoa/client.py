@@ -8,6 +8,7 @@ from .bank_lookup.client import AsyncBankLookupClient, BankLookupClient
 from .core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from .custom_payment_method_schema.client import AsyncCustomPaymentMethodSchemaClient, CustomPaymentMethodSchemaClient
 from .entity.client import AsyncEntityClient, EntityClient
+from .entity_group.client import AsyncEntityGroupClient, EntityGroupClient
 from .environment import MercoaEnvironment
 from .fees.client import AsyncFeesClient, FeesClient
 from .invoice.client import AsyncInvoiceClient, InvoiceClient
@@ -73,6 +74,7 @@ class Mercoa:
             else httpx.Client(timeout=_defaulted_timeout),
             timeout=_defaulted_timeout,
         )
+        self.entity_group = EntityGroupClient(client_wrapper=self._client_wrapper)
         self.entity = EntityClient(client_wrapper=self._client_wrapper)
         self.invoice = InvoiceClient(client_wrapper=self._client_wrapper)
         self.organization = OrganizationClient(client_wrapper=self._client_wrapper)
@@ -140,6 +142,7 @@ class AsyncMercoa:
             else httpx.AsyncClient(timeout=_defaulted_timeout),
             timeout=_defaulted_timeout,
         )
+        self.entity_group = AsyncEntityGroupClient(client_wrapper=self._client_wrapper)
         self.entity = AsyncEntityClient(client_wrapper=self._client_wrapper)
         self.invoice = AsyncInvoiceClient(client_wrapper=self._client_wrapper)
         self.organization = AsyncOrganizationClient(client_wrapper=self._client_wrapper)

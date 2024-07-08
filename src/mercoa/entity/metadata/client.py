@@ -292,14 +292,22 @@ class AsyncMetadataClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.metadata.get_all(
-            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-        )
+
+
+        async def main() -> None:
+            await client.entity.metadata.get_all(
+                entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/metadata", method="GET", request_options=request_options
@@ -348,15 +356,23 @@ class AsyncMetadataClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.metadata.get(
-            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-            key="propertyId",
-        )
+
+
+        async def main() -> None:
+            await client.entity.metadata.get(
+                entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+                key="propertyId",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/metadata/{jsonable_encoder(key)}",
@@ -414,19 +430,27 @@ class AsyncMetadataClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.metadata.update(
-            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-            key="propertyId",
-            request=[
-                "{key: 'prop_123', value: 'Beach Rental'}",
-                "{key: 'prop_456', value: 'City Rental'}",
-            ],
-        )
+
+
+        async def main() -> None:
+            await client.entity.metadata.update(
+                entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+                key="propertyId",
+                request=[
+                    "{key: 'prop_123', value: 'Beach Rental'}",
+                    "{key: 'prop_456', value: 'City Rental'}",
+                ],
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/metadata/{jsonable_encoder(key)}",
@@ -479,15 +503,23 @@ class AsyncMetadataClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.metadata.delete(
-            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-            key="propertyId",
-        )
+
+
+        async def main() -> None:
+            await client.entity.metadata.delete(
+                entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+                key="propertyId",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/metadata/{jsonable_encoder(key)}",

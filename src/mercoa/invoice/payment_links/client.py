@@ -269,14 +269,22 @@ class AsyncPaymentLinksClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.invoice.payment_links.get_payer_link(
-            invoice_id="inv_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-        )
+
+
+        async def main() -> None:
+            await client.invoice.payment_links.get_payer_link(
+                invoice_id="inv_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/payerLink", method="GET", request_options=request_options
@@ -330,15 +338,23 @@ class AsyncPaymentLinksClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.invoice.payment_links.send_payer_email(
-            invoice_id="inv_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-            attach_invoice=True,
-        )
+
+
+        async def main() -> None:
+            await client.invoice.payment_links.send_payer_email(
+                invoice_id="inv_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+                attach_invoice=True,
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/sendPayerEmail",
@@ -388,14 +404,22 @@ class AsyncPaymentLinksClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.invoice.payment_links.get_vendor_link(
-            invoice_id="inv_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-        )
+
+
+        async def main() -> None:
+            await client.invoice.payment_links.get_vendor_link(
+                invoice_id="inv_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/vendorLink", method="GET", request_options=request_options
@@ -442,14 +466,22 @@ class AsyncPaymentLinksClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.invoice.payment_links.send_vendor_email(
-            invoice_id="inv_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-        )
+
+
+        async def main() -> None:
+            await client.invoice.payment_links.send_vendor_email(
+                invoice_id="inv_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/sendVendorEmail", method="POST", request_options=request_options

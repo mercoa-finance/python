@@ -16,6 +16,7 @@ from ...core.jsonable_encoder import jsonable_encoder
 from ...core.pydantic_utilities import pydantic_v1
 from ...core.request_options import RequestOptions
 from ...entity_types.types.entity_id import EntityId
+from ...entity_types.types.notification_policy_request import NotificationPolicyRequest
 from ...entity_types.types.notification_policy_response import NotificationPolicyResponse
 from ...entity_types.types.notification_type import NotificationType
 
@@ -149,8 +150,7 @@ class NotificationPolicyClient:
         entity_id: EntityId,
         notification_type: NotificationType,
         *,
-        additional_roles: typing.Sequence[str],
-        disabled: typing.Optional[bool] = OMIT,
+        request: NotificationPolicyRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> NotificationPolicyResponse:
         """
@@ -162,11 +162,7 @@ class NotificationPolicyClient:
 
         notification_type : NotificationType
 
-        additional_roles : typing.Sequence[str]
-            List of user roles that should receive notifications in addition to the default users for this notification type
-
-        disabled : typing.Optional[bool]
-            Set to true if the selected notification type should be disabled for this entity
+        request : NotificationPolicyRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -177,6 +173,7 @@ class NotificationPolicyClient:
 
         Examples
         --------
+        from mercoa import NotificationPolicyRequest
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -185,14 +182,16 @@ class NotificationPolicyClient:
         client.entity.notification_policy.update(
             entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             notification_type="INVOICE_APPROVAL_NEEDED",
-            disabled=False,
-            additional_roles=["admin", "approver"],
+            request=NotificationPolicyRequest(
+                disabled=False,
+                additional_roles=["admin", "approver"],
+            ),
         )
         """
         _response = self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/notification-policy/{jsonable_encoder(notification_type)}",
             method="POST",
-            json={"disabled": disabled, "additionalRoles": additional_roles},
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )
@@ -243,14 +242,22 @@ class AsyncNotificationPolicyClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.notification_policy.get_all(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-        )
+
+
+        async def main() -> None:
+            await client.entity.notification_policy.get_all(
+                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/notification-policies", method="GET", request_options=request_options
@@ -303,15 +310,23 @@ class AsyncNotificationPolicyClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.notification_policy.get(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            notification_type="INVOICE_APPROVAL_NEEDED",
-        )
+
+
+        async def main() -> None:
+            await client.entity.notification_policy.get(
+                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                notification_type="INVOICE_APPROVAL_NEEDED",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/notification-policy/{jsonable_encoder(notification_type)}",
@@ -346,8 +361,7 @@ class AsyncNotificationPolicyClient:
         entity_id: EntityId,
         notification_type: NotificationType,
         *,
-        additional_roles: typing.Sequence[str],
-        disabled: typing.Optional[bool] = OMIT,
+        request: NotificationPolicyRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> NotificationPolicyResponse:
         """
@@ -359,11 +373,7 @@ class AsyncNotificationPolicyClient:
 
         notification_type : NotificationType
 
-        additional_roles : typing.Sequence[str]
-            List of user roles that should receive notifications in addition to the default users for this notification type
-
-        disabled : typing.Optional[bool]
-            Set to true if the selected notification type should be disabled for this entity
+        request : NotificationPolicyRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -374,22 +384,33 @@ class AsyncNotificationPolicyClient:
 
         Examples
         --------
+        import asyncio
+
+        from mercoa import NotificationPolicyRequest
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.notification_policy.update(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            notification_type="INVOICE_APPROVAL_NEEDED",
-            disabled=False,
-            additional_roles=["admin", "approver"],
-        )
+
+
+        async def main() -> None:
+            await client.entity.notification_policy.update(
+                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                notification_type="INVOICE_APPROVAL_NEEDED",
+                request=NotificationPolicyRequest(
+                    disabled=False,
+                    additional_roles=["admin", "approver"],
+                ),
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/notification-policy/{jsonable_encoder(notification_type)}",
             method="POST",
-            json={"disabled": disabled, "additionalRoles": additional_roles},
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )

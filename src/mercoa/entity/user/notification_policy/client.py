@@ -18,6 +18,7 @@ from ....core.request_options import RequestOptions
 from ....entity_types.types.entity_id import EntityId
 from ....entity_types.types.entity_user_id import EntityUserId
 from ....entity_types.types.notification_type import NotificationType
+from ....entity_types.types.user_notification_policy_request import UserNotificationPolicyRequest
 from ....entity_types.types.user_notification_policy_response import UserNotificationPolicyResponse
 
 # this is used as the default value for optional parameters
@@ -160,9 +161,7 @@ class NotificationPolicyClient:
         user_id: EntityUserId,
         notification_type: NotificationType,
         *,
-        disabled: typing.Optional[bool] = OMIT,
-        digest: typing.Optional[bool] = OMIT,
-        immediate: typing.Optional[bool] = OMIT,
+        request: UserNotificationPolicyRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UserNotificationPolicyResponse:
         """
@@ -176,14 +175,7 @@ class NotificationPolicyClient:
 
         notification_type : NotificationType
 
-        disabled : typing.Optional[bool]
-            Set to true if the selected notification type should be disabled for this user
-
-        digest : typing.Optional[bool]
-            Set to true if the selected notification type should be sent as a digest. Default is false.
-
-        immediate : typing.Optional[bool]
-            Set to true if the selected notification type should be sent immediately. Default is true.
+        request : UserNotificationPolicyRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -194,6 +186,7 @@ class NotificationPolicyClient:
 
         Examples
         --------
+        from mercoa import UserNotificationPolicyRequest
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -203,13 +196,15 @@ class NotificationPolicyClient:
             entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
             notification_type="INVOICE_APPROVED",
-            disabled=True,
+            request=UserNotificationPolicyRequest(
+                disabled=True,
+            ),
         )
         """
         _response = self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/user/{jsonable_encoder(user_id)}/notification-policy/{jsonable_encoder(notification_type)}",
             method="POST",
-            json={"disabled": disabled, "digest": digest, "immediate": immediate},
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )
@@ -262,15 +257,23 @@ class AsyncNotificationPolicyClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.user.notification_policy.get_all(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
-        )
+
+
+        async def main() -> None:
+            await client.entity.user.notification_policy.get_all(
+                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/user/{jsonable_encoder(user_id)}/notification-policies",
@@ -328,16 +331,24 @@ class AsyncNotificationPolicyClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.user.notification_policy.get(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
-            notification_type="INVOICE_APPROVED",
-        )
+
+
+        async def main() -> None:
+            await client.entity.user.notification_policy.get(
+                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+                notification_type="INVOICE_APPROVED",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/user/{jsonable_encoder(user_id)}/notification-policy/{jsonable_encoder(notification_type)}",
@@ -373,9 +384,7 @@ class AsyncNotificationPolicyClient:
         user_id: EntityUserId,
         notification_type: NotificationType,
         *,
-        disabled: typing.Optional[bool] = OMIT,
-        digest: typing.Optional[bool] = OMIT,
-        immediate: typing.Optional[bool] = OMIT,
+        request: UserNotificationPolicyRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> UserNotificationPolicyResponse:
         """
@@ -389,14 +398,7 @@ class AsyncNotificationPolicyClient:
 
         notification_type : NotificationType
 
-        disabled : typing.Optional[bool]
-            Set to true if the selected notification type should be disabled for this user
-
-        digest : typing.Optional[bool]
-            Set to true if the selected notification type should be sent as a digest. Default is false.
-
-        immediate : typing.Optional[bool]
-            Set to true if the selected notification type should be sent immediately. Default is true.
+        request : UserNotificationPolicyRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -407,22 +409,33 @@ class AsyncNotificationPolicyClient:
 
         Examples
         --------
+        import asyncio
+
+        from mercoa import UserNotificationPolicyRequest
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.user.notification_policy.update(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
-            notification_type="INVOICE_APPROVED",
-            disabled=True,
-        )
+
+
+        async def main() -> None:
+            await client.entity.user.notification_policy.update(
+                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+                notification_type="INVOICE_APPROVED",
+                request=UserNotificationPolicyRequest(
+                    disabled=True,
+                ),
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/user/{jsonable_encoder(user_id)}/notification-policy/{jsonable_encoder(notification_type)}",
             method="POST",
-            json={"disabled": disabled, "digest": digest, "immediate": immediate},
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )

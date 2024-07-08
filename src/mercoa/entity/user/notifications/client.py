@@ -240,15 +240,23 @@ class AsyncNotificationsClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.user.notifications.find(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
-        )
+
+
+        async def main() -> None:
+            await client.entity.user.notifications.find(
+                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/user/{jsonable_encoder(user_id)}/notifications",
@@ -312,16 +320,24 @@ class AsyncNotificationsClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.user.notifications.get(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
-            notification_id="notif_7df2974a-4069-454c-912f-7e58ebe030fb",
-        )
+
+
+        async def main() -> None:
+            await client.entity.user.notifications.get(
+                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+                notification_id="notif_7df2974a-4069-454c-912f-7e58ebe030fb",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/user/{jsonable_encoder(user_id)}/notification/{jsonable_encoder(notification_id)}",

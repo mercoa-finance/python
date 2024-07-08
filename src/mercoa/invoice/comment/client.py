@@ -15,8 +15,8 @@ from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ...core.jsonable_encoder import jsonable_encoder
 from ...core.pydantic_utilities import pydantic_v1
 from ...core.request_options import RequestOptions
-from ...entity_types.types.entity_user_id import EntityUserId
 from ...invoice_types.types.comment_id import CommentId
+from ...invoice_types.types.comment_request import CommentRequest
 from ...invoice_types.types.comment_response import CommentResponse
 from ...invoice_types.types.invoice_id import InvoiceId
 
@@ -83,12 +83,7 @@ class CommentClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def create(
-        self,
-        invoice_id: InvoiceId,
-        *,
-        text: str,
-        user_id: typing.Optional[EntityUserId] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, invoice_id: InvoiceId, *, request: CommentRequest, request_options: typing.Optional[RequestOptions] = None
     ) -> CommentResponse:
         """
         Add a comment to this invoice
@@ -97,9 +92,7 @@ class CommentClient:
         ----------
         invoice_id : InvoiceId
 
-        text : str
-
-        user_id : typing.Optional[EntityUserId]
+        request : CommentRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -110,6 +103,7 @@ class CommentClient:
 
         Examples
         --------
+        from mercoa import CommentRequest
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -117,14 +111,16 @@ class CommentClient:
         )
         client.invoice.comment.create(
             invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
-            text="This is a comment",
-            user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+            request=CommentRequest(
+                text="This is a comment",
+                user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+            ),
         )
         """
         _response = self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/comment",
             method="POST",
-            json={"text": text, "userId": user_id},
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )
@@ -213,8 +209,7 @@ class CommentClient:
         invoice_id: InvoiceId,
         comment_id: CommentId,
         *,
-        text: str,
-        user_id: typing.Optional[EntityUserId] = OMIT,
+        request: CommentRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CommentResponse:
         """
@@ -226,9 +221,7 @@ class CommentClient:
 
         comment_id : CommentId
 
-        text : str
-
-        user_id : typing.Optional[EntityUserId]
+        request : CommentRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -239,6 +232,7 @@ class CommentClient:
 
         Examples
         --------
+        from mercoa import CommentRequest
         from mercoa.client import Mercoa
 
         client = Mercoa(
@@ -247,14 +241,16 @@ class CommentClient:
         client.invoice.comment.update(
             invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
             comment_id="ic_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
-            text="This is a comment",
-            user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+            request=CommentRequest(
+                text="This is a comment",
+                user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+            ),
         )
         """
         _response = self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/comment/{jsonable_encoder(comment_id)}",
             method="POST",
-            json={"text": text, "userId": user_id},
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )
@@ -364,14 +360,22 @@ class AsyncCommentClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.invoice.comment.get_all(
-            invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
-        )
+
+
+        async def main() -> None:
+            await client.invoice.comment.get_all(
+                invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/comments", method="GET", request_options=request_options
@@ -400,12 +404,7 @@ class AsyncCommentClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def create(
-        self,
-        invoice_id: InvoiceId,
-        *,
-        text: str,
-        user_id: typing.Optional[EntityUserId] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, invoice_id: InvoiceId, *, request: CommentRequest, request_options: typing.Optional[RequestOptions] = None
     ) -> CommentResponse:
         """
         Add a comment to this invoice
@@ -414,9 +413,7 @@ class AsyncCommentClient:
         ----------
         invoice_id : InvoiceId
 
-        text : str
-
-        user_id : typing.Optional[EntityUserId]
+        request : CommentRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -427,21 +424,32 @@ class AsyncCommentClient:
 
         Examples
         --------
+        import asyncio
+
+        from mercoa import CommentRequest
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.invoice.comment.create(
-            invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
-            text="This is a comment",
-            user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
-        )
+
+
+        async def main() -> None:
+            await client.invoice.comment.create(
+                invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
+                request=CommentRequest(
+                    text="This is a comment",
+                    user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+                ),
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/comment",
             method="POST",
-            json={"text": text, "userId": user_id},
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )
@@ -487,15 +495,23 @@ class AsyncCommentClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.invoice.comment.get(
-            invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
-            comment_id="ic_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
-        )
+
+
+        async def main() -> None:
+            await client.invoice.comment.get(
+                invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
+                comment_id="ic_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/comment/{jsonable_encoder(comment_id)}",
@@ -530,8 +546,7 @@ class AsyncCommentClient:
         invoice_id: InvoiceId,
         comment_id: CommentId,
         *,
-        text: str,
-        user_id: typing.Optional[EntityUserId] = OMIT,
+        request: CommentRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CommentResponse:
         """
@@ -543,9 +558,7 @@ class AsyncCommentClient:
 
         comment_id : CommentId
 
-        text : str
-
-        user_id : typing.Optional[EntityUserId]
+        request : CommentRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -556,22 +569,33 @@ class AsyncCommentClient:
 
         Examples
         --------
+        import asyncio
+
+        from mercoa import CommentRequest
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.invoice.comment.update(
-            invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
-            comment_id="ic_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
-            text="This is a comment",
-            user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
-        )
+
+
+        async def main() -> None:
+            await client.invoice.comment.update(
+                invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
+                comment_id="ic_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
+                request=CommentRequest(
+                    text="This is a comment",
+                    user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+                ),
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/comment/{jsonable_encoder(comment_id)}",
             method="POST",
-            json={"text": text, "userId": user_id},
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )
@@ -619,15 +643,23 @@ class AsyncCommentClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.invoice.comment.delete(
-            invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
-            comment_id="ic_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
-        )
+
+
+        async def main() -> None:
+            await client.invoice.comment.delete(
+                invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
+                comment_id="ic_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/comment/{jsonable_encoder(comment_id)}",

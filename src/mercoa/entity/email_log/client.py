@@ -215,14 +215,22 @@ class AsyncEmailLogClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.email_log.find(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-        )
+
+
+        async def main() -> None:
+            await client.entity.email_log.find(
+                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/emailLogs",
@@ -280,15 +288,23 @@ class AsyncEmailLogClient:
 
         Examples
         --------
+        import asyncio
+
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
         )
-        await client.entity.email_log.get(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            log_id="log_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-        )
+
+
+        async def main() -> None:
+            await client.entity.email_log.get(
+                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                log_id="log_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            )
+
+
+        asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/emailLog/{jsonable_encoder(log_id)}",
