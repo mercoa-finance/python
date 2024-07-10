@@ -38,6 +38,7 @@ class ApprovalPolicyClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -96,6 +97,7 @@ class ApprovalPolicyClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request : ApprovalPolicyRequest
 
@@ -181,6 +183,7 @@ class ApprovalPolicyClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         policy_id : ApprovalPolicyId
 
@@ -245,6 +248,7 @@ class ApprovalPolicyClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         policy_id : ApprovalPolicyId
 
@@ -333,6 +337,7 @@ class ApprovalPolicyClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         policy_id : ApprovalPolicyId
 
@@ -397,6 +402,7 @@ class AsyncApprovalPolicyClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -463,6 +469,7 @@ class AsyncApprovalPolicyClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request : ApprovalPolicyRequest
 
@@ -556,6 +563,7 @@ class AsyncApprovalPolicyClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         policy_id : ApprovalPolicyId
 
@@ -628,6 +636,7 @@ class AsyncApprovalPolicyClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         policy_id : ApprovalPolicyId
 
@@ -724,6 +733,7 @@ class AsyncApprovalPolicyClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         policy_id : ApprovalPolicyId
 

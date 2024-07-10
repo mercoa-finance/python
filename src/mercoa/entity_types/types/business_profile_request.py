@@ -8,6 +8,7 @@ from ...commons.types.phone_number import PhoneNumber
 from ...core.datetime_utils import serialize_datetime
 from ...core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
 from .business_type import BusinessType
+from .industry_codes import IndustryCodes
 from .tax_id import TaxId
 
 
@@ -78,6 +79,11 @@ class BusinessProfileRequest(pydantic_v1.BaseModel):
     formation_date: typing.Optional[dt.datetime] = pydantic_v1.Field(alias="formationDate", default=None)
     """
     Date of business formation
+    """
+
+    industry_codes: typing.Optional[IndustryCodes] = pydantic_v1.Field(alias="industryCodes", default=None)
+    """
+    Industry code for the business. Required to collect funds.
     """
 
     def json(self, **kwargs: typing.Any) -> str:

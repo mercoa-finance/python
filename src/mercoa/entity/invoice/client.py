@@ -63,6 +63,7 @@ class InvoiceClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         exclude_payables : typing.Optional[bool]
             Return only invoices that are receivable by the entity.
@@ -206,6 +207,7 @@ class InvoiceClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         search : typing.Optional[str]
             Find invoices by vendor name, invoice number, or amount. Partial matches are supported.
@@ -356,6 +358,7 @@ class AsyncInvoiceClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         exclude_payables : typing.Optional[bool]
             Return only invoices that are receivable by the entity.
@@ -507,6 +510,7 @@ class AsyncInvoiceClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         search : typing.Optional[str]
             Find invoices by vendor name, invoice number, or amount. Partial matches are supported.

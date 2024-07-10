@@ -37,6 +37,7 @@ class RepresentativeClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -93,6 +94,7 @@ class RepresentativeClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request : RepresentativeRequest
 
@@ -198,6 +200,7 @@ class RepresentativeClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         representative_id : RepresentativeId
 
@@ -259,6 +262,7 @@ class RepresentativeClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         representative_id : RepresentativeId
 
@@ -323,6 +327,7 @@ class AsyncRepresentativeClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -387,6 +392,7 @@ class AsyncRepresentativeClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request : RepresentativeRequest
 
@@ -500,6 +506,7 @@ class AsyncRepresentativeClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         representative_id : RepresentativeId
 
@@ -569,6 +576,7 @@ class AsyncRepresentativeClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         representative_id : RepresentativeId
 

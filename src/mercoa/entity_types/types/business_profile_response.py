@@ -8,6 +8,7 @@ from ...commons.types.phone_number import PhoneNumber
 from ...core.datetime_utils import serialize_datetime
 from ...core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
 from .business_type import BusinessType
+from .industry_codes import IndustryCodes
 
 
 class BusinessProfileResponse(pydantic_v1.BaseModel):
@@ -51,6 +52,7 @@ class BusinessProfileResponse(pydantic_v1.BaseModel):
     """
 
     tax_id_provided: bool = pydantic_v1.Field(alias="taxIDProvided")
+    industry_codes: typing.Optional[IndustryCodes] = pydantic_v1.Field(alias="industryCodes", default=None)
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

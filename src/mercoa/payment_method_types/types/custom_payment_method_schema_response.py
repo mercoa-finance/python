@@ -62,6 +62,8 @@ class CustomPaymentMethodSchemaResponse(pydantic_v1.BaseModel):
             "2021-01-01 00:00:00+00:00",
         ),
         estimated_processing_time=0,
+        max_amount=100000.0,
+        min_amount=1.0,
     )
     """
 
@@ -86,6 +88,16 @@ class CustomPaymentMethodSchemaResponse(pydantic_v1.BaseModel):
     estimated_processing_time: int = pydantic_v1.Field(alias="estimatedProcessingTime")
     """
     Estimated time in days for this payment method to process a payments. 0 is an same-day payment methods, -1 is unknown processing time.
+    """
+
+    max_amount: typing.Optional[float] = pydantic_v1.Field(alias="maxAmount", default=None)
+    """
+    The maximum amount that can be transferred from this payment method in a single transaction.
+    """
+
+    min_amount: typing.Optional[float] = pydantic_v1.Field(alias="minAmount", default=None)
+    """
+    The minimum amount that can be transferred from this payment method in a single transaction. Default is 1.
     """
 
     fees: typing.Optional[CustomPaymentMethodSchemaFee] = None

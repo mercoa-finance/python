@@ -42,6 +42,7 @@ class PaymentMethodClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         type : typing.Optional[typing.Union[PaymentMethodType, typing.Sequence[PaymentMethodType]]]
             Type of payment method to filter
@@ -104,6 +105,7 @@ class PaymentMethodClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request : PaymentMethodRequest
 
@@ -172,6 +174,7 @@ class PaymentMethodClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         payment_method_id : PaymentMethodId
 
@@ -236,6 +239,7 @@ class PaymentMethodClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         payment_method_id : PaymentMethodId
 
@@ -308,6 +312,7 @@ class PaymentMethodClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         payment_method_id : PaymentMethodId
 
@@ -371,6 +376,7 @@ class PaymentMethodClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         payment_method_id : PaymentMethodId
 
@@ -435,6 +441,7 @@ class PaymentMethodClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         payment_method_id : PaymentMethodId
 
@@ -504,6 +511,7 @@ class PaymentMethodClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         payment_method_id : PaymentMethodId
 
@@ -570,6 +578,7 @@ class AsyncPaymentMethodClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         type : typing.Optional[typing.Union[PaymentMethodType, typing.Sequence[PaymentMethodType]]]
             Type of payment method to filter
@@ -640,6 +649,7 @@ class AsyncPaymentMethodClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request : PaymentMethodRequest
 
@@ -716,6 +726,7 @@ class AsyncPaymentMethodClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         payment_method_id : PaymentMethodId
 
@@ -788,6 +799,7 @@ class AsyncPaymentMethodClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         payment_method_id : PaymentMethodId
 
@@ -868,6 +880,7 @@ class AsyncPaymentMethodClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         payment_method_id : PaymentMethodId
 
@@ -939,6 +952,7 @@ class AsyncPaymentMethodClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         payment_method_id : PaymentMethodId
 
@@ -1011,6 +1025,7 @@ class AsyncPaymentMethodClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         payment_method_id : PaymentMethodId
 
@@ -1088,6 +1103,7 @@ class AsyncPaymentMethodClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         payment_method_id : PaymentMethodId
 

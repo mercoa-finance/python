@@ -139,6 +139,8 @@ class CustomPaymentMethodSchemaClient:
                     ),
                 ],
                 estimated_processing_time=0,
+                max_amount=100000.0,
+                min_amount=1.0,
             ),
         )
         """
@@ -237,6 +239,8 @@ class CustomPaymentMethodSchemaClient:
                     ),
                 ],
                 estimated_processing_time=7,
+                max_amount=50000.0,
+                min_amount=1.0,
             ),
         )
         """
@@ -508,6 +512,8 @@ class AsyncCustomPaymentMethodSchemaClient:
                         ),
                     ],
                     estimated_processing_time=0,
+                    max_amount=100000.0,
+                    min_amount=1.0,
                 ),
             )
 
@@ -614,6 +620,8 @@ class AsyncCustomPaymentMethodSchemaClient:
                         ),
                     ],
                     estimated_processing_time=7,
+                    max_amount=50000.0,
+                    min_amount=1.0,
                 ),
             )
 

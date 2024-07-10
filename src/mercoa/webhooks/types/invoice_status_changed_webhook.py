@@ -147,6 +147,7 @@ class InvoiceStatusChangedWebhook(InvoiceWebhook):
             ),
             currency="USD",
             amount=100.0,
+            invoice_number="INV-123",
             invoice_date=datetime.datetime.fromisoformat(
                 "2021-01-01 00:00:00+00:00",
             ),

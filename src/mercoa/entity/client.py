@@ -258,6 +258,7 @@ class EntityClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -314,6 +315,7 @@ class EntityClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request : EntityUpdateRequest
 
@@ -413,6 +415,7 @@ class EntityClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -467,6 +470,7 @@ class EntityClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -521,6 +525,7 @@ class EntityClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -581,6 +586,7 @@ class EntityClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request : TokenGenerationOptions
 
@@ -649,6 +655,7 @@ class EntityClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         payment_method_id : typing.Optional[PaymentMethodId]
             ID of Bank Account to update
@@ -716,6 +723,7 @@ class EntityClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         type : EntityOnboardingLinkType
             The type of onboarding link to generate. If not provided, the default is payee. The onboarding options are determined by your organization's onboarding configuration.
@@ -790,6 +798,7 @@ class EntityClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         type : EntityOnboardingLinkType
             The type of onboarding link to generate. If not provided, the default is payee. The onboarding options are determined by your organization's onboarding configuration.
@@ -1087,6 +1096,7 @@ class AsyncEntityClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1151,6 +1161,7 @@ class AsyncEntityClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request : EntityUpdateRequest
 
@@ -1258,6 +1269,7 @@ class AsyncEntityClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1320,6 +1332,7 @@ class AsyncEntityClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1384,6 +1397,7 @@ class AsyncEntityClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1452,6 +1466,7 @@ class AsyncEntityClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request : TokenGenerationOptions
 
@@ -1528,6 +1543,7 @@ class AsyncEntityClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         payment_method_id : typing.Optional[PaymentMethodId]
             ID of Bank Account to update
@@ -1603,6 +1619,7 @@ class AsyncEntityClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         type : EntityOnboardingLinkType
             The type of onboarding link to generate. If not provided, the default is payee. The onboarding options are determined by your organization's onboarding configuration.
@@ -1685,6 +1702,7 @@ class AsyncEntityClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         type : EntityOnboardingLinkType
             The type of onboarding link to generate. If not provided, the default is payee. The onboarding options are determined by your organization's onboarding configuration.

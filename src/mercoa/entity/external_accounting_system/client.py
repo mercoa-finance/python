@@ -37,6 +37,7 @@ class ExternalAccountingSystemClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -97,6 +98,7 @@ class ExternalAccountingSystemClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request : ExternalAccountingSystemCompanyCreationRequest
 
@@ -159,6 +161,7 @@ class ExternalAccountingSystemClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -221,6 +224,7 @@ class ExternalAccountingSystemClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         vendors : typing.Optional[SyncType]
             Sync vendors from external accounting system. Default is to pull vendors from external system.
@@ -295,6 +299,7 @@ class AsyncExternalAccountingSystemClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -363,6 +368,7 @@ class AsyncExternalAccountingSystemClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request : ExternalAccountingSystemCompanyCreationRequest
 
@@ -433,6 +439,7 @@ class AsyncExternalAccountingSystemClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -503,6 +510,7 @@ class AsyncExternalAccountingSystemClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         vendors : typing.Optional[SyncType]
             Sync vendors from external accounting system. Default is to pull vendors from external system.

@@ -18,6 +18,7 @@ from .document_response import DocumentResponse
 from .find_invoice_response import FindInvoiceResponse
 from .invoice_creation_request import InvoiceCreationRequest
 from .invoice_failure_type import InvoiceFailureType
+from .invoice_fees_request import InvoiceFeesRequest
 from .invoice_fees_response import InvoiceFeesResponse
 from .invoice_id import InvoiceId
 from .invoice_line_item_request import InvoiceLineItemRequest
@@ -56,6 +57,7 @@ __all__ = [
     "FindInvoiceResponse",
     "InvoiceCreationRequest",
     "InvoiceFailureType",
+    "InvoiceFeesRequest",
     "InvoiceFeesResponse",
     "InvoiceId",
     "InvoiceLineItemRequest",

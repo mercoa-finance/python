@@ -2,6 +2,7 @@
 
 from . import (
     bank_lookup,
+    calculate,
     commons,
     custom_payment_method_schema,
     email_log_types,
@@ -9,7 +10,6 @@ from . import (
     entity_group,
     entity_group_types,
     entity_types,
-    fees,
     invoice,
     invoice_types,
     ocr,
@@ -19,6 +19,7 @@ from . import (
     webhooks,
 )
 from .bank_lookup import BankAddress, BankLookupResponse
+from .calculate import CalculateFeesRequest, CalculatePaymentTimingRequest, CalculatePaymentTimingResponse
 from .commons import (
     Address,
     BadRequest,
@@ -79,6 +80,7 @@ from .entity_types import (
     IdentifierList_UserList,
     IndividualProfileRequest,
     IndividualProfileResponse,
+    IndustryCodes,
     LineItemAvailabilities,
     MetadataCustomizationRequest,
     MetadataTrigger,
@@ -113,7 +115,6 @@ from .entity_types import (
     VendorTrigger,
 )
 from .environment import MercoaEnvironment
-from .fees import CalculateFeesRequest
 from .invoice_types import (
     AddApproverRequest,
     ApprovalRequest,
@@ -133,6 +134,7 @@ from .invoice_types import (
     FindInvoiceResponse,
     InvoiceCreationRequest,
     InvoiceFailureType,
+    InvoiceFeesRequest,
     InvoiceFeesResponse,
     InvoiceId,
     InvoiceLineItemRequest,
@@ -289,6 +291,8 @@ __all__ = [
     "BusinessProfileResponse",
     "BusinessType",
     "CalculateFeesRequest",
+    "CalculatePaymentTimingRequest",
+    "CalculatePaymentTimingResponse",
     "CardBrand",
     "CardRequest",
     "CardResponse",
@@ -376,10 +380,12 @@ __all__ = [
     "IndividualOnboardingOptions",
     "IndividualProfileRequest",
     "IndividualProfileResponse",
+    "IndustryCodes",
     "InternalServerError",
     "InvoiceCreationRequest",
     "InvoiceEmailWebhook",
     "InvoiceFailureType",
+    "InvoiceFeesRequest",
     "InvoiceFeesResponse",
     "InvoiceId",
     "InvoiceLineItemRequest",
@@ -493,6 +499,7 @@ __all__ = [
     "VendorTrigger",
     "__version__",
     "bank_lookup",
+    "calculate",
     "commons",
     "custom_payment_method_schema",
     "email_log_types",
@@ -500,7 +507,6 @@ __all__ = [
     "entity_group",
     "entity_group_types",
     "entity_types",
-    "fees",
     "invoice",
     "invoice_types",
     "ocr",

@@ -11,6 +11,7 @@ from ...payment_method_types.types.currency_code import CurrencyCode
 from ...payment_method_types.types.payment_method_id import PaymentMethodId
 from .approval_slot_assignment import ApprovalSlotAssignment
 from .invoice_failure_type import InvoiceFailureType
+from .invoice_fees_request import InvoiceFeesRequest
 from .invoice_line_item_request import InvoiceLineItemRequest
 from .invoice_status import InvoiceStatus
 from .payment_destination_options import PaymentDestinationOptions
@@ -113,6 +114,11 @@ class InvoiceRequestBase(pydantic_v1.BaseModel):
     failure_type: typing.Optional[InvoiceFailureType] = pydantic_v1.Field(alias="failureType", default=None)
     """
     If the invoice failed to be paid, indicate the failure reason. Only applicable for invoices with custom payment methods.
+    """
+
+    fees: typing.Optional[InvoiceFeesRequest] = pydantic_v1.Field(default=None)
+    """
+    If using a custom payment method, you can override the default fees for this invoice. If not provided, the default fees for the custom payment method will be used.
     """
 
     def json(self, **kwargs: typing.Any) -> str:

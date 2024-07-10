@@ -38,6 +38,7 @@ class NotificationPolicyClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         user_id : EntityUserId
 
@@ -102,6 +103,7 @@ class NotificationPolicyClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         user_id : EntityUserId
 
@@ -170,6 +172,7 @@ class NotificationPolicyClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         user_id : EntityUserId
 
@@ -245,6 +248,7 @@ class AsyncNotificationPolicyClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         user_id : EntityUserId
 
@@ -317,6 +321,7 @@ class AsyncNotificationPolicyClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         user_id : EntityUserId
 
@@ -393,6 +398,7 @@ class AsyncNotificationPolicyClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         user_id : EntityUserId
 

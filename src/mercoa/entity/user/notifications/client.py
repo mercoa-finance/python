@@ -47,6 +47,7 @@ class NotificationsClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         user_id : EntityUserId
 
@@ -135,6 +136,7 @@ class NotificationsClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         user_id : EntityUserId
 
@@ -210,6 +212,7 @@ class AsyncNotificationsClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         user_id : EntityUserId
 
@@ -306,6 +309,7 @@ class AsyncNotificationsClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         user_id : EntityUserId
 

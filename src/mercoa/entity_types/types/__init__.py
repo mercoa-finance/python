@@ -40,6 +40,7 @@ from .find_notification_response import FindNotificationResponse
 from .identifier_list import IdentifierList, IdentifierList_RolesList, IdentifierList_UserList
 from .individual_profile_request import IndividualProfileRequest
 from .individual_profile_response import IndividualProfileResponse
+from .industry_codes import IndustryCodes
 from .line_item_availabilities import LineItemAvailabilities
 from .metadata_customization_request import MetadataCustomizationRequest
 from .metadata_trigger import MetadataTrigger
@@ -112,6 +113,7 @@ __all__ = [
     "IdentifierList_UserList",
     "IndividualProfileRequest",
     "IndividualProfileResponse",
+    "IndustryCodes",
     "LineItemAvailabilities",
     "MetadataCustomizationRequest",
     "MetadataTrigger",

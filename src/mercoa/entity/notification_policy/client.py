@@ -37,6 +37,7 @@ class NotificationPolicyClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -95,6 +96,7 @@ class NotificationPolicyClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         notification_type : NotificationType
 
@@ -159,6 +161,7 @@ class NotificationPolicyClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         notification_type : NotificationType
 
@@ -232,6 +235,7 @@ class AsyncNotificationPolicyClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -298,6 +302,7 @@ class AsyncNotificationPolicyClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         notification_type : NotificationType
 
@@ -370,6 +375,7 @@ class AsyncNotificationPolicyClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         notification_type : NotificationType
 

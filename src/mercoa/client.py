@@ -5,12 +5,12 @@ import typing
 import httpx
 
 from .bank_lookup.client import AsyncBankLookupClient, BankLookupClient
+from .calculate.client import AsyncCalculateClient, CalculateClient
 from .core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from .custom_payment_method_schema.client import AsyncCustomPaymentMethodSchemaClient, CustomPaymentMethodSchemaClient
 from .entity.client import AsyncEntityClient, EntityClient
 from .entity_group.client import AsyncEntityGroupClient, EntityGroupClient
 from .environment import MercoaEnvironment
-from .fees.client import AsyncFeesClient, FeesClient
 from .invoice.client import AsyncInvoiceClient, InvoiceClient
 from .ocr.client import AsyncOcrClient, OcrClient
 from .organization.client import AsyncOrganizationClient, OrganizationClient
@@ -79,8 +79,8 @@ class Mercoa:
         self.invoice = InvoiceClient(client_wrapper=self._client_wrapper)
         self.organization = OrganizationClient(client_wrapper=self._client_wrapper)
         self.bank_lookup = BankLookupClient(client_wrapper=self._client_wrapper)
+        self.calculate = CalculateClient(client_wrapper=self._client_wrapper)
         self.custom_payment_method_schema = CustomPaymentMethodSchemaClient(client_wrapper=self._client_wrapper)
-        self.fees = FeesClient(client_wrapper=self._client_wrapper)
         self.ocr = OcrClient(client_wrapper=self._client_wrapper)
 
 
@@ -147,8 +147,8 @@ class AsyncMercoa:
         self.invoice = AsyncInvoiceClient(client_wrapper=self._client_wrapper)
         self.organization = AsyncOrganizationClient(client_wrapper=self._client_wrapper)
         self.bank_lookup = AsyncBankLookupClient(client_wrapper=self._client_wrapper)
+        self.calculate = AsyncCalculateClient(client_wrapper=self._client_wrapper)
         self.custom_payment_method_schema = AsyncCustomPaymentMethodSchemaClient(client_wrapper=self._client_wrapper)
-        self.fees = AsyncFeesClient(client_wrapper=self._client_wrapper)
         self.ocr = AsyncOcrClient(client_wrapper=self._client_wrapper)
 
 

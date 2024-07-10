@@ -43,6 +43,7 @@ class UserClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -106,6 +107,7 @@ class UserClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         foreign_id : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             ID used to identify user in your system
@@ -191,6 +193,7 @@ class UserClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request : EntityUserRequest
 
@@ -258,6 +261,7 @@ class UserClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         user_id : EntityUserId
 
@@ -322,6 +326,7 @@ class UserClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         user_id : EntityUserId
 
@@ -392,6 +397,7 @@ class UserClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         user_id : EntityUserId
 
@@ -456,6 +462,7 @@ class UserClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         user_id : EntityUserId
 
@@ -530,6 +537,7 @@ class AsyncUserClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -601,6 +609,7 @@ class AsyncUserClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         foreign_id : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             ID used to identify user in your system
@@ -694,6 +703,7 @@ class AsyncUserClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request : EntityUserRequest
 
@@ -769,6 +779,7 @@ class AsyncUserClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         user_id : EntityUserId
 
@@ -841,6 +852,7 @@ class AsyncUserClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         user_id : EntityUserId
 
@@ -919,6 +931,7 @@ class AsyncUserClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         user_id : EntityUserId
 
@@ -991,6 +1004,7 @@ class AsyncUserClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         user_id : EntityUserId
 

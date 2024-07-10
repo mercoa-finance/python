@@ -5,23 +5,29 @@ import typing
 
 from ...core.datetime_utils import serialize_datetime
 from ...core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
-from .onboarding_option import OnboardingOption
 
 
-class BusinessOnboardingOptions(pydantic_v1.BaseModel):
-    terms_of_service: OnboardingOption = pydantic_v1.Field(alias="termsOfService")
-    email: OnboardingOption
-    name: OnboardingOption
-    type: OnboardingOption
-    doing_business_as: OnboardingOption = pydantic_v1.Field(alias="doingBusinessAs")
-    ein: OnboardingOption
-    mcc: OnboardingOption
-    address: OnboardingOption
-    phone: OnboardingOption
-    formation_date: OnboardingOption = pydantic_v1.Field(alias="formationDate")
-    website: OnboardingOption
-    description: OnboardingOption
-    representatives: OnboardingOption
+class InvoiceFeesRequest(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    from mercoa import InvoiceFeesRequest
+
+    InvoiceFeesRequest(
+        source_platform_markup_fee=0.2,
+        destination_platform_markup_fee=1.5,
+    )
+    """
+
+    source_platform_markup_fee: float = pydantic_v1.Field(alias="sourcePlatformMarkupFee")
+    """
+    Fee charged to the payer (C2).
+    """
+
+    destination_platform_markup_fee: float = pydantic_v1.Field(alias="destinationPlatformMarkupFee")
+    """
+    Fee charged to the payee (C3).
+    """
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

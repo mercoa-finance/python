@@ -35,6 +35,7 @@ class MetadataClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -89,6 +90,7 @@ class MetadataClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         key : str
 
@@ -153,6 +155,7 @@ class MetadataClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         key : str
 
@@ -218,6 +221,7 @@ class MetadataClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         key : str
 
@@ -282,6 +286,7 @@ class AsyncMetadataClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -344,6 +349,7 @@ class AsyncMetadataClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         key : str
 
@@ -416,6 +422,7 @@ class AsyncMetadataClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         key : str
 
@@ -491,6 +498,7 @@ class AsyncMetadataClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         key : str
 

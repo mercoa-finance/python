@@ -53,6 +53,7 @@ class CounterpartyClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         name : typing.Optional[str]
             Filter by counterparty name
@@ -159,6 +160,7 @@ class CounterpartyClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         name : typing.Optional[str]
             Filter by counterparty name
@@ -256,6 +258,7 @@ class CounterpartyClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request : EntityAddPayeesRequest
 
@@ -330,6 +333,7 @@ class CounterpartyClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request : EntityHidePayeesRequest
 
@@ -398,6 +402,7 @@ class CounterpartyClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request : EntityAddPayorsRequest
 
@@ -472,6 +477,7 @@ class CounterpartyClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request : EntityHidePayorsRequest
 
@@ -554,6 +560,7 @@ class AsyncCounterpartyClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         name : typing.Optional[str]
             Filter by counterparty name
@@ -668,6 +675,7 @@ class AsyncCounterpartyClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         name : typing.Optional[str]
             Filter by counterparty name
@@ -773,6 +781,7 @@ class AsyncCounterpartyClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request : EntityAddPayeesRequest
 
@@ -855,6 +864,7 @@ class AsyncCounterpartyClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request : EntityHidePayeesRequest
 
@@ -931,6 +941,7 @@ class AsyncCounterpartyClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request : EntityAddPayorsRequest
 
@@ -1013,6 +1024,7 @@ class AsyncCounterpartyClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request : EntityHidePayorsRequest
 

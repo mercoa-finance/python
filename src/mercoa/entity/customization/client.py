@@ -36,6 +36,7 @@ class CustomizationClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -94,6 +95,7 @@ class CustomizationClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request : EntityCustomizationRequest
 
@@ -203,6 +205,7 @@ class AsyncCustomizationClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -269,6 +272,7 @@ class AsyncCustomizationClient:
         Parameters
         ----------
         entity_id : EntityId
+            Entity ID or Entity ForeignID
 
         request : EntityCustomizationRequest
 
