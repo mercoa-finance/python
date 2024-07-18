@@ -5,14 +5,35 @@ import typing
 
 from ...core.datetime_utils import serialize_datetime
 from ...core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
+from .counterparty_customization_account import CounterpartyCustomizationAccount
 from .entity_id import EntityId
 
 
 class CounterpartyCustomizationRequest(pydantic_v1.BaseModel):
-    counterparty_id: EntityId = pydantic_v1.Field(alias="counterpartyId")
-    account_id: typing.Optional[str] = pydantic_v1.Field(alias="accountId", default=None)
     """
-    The ID the counterparty has assigned to this account.
+    Examples
+    --------
+    from mercoa import (
+        CounterpartyCustomizationAccount,
+        CounterpartyCustomizationRequest,
+    )
+
+    CounterpartyCustomizationRequest(
+        counterparty_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+        accounts=[
+            CounterpartyCustomizationAccount(
+                account_id="85866843",
+                postal_code="94105",
+                name_on_account="John Doe",
+            )
+        ],
+    )
+    """
+
+    counterparty_id: EntityId = pydantic_v1.Field(alias="counterpartyId")
+    accounts: typing.Optional[typing.List[CounterpartyCustomizationAccount]] = pydantic_v1.Field(default=None)
+    """
+    The list of accounts the entity has with the counterparty.
     """
 
     def json(self, **kwargs: typing.Any) -> str:

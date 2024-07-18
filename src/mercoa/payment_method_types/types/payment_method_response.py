@@ -344,6 +344,67 @@ class PaymentMethodResponse_OffPlatform(pydantic_v1.BaseModel):
         json_encoders = {dt.datetime: serialize_datetime}
 
 
+class PaymentMethodResponse_Utility(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    import datetime
+
+    from mercoa import PaymentMethodResponse_BankAccount
+
+    PaymentMethodResponse_BankAccount(
+        id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+        account_name="My Checking Account",
+        bank_name="Chase",
+        routing_number="12345678",
+        account_number="99988767623",
+        account_type="CHECKING",
+        status="VERIFIED",
+        is_default_source=True,
+        is_default_destination=True,
+        supported_currencies=["USD"],
+        created_at=datetime.datetime.fromisoformat(
+            "2021-01-01 00:00:00+00:00",
+        ),
+        updated_at=datetime.datetime.fromisoformat(
+            "2021-01-01 00:00:00+00:00",
+        ),
+    )
+    """
+
+    utility_id: str = pydantic_v1.Field(alias="utilityId")
+    id: PaymentMethodId
+    is_default_source: bool = pydantic_v1.Field(alias="isDefaultSource")
+    is_default_destination: bool = pydantic_v1.Field(alias="isDefaultDestination")
+    supported_currencies: typing.List[CurrencyCode] = pydantic_v1.Field(alias="supportedCurrencies")
+    external_accounting_system_id: typing.Optional[str] = pydantic_v1.Field(
+        alias="externalAccountingSystemId", default=None
+    )
+    created_at: dt.datetime = pydantic_v1.Field(alias="createdAt")
+    updated_at: dt.datetime = pydantic_v1.Field(alias="updatedAt")
+    type: typing.Literal["utility"] = "utility"
+
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults_exclude_unset: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
+        kwargs_with_defaults_exclude_none: typing.Any = {"by_alias": True, "exclude_none": True, **kwargs}
+
+        return deep_union_pydantic_dicts(
+            super().dict(**kwargs_with_defaults_exclude_unset), super().dict(**kwargs_with_defaults_exclude_none)
+        )
+
+    class Config:
+        frozen = True
+        smart_union = True
+        allow_population_by_field_name = True
+        populate_by_name = True
+        extra = pydantic_v1.Extra.allow
+        json_encoders = {dt.datetime: serialize_datetime}
+
+
 """
 import datetime
 
@@ -374,4 +435,5 @@ PaymentMethodResponse = typing.Union[
     PaymentMethodResponse_Check,
     PaymentMethodResponse_Custom,
     PaymentMethodResponse_OffPlatform,
+    PaymentMethodResponse_Utility,
 ]

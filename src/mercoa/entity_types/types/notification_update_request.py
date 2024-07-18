@@ -5,28 +5,21 @@ import typing
 
 from ...core.datetime_utils import serialize_datetime
 from ...core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
+from .notification_status import NotificationStatus
 
 
-class DocumentResponse(pydantic_v1.BaseModel):
+class NotificationUpdateRequest(pydantic_v1.BaseModel):
     """
     Examples
     --------
-    from mercoa import DocumentResponse
+    from mercoa import NotificationUpdateRequest
 
-    DocumentResponse(
-        id="doc_37e6af0a-e637-48fd-b825-d6947b38c4e2",
-        mime_type="application/pdf",
-        uri="https://mercoa.com/pdf/not-real.pdf",
+    NotificationUpdateRequest(
+        status="READ",
     )
     """
 
-    id: typing.Optional[str] = pydantic_v1.Field(default=None)
-    """
-    ID of the document. If not provided, this is a dynamic document that is generated on the fly.
-    """
-
-    mime_type: str = pydantic_v1.Field(alias="mimeType")
-    uri: str
+    status: typing.Optional[NotificationStatus] = None
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
@@ -43,7 +36,5 @@ class DocumentResponse(pydantic_v1.BaseModel):
     class Config:
         frozen = True
         smart_union = True
-        allow_population_by_field_name = True
-        populate_by_name = True
         extra = pydantic_v1.Extra.allow
         json_encoders = {dt.datetime: serialize_datetime}

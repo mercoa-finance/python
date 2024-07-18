@@ -15,7 +15,6 @@ from .types import (
     CommentId,
     CommentRequest,
     CommentResponse,
-    DocumentResponse,
     FindInvoiceResponse,
     InvoiceCreationRequest,
     InvoiceFailureType,
@@ -36,6 +35,8 @@ from .types import (
     PaymentDestinationOptions,
     PaymentDestinationOptions_BankAccount,
     PaymentDestinationOptions_Check,
+    PaymentDestinationOptions_Utility,
+    UtilityPaymentDestinationOptions,
 )
 
 __all__ = [
@@ -53,7 +54,6 @@ __all__ = [
     "CommentId",
     "CommentRequest",
     "CommentResponse",
-    "DocumentResponse",
     "FindInvoiceResponse",
     "InvoiceCreationRequest",
     "InvoiceFailureType",
@@ -74,4 +74,6 @@ __all__ = [
     "PaymentDestinationOptions",
     "PaymentDestinationOptions_BankAccount",
     "PaymentDestinationOptions_Check",
+    "PaymentDestinationOptions_Utility",
+    "UtilityPaymentDestinationOptions",
 ]

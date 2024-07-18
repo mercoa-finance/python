@@ -10,6 +10,7 @@ from .approver_rule import ApproverRule
 from .business_profile_request import BusinessProfileRequest
 from .business_profile_response import BusinessProfileResponse
 from .business_type import BusinessType
+from .counterparty_customization_account import CounterpartyCustomizationAccount
 from .counterparty_customization_request import CounterpartyCustomizationRequest
 from .counterparty_invoice_metrics_response import CounterpartyInvoiceMetricsResponse
 from .counterparty_invoice_metrics_status_response import CounterpartyInvoiceMetricsStatusResponse
@@ -48,7 +49,9 @@ from .notification_id import NotificationId
 from .notification_policy_request import NotificationPolicyRequest
 from .notification_policy_response import NotificationPolicyResponse
 from .notification_response import NotificationResponse
+from .notification_status import NotificationStatus
 from .notification_type import NotificationType
+from .notification_update_request import NotificationUpdateRequest
 from .payment_method_customization_request import PaymentMethodCustomizationRequest
 from .profile_request import ProfileRequest
 from .profile_response import ProfileResponse
@@ -81,6 +84,7 @@ __all__ = [
     "BusinessProfileRequest",
     "BusinessProfileResponse",
     "BusinessType",
+    "CounterpartyCustomizationAccount",
     "CounterpartyCustomizationRequest",
     "CounterpartyInvoiceMetricsResponse",
     "CounterpartyInvoiceMetricsStatusResponse",
@@ -121,7 +125,9 @@ __all__ = [
     "NotificationPolicyRequest",
     "NotificationPolicyResponse",
     "NotificationResponse",
+    "NotificationStatus",
     "NotificationType",
+    "NotificationUpdateRequest",
     "PaymentMethodCustomizationRequest",
     "ProfileRequest",
     "ProfileResponse",

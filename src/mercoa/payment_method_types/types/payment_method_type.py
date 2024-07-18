@@ -3,5 +3,6 @@
 import typing
 
 PaymentMethodType = typing.Union[
-    typing.Literal["custom", "check", "bankAccount", "na", "card", "bnpl", "virtualCard", "offPlatform"], typing.Any
+    typing.Literal["custom", "check", "bankAccount", "na", "card", "bnpl", "virtualCard", "offPlatform", "utility"],
+    typing.Any,
 ]

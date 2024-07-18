@@ -22,6 +22,7 @@ class InvoiceWebhook(pydantic_v1.BaseModel):
         AssociatedApprovalAction,
         BusinessProfileResponse,
         CommentResponse,
+        CounterpartyCustomizationAccount,
         CounterpartyResponse,
         EntityUserResponse,
         IdentifierList_RolesList,
@@ -105,6 +106,13 @@ class InvoiceWebhook(pydantic_v1.BaseModel):
                         owners_provided=True,
                     ),
                 ),
+                accounts=[
+                    CounterpartyCustomizationAccount(
+                        account_id="85866843",
+                        postal_code="94105",
+                        name_on_account="John Doe",
+                    )
+                ],
                 payment_methods=[
                     PaymentMethodResponse_BankAccount(
                         id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",

@@ -14,7 +14,6 @@ from .check_payment_destination_options import CheckPaymentDestinationOptions
 from .comment_id import CommentId
 from .comment_request import CommentRequest
 from .comment_response import CommentResponse
-from .document_response import DocumentResponse
 from .find_invoice_response import FindInvoiceResponse
 from .invoice_creation_request import InvoiceCreationRequest
 from .invoice_failure_type import InvoiceFailureType
@@ -36,7 +35,9 @@ from .payment_destination_options import (
     PaymentDestinationOptions,
     PaymentDestinationOptions_BankAccount,
     PaymentDestinationOptions_Check,
+    PaymentDestinationOptions_Utility,
 )
+from .utility_payment_destination_options import UtilityPaymentDestinationOptions
 
 __all__ = [
     "AddApproverRequest",
@@ -53,7 +54,6 @@ __all__ = [
     "CommentId",
     "CommentRequest",
     "CommentResponse",
-    "DocumentResponse",
     "FindInvoiceResponse",
     "InvoiceCreationRequest",
     "InvoiceFailureType",
@@ -74,4 +74,6 @@ __all__ = [
     "PaymentDestinationOptions",
     "PaymentDestinationOptions_BankAccount",
     "PaymentDestinationOptions_Check",
+    "PaymentDestinationOptions_Utility",
+    "UtilityPaymentDestinationOptions",
 ]

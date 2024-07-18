@@ -19,8 +19,8 @@ class CounterpartyWebhook(pydantic_v1.BaseModel):
 
     CounterpartyWebhook(
         event_type="counterparty.added",
-        payee_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
-        payor_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+        payee_id=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
+        payor_id=["ent_8545a84e-a45f-41bf-bdf1-33b42a55812c"],
         user=EntityUserResponse(
             id="user_ec3aafc8-ea86-408a-a6c1-545497badbbb",
             foreign_id="MY-DB-ID-12345",
@@ -38,8 +38,8 @@ class CounterpartyWebhook(pydantic_v1.BaseModel):
     """
 
     event_type: str = pydantic_v1.Field(alias="eventType")
-    payee_id: EntityId = pydantic_v1.Field(alias="payeeId")
-    payor_id: EntityId = pydantic_v1.Field(alias="payorId")
+    payee_id: typing.List[EntityId] = pydantic_v1.Field(alias="payeeId")
+    payor_id: typing.List[EntityId] = pydantic_v1.Field(alias="payorId")
     user: typing.Optional[EntityUserResponse] = pydantic_v1.Field(default=None)
     """
     User who initiated the change.

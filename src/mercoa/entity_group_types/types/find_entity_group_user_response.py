@@ -5,54 +5,63 @@ import typing
 
 from ...core.datetime_utils import serialize_datetime
 from ...core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
-from .notification_response import NotificationResponse
+from .entity_group_user_response import EntityGroupUserResponse
 
 
-class FindNotificationResponse(pydantic_v1.BaseModel):
+class FindEntityGroupUserResponse(pydantic_v1.BaseModel):
     """
     Examples
     --------
     import datetime
 
-    from mercoa import FindNotificationResponse, NotificationResponse
+    from mercoa import (
+        EntityGroupUserEntityResponse,
+        EntityGroupUserResponse,
+        FindEntityGroupUserResponse,
+    )
 
-    FindNotificationResponse(
-        count=2,
+    FindEntityGroupUserResponse(
+        count=1,
         has_more=False,
         data=[
-            NotificationResponse(
-                id="notif_7df2974a-4069-454c-912f-7e58ebe030fb",
-                invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
-                type="INVOICE_APPROVAL_NEEDED",
-                status="SENT",
+            EntityGroupUserResponse(
+                foreign_id="MY-DB-ID-12345",
+                email="john.doe@acme.com",
+                name="John Doe",
+                entities=[
+                    EntityGroupUserEntityResponse(
+                        id="user_ec3aafc8-ea86-408a-a6c1-545497badbbb",
+                        roles=["admin", "approver"],
+                        entity_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+                    ),
+                    EntityGroupUserEntityResponse(
+                        id="user_3a3aafc8-ea86-408a-a6c1-545497badbbb",
+                        roles=["viewer"],
+                        entity_id="ent_574s93r-3943-fu39-g9dfr-33b42a55812c",
+                    ),
+                ],
                 created_at=datetime.datetime.fromisoformat(
                     "2024-01-01 00:00:00+00:00",
                 ),
-            ),
-            NotificationResponse(
-                id="notif_958c4ffb-dc06-494c-a0e0-1b4946c6bb0f",
-                invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
-                type="INVOICE_APPROVED",
-                status="SENT",
-                created_at=datetime.datetime.fromisoformat(
+                updated_at=datetime.datetime.fromisoformat(
                     "2024-01-01 00:00:00+00:00",
                 ),
-            ),
+            )
         ],
     )
     """
 
     count: int = pydantic_v1.Field()
     """
-    Total number of notifications for the given start and end date filters. This value is not limited by the limit parameter. It is provided so that you can determine how many pages of results are available.
+    Total number of users for the given filters. This value is not limited by the limit parameter. It is provided so that you can determine how many pages of results are available.
     """
 
     has_more: bool = pydantic_v1.Field(alias="hasMore")
     """
-    True if there are more notifications available for the given start and end date filters.
+    True if there are more users available for the given filters.
     """
 
-    data: typing.List[NotificationResponse]
+    data: typing.List[EntityGroupUserResponse]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

@@ -58,6 +58,10 @@ class InvoiceClient:
         starting_after: typing.Optional[InvoiceId] = None,
         search: typing.Optional[str] = None,
         metadata: typing.Optional[typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]] = None,
+        line_item_metadata: typing.Optional[
+            typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]
+        ] = None,
+        line_item_gl_account_id: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]] = None,
@@ -97,6 +101,12 @@ class InvoiceClient:
 
         metadata : typing.Optional[typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]]
             Filter invoices by metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+
+        line_item_metadata : typing.Optional[typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]]
+            Filter invoices by line item metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+
+        line_item_gl_account_id : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter invoices by line item GL account ID. Each filter will be applied as an OR condition. Duplicate keys will be ignored.
 
         payer_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
             Filter invoices by payer ID.
@@ -147,6 +157,8 @@ class InvoiceClient:
                 "startingAfter": starting_after,
                 "search": search,
                 "metadata": jsonable_encoder(metadata),
+                "lineItemMetadata": jsonable_encoder(line_item_metadata),
+                "lineItemGlAccountId": line_item_gl_account_id,
                 "payerId": payer_id,
                 "vendorId": vendor_id,
                 "approverId": approver_id,
@@ -509,6 +521,10 @@ class AsyncInvoiceClient:
         starting_after: typing.Optional[InvoiceId] = None,
         search: typing.Optional[str] = None,
         metadata: typing.Optional[typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]] = None,
+        line_item_metadata: typing.Optional[
+            typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]
+        ] = None,
+        line_item_gl_account_id: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]] = None,
@@ -548,6 +564,12 @@ class AsyncInvoiceClient:
 
         metadata : typing.Optional[typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]]
             Filter invoices by metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+
+        line_item_metadata : typing.Optional[typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]]
+            Filter invoices by line item metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+
+        line_item_gl_account_id : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter invoices by line item GL account ID. Each filter will be applied as an OR condition. Duplicate keys will be ignored.
 
         payer_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
             Filter invoices by payer ID.
@@ -606,6 +628,8 @@ class AsyncInvoiceClient:
                 "startingAfter": starting_after,
                 "search": search,
                 "metadata": jsonable_encoder(metadata),
+                "lineItemMetadata": jsonable_encoder(line_item_metadata),
+                "lineItemGlAccountId": line_item_gl_account_id,
                 "payerId": payer_id,
                 "vendorId": vendor_id,
                 "approverId": approver_id,

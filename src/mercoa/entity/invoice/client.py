@@ -48,6 +48,10 @@ class InvoiceClient:
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[InvoiceId] = None,
         metadata: typing.Optional[typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]] = None,
+        line_item_metadata: typing.Optional[
+            typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]
+        ] = None,
+        line_item_gl_account_id: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         search: typing.Optional[str] = None,
         payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
@@ -91,6 +95,12 @@ class InvoiceClient:
 
         metadata : typing.Optional[typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]]
             Filter invoices by metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+
+        line_item_metadata : typing.Optional[typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]]
+            Filter invoices by line item metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+
+        line_item_gl_account_id : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter invoices by line item GL account ID. Each filter will be applied as an OR condition. Duplicate keys will be ignored.
 
         search : typing.Optional[str]
             Find invoices by vendor name, invoice number, or amount. Partial matches are supported.
@@ -148,6 +158,8 @@ class InvoiceClient:
                 "limit": limit,
                 "startingAfter": starting_after,
                 "metadata": jsonable_encoder(metadata),
+                "lineItemMetadata": jsonable_encoder(line_item_metadata),
+                "lineItemGlAccountId": line_item_gl_account_id,
                 "search": search,
                 "payerId": payer_id,
                 "vendorId": vendor_id,
@@ -343,6 +355,10 @@ class AsyncInvoiceClient:
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[InvoiceId] = None,
         metadata: typing.Optional[typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]] = None,
+        line_item_metadata: typing.Optional[
+            typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]
+        ] = None,
+        line_item_gl_account_id: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         search: typing.Optional[str] = None,
         payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
@@ -386,6 +402,12 @@ class AsyncInvoiceClient:
 
         metadata : typing.Optional[typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]]
             Filter invoices by metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+
+        line_item_metadata : typing.Optional[typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]]
+            Filter invoices by line item metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+
+        line_item_gl_account_id : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter invoices by line item GL account ID. Each filter will be applied as an OR condition. Duplicate keys will be ignored.
 
         search : typing.Optional[str]
             Find invoices by vendor name, invoice number, or amount. Partial matches are supported.
@@ -451,6 +473,8 @@ class AsyncInvoiceClient:
                 "limit": limit,
                 "startingAfter": starting_after,
                 "metadata": jsonable_encoder(metadata),
+                "lineItemMetadata": jsonable_encoder(line_item_metadata),
+                "lineItemGlAccountId": line_item_gl_account_id,
                 "search": search,
                 "payerId": payer_id,
                 "vendorId": vendor_id,

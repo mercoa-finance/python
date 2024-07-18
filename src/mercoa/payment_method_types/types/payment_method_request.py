@@ -246,6 +246,48 @@ class PaymentMethodRequest_OffPlatform(pydantic_v1.BaseModel):
         json_encoders = {dt.datetime: serialize_datetime}
 
 
+class PaymentMethodRequest_Utility(pydantic_v1.BaseModel):
+    """
+    Examples
+    --------
+    from mercoa import PaymentMethodRequest_BankAccount
+
+    PaymentMethodRequest_BankAccount(
+        routing_number="12345678",
+        account_number="99988767623",
+        account_type="CHECKING",
+    )
+    """
+
+    utility_id: str = pydantic_v1.Field(alias="utilityId")
+    default_source: typing.Optional[bool] = pydantic_v1.Field(alias="defaultSource", default=None)
+    default_destination: typing.Optional[bool] = pydantic_v1.Field(alias="defaultDestination", default=None)
+    external_accounting_system_id: typing.Optional[str] = pydantic_v1.Field(
+        alias="externalAccountingSystemId", default=None
+    )
+    type: typing.Literal["utility"] = "utility"
+
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults_exclude_unset: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
+        kwargs_with_defaults_exclude_none: typing.Any = {"by_alias": True, "exclude_none": True, **kwargs}
+
+        return deep_union_pydantic_dicts(
+            super().dict(**kwargs_with_defaults_exclude_unset), super().dict(**kwargs_with_defaults_exclude_none)
+        )
+
+    class Config:
+        frozen = True
+        smart_union = True
+        allow_population_by_field_name = True
+        populate_by_name = True
+        extra = pydantic_v1.Extra.allow
+        json_encoders = {dt.datetime: serialize_datetime}
+
+
 """
 from mercoa import PaymentMethodRequest_BankAccount
 
@@ -261,4 +303,5 @@ PaymentMethodRequest = typing.Union[
     PaymentMethodRequest_Check,
     PaymentMethodRequest_Custom,
     PaymentMethodRequest_OffPlatform,
+    PaymentMethodRequest_Utility,
 ]

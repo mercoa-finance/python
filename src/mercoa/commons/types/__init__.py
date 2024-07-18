@@ -2,9 +2,20 @@
 
 from .address import Address
 from .birth_date import BirthDate
+from .document_response import DocumentResponse
+from .document_type import DocumentType
 from .full_name import FullName
 from .individual_government_id import IndividualGovernmentId
 from .order_direction import OrderDirection
 from .phone_number import PhoneNumber
 
-__all__ = ["Address", "BirthDate", "FullName", "IndividualGovernmentId", "OrderDirection", "PhoneNumber"]
+__all__ = [
+    "Address",
+    "BirthDate",
+    "DocumentResponse",
+    "DocumentType",
+    "FullName",
+    "IndividualGovernmentId",
+    "OrderDirection",
+    "PhoneNumber",
+]

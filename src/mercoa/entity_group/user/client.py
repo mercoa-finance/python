@@ -3,58 +3,76 @@
 import typing
 from json.decoder import JSONDecodeError
 
-from ..commons.errors.bad_request import BadRequest
-from ..commons.errors.conflict import Conflict
-from ..commons.errors.forbidden import Forbidden
-from ..commons.errors.internal_server_error import InternalServerError
-from ..commons.errors.not_found import NotFound
-from ..commons.errors.unauthorized import Unauthorized
-from ..commons.errors.unimplemented import Unimplemented
-from ..core.api_error import ApiError
-from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
-from ..core.jsonable_encoder import jsonable_encoder
-from ..core.pydantic_utilities import pydantic_v1
-from ..core.request_options import RequestOptions
-from ..entity_group_types.types.entity_group_find_response import EntityGroupFindResponse
-from ..entity_group_types.types.entity_group_id import EntityGroupId
-from ..entity_group_types.types.entity_group_request import EntityGroupRequest
-from ..entity_group_types.types.entity_group_response import EntityGroupResponse
-from .invoice.client import AsyncInvoiceClient, InvoiceClient
-from .user.client import AsyncUserClient, UserClient
+from ...commons.errors.bad_request import BadRequest
+from ...commons.errors.conflict import Conflict
+from ...commons.errors.forbidden import Forbidden
+from ...commons.errors.internal_server_error import InternalServerError
+from ...commons.errors.not_found import NotFound
+from ...commons.errors.unauthorized import Unauthorized
+from ...commons.errors.unimplemented import Unimplemented
+from ...core.api_error import ApiError
+from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
+from ...core.jsonable_encoder import jsonable_encoder
+from ...core.pydantic_utilities import pydantic_v1
+from ...core.request_options import RequestOptions
+from ...entity_group_types.types.entity_group_id import EntityGroupId
+from ...entity_group_types.types.entity_group_user_request import EntityGroupUserRequest
+from ...entity_group_types.types.entity_group_user_response import EntityGroupUserResponse
+from ...entity_group_types.types.find_entity_group_user_response import FindEntityGroupUserResponse
+from ...entity_types.types.entity_user_id import EntityUserId
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
 
 
-class EntityGroupClient:
+class UserClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
-        self.user = UserClient(client_wrapper=self._client_wrapper)
-        self.invoice = InvoiceClient(client_wrapper=self._client_wrapper)
 
-    def get_all(
+    def find(
         self,
+        entity_group_id: EntityGroupId,
         *,
+        foreign_id: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        role: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        name: typing.Optional[str] = None,
+        email: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
-        starting_after: typing.Optional[EntityGroupId] = None,
+        starting_after: typing.Optional[EntityUserId] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> EntityGroupFindResponse:
+    ) -> FindEntityGroupUserResponse:
         """
-        Get all entity groups. If using a JWT, will return all groups the entity is part of. If using an API key, will return all groups for the organization.
+        Search entity group users
 
         Parameters
         ----------
-        limit : typing.Optional[int]
-            The maximum number of results to return. Defaults to 1. Max is 10.
+        entity_group_id : EntityGroupId
+            Entity Group ID
 
-        starting_after : typing.Optional[EntityGroupId]
+        foreign_id : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            ID used to identify user in your system
+
+        role : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter users by role. If multiple roles are provided, users with any of the roles will be returned.
+
+        name : typing.Optional[str]
+            Filter users by name. Partial matches are supported.
+
+        email : typing.Optional[str]
+            Filter users by email. Partial matches are supported.
+
+        limit : typing.Optional[int]
+            Number of entities to return. Limit can range between 1 and 100, and the default is 10.
+
+        starting_after : typing.Optional[EntityUserId]
+            The ID of the user to start after. If not provided, the first page of entities will be returned.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        EntityGroupFindResponse
+        FindEntityGroupUserResponse
 
         Examples
         --------
@@ -63,12 +81,22 @@ class EntityGroupClient:
         client = Mercoa(
             token="YOUR_TOKEN",
         )
-        client.entity_group.get_all()
+        client.entity_group.user.find(
+            entity_group_id="entg_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            name="John",
+        )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "entityGroups",
+            f"entityGroup/{jsonable_encoder(entity_group_id)}/users",
             method="GET",
-            params={"limit": limit, "startingAfter": starting_after},
+            params={
+                "foreignId": foreign_id,
+                "role": role,
+                "name": name,
+                "email": email,
+                "limit": limit,
+                "startingAfter": starting_after,
+            },
             request_options=request_options,
         )
         try:
@@ -76,7 +104,7 @@ class EntityGroupClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic_v1.parse_obj_as(EntityGroupFindResponse, _response_json)  # type: ignore
+            return pydantic_v1.parse_obj_as(FindEntityGroupUserResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "BadRequest":
                 raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
@@ -95,48 +123,69 @@ class EntityGroupClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def create(
-        self, *, request: EntityGroupRequest, request_options: typing.Optional[RequestOptions] = None
-    ) -> EntityGroupResponse:
+        self,
+        entity_group_id: EntityGroupId,
+        *,
+        request: EntityGroupUserRequest,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> EntityGroupUserResponse:
         """
-        Create an entity group
+        Create entity user that will be added to all entities in the group.
 
         Parameters
         ----------
-        request : EntityGroupRequest
+        entity_group_id : EntityGroupId
+            Entity Group ID
+
+        request : EntityGroupUserRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        EntityGroupResponse
+        EntityGroupUserResponse
 
         Examples
         --------
-        from mercoa import EntityGroupRequest
+        from mercoa import EntityGroupUserEntityRequest, EntityGroupUserRequest
         from mercoa.client import Mercoa
 
         client = Mercoa(
             token="YOUR_TOKEN",
         )
-        client.entity_group.create(
-            request=EntityGroupRequest(
-                entity_ids=[
-                    "ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-                    "ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+        client.entity_group.user.create(
+            entity_group_id="entg_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            request=EntityGroupUserRequest(
+                foreign_id="MY-DB-ID-12345",
+                email="john.doe@acme.com",
+                name="John Doe",
+                entities=[
+                    EntityGroupUserEntityRequest(
+                        roles=["admin", "approver"],
+                        entity_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+                    ),
+                    EntityGroupUserEntityRequest(
+                        roles=["viewer"],
+                        entity_id="ent_574s93r-3943-fu39-g9dfr-33b42a55812c",
+                    ),
                 ],
             ),
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "entityGroup", method="POST", json=request, request_options=request_options, omit=OMIT
+            f"entityGroup/{jsonable_encoder(entity_group_id)}/user",
+            method="POST",
+            json=request,
+            request_options=request_options,
+            omit=OMIT,
         )
         try:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic_v1.parse_obj_as(EntityGroupResponse, _response_json)  # type: ignore
+            return pydantic_v1.parse_obj_as(EntityGroupUserResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "BadRequest":
                 raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
@@ -155,21 +204,29 @@ class EntityGroupClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get(
-        self, entity_group_id: EntityGroupId, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> EntityGroupResponse:
+        self,
+        entity_group_id: EntityGroupId,
+        foreign_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> EntityGroupUserResponse:
         """
-        Get an entity group
+        Get entity user from a group
 
         Parameters
         ----------
         entity_group_id : EntityGroupId
+            Entity Group ID
+
+        foreign_id : str
+            ID used to identify user in your system
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        EntityGroupResponse
+        EntityGroupUserResponse
 
         Examples
         --------
@@ -178,19 +235,22 @@ class EntityGroupClient:
         client = Mercoa(
             token="YOUR_TOKEN",
         )
-        client.entity_group.get(
-            entity_group_id="entg_a3582b70-fd04-4888-9185-a640ae9048be",
+        client.entity_group.user.get(
+            entity_group_id="entg_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            foreign_id="MY-DB-ID-12345",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"entityGroup/{jsonable_encoder(entity_group_id)}", method="GET", request_options=request_options
+            f"entityGroup/{jsonable_encoder(entity_group_id)}/user/{jsonable_encoder(foreign_id)}",
+            method="GET",
+            request_options=request_options,
         )
         try:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic_v1.parse_obj_as(EntityGroupResponse, _response_json)  # type: ignore
+            return pydantic_v1.parse_obj_as(EntityGroupUserResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "BadRequest":
                 raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
@@ -211,46 +271,61 @@ class EntityGroupClient:
     def update(
         self,
         entity_group_id: EntityGroupId,
+        foreign_id: str,
         *,
-        request: EntityGroupRequest,
+        request: EntityGroupUserRequest,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> EntityGroupResponse:
+    ) -> EntityGroupUserResponse:
         """
-        Update an entity group
+        Update entity user for all entities in the group.
 
         Parameters
         ----------
         entity_group_id : EntityGroupId
+            Entity Group ID
 
-        request : EntityGroupRequest
+        foreign_id : str
+            ID used to identify user in your system
+
+        request : EntityGroupUserRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        EntityGroupResponse
+        EntityGroupUserResponse
 
         Examples
         --------
-        from mercoa import EntityGroupRequest
+        from mercoa import EntityGroupUserEntityRequest, EntityGroupUserRequest
         from mercoa.client import Mercoa
 
         client = Mercoa(
             token="YOUR_TOKEN",
         )
-        client.entity_group.update(
-            entity_group_id="entg_a3582b70-fd04-4888-9185-a640ae9048be",
-            request=EntityGroupRequest(
-                entity_ids=[
-                    "ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-                    "ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+        client.entity_group.user.update(
+            entity_group_id="entg_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            foreign_id="MY-DB-ID-12345",
+            request=EntityGroupUserRequest(
+                foreign_id="MY-DB-ID-12345",
+                email="john.doe@acme.com",
+                name="John Doe",
+                entities=[
+                    EntityGroupUserEntityRequest(
+                        roles=["admin", "approver"],
+                        entity_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+                    ),
+                    EntityGroupUserEntityRequest(
+                        roles=["viewer"],
+                        entity_id="ent_574s93r-3943-fu39-g9dfr-33b42a55812c",
+                    ),
                 ],
             ),
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"entityGroup/{jsonable_encoder(entity_group_id)}",
+            f"entityGroup/{jsonable_encoder(entity_group_id)}/user/{jsonable_encoder(foreign_id)}",
             method="POST",
             json=request,
             request_options=request_options,
@@ -261,7 +336,7 @@ class EntityGroupClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic_v1.parse_obj_as(EntityGroupResponse, _response_json)  # type: ignore
+            return pydantic_v1.parse_obj_as(EntityGroupUserResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "BadRequest":
                 raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
@@ -280,14 +355,22 @@ class EntityGroupClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def delete(
-        self, entity_group_id: EntityGroupId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_group_id: EntityGroupId,
+        foreign_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
-        Delete an entity group
+        Delete entity user from all entities in the group. This will also remove the user from all approval policies. If an approval policy will break as a result of this operation, this request will fail.
 
         Parameters
         ----------
         entity_group_id : EntityGroupId
+            Entity Group ID
+
+        foreign_id : str
+            ID used to identify user in your system
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -303,12 +386,15 @@ class EntityGroupClient:
         client = Mercoa(
             token="YOUR_TOKEN",
         )
-        client.entity_group.delete(
+        client.entity_group.user.delete(
             entity_group_id="string",
+            foreign_id="string",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"entityGroup/{jsonable_encoder(entity_group_id)}", method="DELETE", request_options=request_options
+            f"entityGroup/{jsonable_encoder(entity_group_id)}/user/{jsonable_encoder(foreign_id)}",
+            method="DELETE",
+            request_options=request_options,
         )
         if 200 <= _response.status_code < 300:
             return
@@ -334,35 +420,54 @@ class EntityGroupClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
 
-class AsyncEntityGroupClient:
+class AsyncUserClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
-        self.user = AsyncUserClient(client_wrapper=self._client_wrapper)
-        self.invoice = AsyncInvoiceClient(client_wrapper=self._client_wrapper)
 
-    async def get_all(
+    async def find(
         self,
+        entity_group_id: EntityGroupId,
         *,
+        foreign_id: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        role: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        name: typing.Optional[str] = None,
+        email: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
-        starting_after: typing.Optional[EntityGroupId] = None,
+        starting_after: typing.Optional[EntityUserId] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> EntityGroupFindResponse:
+    ) -> FindEntityGroupUserResponse:
         """
-        Get all entity groups. If using a JWT, will return all groups the entity is part of. If using an API key, will return all groups for the organization.
+        Search entity group users
 
         Parameters
         ----------
-        limit : typing.Optional[int]
-            The maximum number of results to return. Defaults to 1. Max is 10.
+        entity_group_id : EntityGroupId
+            Entity Group ID
 
-        starting_after : typing.Optional[EntityGroupId]
+        foreign_id : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            ID used to identify user in your system
+
+        role : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter users by role. If multiple roles are provided, users with any of the roles will be returned.
+
+        name : typing.Optional[str]
+            Filter users by name. Partial matches are supported.
+
+        email : typing.Optional[str]
+            Filter users by email. Partial matches are supported.
+
+        limit : typing.Optional[int]
+            Number of entities to return. Limit can range between 1 and 100, and the default is 10.
+
+        starting_after : typing.Optional[EntityUserId]
+            The ID of the user to start after. If not provided, the first page of entities will be returned.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        EntityGroupFindResponse
+        FindEntityGroupUserResponse
 
         Examples
         --------
@@ -376,15 +481,25 @@ class AsyncEntityGroupClient:
 
 
         async def main() -> None:
-            await client.entity_group.get_all()
+            await client.entity_group.user.find(
+                entity_group_id="entg_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                name="John",
+            )
 
 
         asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "entityGroups",
+            f"entityGroup/{jsonable_encoder(entity_group_id)}/users",
             method="GET",
-            params={"limit": limit, "startingAfter": starting_after},
+            params={
+                "foreignId": foreign_id,
+                "role": role,
+                "name": name,
+                "email": email,
+                "limit": limit,
+                "startingAfter": starting_after,
+            },
             request_options=request_options,
         )
         try:
@@ -392,7 +507,7 @@ class AsyncEntityGroupClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic_v1.parse_obj_as(EntityGroupFindResponse, _response_json)  # type: ignore
+            return pydantic_v1.parse_obj_as(FindEntityGroupUserResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "BadRequest":
                 raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
@@ -411,27 +526,34 @@ class AsyncEntityGroupClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def create(
-        self, *, request: EntityGroupRequest, request_options: typing.Optional[RequestOptions] = None
-    ) -> EntityGroupResponse:
+        self,
+        entity_group_id: EntityGroupId,
+        *,
+        request: EntityGroupUserRequest,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> EntityGroupUserResponse:
         """
-        Create an entity group
+        Create entity user that will be added to all entities in the group.
 
         Parameters
         ----------
-        request : EntityGroupRequest
+        entity_group_id : EntityGroupId
+            Entity Group ID
+
+        request : EntityGroupUserRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        EntityGroupResponse
+        EntityGroupUserResponse
 
         Examples
         --------
         import asyncio
 
-        from mercoa import EntityGroupRequest
+        from mercoa import EntityGroupUserEntityRequest, EntityGroupUserRequest
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -440,11 +562,21 @@ class AsyncEntityGroupClient:
 
 
         async def main() -> None:
-            await client.entity_group.create(
-                request=EntityGroupRequest(
-                    entity_ids=[
-                        "ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-                        "ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+            await client.entity_group.user.create(
+                entity_group_id="entg_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                request=EntityGroupUserRequest(
+                    foreign_id="MY-DB-ID-12345",
+                    email="john.doe@acme.com",
+                    name="John Doe",
+                    entities=[
+                        EntityGroupUserEntityRequest(
+                            roles=["admin", "approver"],
+                            entity_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+                        ),
+                        EntityGroupUserEntityRequest(
+                            roles=["viewer"],
+                            entity_id="ent_574s93r-3943-fu39-g9dfr-33b42a55812c",
+                        ),
                     ],
                 ),
             )
@@ -453,14 +585,18 @@ class AsyncEntityGroupClient:
         asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "entityGroup", method="POST", json=request, request_options=request_options, omit=OMIT
+            f"entityGroup/{jsonable_encoder(entity_group_id)}/user",
+            method="POST",
+            json=request,
+            request_options=request_options,
+            omit=OMIT,
         )
         try:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic_v1.parse_obj_as(EntityGroupResponse, _response_json)  # type: ignore
+            return pydantic_v1.parse_obj_as(EntityGroupUserResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "BadRequest":
                 raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
@@ -479,21 +615,29 @@ class AsyncEntityGroupClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get(
-        self, entity_group_id: EntityGroupId, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> EntityGroupResponse:
+        self,
+        entity_group_id: EntityGroupId,
+        foreign_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> EntityGroupUserResponse:
         """
-        Get an entity group
+        Get entity user from a group
 
         Parameters
         ----------
         entity_group_id : EntityGroupId
+            Entity Group ID
+
+        foreign_id : str
+            ID used to identify user in your system
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        EntityGroupResponse
+        EntityGroupUserResponse
 
         Examples
         --------
@@ -507,22 +651,25 @@ class AsyncEntityGroupClient:
 
 
         async def main() -> None:
-            await client.entity_group.get(
-                entity_group_id="entg_a3582b70-fd04-4888-9185-a640ae9048be",
+            await client.entity_group.user.get(
+                entity_group_id="entg_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                foreign_id="MY-DB-ID-12345",
             )
 
 
         asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"entityGroup/{jsonable_encoder(entity_group_id)}", method="GET", request_options=request_options
+            f"entityGroup/{jsonable_encoder(entity_group_id)}/user/{jsonable_encoder(foreign_id)}",
+            method="GET",
+            request_options=request_options,
         )
         try:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic_v1.parse_obj_as(EntityGroupResponse, _response_json)  # type: ignore
+            return pydantic_v1.parse_obj_as(EntityGroupUserResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "BadRequest":
                 raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
@@ -543,31 +690,36 @@ class AsyncEntityGroupClient:
     async def update(
         self,
         entity_group_id: EntityGroupId,
+        foreign_id: str,
         *,
-        request: EntityGroupRequest,
+        request: EntityGroupUserRequest,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> EntityGroupResponse:
+    ) -> EntityGroupUserResponse:
         """
-        Update an entity group
+        Update entity user for all entities in the group.
 
         Parameters
         ----------
         entity_group_id : EntityGroupId
+            Entity Group ID
 
-        request : EntityGroupRequest
+        foreign_id : str
+            ID used to identify user in your system
+
+        request : EntityGroupUserRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        EntityGroupResponse
+        EntityGroupUserResponse
 
         Examples
         --------
         import asyncio
 
-        from mercoa import EntityGroupRequest
+        from mercoa import EntityGroupUserEntityRequest, EntityGroupUserRequest
         from mercoa.client import AsyncMercoa
 
         client = AsyncMercoa(
@@ -576,12 +728,22 @@ class AsyncEntityGroupClient:
 
 
         async def main() -> None:
-            await client.entity_group.update(
-                entity_group_id="entg_a3582b70-fd04-4888-9185-a640ae9048be",
-                request=EntityGroupRequest(
-                    entity_ids=[
-                        "ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-                        "ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+            await client.entity_group.user.update(
+                entity_group_id="entg_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                foreign_id="MY-DB-ID-12345",
+                request=EntityGroupUserRequest(
+                    foreign_id="MY-DB-ID-12345",
+                    email="john.doe@acme.com",
+                    name="John Doe",
+                    entities=[
+                        EntityGroupUserEntityRequest(
+                            roles=["admin", "approver"],
+                            entity_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+                        ),
+                        EntityGroupUserEntityRequest(
+                            roles=["viewer"],
+                            entity_id="ent_574s93r-3943-fu39-g9dfr-33b42a55812c",
+                        ),
                     ],
                 ),
             )
@@ -590,7 +752,7 @@ class AsyncEntityGroupClient:
         asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"entityGroup/{jsonable_encoder(entity_group_id)}",
+            f"entityGroup/{jsonable_encoder(entity_group_id)}/user/{jsonable_encoder(foreign_id)}",
             method="POST",
             json=request,
             request_options=request_options,
@@ -601,7 +763,7 @@ class AsyncEntityGroupClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic_v1.parse_obj_as(EntityGroupResponse, _response_json)  # type: ignore
+            return pydantic_v1.parse_obj_as(EntityGroupUserResponse, _response_json)  # type: ignore
         if "errorName" in _response_json:
             if _response_json["errorName"] == "BadRequest":
                 raise BadRequest(pydantic_v1.parse_obj_as(str, _response_json["content"]))  # type: ignore
@@ -620,14 +782,22 @@ class AsyncEntityGroupClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def delete(
-        self, entity_group_id: EntityGroupId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_group_id: EntityGroupId,
+        foreign_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
-        Delete an entity group
+        Delete entity user from all entities in the group. This will also remove the user from all approval policies. If an approval policy will break as a result of this operation, this request will fail.
 
         Parameters
         ----------
         entity_group_id : EntityGroupId
+            Entity Group ID
+
+        foreign_id : str
+            ID used to identify user in your system
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -648,15 +818,18 @@ class AsyncEntityGroupClient:
 
 
         async def main() -> None:
-            await client.entity_group.delete(
+            await client.entity_group.user.delete(
                 entity_group_id="string",
+                foreign_id="string",
             )
 
 
         asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"entityGroup/{jsonable_encoder(entity_group_id)}", method="DELETE", request_options=request_options
+            f"entityGroup/{jsonable_encoder(entity_group_id)}/user/{jsonable_encoder(foreign_id)}",
+            method="DELETE",
+            request_options=request_options,
         )
         if 200 <= _response.status_code < 300:
             return

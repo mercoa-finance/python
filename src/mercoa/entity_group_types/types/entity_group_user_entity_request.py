@@ -5,40 +5,30 @@ import typing
 
 from ...core.datetime_utils import serialize_datetime
 from ...core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
-from ...invoice_types.types.invoice_id import InvoiceId
-from .notification_id import NotificationId
-from .notification_status import NotificationStatus
-from .notification_type import NotificationType
+from ...entity_types.types.entity_id import EntityId
 
 
-class NotificationResponse(pydantic_v1.BaseModel):
+class EntityGroupUserEntityRequest(pydantic_v1.BaseModel):
     """
     Examples
     --------
-    import datetime
+    from mercoa import EntityGroupUserEntityRequest
 
-    from mercoa import NotificationResponse
-
-    NotificationResponse(
-        id="notif_7df2974a-4069-454c-912f-7e58ebe030fb",
-        invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
-        type="INVOICE_APPROVAL_NEEDED",
-        status="SENT",
-        created_at=datetime.datetime.fromisoformat(
-            "2024-01-01 00:00:00+00:00",
-        ),
+    EntityGroupUserEntityRequest(
+        roles=["admin", "approver"],
+        entity_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
     )
     """
 
-    id: NotificationId
-    invoice_id: typing.Optional[InvoiceId] = pydantic_v1.Field(alias="invoiceId", default=None)
+    roles: typing.List[str] = pydantic_v1.Field()
     """
-    The invoice ID that this notification is related to. This field is only present for notifications related to invoices.
+    List of roles. A role can be any string. For example: "payer", "approver", "viewer"
     """
 
-    type: NotificationType
-    status: NotificationStatus
-    created_at: dt.datetime = pydantic_v1.Field(alias="createdAt")
+    entity_id: EntityId = pydantic_v1.Field(alias="entityId")
+    """
+    The IDs of the entities that these roles applies to.
+    """
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

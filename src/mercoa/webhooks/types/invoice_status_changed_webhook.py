@@ -17,6 +17,7 @@ class InvoiceStatusChangedWebhook(InvoiceWebhook):
     from mercoa import (
         Address,
         BusinessProfileResponse,
+        CounterpartyCustomizationAccount,
         CounterpartyResponse,
         EntityUserResponse,
         InvoiceResponse,
@@ -72,6 +73,13 @@ class InvoiceStatusChangedWebhook(InvoiceWebhook):
                         owners_provided=True,
                     ),
                 ),
+                accounts=[
+                    CounterpartyCustomizationAccount(
+                        account_id="85866843",
+                        postal_code="94105",
+                        name_on_account="John Doe",
+                    )
+                ],
                 payment_methods=[
                     PaymentMethodResponse_BankAccount(
                         id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",

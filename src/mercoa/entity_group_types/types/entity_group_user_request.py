@@ -5,40 +5,43 @@ import typing
 
 from ...core.datetime_utils import serialize_datetime
 from ...core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
-from ...invoice_types.types.invoice_id import InvoiceId
-from .notification_id import NotificationId
-from .notification_status import NotificationStatus
-from .notification_type import NotificationType
+from .entity_group_user_entity_request import EntityGroupUserEntityRequest
 
 
-class NotificationResponse(pydantic_v1.BaseModel):
+class EntityGroupUserRequest(pydantic_v1.BaseModel):
     """
     Examples
     --------
-    import datetime
+    from mercoa import EntityGroupUserEntityRequest, EntityGroupUserRequest
 
-    from mercoa import NotificationResponse
-
-    NotificationResponse(
-        id="notif_7df2974a-4069-454c-912f-7e58ebe030fb",
-        invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
-        type="INVOICE_APPROVAL_NEEDED",
-        status="SENT",
-        created_at=datetime.datetime.fromisoformat(
-            "2024-01-01 00:00:00+00:00",
-        ),
+    EntityGroupUserRequest(
+        foreign_id="MY-DB-ID-12345",
+        email="john.doe@acme.com",
+        name="John Doe",
+        entities=[
+            EntityGroupUserEntityRequest(
+                roles=["admin", "approver"],
+                entity_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+            ),
+            EntityGroupUserEntityRequest(
+                roles=["viewer"],
+                entity_id="ent_574s93r-3943-fu39-g9dfr-33b42a55812c",
+            ),
+        ],
     )
     """
 
-    id: NotificationId
-    invoice_id: typing.Optional[InvoiceId] = pydantic_v1.Field(alias="invoiceId", default=None)
+    foreign_id: str = pydantic_v1.Field(alias="foreignId")
     """
-    The invoice ID that this notification is related to. This field is only present for notifications related to invoices.
+    The ID used to identify this user in your system. This is a required field and needs to be unique for all users in the group.
     """
 
-    type: NotificationType
-    status: NotificationStatus
-    created_at: dt.datetime = pydantic_v1.Field(alias="createdAt")
+    email: typing.Optional[str] = None
+    name: typing.Optional[str] = None
+    entities: typing.Optional[typing.List[EntityGroupUserEntityRequest]] = pydantic_v1.Field(default=None)
+    """
+    List of roles per entity. By default, the user will have no roles.
+    """
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

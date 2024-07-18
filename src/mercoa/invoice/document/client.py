@@ -10,13 +10,13 @@ from ...commons.errors.internal_server_error import InternalServerError
 from ...commons.errors.not_found import NotFound
 from ...commons.errors.unauthorized import Unauthorized
 from ...commons.errors.unimplemented import Unimplemented
+from ...commons.types.document_response import DocumentResponse
 from ...core.api_error import ApiError
 from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ...core.jsonable_encoder import jsonable_encoder
 from ...core.pydantic_utilities import pydantic_v1
 from ...core.request_options import RequestOptions
 from ...email_log_types.types.email_log_response import EmailLogResponse
-from ...invoice_types.types.document_response import DocumentResponse
 from ...invoice_types.types.invoice_id import InvoiceId
 
 # this is used as the default value for optional parameters
@@ -82,11 +82,7 @@ class DocumentClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def upload(
-        self,
-        invoice_id: InvoiceId,
-        *,
-        document: typing.Optional[str] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, invoice_id: InvoiceId, *, document: str, request_options: typing.Optional[RequestOptions] = None
     ) -> None:
         """
         Upload documents (scanned/uploaded PDFs and images) associated with this Invoice
@@ -95,7 +91,7 @@ class DocumentClient:
         ----------
         invoice_id : InvoiceId
 
-        document : typing.Optional[str]
+        document : str
             Base64 encoded image or PDF of invoice document. PNG, JPG, WEBP, and PDF are supported. 10MB max.
 
         request_options : typing.Optional[RequestOptions]
@@ -438,11 +434,7 @@ class AsyncDocumentClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def upload(
-        self,
-        invoice_id: InvoiceId,
-        *,
-        document: typing.Optional[str] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, invoice_id: InvoiceId, *, document: str, request_options: typing.Optional[RequestOptions] = None
     ) -> None:
         """
         Upload documents (scanned/uploaded PDFs and images) associated with this Invoice
@@ -451,7 +443,7 @@ class AsyncDocumentClient:
         ----------
         invoice_id : InvoiceId
 
-        document : typing.Optional[str]
+        document : str
             Base64 encoded image or PDF of invoice document. PNG, JPG, WEBP, and PDF are supported. 10MB max.
 
         request_options : typing.Optional[RequestOptions]

@@ -6,6 +6,7 @@ import typing
 from ...core.datetime_utils import serialize_datetime
 from ...core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
 from ...payment_method_types.types.payment_method_response import PaymentMethodResponse
+from .counterparty_customization_account import CounterpartyCustomizationAccount
 from .counterparty_invoice_metrics_response import CounterpartyInvoiceMetricsResponse
 from .counterparty_network_type import CounterpartyNetworkType
 from .entity_response import EntityResponse
@@ -20,6 +21,7 @@ class CounterpartyResponse(EntityResponse):
     from mercoa import (
         Address,
         BusinessProfileResponse,
+        CounterpartyCustomizationAccount,
         CounterpartyResponse,
         PaymentMethodResponse_BankAccount,
         PhoneNumber,
@@ -66,6 +68,13 @@ class CounterpartyResponse(EntityResponse):
                 owners_provided=True,
             ),
         ),
+        accounts=[
+            CounterpartyCustomizationAccount(
+                account_id="85866843",
+                postal_code="94105",
+                name_on_account="John Doe",
+            )
+        ],
         payment_methods=[
             PaymentMethodResponse_BankAccount(
                 id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
@@ -90,9 +99,9 @@ class CounterpartyResponse(EntityResponse):
     )
     """
 
-    account_id: typing.Optional[str] = pydantic_v1.Field(alias="accountId", default=None)
+    accounts: typing.Optional[typing.List[CounterpartyCustomizationAccount]] = pydantic_v1.Field(default=None)
     """
-    If the entity searching for counterparties has an Account ID configured in the Payee/Payor relationship, it will be returned
+    If the entity searching for counterparties has any accounts configured in the Payee/Payor relationship, they will be returned
     """
 
     logo: typing.Optional[str] = pydantic_v1.Field(default=None)

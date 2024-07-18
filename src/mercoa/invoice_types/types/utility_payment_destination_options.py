@@ -5,40 +5,13 @@ import typing
 
 from ...core.datetime_utils import serialize_datetime
 from ...core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
-from ...invoice_types.types.invoice_id import InvoiceId
-from .notification_id import NotificationId
-from .notification_status import NotificationStatus
-from .notification_type import NotificationType
 
 
-class NotificationResponse(pydantic_v1.BaseModel):
+class UtilityPaymentDestinationOptions(pydantic_v1.BaseModel):
+    account_id: str = pydantic_v1.Field(alias="accountId")
     """
-    Examples
-    --------
-    import datetime
-
-    from mercoa import NotificationResponse
-
-    NotificationResponse(
-        id="notif_7df2974a-4069-454c-912f-7e58ebe030fb",
-        invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
-        type="INVOICE_APPROVAL_NEEDED",
-        status="SENT",
-        created_at=datetime.datetime.fromisoformat(
-            "2024-01-01 00:00:00+00:00",
-        ),
-    )
+    The ID for the utility account to pay with. Links to accounts listed on payor/payee relationship.
     """
-
-    id: NotificationId
-    invoice_id: typing.Optional[InvoiceId] = pydantic_v1.Field(alias="invoiceId", default=None)
-    """
-    The invoice ID that this notification is related to. This field is only present for notifications related to invoices.
-    """
-
-    type: NotificationType
-    status: NotificationStatus
-    created_at: dt.datetime = pydantic_v1.Field(alias="createdAt")
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

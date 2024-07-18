@@ -35,6 +35,7 @@ from .payment_method_request import (
     PaymentMethodRequest_Check,
     PaymentMethodRequest_Custom,
     PaymentMethodRequest_OffPlatform,
+    PaymentMethodRequest_Utility,
 )
 from .payment_method_response import (
     PaymentMethodResponse,
@@ -43,6 +44,7 @@ from .payment_method_response import (
     PaymentMethodResponse_Check,
     PaymentMethodResponse_Custom,
     PaymentMethodResponse_OffPlatform,
+    PaymentMethodResponse_Utility,
 )
 from .payment_method_type import PaymentMethodType
 from .payment_method_update_request import (
@@ -52,8 +54,11 @@ from .payment_method_update_request import (
     PaymentMethodUpdateRequest_Check,
     PaymentMethodUpdateRequest_Custom,
     PaymentMethodUpdateRequest_OffPlatform,
+    PaymentMethodUpdateRequest_Utility,
 )
 from .plaid_link_request import PlaidLinkRequest
+from .utility_payment_method_request import UtilityPaymentMethodRequest
+from .utility_payment_method_response import UtilityPaymentMethodResponse
 
 __all__ = [
     "BankAccountCheckOptions",
@@ -90,12 +95,14 @@ __all__ = [
     "PaymentMethodRequest_Check",
     "PaymentMethodRequest_Custom",
     "PaymentMethodRequest_OffPlatform",
+    "PaymentMethodRequest_Utility",
     "PaymentMethodResponse",
     "PaymentMethodResponse_BankAccount",
     "PaymentMethodResponse_Card",
     "PaymentMethodResponse_Check",
     "PaymentMethodResponse_Custom",
     "PaymentMethodResponse_OffPlatform",
+    "PaymentMethodResponse_Utility",
     "PaymentMethodType",
     "PaymentMethodUpdateRequest",
     "PaymentMethodUpdateRequest_BankAccount",
@@ -103,5 +110,8 @@ __all__ = [
     "PaymentMethodUpdateRequest_Check",
     "PaymentMethodUpdateRequest_Custom",
     "PaymentMethodUpdateRequest_OffPlatform",
+    "PaymentMethodUpdateRequest_Utility",
     "PlaidLinkRequest",
+    "UtilityPaymentMethodRequest",
+    "UtilityPaymentMethodResponse",
 ]

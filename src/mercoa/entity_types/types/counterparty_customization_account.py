@@ -5,40 +5,35 @@ import typing
 
 from ...core.datetime_utils import serialize_datetime
 from ...core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
-from ...invoice_types.types.invoice_id import InvoiceId
-from .notification_id import NotificationId
-from .notification_status import NotificationStatus
-from .notification_type import NotificationType
 
 
-class NotificationResponse(pydantic_v1.BaseModel):
+class CounterpartyCustomizationAccount(pydantic_v1.BaseModel):
     """
     Examples
     --------
-    import datetime
+    from mercoa import CounterpartyCustomizationAccount
 
-    from mercoa import NotificationResponse
-
-    NotificationResponse(
-        id="notif_7df2974a-4069-454c-912f-7e58ebe030fb",
-        invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
-        type="INVOICE_APPROVAL_NEEDED",
-        status="SENT",
-        created_at=datetime.datetime.fromisoformat(
-            "2024-01-01 00:00:00+00:00",
-        ),
+    CounterpartyCustomizationAccount(
+        account_id="85866843",
+        postal_code="94105",
+        name_on_account="John Doe",
     )
     """
 
-    id: NotificationId
-    invoice_id: typing.Optional[InvoiceId] = pydantic_v1.Field(alias="invoiceId", default=None)
+    account_id: str = pydantic_v1.Field(alias="accountId")
     """
-    The invoice ID that this notification is related to. This field is only present for notifications related to invoices.
+    The ID the counterparty has assigned to this account.
     """
 
-    type: NotificationType
-    status: NotificationStatus
-    created_at: dt.datetime = pydantic_v1.Field(alias="createdAt")
+    postal_code: typing.Optional[str] = pydantic_v1.Field(alias="postalCode", default=None)
+    """
+    The postal code the counterparty has assigned to this account.
+    """
+
+    name_on_account: typing.Optional[str] = pydantic_v1.Field(alias="nameOnAccount", default=None)
+    """
+    The name on the account the counterparty has assigned to this account.
+    """
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

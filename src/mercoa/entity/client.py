@@ -27,6 +27,7 @@ from ..payment_method_types.types.payment_method_id import PaymentMethodId
 from .approval_policy.client import ApprovalPolicyClient, AsyncApprovalPolicyClient
 from .counterparty.client import AsyncCounterpartyClient, CounterpartyClient
 from .customization.client import AsyncCustomizationClient, CustomizationClient
+from .document.client import AsyncDocumentClient, DocumentClient
 from .email_log.client import AsyncEmailLogClient, EmailLogClient
 from .external_accounting_system.client import AsyncExternalAccountingSystemClient, ExternalAccountingSystemClient
 from .invoice.client import AsyncInvoiceClient, InvoiceClient
@@ -48,6 +49,7 @@ class EntityClient:
         self.approval_policy = ApprovalPolicyClient(client_wrapper=self._client_wrapper)
         self.counterparty = CounterpartyClient(client_wrapper=self._client_wrapper)
         self.customization = CustomizationClient(client_wrapper=self._client_wrapper)
+        self.document = DocumentClient(client_wrapper=self._client_wrapper)
         self.external_accounting_system = ExternalAccountingSystemClient(client_wrapper=self._client_wrapper)
         self.invoice = InvoiceClient(client_wrapper=self._client_wrapper)
         self.metadata = MetadataClient(client_wrapper=self._client_wrapper)
@@ -868,6 +870,7 @@ class AsyncEntityClient:
         self.approval_policy = AsyncApprovalPolicyClient(client_wrapper=self._client_wrapper)
         self.counterparty = AsyncCounterpartyClient(client_wrapper=self._client_wrapper)
         self.customization = AsyncCustomizationClient(client_wrapper=self._client_wrapper)
+        self.document = AsyncDocumentClient(client_wrapper=self._client_wrapper)
         self.external_accounting_system = AsyncExternalAccountingSystemClient(client_wrapper=self._client_wrapper)
         self.invoice = AsyncInvoiceClient(client_wrapper=self._client_wrapper)
         self.metadata = AsyncMetadataClient(client_wrapper=self._client_wrapper)

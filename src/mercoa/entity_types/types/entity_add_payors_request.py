@@ -13,14 +13,24 @@ class EntityAddPayorsRequest(pydantic_v1.BaseModel):
     """
     Examples
     --------
-    from mercoa import CounterpartyCustomizationRequest, EntityAddPayorsRequest
+    from mercoa import (
+        CounterpartyCustomizationAccount,
+        CounterpartyCustomizationRequest,
+        EntityAddPayorsRequest,
+    )
 
     EntityAddPayorsRequest(
         payors=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
         customizations=[
             CounterpartyCustomizationRequest(
                 counterparty_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
-                account_id="85866843",
+                accounts=[
+                    CounterpartyCustomizationAccount(
+                        account_id="85866843",
+                        postal_code="94105",
+                        name_on_account="John Doe",
+                    )
+                ],
             )
         ],
     )
