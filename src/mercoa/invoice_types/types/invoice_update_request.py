@@ -6,6 +6,7 @@ import typing
 from ...core.datetime_utils import serialize_datetime
 from ...core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
 from ...entity_types.types.entity_id import EntityId
+from .invoice_line_item_update_request import InvoiceLineItemUpdateRequest
 from .invoice_request_base import InvoiceRequestBase
 
 
@@ -16,7 +17,7 @@ class InvoiceUpdateRequest(InvoiceRequestBase):
     import datetime
 
     from mercoa import (
-        InvoiceLineItemRequest,
+        InvoiceLineItemUpdateRequest,
         InvoiceUpdateRequest,
         PaymentDestinationOptions_Check,
     )
@@ -41,7 +42,8 @@ class InvoiceUpdateRequest(InvoiceRequestBase):
             delivery="MAIL",
         ),
         line_items=[
-            InvoiceLineItemRequest(
+            InvoiceLineItemUpdateRequest(
+                id="inli_26672f38-eb9a-48f1-a7a0-f1b855e38cd7",
                 amount=100.0,
                 currency="USD",
                 description="Product A",
@@ -63,6 +65,9 @@ class InvoiceUpdateRequest(InvoiceRequestBase):
     )
     """
 
+    line_items: typing.Optional[typing.List[InvoiceLineItemUpdateRequest]] = pydantic_v1.Field(
+        alias="lineItems", default=None
+    )
     creator_entity_id: typing.Optional[EntityId] = pydantic_v1.Field(alias="creatorEntityId", default=None)
     """
     ID of entity who created this invoice. If creating a payable invoice (AP), this must be the same as the payerId. If creating a receivable invoice (AR), this must be the same as the vendorId.

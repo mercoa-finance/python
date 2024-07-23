@@ -126,6 +126,8 @@ class FindInvoiceResponse(pydantic_v1.BaseModel):
                             is_default_source=True,
                             is_default_destination=True,
                             supported_currencies=["USD"],
+                            metadata={},
+                            frozen=False,
                             created_at=datetime.datetime.fromisoformat(
                                 "2021-01-01 00:00:00+00:00",
                             ),
@@ -147,6 +149,8 @@ class FindInvoiceResponse(pydantic_v1.BaseModel):
                     is_default_source=True,
                     is_default_destination=True,
                     supported_currencies=["USD"],
+                    metadata={},
+                    frozen=False,
                     created_at=datetime.datetime.fromisoformat(
                         "2021-01-01 00:00:00+00:00",
                     ),
@@ -196,6 +200,8 @@ class FindInvoiceResponse(pydantic_v1.BaseModel):
                             is_default_source=True,
                             is_default_destination=True,
                             supported_currencies=["USD"],
+                            metadata={},
+                            frozen=False,
                             created_at=datetime.datetime.fromisoformat(
                                 "2021-01-01 00:00:00+00:00",
                             ),
@@ -218,6 +224,8 @@ class FindInvoiceResponse(pydantic_v1.BaseModel):
                     is_default_source=False,
                     is_default_destination=True,
                     supported_currencies=["USD"],
+                    metadata={},
+                    frozen=False,
                     created_at=datetime.datetime.fromisoformat(
                         "2021-01-01 00:00:00+00:00",
                     ),

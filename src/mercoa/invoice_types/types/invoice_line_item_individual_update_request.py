@@ -5,26 +5,19 @@ import typing
 
 from ...core.datetime_utils import serialize_datetime
 from ...core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
-from ...payment_method_types.types.currency_code import CurrencyCode
-from .invoice_line_item_id import InvoiceLineItemId
 
 
-class InvoiceLineItemResponse(pydantic_v1.BaseModel):
+class InvoiceLineItemIndividualUpdateRequest(pydantic_v1.BaseModel):
     """
     Examples
     --------
     import datetime
 
-    from mercoa import InvoiceLineItemResponse
+    from mercoa import InvoiceLineItemIndividualUpdateRequest
 
-    InvoiceLineItemResponse(
-        id="inli_26672f38-eb9a-48f1-a7a0-f1b855e38cd7",
-        amount=100.0,
-        currency="USD",
-        description="Product A",
+    InvoiceLineItemIndividualUpdateRequest(
         name="Product A",
-        quantity=1,
-        unit_price=100.0,
+        description="Product A",
         service_start_date=datetime.datetime.fromisoformat(
             "2021-01-01 00:00:00+00:00",
         ),
@@ -33,30 +26,11 @@ class InvoiceLineItemResponse(pydantic_v1.BaseModel):
         ),
         metadata={"key1": "value1", "key2": "value2"},
         gl_account_id="600394",
-        created_at=datetime.datetime.fromisoformat(
-            "2021-01-01 00:00:00+00:00",
-        ),
-        updated_at=datetime.datetime.fromisoformat(
-            "2021-01-01 00:00:00+00:00",
-        ),
     )
     """
 
-    id: InvoiceLineItemId
-    amount: typing.Optional[float] = pydantic_v1.Field(default=None)
-    """
-    Total amount of line item in major units.
-    """
-
-    currency: CurrencyCode
-    description: typing.Optional[str] = None
     name: typing.Optional[str] = None
-    quantity: typing.Optional[int] = None
-    unit_price: typing.Optional[float] = pydantic_v1.Field(alias="unitPrice", default=None)
-    """
-    Unit price of line item in major units.
-    """
-
+    description: typing.Optional[str] = None
     service_start_date: typing.Optional[dt.datetime] = pydantic_v1.Field(alias="serviceStartDate", default=None)
     service_end_date: typing.Optional[dt.datetime] = pydantic_v1.Field(alias="serviceEndDate", default=None)
     metadata: typing.Optional[typing.Dict[str, str]] = None
@@ -64,9 +38,6 @@ class InvoiceLineItemResponse(pydantic_v1.BaseModel):
     """
     ID of general ledger account associated with this line item.
     """
-
-    created_at: dt.datetime = pydantic_v1.Field(alias="createdAt")
-    updated_at: dt.datetime = pydantic_v1.Field(alias="updatedAt")
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

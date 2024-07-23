@@ -6,6 +6,7 @@ import typing
 from ...core.datetime_utils import serialize_datetime
 from ...core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
 from ...entity_types.types.entity_id import EntityId
+from .invoice_line_item_creation_request import InvoiceLineItemCreationRequest
 from .invoice_request_base import InvoiceRequestBase
 
 
@@ -17,7 +18,7 @@ class InvoiceCreationRequest(InvoiceRequestBase):
 
     from mercoa import (
         InvoiceCreationRequest,
-        InvoiceLineItemRequest,
+        InvoiceLineItemCreationRequest,
         PaymentDestinationOptions_Check,
     )
 
@@ -41,7 +42,7 @@ class InvoiceCreationRequest(InvoiceRequestBase):
             delivery="MAIL",
         ),
         line_items=[
-            InvoiceLineItemRequest(
+            InvoiceLineItemCreationRequest(
                 amount=100.0,
                 currency="USD",
                 description="Product A",
@@ -63,6 +64,9 @@ class InvoiceCreationRequest(InvoiceRequestBase):
     )
     """
 
+    line_items: typing.Optional[typing.List[InvoiceLineItemCreationRequest]] = pydantic_v1.Field(
+        alias="lineItems", default=None
+    )
     creator_entity_id: EntityId = pydantic_v1.Field(alias="creatorEntityId")
     """
     ID of entity who created this invoice.

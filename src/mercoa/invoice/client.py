@@ -32,6 +32,7 @@ from ..invoice_types.types.invoice_update_request import InvoiceUpdateRequest
 from .approval.client import ApprovalClient, AsyncApprovalClient
 from .comment.client import AsyncCommentClient, CommentClient
 from .document.client import AsyncDocumentClient, DocumentClient
+from .line_item.client import AsyncLineItemClient, LineItemClient
 from .payment_links.client import AsyncPaymentLinksClient, PaymentLinksClient
 
 # this is used as the default value for optional parameters
@@ -41,6 +42,7 @@ OMIT = typing.cast(typing.Any, ...)
 class InvoiceClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
+        self.line_item = LineItemClient(client_wrapper=self._client_wrapper)
         self.approval = ApprovalClient(client_wrapper=self._client_wrapper)
         self.comment = CommentClient(client_wrapper=self._client_wrapper)
         self.document = DocumentClient(client_wrapper=self._client_wrapper)
@@ -212,7 +214,7 @@ class InvoiceClient:
 
         from mercoa import (
             InvoiceCreationRequest,
-            InvoiceLineItemRequest,
+            InvoiceLineItemCreationRequest,
             PaymentDestinationOptions_Check,
         )
         from mercoa.client import Mercoa
@@ -241,7 +243,7 @@ class InvoiceClient:
                     delivery="MAIL",
                 ),
                 line_items=[
-                    InvoiceLineItemRequest(
+                    InvoiceLineItemCreationRequest(
                         amount=100.0,
                         currency="USD",
                         description="Product A",
@@ -365,7 +367,7 @@ class InvoiceClient:
         import datetime
 
         from mercoa import (
-            InvoiceLineItemRequest,
+            InvoiceLineItemUpdateRequest,
             InvoiceUpdateRequest,
             PaymentDestinationOptions_Check,
         )
@@ -396,7 +398,8 @@ class InvoiceClient:
                     delivery="MAIL",
                 ),
                 line_items=[
-                    InvoiceLineItemRequest(
+                    InvoiceLineItemUpdateRequest(
+                        id="inli_26672f38-eb9a-48f1-a7a0-f1b855e38cd7",
                         amount=100.0,
                         currency="USD",
                         description="Product A",
@@ -504,6 +507,7 @@ class InvoiceClient:
 class AsyncInvoiceClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
+        self.line_item = AsyncLineItemClient(client_wrapper=self._client_wrapper)
         self.approval = AsyncApprovalClient(client_wrapper=self._client_wrapper)
         self.comment = AsyncCommentClient(client_wrapper=self._client_wrapper)
         self.document = AsyncDocumentClient(client_wrapper=self._client_wrapper)
@@ -684,7 +688,7 @@ class AsyncInvoiceClient:
 
         from mercoa import (
             InvoiceCreationRequest,
-            InvoiceLineItemRequest,
+            InvoiceLineItemCreationRequest,
             PaymentDestinationOptions_Check,
         )
         from mercoa.client import AsyncMercoa
@@ -716,7 +720,7 @@ class AsyncInvoiceClient:
                         delivery="MAIL",
                     ),
                     line_items=[
-                        InvoiceLineItemRequest(
+                        InvoiceLineItemCreationRequest(
                             amount=100.0,
                             currency="USD",
                             description="Product A",
@@ -854,7 +858,7 @@ class AsyncInvoiceClient:
         import datetime
 
         from mercoa import (
-            InvoiceLineItemRequest,
+            InvoiceLineItemUpdateRequest,
             InvoiceUpdateRequest,
             PaymentDestinationOptions_Check,
         )
@@ -888,7 +892,8 @@ class AsyncInvoiceClient:
                         delivery="MAIL",
                     ),
                     line_items=[
-                        InvoiceLineItemRequest(
+                        InvoiceLineItemUpdateRequest(
+                            id="inli_26672f38-eb9a-48f1-a7a0-f1b855e38cd7",
                             amount=100.0,
                             currency="USD",
                             description="Product A",

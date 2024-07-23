@@ -5,18 +5,18 @@ import typing
 
 from ...core.datetime_utils import serialize_datetime
 from ...core.pydantic_utilities import deep_union_pydantic_dicts, pydantic_v1
-from ...payment_method_types.types.currency_code import CurrencyCode
+from .invoice_line_item_request_base import InvoiceLineItemRequestBase
 
 
-class InvoiceLineItemRequest(pydantic_v1.BaseModel):
+class InvoiceLineItemCreationRequest(InvoiceLineItemRequestBase):
     """
     Examples
     --------
     import datetime
 
-    from mercoa import InvoiceLineItemRequest
+    from mercoa import InvoiceLineItemCreationRequest
 
-    InvoiceLineItemRequest(
+    InvoiceLineItemCreationRequest(
         amount=100.0,
         currency="USD",
         description="Product A",
@@ -34,36 +34,12 @@ class InvoiceLineItemRequest(pydantic_v1.BaseModel):
     )
     """
 
-    id: typing.Optional[str] = pydantic_v1.Field(default=None)
-    """
-    If provided, will overwrite line item on the invoice with this ID. If not provided, will create a new line item.
-    """
-
     amount: float = pydantic_v1.Field()
     """
     Total amount of line item in major units. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.
     """
 
-    currency: typing.Optional[CurrencyCode] = pydantic_v1.Field(default=None)
-    """
-    Currency code for the amount. Defaults to USD.
-    """
-
     description: str
-    name: typing.Optional[str] = None
-    quantity: typing.Optional[int] = None
-    unit_price: typing.Optional[float] = pydantic_v1.Field(alias="unitPrice", default=None)
-    """
-    Unit price of the line item in major units. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.
-    """
-
-    service_start_date: typing.Optional[dt.datetime] = pydantic_v1.Field(alias="serviceStartDate", default=None)
-    service_end_date: typing.Optional[dt.datetime] = pydantic_v1.Field(alias="serviceEndDate", default=None)
-    metadata: typing.Optional[typing.Dict[str, str]] = None
-    gl_account_id: typing.Optional[str] = pydantic_v1.Field(alias="glAccountId", default=None)
-    """
-    ID of general ledger account associated with this line item.
-    """
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

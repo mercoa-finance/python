@@ -29,6 +29,16 @@ class PaymentMethodBaseResponse(pydantic_v1.BaseModel):
     ID for this payment method in the external accounting system (e.g Rutter or Codat)
     """
 
+    frozen: bool = pydantic_v1.Field()
+    """
+    Frozen payment methods cannot be used for payments, but will still be returned in API responses.
+    """
+
+    metadata: typing.Dict[str, str] = pydantic_v1.Field()
+    """
+    Metadata associated with this payment method.
+    """
+
     created_at: dt.datetime = pydantic_v1.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic_v1.Field(alias="updatedAt")
 

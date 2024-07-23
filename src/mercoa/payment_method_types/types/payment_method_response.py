@@ -37,6 +37,8 @@ class PaymentMethodResponse_BankAccount(pydantic_v1.BaseModel):
         is_default_source=True,
         is_default_destination=True,
         supported_currencies=["USD"],
+        metadata={},
+        frozen=False,
         created_at=datetime.datetime.fromisoformat(
             "2021-01-01 00:00:00+00:00",
         ),
@@ -60,6 +62,8 @@ class PaymentMethodResponse_BankAccount(pydantic_v1.BaseModel):
     external_accounting_system_id: typing.Optional[str] = pydantic_v1.Field(
         alias="externalAccountingSystemId", default=None
     )
+    frozen: bool
+    metadata: typing.Dict[str, str]
     created_at: dt.datetime = pydantic_v1.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic_v1.Field(alias="updatedAt")
     type: typing.Literal["bankAccount"] = "bankAccount"
@@ -104,6 +108,8 @@ class PaymentMethodResponse_Card(pydantic_v1.BaseModel):
         is_default_source=True,
         is_default_destination=True,
         supported_currencies=["USD"],
+        metadata={},
+        frozen=False,
         created_at=datetime.datetime.fromisoformat(
             "2021-01-01 00:00:00+00:00",
         ),
@@ -125,6 +131,8 @@ class PaymentMethodResponse_Card(pydantic_v1.BaseModel):
     external_accounting_system_id: typing.Optional[str] = pydantic_v1.Field(
         alias="externalAccountingSystemId", default=None
     )
+    frozen: bool
+    metadata: typing.Dict[str, str]
     created_at: dt.datetime = pydantic_v1.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic_v1.Field(alias="updatedAt")
     type: typing.Literal["card"] = "card"
@@ -169,6 +177,8 @@ class PaymentMethodResponse_Check(pydantic_v1.BaseModel):
         is_default_source=True,
         is_default_destination=True,
         supported_currencies=["USD"],
+        metadata={},
+        frozen=False,
         created_at=datetime.datetime.fromisoformat(
             "2021-01-01 00:00:00+00:00",
         ),
@@ -192,6 +202,8 @@ class PaymentMethodResponse_Check(pydantic_v1.BaseModel):
     external_accounting_system_id: typing.Optional[str] = pydantic_v1.Field(
         alias="externalAccountingSystemId", default=None
     )
+    frozen: bool
+    metadata: typing.Dict[str, str]
     created_at: dt.datetime = pydantic_v1.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic_v1.Field(alias="updatedAt")
     type: typing.Literal["check"] = "check"
@@ -236,6 +248,8 @@ class PaymentMethodResponse_Custom(pydantic_v1.BaseModel):
         is_default_source=True,
         is_default_destination=True,
         supported_currencies=["USD"],
+        metadata={},
+        frozen=False,
         created_at=datetime.datetime.fromisoformat(
             "2021-01-01 00:00:00+00:00",
         ),
@@ -259,6 +273,8 @@ class PaymentMethodResponse_Custom(pydantic_v1.BaseModel):
     external_accounting_system_id: typing.Optional[str] = pydantic_v1.Field(
         alias="externalAccountingSystemId", default=None
     )
+    frozen: bool
+    metadata: typing.Dict[str, str]
     created_at: dt.datetime = pydantic_v1.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic_v1.Field(alias="updatedAt")
     type: typing.Literal["custom"] = "custom"
@@ -303,6 +319,8 @@ class PaymentMethodResponse_OffPlatform(pydantic_v1.BaseModel):
         is_default_source=True,
         is_default_destination=True,
         supported_currencies=["USD"],
+        metadata={},
+        frozen=False,
         created_at=datetime.datetime.fromisoformat(
             "2021-01-01 00:00:00+00:00",
         ),
@@ -319,6 +337,8 @@ class PaymentMethodResponse_OffPlatform(pydantic_v1.BaseModel):
     external_accounting_system_id: typing.Optional[str] = pydantic_v1.Field(
         alias="externalAccountingSystemId", default=None
     )
+    frozen: bool
+    metadata: typing.Dict[str, str]
     created_at: dt.datetime = pydantic_v1.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic_v1.Field(alias="updatedAt")
     type: typing.Literal["offPlatform"] = "offPlatform"
@@ -363,6 +383,8 @@ class PaymentMethodResponse_Utility(pydantic_v1.BaseModel):
         is_default_source=True,
         is_default_destination=True,
         supported_currencies=["USD"],
+        metadata={},
+        frozen=False,
         created_at=datetime.datetime.fromisoformat(
             "2021-01-01 00:00:00+00:00",
         ),
@@ -380,6 +402,8 @@ class PaymentMethodResponse_Utility(pydantic_v1.BaseModel):
     external_accounting_system_id: typing.Optional[str] = pydantic_v1.Field(
         alias="externalAccountingSystemId", default=None
     )
+    frozen: bool
+    metadata: typing.Dict[str, str]
     created_at: dt.datetime = pydantic_v1.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic_v1.Field(alias="updatedAt")
     type: typing.Literal["utility"] = "utility"
@@ -421,6 +445,8 @@ PaymentMethodResponse_BankAccount(
     is_default_source=True,
     is_default_destination=True,
     supported_currencies=["USD"],
+    metadata={},
+    frozen=False,
     created_at=datetime.datetime.fromisoformat(
         "2021-01-01 00:00:00+00:00",
     ),

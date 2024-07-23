@@ -20,8 +20,12 @@ from .invoice_failure_type import InvoiceFailureType
 from .invoice_fees_request import InvoiceFeesRequest
 from .invoice_fees_response import InvoiceFeesResponse
 from .invoice_id import InvoiceId
-from .invoice_line_item_request import InvoiceLineItemRequest
+from .invoice_line_item_creation_request import InvoiceLineItemCreationRequest
+from .invoice_line_item_id import InvoiceLineItemId
+from .invoice_line_item_individual_update_request import InvoiceLineItemIndividualUpdateRequest
+from .invoice_line_item_request_base import InvoiceLineItemRequestBase
 from .invoice_line_item_response import InvoiceLineItemResponse
+from .invoice_line_item_update_request import InvoiceLineItemUpdateRequest
 from .invoice_metadata_filter import InvoiceMetadataFilter
 from .invoice_metrics_per_date_group_by import InvoiceMetricsPerDateGroupBy
 from .invoice_metrics_per_date_response import InvoiceMetricsPerDateResponse
@@ -60,8 +64,12 @@ __all__ = [
     "InvoiceFeesRequest",
     "InvoiceFeesResponse",
     "InvoiceId",
-    "InvoiceLineItemRequest",
+    "InvoiceLineItemCreationRequest",
+    "InvoiceLineItemId",
+    "InvoiceLineItemIndividualUpdateRequest",
+    "InvoiceLineItemRequestBase",
     "InvoiceLineItemResponse",
+    "InvoiceLineItemUpdateRequest",
     "InvoiceMetadataFilter",
     "InvoiceMetricsPerDateGroupBy",
     "InvoiceMetricsPerDateResponse",

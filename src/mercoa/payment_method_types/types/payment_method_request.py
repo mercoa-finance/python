@@ -40,6 +40,8 @@ class PaymentMethodRequest_BankAccount(pydantic_v1.BaseModel):
     external_accounting_system_id: typing.Optional[str] = pydantic_v1.Field(
         alias="externalAccountingSystemId", default=None
     )
+    frozen: typing.Optional[bool] = None
+    metadata: typing.Optional[typing.Dict[str, str]] = None
     type: typing.Literal["bankAccount"] = "bankAccount"
 
     def json(self, **kwargs: typing.Any) -> str:
@@ -87,6 +89,8 @@ class PaymentMethodRequest_Card(pydantic_v1.BaseModel):
     external_accounting_system_id: typing.Optional[str] = pydantic_v1.Field(
         alias="externalAccountingSystemId", default=None
     )
+    frozen: typing.Optional[bool] = None
+    metadata: typing.Optional[typing.Dict[str, str]] = None
     type: typing.Literal["card"] = "card"
 
     def json(self, **kwargs: typing.Any) -> str:
@@ -135,6 +139,8 @@ class PaymentMethodRequest_Check(pydantic_v1.BaseModel):
     external_accounting_system_id: typing.Optional[str] = pydantic_v1.Field(
         alias="externalAccountingSystemId", default=None
     )
+    frozen: typing.Optional[bool] = None
+    metadata: typing.Optional[typing.Dict[str, str]] = None
     type: typing.Literal["check"] = "check"
 
     def json(self, **kwargs: typing.Any) -> str:
@@ -182,6 +188,8 @@ class PaymentMethodRequest_Custom(pydantic_v1.BaseModel):
     external_accounting_system_id: typing.Optional[str] = pydantic_v1.Field(
         alias="externalAccountingSystemId", default=None
     )
+    frozen: typing.Optional[bool] = None
+    metadata: typing.Optional[typing.Dict[str, str]] = None
     type: typing.Literal["custom"] = "custom"
 
     def json(self, **kwargs: typing.Any) -> str:
@@ -223,6 +231,8 @@ class PaymentMethodRequest_OffPlatform(pydantic_v1.BaseModel):
     external_accounting_system_id: typing.Optional[str] = pydantic_v1.Field(
         alias="externalAccountingSystemId", default=None
     )
+    frozen: typing.Optional[bool] = None
+    metadata: typing.Optional[typing.Dict[str, str]] = None
     type: typing.Literal["offPlatform"] = "offPlatform"
 
     def json(self, **kwargs: typing.Any) -> str:
@@ -265,6 +275,8 @@ class PaymentMethodRequest_Utility(pydantic_v1.BaseModel):
     external_accounting_system_id: typing.Optional[str] = pydantic_v1.Field(
         alias="externalAccountingSystemId", default=None
     )
+    frozen: typing.Optional[bool] = None
+    metadata: typing.Optional[typing.Dict[str, str]] = None
     type: typing.Literal["utility"] = "utility"
 
     def json(self, **kwargs: typing.Any) -> str:

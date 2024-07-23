@@ -14,6 +14,7 @@ from .environment import MercoaEnvironment
 from .invoice.client import AsyncInvoiceClient, InvoiceClient
 from .ocr.client import AsyncOcrClient, OcrClient
 from .organization.client import AsyncOrganizationClient, OrganizationClient
+from .payment_methods.client import AsyncPaymentMethodsClient, PaymentMethodsClient
 
 
 class Mercoa:
@@ -82,6 +83,7 @@ class Mercoa:
         self.calculate = CalculateClient(client_wrapper=self._client_wrapper)
         self.custom_payment_method_schema = CustomPaymentMethodSchemaClient(client_wrapper=self._client_wrapper)
         self.ocr = OcrClient(client_wrapper=self._client_wrapper)
+        self.payment_methods = PaymentMethodsClient(client_wrapper=self._client_wrapper)
 
 
 class AsyncMercoa:
@@ -150,6 +152,7 @@ class AsyncMercoa:
         self.calculate = AsyncCalculateClient(client_wrapper=self._client_wrapper)
         self.custom_payment_method_schema = AsyncCustomPaymentMethodSchemaClient(client_wrapper=self._client_wrapper)
         self.ocr = AsyncOcrClient(client_wrapper=self._client_wrapper)
+        self.payment_methods = AsyncPaymentMethodsClient(client_wrapper=self._client_wrapper)
 
 
 def _get_base_url(*, base_url: typing.Optional[str] = None, environment: MercoaEnvironment) -> str:

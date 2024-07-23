@@ -25,6 +25,16 @@ class PaymentMethodBaseRequest(pydantic_v1.BaseModel):
     ID for this payment method in the external accounting system (e.g Rutter or Codat)
     """
 
+    frozen: typing.Optional[bool] = pydantic_v1.Field(default=None)
+    """
+    If true, this payment method will be frozen. Frozen payment methods cannot be used for payments, but will still be returned in API responses.
+    """
+
+    metadata: typing.Optional[typing.Dict[str, str]] = pydantic_v1.Field(default=None)
+    """
+    Metadata associated with this payment method.
+    """
+
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
         return super().json(**kwargs_with_defaults)

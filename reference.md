@@ -3069,6 +3069,109 @@ client.invoice.delete(
 </dl>
 </details>
 
+## Invoice LineItem
+<details><summary><code>client.invoice.line_item.<a href="src/mercoa/invoice/line_item/client.py">update</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Update invoice line item
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+import datetime
+
+from mercoa import InvoiceLineItemIndividualUpdateRequest
+from mercoa.client import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.invoice.line_item.update(
+    invoice_id="in_d8f68285-1c6d-4d5a-a9e3-252c3180fac4",
+    line_item_id="inli_8aa84cb8-2ae7-4579-8fa3-87586e7c14a7",
+    request=InvoiceLineItemIndividualUpdateRequest(
+        name="Product A",
+        description="Product A",
+        service_start_date=datetime.datetime.fromisoformat(
+            "2021-01-01 00:00:00+00:00",
+        ),
+        service_end_date=datetime.datetime.fromisoformat(
+            "2021-01-31 00:00:00+00:00",
+        ),
+        metadata={"key1": "value1", "key2": "value2"},
+        gl_account_id="600394",
+    ),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**invoice_id:** `InvoiceId` — Invoice ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**line_item_id:** `InvoiceLineItemId` — Invoice Line Item ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `InvoiceLineItemIndividualUpdateRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Organization
 <details><summary><code>client.organization.<a href="src/mercoa/organization/client.py">get</a>(...)</code></summary>
 <dl>
@@ -10574,6 +10677,89 @@ client.organization.notification_configuration.reset(
 <dd>
 
 **notification_type:** `NotificationType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## PaymentMethods
+<details><summary><code>client.payment_methods.<a href="src/mercoa/payment_methods/client.py">find</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa.client import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.payment_methods.find(
+    entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Number of payment methods to return. Limit can range between 1 and 100, and the default is 10.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**starting_after:** `typing.Optional[PaymentMethodId]` — The ID of the payment method to start after. If not provided, the first page of payment methods will be returned.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**type:** `typing.Optional[
+    typing.Union[PaymentMethodType, typing.Sequence[PaymentMethodType]]
+]` — Type of payment method to filter
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entity_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Entity ID to filter
     
 </dd>
 </dl>

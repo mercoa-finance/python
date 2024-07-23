@@ -12,7 +12,6 @@ from ...payment_method_types.types.payment_method_id import PaymentMethodId
 from .approval_slot_assignment import ApprovalSlotAssignment
 from .invoice_failure_type import InvoiceFailureType
 from .invoice_fees_request import InvoiceFeesRequest
-from .invoice_line_item_request import InvoiceLineItemRequest
 from .invoice_status import InvoiceStatus
 from .payment_destination_options import PaymentDestinationOptions
 
@@ -83,12 +82,9 @@ class InvoiceRequestBase(pydantic_v1.BaseModel):
     Set approvers for this invoice.
     """
 
-    line_items: typing.Optional[typing.List[InvoiceLineItemRequest]] = pydantic_v1.Field(
-        alias="lineItems", default=None
-    )
     metadata: typing.Optional[typing.Dict[str, str]] = pydantic_v1.Field(default=None)
     """
-    Metadata associated with this invoice. You can specify up to 10 keys, with key names up to 40 characters long and values up to 200 characters long.
+    Metadata associated with this invoice.
     """
 
     foreign_id: typing.Optional[str] = pydantic_v1.Field(alias="foreignId", default=None)
