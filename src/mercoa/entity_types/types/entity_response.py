@@ -93,6 +93,11 @@ class EntityResponse(pydantic_v1.BaseModel):
 
     account_type: AccountType = pydantic_v1.Field(alias="accountType")
     profile: ProfileResponse
+    logo: typing.Optional[str] = pydantic_v1.Field(default=None)
+    """
+    URL for the entity logo
+    """
+
     status: EntityStatus
     accepted_tos: bool = pydantic_v1.Field(alias="acceptedTos")
     """

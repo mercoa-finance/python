@@ -106,11 +106,6 @@ class CounterpartyResponse(EntityResponse):
     If the entity searching for counterparties has any accounts configured in the Payee/Payor relationship, they will be returned
     """
 
-    logo: typing.Optional[str] = pydantic_v1.Field(default=None)
-    """
-    URL to the entity logo
-    """
-
     payment_methods: typing.Optional[typing.List[PaymentMethodResponse]] = pydantic_v1.Field(
         alias="paymentMethods", default=None
     )

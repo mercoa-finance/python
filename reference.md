@@ -5068,14 +5068,6 @@ client.entity.counterparty.find_payees(
 <dl>
 <dd>
 
-**logo:** `typing.Optional[bool]` — If true, will include counterparty logo as part of the response
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **counterparty_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter by counterparty ids
     
 </dd>
@@ -5202,14 +5194,6 @@ client.entity.counterparty.find_payors(
 <dd>
 
 **invoice_metrics:** `typing.Optional[bool]` — If true, will include counterparty invoice metrics as part of the response
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**logo:** `typing.Optional[bool]` — If true, will include counterparty logo as part of the response
     
 </dd>
 </dl>

@@ -101,7 +101,7 @@ class EntityUpdateRequest(pydantic_v1.BaseModel):
 
     logo: typing.Optional[str] = pydantic_v1.Field(default=None)
     """
-    Base64 encoded PNG image data for the entity logo.
+    Base64 encoded PNG image data for the entity logo. Max size 100KB.
     """
 
     def json(self, **kwargs: typing.Any) -> str:

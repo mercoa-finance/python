@@ -22,6 +22,7 @@ class BusinessOnboardingOptions(pydantic_v1.BaseModel):
     website: OnboardingOption
     description: OnboardingOption
     representatives: OnboardingOption
+    logo: OnboardingOption
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

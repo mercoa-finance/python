@@ -41,7 +41,6 @@ class CounterpartyClient:
         ] = None,
         payment_methods: typing.Optional[bool] = None,
         invoice_metrics: typing.Optional[bool] = None,
-        logo: typing.Optional[bool] = None,
         counterparty_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
@@ -66,9 +65,6 @@ class CounterpartyClient:
 
         invoice_metrics : typing.Optional[bool]
             If true, will include counterparty invoice metrics as part of the response
-
-        logo : typing.Optional[bool]
-            If true, will include counterparty logo as part of the response
 
         counterparty_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
             Filter by counterparty ids
@@ -108,7 +104,6 @@ class CounterpartyClient:
                 "networkType": network_type,
                 "paymentMethods": payment_methods,
                 "invoiceMetrics": invoice_metrics,
-                "logo": logo,
                 "counterpartyId": counterparty_id,
                 "limit": limit,
                 "startingAfter": starting_after,
@@ -148,7 +143,6 @@ class CounterpartyClient:
         ] = None,
         payment_methods: typing.Optional[bool] = None,
         invoice_metrics: typing.Optional[bool] = None,
-        logo: typing.Optional[bool] = None,
         counterparty_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
@@ -173,9 +167,6 @@ class CounterpartyClient:
 
         invoice_metrics : typing.Optional[bool]
             If true, will include counterparty invoice metrics as part of the response
-
-        logo : typing.Optional[bool]
-            If true, will include counterparty logo as part of the response
 
         counterparty_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
             Filter by counterparty ids
@@ -215,7 +206,6 @@ class CounterpartyClient:
                 "networkType": network_type,
                 "paymentMethods": payment_methods,
                 "invoiceMetrics": invoice_metrics,
-                "logo": logo,
                 "counterpartyId": counterparty_id,
                 "limit": limit,
                 "startingAfter": starting_after,
@@ -568,7 +558,6 @@ class AsyncCounterpartyClient:
         ] = None,
         payment_methods: typing.Optional[bool] = None,
         invoice_metrics: typing.Optional[bool] = None,
-        logo: typing.Optional[bool] = None,
         counterparty_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
@@ -593,9 +582,6 @@ class AsyncCounterpartyClient:
 
         invoice_metrics : typing.Optional[bool]
             If true, will include counterparty invoice metrics as part of the response
-
-        logo : typing.Optional[bool]
-            If true, will include counterparty logo as part of the response
 
         counterparty_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
             Filter by counterparty ids
@@ -643,7 +629,6 @@ class AsyncCounterpartyClient:
                 "networkType": network_type,
                 "paymentMethods": payment_methods,
                 "invoiceMetrics": invoice_metrics,
-                "logo": logo,
                 "counterpartyId": counterparty_id,
                 "limit": limit,
                 "startingAfter": starting_after,
@@ -683,7 +668,6 @@ class AsyncCounterpartyClient:
         ] = None,
         payment_methods: typing.Optional[bool] = None,
         invoice_metrics: typing.Optional[bool] = None,
-        logo: typing.Optional[bool] = None,
         counterparty_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
@@ -708,9 +692,6 @@ class AsyncCounterpartyClient:
 
         invoice_metrics : typing.Optional[bool]
             If true, will include counterparty invoice metrics as part of the response
-
-        logo : typing.Optional[bool]
-            If true, will include counterparty logo as part of the response
 
         counterparty_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
             Filter by counterparty ids
@@ -758,7 +739,6 @@ class AsyncCounterpartyClient:
                 "networkType": network_type,
                 "paymentMethods": payment_methods,
                 "invoiceMetrics": invoice_metrics,
-                "logo": logo,
                 "counterpartyId": counterparty_id,
                 "limit": limit,
                 "startingAfter": starting_after,
