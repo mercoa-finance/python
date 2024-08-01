@@ -22,6 +22,7 @@ from ...entity_types.types.entity_id import EntityId
 from ...entity_types.types.entity_user_id import EntityUserId
 from ...invoice_types.types.approver_action import ApproverAction
 from ...invoice_types.types.find_invoice_response import FindInvoiceResponse
+from ...invoice_types.types.invoice_date_filter import InvoiceDateFilter
 from ...invoice_types.types.invoice_id import InvoiceId
 from ...invoice_types.types.invoice_metadata_filter import InvoiceMetadataFilter
 from ...invoice_types.types.invoice_metrics_per_date_group_by import InvoiceMetricsPerDateGroupBy
@@ -43,6 +44,7 @@ class InvoiceClient:
         exclude_receivables: typing.Optional[bool] = None,
         start_date: typing.Optional[dt.datetime] = None,
         end_date: typing.Optional[dt.datetime] = None,
+        date_type: typing.Optional[InvoiceDateFilter] = None,
         order_by: typing.Optional[InvoiceOrderByField] = None,
         order_direction: typing.Optional[OrderDirection] = None,
         limit: typing.Optional[int] = None,
@@ -76,10 +78,13 @@ class InvoiceClient:
             Return only invoices that are payable by the entity.
 
         start_date : typing.Optional[dt.datetime]
-            Start date for invoice created on date filter.
+            Start date filter. Defaults to CREATED_AT unless specified the dateType is specified
 
         end_date : typing.Optional[dt.datetime]
-            End date for invoice created date filter.
+            End date filter. Defaults to CREATED_AT unless specified the dateType is specified
+
+        date_type : typing.Optional[InvoiceDateFilter]
+            Type of date to filter by if startDate and endDate filters are provided. Defaults to CREATED_AT.
 
         order_by : typing.Optional[InvoiceOrderByField]
             Field to order invoices by. Defaults to CREATED_AT.
@@ -153,6 +158,7 @@ class InvoiceClient:
                 "excludeReceivables": exclude_receivables,
                 "startDate": serialize_datetime(start_date) if start_date is not None else None,
                 "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                "dateType": date_type,
                 "orderBy": order_by,
                 "orderDirection": order_direction,
                 "limit": limit,
@@ -206,6 +212,9 @@ class InvoiceClient:
         approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]] = None,
         invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]] = None,
         status: typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]] = None,
+        start_date: typing.Optional[dt.datetime] = None,
+        end_date: typing.Optional[dt.datetime] = None,
+        date_type: typing.Optional[InvoiceDateFilter] = None,
         due_date_start: typing.Optional[dt.datetime] = None,
         due_date_end: typing.Optional[dt.datetime] = None,
         created_date_start: typing.Optional[dt.datetime] = None,
@@ -248,17 +257,26 @@ class InvoiceClient:
         status : typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]]
             Invoice status to filter on
 
+        start_date : typing.Optional[dt.datetime]
+            Start date filter. Defaults to CREATED_AT unless specified the dateType is specified
+
+        end_date : typing.Optional[dt.datetime]
+            End date filter. Defaults to CREATED_AT unless specified the dateType is specified
+
+        date_type : typing.Optional[InvoiceDateFilter]
+            Type of date to filter by if startDate and endDate filters are provided. Defaults to CREATED_AT.
+
         due_date_start : typing.Optional[dt.datetime]
-            Start date for invoice dueDate filter.
+            DEPRECATED. Use startDate, endDate, and dateType instead. Start date for invoice dueDate filter.
 
         due_date_end : typing.Optional[dt.datetime]
-            End date for invoice dueDate filter.
+            DEPRECATED. Use startDate, endDate, and dateType instead. End date for invoice dueDate filter.
 
         created_date_start : typing.Optional[dt.datetime]
-            Start date for invoice created on date filter.
+            DEPRECATED. Use startDate, endDate, and dateType instead. Start date for invoice created on date filter.
 
         created_date_end : typing.Optional[dt.datetime]
-            End date for invoice created date filter.
+            DEPRECATED. Use startDate, endDate, and dateType instead. End date for invoice created date filter.
 
         currency : typing.Optional[typing.Union[CurrencyCode, typing.Sequence[CurrencyCode]]]
             Currency to filter on
@@ -306,6 +324,9 @@ class InvoiceClient:
                 "approverId": approver_id,
                 "invoiceId": invoice_id,
                 "status": status,
+                "startDate": serialize_datetime(start_date) if start_date is not None else None,
+                "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                "dateType": date_type,
                 "dueDateStart": serialize_datetime(due_date_start) if due_date_start is not None else None,
                 "dueDateEnd": serialize_datetime(due_date_end) if due_date_end is not None else None,
                 "createdDateStart": serialize_datetime(created_date_start) if created_date_start is not None else None,
@@ -350,6 +371,7 @@ class AsyncInvoiceClient:
         exclude_receivables: typing.Optional[bool] = None,
         start_date: typing.Optional[dt.datetime] = None,
         end_date: typing.Optional[dt.datetime] = None,
+        date_type: typing.Optional[InvoiceDateFilter] = None,
         order_by: typing.Optional[InvoiceOrderByField] = None,
         order_direction: typing.Optional[OrderDirection] = None,
         limit: typing.Optional[int] = None,
@@ -383,10 +405,13 @@ class AsyncInvoiceClient:
             Return only invoices that are payable by the entity.
 
         start_date : typing.Optional[dt.datetime]
-            Start date for invoice created on date filter.
+            Start date filter. Defaults to CREATED_AT unless specified the dateType is specified
 
         end_date : typing.Optional[dt.datetime]
-            End date for invoice created date filter.
+            End date filter. Defaults to CREATED_AT unless specified the dateType is specified
+
+        date_type : typing.Optional[InvoiceDateFilter]
+            Type of date to filter by if startDate and endDate filters are provided. Defaults to CREATED_AT.
 
         order_by : typing.Optional[InvoiceOrderByField]
             Field to order invoices by. Defaults to CREATED_AT.
@@ -468,6 +493,7 @@ class AsyncInvoiceClient:
                 "excludeReceivables": exclude_receivables,
                 "startDate": serialize_datetime(start_date) if start_date is not None else None,
                 "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                "dateType": date_type,
                 "orderBy": order_by,
                 "orderDirection": order_direction,
                 "limit": limit,
@@ -521,6 +547,9 @@ class AsyncInvoiceClient:
         approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]] = None,
         invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]] = None,
         status: typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]] = None,
+        start_date: typing.Optional[dt.datetime] = None,
+        end_date: typing.Optional[dt.datetime] = None,
+        date_type: typing.Optional[InvoiceDateFilter] = None,
         due_date_start: typing.Optional[dt.datetime] = None,
         due_date_end: typing.Optional[dt.datetime] = None,
         created_date_start: typing.Optional[dt.datetime] = None,
@@ -563,17 +592,26 @@ class AsyncInvoiceClient:
         status : typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]]
             Invoice status to filter on
 
+        start_date : typing.Optional[dt.datetime]
+            Start date filter. Defaults to CREATED_AT unless specified the dateType is specified
+
+        end_date : typing.Optional[dt.datetime]
+            End date filter. Defaults to CREATED_AT unless specified the dateType is specified
+
+        date_type : typing.Optional[InvoiceDateFilter]
+            Type of date to filter by if startDate and endDate filters are provided. Defaults to CREATED_AT.
+
         due_date_start : typing.Optional[dt.datetime]
-            Start date for invoice dueDate filter.
+            DEPRECATED. Use startDate, endDate, and dateType instead. Start date for invoice dueDate filter.
 
         due_date_end : typing.Optional[dt.datetime]
-            End date for invoice dueDate filter.
+            DEPRECATED. Use startDate, endDate, and dateType instead. End date for invoice dueDate filter.
 
         created_date_start : typing.Optional[dt.datetime]
-            Start date for invoice created on date filter.
+            DEPRECATED. Use startDate, endDate, and dateType instead. Start date for invoice created on date filter.
 
         created_date_end : typing.Optional[dt.datetime]
-            End date for invoice created date filter.
+            DEPRECATED. Use startDate, endDate, and dateType instead. End date for invoice created date filter.
 
         currency : typing.Optional[typing.Union[CurrencyCode, typing.Sequence[CurrencyCode]]]
             Currency to filter on
@@ -628,6 +666,9 @@ class AsyncInvoiceClient:
                 "approverId": approver_id,
                 "invoiceId": invoice_id,
                 "status": status,
+                "startDate": serialize_datetime(start_date) if start_date is not None else None,
+                "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                "dateType": date_type,
                 "dueDateStart": serialize_datetime(due_date_start) if due_date_start is not None else None,
                 "dueDateEnd": serialize_datetime(due_date_end) if due_date_end is not None else None,
                 "createdDateStart": serialize_datetime(created_date_start) if created_date_start is not None else None,

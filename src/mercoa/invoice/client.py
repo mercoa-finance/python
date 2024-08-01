@@ -23,6 +23,7 @@ from ..entity_types.types.entity_user_id import EntityUserId
 from ..invoice_types.types.approver_action import ApproverAction
 from ..invoice_types.types.find_invoice_response import FindInvoiceResponse
 from ..invoice_types.types.invoice_creation_request import InvoiceCreationRequest
+from ..invoice_types.types.invoice_date_filter import InvoiceDateFilter
 from ..invoice_types.types.invoice_id import InvoiceId
 from ..invoice_types.types.invoice_metadata_filter import InvoiceMetadataFilter
 from ..invoice_types.types.invoice_order_by_field import InvoiceOrderByField
@@ -54,6 +55,7 @@ class InvoiceClient:
         entity_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         start_date: typing.Optional[dt.datetime] = None,
         end_date: typing.Optional[dt.datetime] = None,
+        date_type: typing.Optional[InvoiceDateFilter] = None,
         order_by: typing.Optional[InvoiceOrderByField] = None,
         order_direction: typing.Optional[OrderDirection] = None,
         limit: typing.Optional[int] = None,
@@ -81,10 +83,13 @@ class InvoiceClient:
             Filter invoices by the ID of the entity that created the invoice.
 
         start_date : typing.Optional[dt.datetime]
-            Start date for invoice created on date filter.
+            Start date filter. Defaults to CREATED_AT unless specified the dateType is specified
 
         end_date : typing.Optional[dt.datetime]
-            End date for invoice created date filter.
+            End date filter. Defaults to CREATED_AT unless specified the dateType is specified
+
+        date_type : typing.Optional[InvoiceDateFilter]
+            Type of date to filter by if startDate and endDate filters are provided. Defaults to CREATED_AT.
 
         order_by : typing.Optional[InvoiceOrderByField]
             Field to order invoices by. Defaults to CREATED_AT.
@@ -153,6 +158,7 @@ class InvoiceClient:
                 "entityId": entity_id,
                 "startDate": serialize_datetime(start_date) if start_date is not None else None,
                 "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                "dateType": date_type,
                 "orderBy": order_by,
                 "orderDirection": order_direction,
                 "limit": limit,
@@ -296,6 +302,7 @@ class InvoiceClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -352,6 +359,7 @@ class InvoiceClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         request : InvoiceUpdateRequest
 
@@ -458,6 +466,7 @@ class InvoiceClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -519,6 +528,7 @@ class AsyncInvoiceClient:
         entity_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         start_date: typing.Optional[dt.datetime] = None,
         end_date: typing.Optional[dt.datetime] = None,
+        date_type: typing.Optional[InvoiceDateFilter] = None,
         order_by: typing.Optional[InvoiceOrderByField] = None,
         order_direction: typing.Optional[OrderDirection] = None,
         limit: typing.Optional[int] = None,
@@ -546,10 +556,13 @@ class AsyncInvoiceClient:
             Filter invoices by the ID of the entity that created the invoice.
 
         start_date : typing.Optional[dt.datetime]
-            Start date for invoice created on date filter.
+            Start date filter. Defaults to CREATED_AT unless specified the dateType is specified
 
         end_date : typing.Optional[dt.datetime]
-            End date for invoice created date filter.
+            End date filter. Defaults to CREATED_AT unless specified the dateType is specified
+
+        date_type : typing.Optional[InvoiceDateFilter]
+            Type of date to filter by if startDate and endDate filters are provided. Defaults to CREATED_AT.
 
         order_by : typing.Optional[InvoiceOrderByField]
             Field to order invoices by. Defaults to CREATED_AT.
@@ -626,6 +639,7 @@ class AsyncInvoiceClient:
                 "entityId": entity_id,
                 "startDate": serialize_datetime(start_date) if start_date is not None else None,
                 "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                "dateType": date_type,
                 "orderBy": order_by,
                 "orderDirection": order_direction,
                 "limit": limit,
@@ -778,6 +792,7 @@ class AsyncInvoiceClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -842,6 +857,7 @@ class AsyncInvoiceClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         request : InvoiceUpdateRequest
 
@@ -955,6 +971,7 @@ class AsyncInvoiceClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.

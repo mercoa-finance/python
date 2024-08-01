@@ -36,6 +36,7 @@ class DocumentClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -90,6 +91,7 @@ class DocumentClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         document : str
             Base64 encoded image or PDF of invoice document. PNG, JPG, WEBP, and PDF are supported. 10MB max.
@@ -152,6 +154,7 @@ class DocumentClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         document_id : str
 
@@ -211,6 +214,7 @@ class DocumentClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -266,6 +270,7 @@ class DocumentClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -321,6 +326,7 @@ class DocumentClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -380,6 +386,7 @@ class AsyncDocumentClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -442,6 +449,7 @@ class AsyncDocumentClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         document : str
             Base64 encoded image or PDF of invoice document. PNG, JPG, WEBP, and PDF are supported. 10MB max.
@@ -512,6 +520,7 @@ class AsyncDocumentClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         document_id : str
 
@@ -579,6 +588,7 @@ class AsyncDocumentClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -642,6 +652,7 @@ class AsyncDocumentClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -705,6 +716,7 @@ class AsyncDocumentClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.

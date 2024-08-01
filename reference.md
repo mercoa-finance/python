@@ -2648,7 +2648,7 @@ client.invoice.find(
 <dl>
 <dd>
 
-**start_date:** `typing.Optional[dt.datetime]` — Start date for invoice created on date filter.
+**start_date:** `typing.Optional[dt.datetime]` — Start date filter. Defaults to CREATED_AT unless specified the dateType is specified
     
 </dd>
 </dl>
@@ -2656,7 +2656,15 @@ client.invoice.find(
 <dl>
 <dd>
 
-**end_date:** `typing.Optional[dt.datetime]` — End date for invoice created date filter.
+**end_date:** `typing.Optional[dt.datetime]` — End date filter. Defaults to CREATED_AT unless specified the dateType is specified
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**date_type:** `typing.Optional[InvoiceDateFilter]` — Type of date to filter by if startDate and endDate filters are provided. Defaults to CREATED_AT.
     
 </dd>
 </dl>
@@ -2905,7 +2913,7 @@ client.invoice.get(
 <dl>
 <dd>
 
-**invoice_id:** `InvoiceId` 
+**invoice_id:** `InvoiceId` — Invoice ID or Invoice ForeignID
     
 </dd>
 </dl>
@@ -2971,7 +2979,7 @@ client.invoice.update(
 <dl>
 <dd>
 
-**invoice_id:** `InvoiceId` 
+**invoice_id:** `InvoiceId` — Invoice ID or Invoice ForeignID
     
 </dd>
 </dl>
@@ -3049,7 +3057,7 @@ client.invoice.delete(
 <dl>
 <dd>
 
-**invoice_id:** `InvoiceId` 
+**invoice_id:** `InvoiceId` — Invoice ID or Invoice ForeignID
     
 </dd>
 </dl>
@@ -4240,6 +4248,14 @@ client.entity_group.invoice.find(
 <dl>
 <dd>
 
+**date_type:** `typing.Optional[InvoiceDateFilter]` — Type of date to filter by if startDate and endDate filters are provided. Defaults to CREATED_AT.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **order_by:** `typing.Optional[InvoiceOrderByField]` — Field to order invoices by. Defaults to CREATED_AT.
     
 </dd>
@@ -4492,7 +4508,7 @@ client.entity_group.invoice.metrics(
 <dl>
 <dd>
 
-**due_date_start:** `typing.Optional[dt.datetime]` — Start date for invoice dueDate filter.
+**start_date:** `typing.Optional[dt.datetime]` — Start date filter. Defaults to CREATED_AT unless specified the dateType is specified
     
 </dd>
 </dl>
@@ -4500,7 +4516,7 @@ client.entity_group.invoice.metrics(
 <dl>
 <dd>
 
-**due_date_end:** `typing.Optional[dt.datetime]` — End date for invoice dueDate filter.
+**end_date:** `typing.Optional[dt.datetime]` — End date filter. Defaults to CREATED_AT unless specified the dateType is specified
     
 </dd>
 </dl>
@@ -4508,7 +4524,7 @@ client.entity_group.invoice.metrics(
 <dl>
 <dd>
 
-**created_date_start:** `typing.Optional[dt.datetime]` — Start date for invoice created on date filter.
+**date_type:** `typing.Optional[InvoiceDateFilter]` — Type of date to filter by if startDate and endDate filters are provided. Defaults to CREATED_AT.
     
 </dd>
 </dl>
@@ -4516,7 +4532,31 @@ client.entity_group.invoice.metrics(
 <dl>
 <dd>
 
-**created_date_end:** `typing.Optional[dt.datetime]` — End date for invoice created date filter.
+**due_date_start:** `typing.Optional[dt.datetime]` — DEPRECATED. Use startDate, endDate, and dateType instead. Start date for invoice dueDate filter.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**due_date_end:** `typing.Optional[dt.datetime]` — DEPRECATED. Use startDate, endDate, and dateType instead. End date for invoice dueDate filter.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**created_date_start:** `typing.Optional[dt.datetime]` — DEPRECATED. Use startDate, endDate, and dateType instead. Start date for invoice created on date filter.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**created_date_end:** `typing.Optional[dt.datetime]` — DEPRECATED. Use startDate, endDate, and dateType instead. End date for invoice created date filter.
     
 </dd>
 </dl>
@@ -6435,7 +6475,7 @@ client.entity.invoice.find(
 <dl>
 <dd>
 
-**start_date:** `typing.Optional[dt.datetime]` — Start date for invoice created on date filter.
+**start_date:** `typing.Optional[dt.datetime]` — Start date filter. Defaults to CREATED_AT unless specified the dateType is specified
     
 </dd>
 </dl>
@@ -6443,7 +6483,15 @@ client.entity.invoice.find(
 <dl>
 <dd>
 
-**end_date:** `typing.Optional[dt.datetime]` — End date for invoice created date filter.
+**end_date:** `typing.Optional[dt.datetime]` — End date filter. Defaults to CREATED_AT unless specified the dateType is specified
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**date_type:** `typing.Optional[InvoiceDateFilter]` — Type of date to filter by if startDate and endDate filters are provided. Defaults to CREATED_AT.
     
 </dd>
 </dl>
@@ -6721,7 +6769,7 @@ client.entity.invoice.metrics(
 <dl>
 <dd>
 
-**due_date_start:** `typing.Optional[dt.datetime]` — Start date for invoice dueDate filter.
+**start_date:** `typing.Optional[dt.datetime]` — Start date filter. Defaults to CREATED_AT unless specified the dateType is specified
     
 </dd>
 </dl>
@@ -6729,7 +6777,7 @@ client.entity.invoice.metrics(
 <dl>
 <dd>
 
-**due_date_end:** `typing.Optional[dt.datetime]` — End date for invoice dueDate filter.
+**end_date:** `typing.Optional[dt.datetime]` — End date filter. Defaults to CREATED_AT unless specified the dateType is specified
     
 </dd>
 </dl>
@@ -6737,7 +6785,7 @@ client.entity.invoice.metrics(
 <dl>
 <dd>
 
-**created_date_start:** `typing.Optional[dt.datetime]` — Start date for invoice created on date filter.
+**date_type:** `typing.Optional[InvoiceDateFilter]` — Type of date to filter by if startDate and endDate filters are provided. Defaults to CREATED_AT.
     
 </dd>
 </dl>
@@ -6745,7 +6793,31 @@ client.entity.invoice.metrics(
 <dl>
 <dd>
 
-**created_date_end:** `typing.Optional[dt.datetime]` — End date for invoice created date filter.
+**due_date_start:** `typing.Optional[dt.datetime]` — DEPRECATED. Use startDate, endDate, and dateType instead. Start date for invoice dueDate filter.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**due_date_end:** `typing.Optional[dt.datetime]` — DEPRECATED. Use startDate, endDate, and dateType instead. End date for invoice dueDate filter.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**created_date_start:** `typing.Optional[dt.datetime]` — DEPRECATED. Use startDate, endDate, and dateType instead. Start date for invoice created on date filter.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**created_date_end:** `typing.Optional[dt.datetime]` — DEPRECATED. Use startDate, endDate, and dateType instead. End date for invoice created date filter.
     
 </dd>
 </dl>
@@ -7522,7 +7594,7 @@ client.entity.payment_method.get(
 <dl>
 <dd>
 
-**payment_method_id:** `PaymentMethodId` 
+**payment_method_id:** `PaymentMethodId` — Payment Method ID or Payment Method ForeignID
     
 </dd>
 </dl>
@@ -7606,7 +7678,7 @@ client.entity.payment_method.update(
 <dl>
 <dd>
 
-**payment_method_id:** `PaymentMethodId` 
+**payment_method_id:** `PaymentMethodId` — Payment Method ID or Payment Method ForeignID
     
 </dd>
 </dl>
@@ -7693,7 +7765,7 @@ client.entity.payment_method.delete(
 <dl>
 <dd>
 
-**payment_method_id:** `PaymentMethodId` 
+**payment_method_id:** `PaymentMethodId` — Payment Method ID or Payment Method ForeignID
     
 </dd>
 </dl>
@@ -7772,7 +7844,7 @@ client.entity.payment_method.initiate_micro_deposits(
 <dl>
 <dd>
 
-**payment_method_id:** `PaymentMethodId` 
+**payment_method_id:** `PaymentMethodId` — Payment Method ID or Payment Method ForeignID
     
 </dd>
 </dl>
@@ -7852,7 +7924,7 @@ client.entity.payment_method.complete_micro_deposits(
 <dl>
 <dd>
 
-**payment_method_id:** `PaymentMethodId` 
+**payment_method_id:** `PaymentMethodId` — Payment Method ID or Payment Method ForeignID
     
 </dd>
 </dl>
@@ -7939,7 +8011,7 @@ client.entity.payment_method.get_balance(
 <dl>
 <dd>
 
-**payment_method_id:** `PaymentMethodId` 
+**payment_method_id:** `PaymentMethodId` — Payment Method ID or Payment Method ForeignID
     
 </dd>
 </dl>
@@ -8889,7 +8961,7 @@ client.invoice.approval.add_approver(
 <dl>
 <dd>
 
-**invoice_id:** `InvoiceId` 
+**invoice_id:** `InvoiceId` — Invoice ID or Invoice ForeignID
     
 </dd>
 </dl>
@@ -8958,7 +9030,7 @@ client.invoice.approval.approve(
 <dl>
 <dd>
 
-**invoice_id:** `InvoiceId` 
+**invoice_id:** `InvoiceId` — Invoice ID or Invoice ForeignID
     
 </dd>
 </dl>
@@ -9027,7 +9099,7 @@ client.invoice.approval.reject(
 <dl>
 <dd>
 
-**invoice_id:** `InvoiceId` 
+**invoice_id:** `InvoiceId` — Invoice ID or Invoice ForeignID
     
 </dd>
 </dl>
@@ -9106,7 +9178,7 @@ client.invoice.comment.get_all(
 <dl>
 <dd>
 
-**invoice_id:** `InvoiceId` 
+**invoice_id:** `InvoiceId` — Invoice ID or Invoice ForeignID
     
 </dd>
 </dl>
@@ -9181,7 +9253,7 @@ client.invoice.comment.create(
 <dl>
 <dd>
 
-**invoice_id:** `InvoiceId` 
+**invoice_id:** `InvoiceId` — Invoice ID or Invoice ForeignID
     
 </dd>
 </dl>
@@ -9246,7 +9318,7 @@ client.invoice.comment.get(
 <dl>
 <dd>
 
-**invoice_id:** `InvoiceId` 
+**invoice_id:** `InvoiceId` — Invoice ID or Invoice ForeignID
     
 </dd>
 </dl>
@@ -9330,7 +9402,7 @@ client.invoice.comment.update(
 <dl>
 <dd>
 
-**invoice_id:** `InvoiceId` 
+**invoice_id:** `InvoiceId` — Invoice ID or Invoice ForeignID
     
 </dd>
 </dl>
@@ -9417,7 +9489,7 @@ client.invoice.comment.delete(
 <dl>
 <dd>
 
-**invoice_id:** `InvoiceId` 
+**invoice_id:** `InvoiceId` — Invoice ID or Invoice ForeignID
     
 </dd>
 </dl>
@@ -9496,7 +9568,7 @@ client.invoice.document.get_all(
 <dl>
 <dd>
 
-**invoice_id:** `InvoiceId` 
+**invoice_id:** `InvoiceId` — Invoice ID or Invoice ForeignID
     
 </dd>
 </dl>
@@ -9567,7 +9639,7 @@ client.invoice.document.upload(
 <dl>
 <dd>
 
-**invoice_id:** `InvoiceId` 
+**invoice_id:** `InvoiceId` — Invoice ID or Invoice ForeignID
     
 </dd>
 </dl>
@@ -9646,7 +9718,7 @@ client.invoice.document.delete(
 <dl>
 <dd>
 
-**invoice_id:** `InvoiceId` 
+**invoice_id:** `InvoiceId` — Invoice ID or Invoice ForeignID
     
 </dd>
 </dl>
@@ -9724,7 +9796,7 @@ client.invoice.document.generate_invoice_pdf(
 <dl>
 <dd>
 
-**invoice_id:** `InvoiceId` 
+**invoice_id:** `InvoiceId` — Invoice ID or Invoice ForeignID
     
 </dd>
 </dl>
@@ -9794,7 +9866,7 @@ client.invoice.document.generate_check_pdf(
 <dl>
 <dd>
 
-**invoice_id:** `InvoiceId` 
+**invoice_id:** `InvoiceId` — Invoice ID or Invoice ForeignID
     
 </dd>
 </dl>
@@ -9864,7 +9936,7 @@ client.invoice.document.get_source_email(
 <dl>
 <dd>
 
-**invoice_id:** `InvoiceId` 
+**invoice_id:** `InvoiceId` — Invoice ID or Invoice ForeignID
     
 </dd>
 </dl>
@@ -9935,7 +10007,7 @@ client.invoice.payment_links.get_payer_link(
 <dl>
 <dd>
 
-**invoice_id:** `InvoiceId` 
+**invoice_id:** `InvoiceId` — Invoice ID or Invoice ForeignID
     
 </dd>
 </dl>
@@ -10006,7 +10078,7 @@ client.invoice.payment_links.send_payer_email(
 <dl>
 <dd>
 
-**invoice_id:** `InvoiceId` 
+**invoice_id:** `InvoiceId` — Invoice ID or Invoice ForeignID
     
 </dd>
 </dl>
@@ -10084,7 +10156,7 @@ client.invoice.payment_links.get_vendor_link(
 <dl>
 <dd>
 
-**invoice_id:** `InvoiceId` 
+**invoice_id:** `InvoiceId` — Invoice ID or Invoice ForeignID
     
 </dd>
 </dl>
@@ -10154,7 +10226,7 @@ client.invoice.payment_links.send_vendor_email(
 <dl>
 <dd>
 
-**invoice_id:** `InvoiceId` 
+**invoice_id:** `InvoiceId` — Invoice ID or Invoice ForeignID
     
 </dd>
 </dl>

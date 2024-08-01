@@ -29,6 +29,7 @@ class PaymentLinksClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -87,6 +88,7 @@ class PaymentLinksClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         attach_invoice : typing.Optional[bool]
             Whether to attach the invoice to the email
@@ -146,6 +148,7 @@ class PaymentLinksClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -200,6 +203,7 @@ class PaymentLinksClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -259,6 +263,7 @@ class AsyncPaymentLinksClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -325,6 +330,7 @@ class AsyncPaymentLinksClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         attach_invoice : typing.Optional[bool]
             Whether to attach the invoice to the email
@@ -394,6 +400,7 @@ class AsyncPaymentLinksClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -456,6 +463,7 @@ class AsyncPaymentLinksClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.

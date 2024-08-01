@@ -188,6 +188,7 @@ class NotificationPolicyClient:
             request=NotificationPolicyRequest(
                 disabled=False,
                 additional_roles=["admin", "approver"],
+                notify_counterparty=True,
             ),
         )
         """
@@ -407,6 +408,7 @@ class AsyncNotificationPolicyClient:
                 request=NotificationPolicyRequest(
                     disabled=False,
                     additional_roles=["admin", "approver"],
+                    notify_counterparty=True,
                 ),
             )
 

@@ -24,9 +24,14 @@ class NotificationPolicyRequest(pydantic_v1.BaseModel):
     Set to true if the selected notification type should be disabled for this entity
     """
 
-    additional_roles: typing.List[str] = pydantic_v1.Field(alias="additionalRoles")
+    additional_roles: typing.Optional[typing.List[str]] = pydantic_v1.Field(alias="additionalRoles", default=None)
     """
     List of user roles that should receive notifications in addition to the default users for this notification type
+    """
+
+    notify_counterparty: typing.Optional[bool] = pydantic_v1.Field(alias="notifyCounterparty", default=None)
+    """
+    Set to true if the selected notification type should be sent to the counterparty
     """
 
     def json(self, **kwargs: typing.Any) -> str:

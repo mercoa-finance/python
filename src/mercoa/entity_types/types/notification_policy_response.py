@@ -18,6 +18,7 @@ class NotificationPolicyResponse(pydantic_v1.BaseModel):
         disabled=False,
         additional_roles=["admin", "approver"],
         type="INVOICE_APPROVAL_NEEDED",
+        notify_counterparty=True,
     )
     """
 
@@ -29,6 +30,11 @@ class NotificationPolicyResponse(pydantic_v1.BaseModel):
     additional_roles: typing.List[str] = pydantic_v1.Field(alias="additionalRoles")
     """
     List of user roles that should receive notifications in addition to the default users for this notification type
+    """
+
+    notify_counterparty: bool = pydantic_v1.Field(alias="notifyCounterparty")
+    """
+    True if the selected notification type is sent to the counterparty
     """
 
     type: NotificationType

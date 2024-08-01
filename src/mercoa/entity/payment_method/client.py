@@ -177,6 +177,7 @@ class PaymentMethodClient:
             Entity ID or Entity ForeignID
 
         payment_method_id : PaymentMethodId
+            Payment Method ID or Payment Method ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -242,6 +243,7 @@ class PaymentMethodClient:
             Entity ID or Entity ForeignID
 
         payment_method_id : PaymentMethodId
+            Payment Method ID or Payment Method ForeignID
 
         request : PaymentMethodUpdateRequest
 
@@ -315,6 +317,7 @@ class PaymentMethodClient:
             Entity ID or Entity ForeignID
 
         payment_method_id : PaymentMethodId
+            Payment Method ID or Payment Method ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -379,6 +382,7 @@ class PaymentMethodClient:
             Entity ID or Entity ForeignID
 
         payment_method_id : PaymentMethodId
+            Payment Method ID or Payment Method ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -444,6 +448,7 @@ class PaymentMethodClient:
             Entity ID or Entity ForeignID
 
         payment_method_id : PaymentMethodId
+            Payment Method ID or Payment Method ForeignID
 
         amounts : typing.Sequence[int]
             The amounts of the micro deposits in cents
@@ -514,6 +519,7 @@ class PaymentMethodClient:
             Entity ID or Entity ForeignID
 
         payment_method_id : PaymentMethodId
+            Payment Method ID or Payment Method ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -729,6 +735,7 @@ class AsyncPaymentMethodClient:
             Entity ID or Entity ForeignID
 
         payment_method_id : PaymentMethodId
+            Payment Method ID or Payment Method ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -802,6 +809,7 @@ class AsyncPaymentMethodClient:
             Entity ID or Entity ForeignID
 
         payment_method_id : PaymentMethodId
+            Payment Method ID or Payment Method ForeignID
 
         request : PaymentMethodUpdateRequest
 
@@ -883,6 +891,7 @@ class AsyncPaymentMethodClient:
             Entity ID or Entity ForeignID
 
         payment_method_id : PaymentMethodId
+            Payment Method ID or Payment Method ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -955,6 +964,7 @@ class AsyncPaymentMethodClient:
             Entity ID or Entity ForeignID
 
         payment_method_id : PaymentMethodId
+            Payment Method ID or Payment Method ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1028,6 +1038,7 @@ class AsyncPaymentMethodClient:
             Entity ID or Entity ForeignID
 
         payment_method_id : PaymentMethodId
+            Payment Method ID or Payment Method ForeignID
 
         amounts : typing.Sequence[int]
             The amounts of the micro deposits in cents
@@ -1106,6 +1117,7 @@ class AsyncPaymentMethodClient:
             Entity ID or Entity ForeignID
 
         payment_method_id : PaymentMethodId
+            Payment Method ID or Payment Method ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.

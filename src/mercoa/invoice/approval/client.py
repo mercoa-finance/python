@@ -40,6 +40,7 @@ class ApprovalClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         request : AddApproverRequest
 
@@ -107,6 +108,7 @@ class ApprovalClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         request : ApprovalRequest
 
@@ -174,6 +176,7 @@ class ApprovalClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         request : ApprovalRequest
 
@@ -248,6 +251,7 @@ class AsyncApprovalClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         request : AddApproverRequest
 
@@ -323,6 +327,7 @@ class AsyncApprovalClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         request : ApprovalRequest
 
@@ -398,6 +403,7 @@ class AsyncApprovalClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         request : ApprovalRequest
 

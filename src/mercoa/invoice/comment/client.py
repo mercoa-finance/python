@@ -37,6 +37,7 @@ class CommentClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -91,6 +92,7 @@ class CommentClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         request : CommentRequest
 
@@ -154,6 +156,7 @@ class CommentClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         comment_id : CommentId
 
@@ -218,6 +221,7 @@ class CommentClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         comment_id : CommentId
 
@@ -286,6 +290,7 @@ class CommentClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         comment_id : CommentId
 
@@ -350,6 +355,7 @@ class AsyncCommentClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -412,6 +418,7 @@ class AsyncCommentClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         request : CommentRequest
 
@@ -483,6 +490,7 @@ class AsyncCommentClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         comment_id : CommentId
 
@@ -555,6 +563,7 @@ class AsyncCommentClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         comment_id : CommentId
 
@@ -631,6 +640,7 @@ class AsyncCommentClient:
         Parameters
         ----------
         invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         comment_id : CommentId
 
