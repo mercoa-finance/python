@@ -27,7 +27,7 @@ Get all entity groups. If using a JWT, will return all groups the entity is part
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -103,14 +103,17 @@ Create an entity group
 <dd>
 
 ```python
-from mercoa import EntityGroupRequest
-from mercoa.client import Mercoa
+from mercoa import Mercoa
+from mercoa.entity_group_types import EntityGroupRequest
 
 client = Mercoa(
     token="YOUR_TOKEN",
 )
 client.entity_group.create(
     request=EntityGroupRequest(
+        foreign_id="your-group-id",
+        name="AcmeConglomerate",
+        email_to_name="acmegroup",
         entity_ids=[
             "ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             "ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
@@ -179,7 +182,7 @@ Get an entity group
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -202,7 +205,7 @@ client.entity_group.get(
 <dl>
 <dd>
 
-**entity_group_id:** `EntityGroupId` 
+**entity_group_id:** `EntityGroupId` — Entity Group ID or Entity Group ForeignID
     
 </dd>
 </dl>
@@ -249,8 +252,8 @@ Update an entity group
 <dd>
 
 ```python
-from mercoa import EntityGroupRequest
-from mercoa.client import Mercoa
+from mercoa import Mercoa
+from mercoa.entity_group_types import EntityGroupRequest
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -258,6 +261,9 @@ client = Mercoa(
 client.entity_group.update(
     entity_group_id="entg_a3582b70-fd04-4888-9185-a640ae9048be",
     request=EntityGroupRequest(
+        foreign_id="your-group-id",
+        name="AcmeConglomerate",
+        email_to_name="acmegroup",
         entity_ids=[
             "ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             "ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
@@ -279,7 +285,7 @@ client.entity_group.update(
 <dl>
 <dd>
 
-**entity_group_id:** `EntityGroupId` 
+**entity_group_id:** `EntityGroupId` — Entity Group ID or Entity Group ForeignID
     
 </dd>
 </dl>
@@ -334,7 +340,7 @@ Delete an entity group
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -357,7 +363,7 @@ client.entity_group.delete(
 <dl>
 <dd>
 
-**entity_group_id:** `EntityGroupId` 
+**entity_group_id:** `EntityGroupId` — Entity Group ID or Entity Group ForeignID
     
 </dd>
 </dl>
@@ -405,7 +411,7 @@ Search entity group users
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -429,7 +435,7 @@ client.entity_group.user.find(
 <dl>
 <dd>
 
-**entity_group_id:** `EntityGroupId` — Entity Group ID
+**entity_group_id:** `EntityGroupId` — Entity Group ID or Entity Group ForeignID
     
 </dd>
 </dl>
@@ -524,8 +530,11 @@ Create entity user that will be added to all entities in the group.
 <dd>
 
 ```python
-from mercoa import EntityGroupUserEntityRequest, EntityGroupUserRequest
-from mercoa.client import Mercoa
+from mercoa import Mercoa
+from mercoa.entity_group_types import (
+    EntityGroupUserEntityRequest,
+    EntityGroupUserRequest,
+)
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -563,7 +572,7 @@ client.entity_group.user.create(
 <dl>
 <dd>
 
-**entity_group_id:** `EntityGroupId` — Entity Group ID
+**entity_group_id:** `EntityGroupId` — Entity Group ID or Entity Group ForeignID
     
 </dd>
 </dl>
@@ -618,7 +627,7 @@ Get entity user from a group
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -642,7 +651,7 @@ client.entity_group.user.get(
 <dl>
 <dd>
 
-**entity_group_id:** `EntityGroupId` — Entity Group ID
+**entity_group_id:** `EntityGroupId` — Entity Group ID or Entity Group ForeignID
     
 </dd>
 </dl>
@@ -697,8 +706,11 @@ Update entity user for all entities in the group.
 <dd>
 
 ```python
-from mercoa import EntityGroupUserEntityRequest, EntityGroupUserRequest
-from mercoa.client import Mercoa
+from mercoa import Mercoa
+from mercoa.entity_group_types import (
+    EntityGroupUserEntityRequest,
+    EntityGroupUserRequest,
+)
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -737,7 +749,7 @@ client.entity_group.user.update(
 <dl>
 <dd>
 
-**entity_group_id:** `EntityGroupId` — Entity Group ID
+**entity_group_id:** `EntityGroupId` — Entity Group ID or Entity Group ForeignID
     
 </dd>
 </dl>
@@ -800,7 +812,7 @@ Delete entity user from all entities in the group. This will also remove the use
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -824,7 +836,7 @@ client.entity_group.user.delete(
 <dl>
 <dd>
 
-**entity_group_id:** `EntityGroupId` — Entity Group ID
+**entity_group_id:** `EntityGroupId` — Entity Group ID or Entity Group ForeignID
     
 </dd>
 </dl>
@@ -880,7 +892,7 @@ Search all entities with the given filters. If no filters are provided, all enti
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -1008,8 +1020,12 @@ If false, entities that are marked as payors will not be returned.
 <dd>
 
 ```python
-from mercoa import BusinessProfileRequest, EntityRequest, ProfileRequest
-from mercoa.client import Mercoa
+from mercoa import Mercoa
+from mercoa.entity_types import (
+    BusinessProfileRequest,
+    EntityRequest,
+    ProfileRequest,
+)
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -1079,7 +1095,7 @@ client.entity.create(
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -1135,16 +1151,15 @@ client.entity.get(
 <dd>
 
 ```python
-from mercoa import (
-    Address,
+from mercoa import Mercoa
+from mercoa.commons import Address, PhoneNumber
+from mercoa.entity_types import (
     BusinessProfileRequest,
     Ein,
     EntityUpdateRequest,
-    PhoneNumber,
     ProfileRequest,
     TaxId,
 )
-from mercoa.client import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -1254,7 +1269,7 @@ Will archive the entity. This action cannot be undone, and the entity will no lo
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -1324,7 +1339,7 @@ This endpoint is used to indicate acceptance of Mercoa's terms of service for an
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -1396,7 +1411,7 @@ all representatives have been added, and all required fields have been filled ou
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -1468,8 +1483,8 @@ Generate a JWT token for an entity with the given options. This token can be use
 <dd>
 
 ```python
-from mercoa import TokenGenerationOptions
-from mercoa.client import Mercoa
+from mercoa import Mercoa
+from mercoa.entity_types import TokenGenerationOptions
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -1550,7 +1565,7 @@ Get a Plaid link token for an entity. This token can be used to add or update a 
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -1629,7 +1644,7 @@ Generate an onboarding link for the entity.
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -1725,7 +1740,7 @@ Send an email with a onboarding link to the entity. The email will be sent to th
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -1823,7 +1838,7 @@ Get all incoming invoice emails for an entity.
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -1933,7 +1948,7 @@ Get an email log by ID
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -2013,7 +2028,7 @@ Get all entity users (DEPRECATED, use Search Entity Users)
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -2083,7 +2098,7 @@ Search entity users
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -2188,8 +2203,8 @@ client.entity.user.find(
 <dd>
 
 ```python
-from mercoa import EntityUserRequest
-from mercoa.client import Mercoa
+from mercoa import Mercoa
+from mercoa.entity_types import EntityUserRequest
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -2273,7 +2288,7 @@ Get entity user
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -2352,8 +2367,8 @@ Update entity user
 <dd>
 
 ```python
-from mercoa import EntityUserRequest
-from mercoa.client import Mercoa
+from mercoa import Mercoa
+from mercoa.entity_types import EntityUserRequest
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -2446,7 +2461,7 @@ Delete entity user. This will also remove the user from all approval policies. I
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -2525,8 +2540,8 @@ Generate a JWT token for an entity user with the given options. This token can b
 <dd>
 
 ```python
-from mercoa import TokenGenerationOptions
-from mercoa.client import Mercoa
+from mercoa import Mercoa
+from mercoa.entity_types import TokenGenerationOptions
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -2617,7 +2632,7 @@ Search invoices for all entities in the organization
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -2788,6 +2803,14 @@ client.invoice.find(
 <dl>
 <dd>
 
+**payment_type:** `typing.Optional[typing.Sequence[PaymentType]]` — Filter invoices by recurring status
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -2815,8 +2838,8 @@ client.invoice.find(
 ```python
 import datetime
 
-from mercoa import InvoiceCreationRequest
-from mercoa.client import Mercoa
+from mercoa import Mercoa
+from mercoa.invoice_types import InvoiceCreationRequest
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -2890,7 +2913,7 @@ client.invoice.create(
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -2948,8 +2971,8 @@ client.invoice.get(
 ```python
 import datetime
 
-from mercoa import InvoiceUpdateRequest
-from mercoa.client import Mercoa
+from mercoa import Mercoa
+from mercoa.invoice_types import InvoiceUpdateRequest
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -3034,7 +3057,7 @@ Only invoices in the DRAFT and NEW status can be deleted.
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -3107,8 +3130,8 @@ Update invoice line item
 ```python
 import datetime
 
-from mercoa import InvoiceLineItemIndividualUpdateRequest
-from mercoa.client import Mercoa
+from mercoa import Mercoa
+from mercoa.invoice_types import InvoiceLineItemIndividualUpdateRequest
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -3208,7 +3231,7 @@ Get current organization information
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -3332,7 +3355,8 @@ Update current organization
 <dd>
 
 ```python
-from mercoa import (
+from mercoa import Mercoa
+from mercoa.organization_types import (
     ColorSchemeRequest,
     EmailProviderRequest,
     ExternalAccountingSystemProviderRequest_None,
@@ -3341,7 +3365,6 @@ from mercoa import (
     OrganizationRequest,
     PaymentMethodsRequest,
 )
-from mercoa.client import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -3425,7 +3448,7 @@ Get log of all emails sent to this organization. Content format subject to chang
 ```python
 import datetime
 
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -3527,7 +3550,7 @@ Find bank account details
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -3598,8 +3621,8 @@ Calculate the estimated fees associated with an payment given the amount, paymen
 <dd>
 
 ```python
-from mercoa import CalculateFeesRequest
-from mercoa.client import Mercoa
+from mercoa import Mercoa
+from mercoa.calculate import CalculateFeesRequest
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -3675,8 +3698,8 @@ Calculate the estimated payment timing given the deduction date, payment source,
 ```python
 import datetime
 
-from mercoa import CalculatePaymentTimingRequest
-from mercoa.client import Mercoa
+from mercoa import Mercoa
+from mercoa.calculate import CalculatePaymentTimingRequest
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -3753,7 +3776,7 @@ Get all custom payment method schemas
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -3813,11 +3836,11 @@ Create custom payment method schema
 <dd>
 
 ```python
-from mercoa import (
+from mercoa import Mercoa
+from mercoa.payment_method_types import (
     CustomPaymentMethodSchemaField,
     CustomPaymentMethodSchemaRequest,
 )
-from mercoa.client import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -3922,11 +3945,11 @@ Update custom payment method schema
 <dd>
 
 ```python
-from mercoa import (
+from mercoa import Mercoa
+from mercoa.payment_method_types import (
     CustomPaymentMethodSchemaField,
     CustomPaymentMethodSchemaRequest,
 )
-from mercoa.client import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -4040,7 +4063,7 @@ Get custom payment method schema
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -4110,7 +4133,7 @@ Delete custom payment method schema. Schema that have been used in an invoice ca
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -4181,7 +4204,7 @@ Get invoices for an entity group with the given filters.
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -4208,7 +4231,7 @@ client.entity_group.invoice.find(
 <dl>
 <dd>
 
-**entity_group_id:** `EntityGroupId` 
+**entity_group_id:** `EntityGroupId` — Entity Group ID or Entity Group ForeignID
     
 </dd>
 </dl>
@@ -4354,6 +4377,14 @@ client.entity_group.invoice.find(
 <dl>
 <dd>
 
+**payment_type:** `typing.Optional[typing.Sequence[PaymentType]]` — Filter invoices by recurring status
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -4395,7 +4426,7 @@ Get invoice metrics for an entity group with the given filters. Invoices will be
 ```python
 import datetime
 
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -4428,7 +4459,7 @@ client.entity_group.invoice.metrics(
 <dl>
 <dd>
 
-**entity_group_id:** `EntityGroupId` 
+**entity_group_id:** `EntityGroupId` — Entity Group ID or Entity Group ForeignID
     
 </dd>
 </dl>
@@ -4612,7 +4643,7 @@ Retrieve all invoice approval policies associated with an entity
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -4682,8 +4713,12 @@ Create an invoice approval policy associated with an entity
 <dd>
 
 ```python
-from mercoa import ApprovalPolicyRequest, IdentifierList_UserList, Rule_Approver
-from mercoa.client import Mercoa
+from mercoa import Mercoa
+from mercoa.entity_types import (
+    ApprovalPolicyRequest,
+    IdentifierList_UserList,
+    Rule_Approver,
+)
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -4774,7 +4809,7 @@ Retrieve an invoice approval policy associated with an entity
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -4853,12 +4888,12 @@ Update an invoice approval policy associated with an entity
 <dd>
 
 ```python
-from mercoa import (
+from mercoa import Mercoa
+from mercoa.entity_types import (
     ApprovalPolicyUpdateRequest,
     IdentifierList_UserList,
     Rule_Approver,
 )
-from mercoa.client import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -4958,7 +4993,7 @@ Delete an invoice approval policy associated with Entity. BEWARE: Any approval p
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -5038,7 +5073,7 @@ Find payee counterparties. This endpoint lets you find vendors linked to the ent
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -5171,7 +5206,7 @@ Find payor counterparties. This endpoint lets you find customers linked to the e
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -5304,12 +5339,12 @@ Create association between Entity and a given list of Payees. If a Payee has pre
 <dd>
 
 ```python
-from mercoa import (
+from mercoa import Mercoa
+from mercoa.entity_types import (
     CounterpartyCustomizationAccount,
     CounterpartyCustomizationRequest,
     EntityAddPayeesRequest,
 )
-from mercoa.client import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -5402,8 +5437,8 @@ Marks Payees as unsearchable by Entity via Counterparty search. Invoices associa
 <dd>
 
 ```python
-from mercoa import EntityHidePayeesRequest
-from mercoa.client import Mercoa
+from mercoa import Mercoa
+from mercoa.entity_types import EntityHidePayeesRequest
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -5484,12 +5519,12 @@ Create association between Entity and a given list of Payors. If a Payor has pre
 <dd>
 
 ```python
-from mercoa import (
+from mercoa import Mercoa
+from mercoa.entity_types import (
     CounterpartyCustomizationAccount,
     CounterpartyCustomizationRequest,
     EntityAddPayorsRequest,
 )
-from mercoa.client import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -5582,8 +5617,8 @@ Marks Payors as unsearchable by Entity via Counterparty search. Invoices associa
 <dd>
 
 ```python
-from mercoa import EntityHidePayorsRequest
-from mercoa.client import Mercoa
+from mercoa import Mercoa
+from mercoa.entity_types import EntityHidePayorsRequest
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -5665,7 +5700,7 @@ Get entity customization.
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -5735,12 +5770,12 @@ Update entity customization. This lets you turn off metadata and payment methods
 <dd>
 
 ```python
-from mercoa import (
+from mercoa import Mercoa
+from mercoa.entity_types import (
     EntityCustomizationRequest,
     MetadataCustomizationRequest,
     PaymentMethodCustomizationRequest,
 )
-from mercoa.client import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -5858,7 +5893,7 @@ Get documents (1099/W9) associated with this entity
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -5936,7 +5971,7 @@ Upload documents associated with this entity
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -6024,7 +6059,7 @@ Delete a document associated with this entity
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -6104,7 +6139,7 @@ Get the external accounting system connected to an entity
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -6174,8 +6209,10 @@ Create/Link an entity to an external accounting system like Codat or Rutter. If 
 <dd>
 
 ```python
-from mercoa.client import Mercoa
-from mercoa.entity import ExternalAccountingSystemCompanyCreationRequest_Rutter
+from mercoa import Mercoa
+from mercoa.entity.external_accounting_system import (
+    ExternalAccountingSystemCompanyCreationRequest_Rutter,
+)
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -6256,7 +6293,7 @@ Get a link to connect an entity to an external accounting system like Quickbooks
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -6326,7 +6363,7 @@ Sync an entity with an external accounting system. Will sync customers/vendors a
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -6424,7 +6461,7 @@ Get invoices for an entity with the given filters.
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -6615,6 +6652,14 @@ client.entity.invoice.find(
 <dl>
 <dd>
 
+**payment_type:** `typing.Optional[typing.Sequence[PaymentType]]` — Filter invoices by payment type.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -6656,7 +6701,7 @@ Get invoice metrics for an entity with the given filters. Invoices will be group
 ```python
 import datetime
 
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -6873,7 +6918,7 @@ Retrieve all metadata options associated with this entity
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -6943,7 +6988,7 @@ Retrieve metadata associated with a specific key
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -7022,7 +7067,7 @@ Update metadata associated with a specific key
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -7110,7 +7155,7 @@ Delete all metadata associated with a specific key
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -7190,7 +7235,7 @@ Retrieve all notification policies associated with this entity
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -7260,7 +7305,7 @@ Retrieve notification policy associated with this entity
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -7339,8 +7384,8 @@ Update notification policy associated with this entity
 <dd>
 
 ```python
-from mercoa import NotificationPolicyRequest
-from mercoa.client import Mercoa
+from mercoa import Mercoa
+from mercoa.entity_types import NotificationPolicyRequest
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -7418,7 +7463,7 @@ client.entity.notification_policy.update(
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -7485,8 +7530,8 @@ client.entity.payment_method.get_all(
 <dd>
 
 ```python
-from mercoa import PaymentMethodRequest_Custom
-from mercoa.client import Mercoa
+from mercoa import Mercoa
+from mercoa.payment_method_types import PaymentMethodRequest_Custom
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -7562,7 +7607,7 @@ client.entity.payment_method.create(
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -7641,8 +7686,8 @@ Only custom payment methods can be updated.
 <dd>
 
 ```python
-from mercoa import PaymentMethodUpdateRequest_BankAccount
-from mercoa.client import Mercoa
+from mercoa import Mercoa
+from mercoa.payment_method_types import PaymentMethodUpdateRequest_BankAccount
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -7733,7 +7778,7 @@ Mark a payment method as inactive. This will not remove the payment method from 
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -7812,7 +7857,7 @@ Initiate micro deposits for a bank account
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -7891,7 +7936,7 @@ Complete micro deposit verification
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -7979,7 +8024,7 @@ Deprecated. Get the available balance of a payment method. Only bank accounts ad
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -8059,7 +8104,7 @@ Get representatives for an entity
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -8115,16 +8160,15 @@ client.entity.representative.get_all(
 <dd>
 
 ```python
-from mercoa import (
+from mercoa import Mercoa
+from mercoa.commons import (
     Address,
     BirthDate,
     FullName,
     IndividualGovernmentId,
     PhoneNumber,
-    RepresentativeRequest,
-    Responsibilities,
 )
-from mercoa.client import Mercoa
+from mercoa.entity_types import RepresentativeRequest, Responsibilities
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -8222,7 +8266,7 @@ client.entity.representative.create(
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -8287,7 +8331,7 @@ client.entity.representative.get(
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -8367,7 +8411,7 @@ Retrieve all notification policies associated with this entity user
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -8446,7 +8490,7 @@ Retrieve notification policy associated with this entity user
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -8534,8 +8578,8 @@ Update notification policy associated with this entity user
 <dd>
 
 ```python
-from mercoa import UserNotificationPolicyRequest
-from mercoa.client import Mercoa
+from mercoa import Mercoa
+from mercoa.entity_types import UserNotificationPolicyRequest
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -8621,7 +8665,7 @@ client.entity.user.notification_policy.update(
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -8744,7 +8788,7 @@ client.entity.user.notifications.find(
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -8832,8 +8876,8 @@ Update the status of a notification.
 <dd>
 
 ```python
-from mercoa import NotificationUpdateRequest
-from mercoa.client import Mercoa
+from mercoa import Mercoa
+from mercoa.entity_types import NotificationUpdateRequest
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -8933,8 +8977,8 @@ Adds an approver to the invoice. Will select the first available approver slot t
 <dd>
 
 ```python
-from mercoa import AddApproverRequest
-from mercoa.client import Mercoa
+from mercoa import Mercoa
+from mercoa.invoice_types import AddApproverRequest
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -9002,8 +9046,8 @@ client.invoice.approval.add_approver(
 <dd>
 
 ```python
-from mercoa import ApprovalRequest
-from mercoa.client import Mercoa
+from mercoa import Mercoa
+from mercoa.invoice_types import ApprovalRequest
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -9071,8 +9115,8 @@ client.invoice.approval.approve(
 <dd>
 
 ```python
-from mercoa import ApprovalRequest
-from mercoa.client import Mercoa
+from mercoa import Mercoa
+from mercoa.invoice_types import ApprovalRequest
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -9155,7 +9199,7 @@ Get all comments associated with this invoice
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -9225,8 +9269,8 @@ Add a comment to this invoice
 <dd>
 
 ```python
-from mercoa import CommentRequest
-from mercoa.client import Mercoa
+from mercoa import Mercoa
+from mercoa.invoice_types import CommentRequest
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -9294,7 +9338,7 @@ client.invoice.comment.create(
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -9373,8 +9417,8 @@ Edit a comment on this invoice
 <dd>
 
 ```python
-from mercoa import CommentRequest
-from mercoa.client import Mercoa
+from mercoa import Mercoa
+from mercoa.invoice_types import CommentRequest
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -9465,7 +9509,7 @@ Delete a comment on this invoice
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -9545,7 +9589,7 @@ Get attachments (scanned/uploaded PDFs and images) associated with this invoice
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -9615,7 +9659,7 @@ Upload documents (scanned/uploaded PDFs and images) associated with this Invoice
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -9694,7 +9738,7 @@ Delete an attachment (scanned/uploaded PDFs and images) associated with this inv
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -9773,7 +9817,7 @@ Generate a PDF of the invoice. This PDF is generated from the data in the invoic
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -9843,7 +9887,7 @@ Get a PDF of the check for the invoice. If the invoice does not have check as th
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -9913,7 +9957,7 @@ Get the email subject and body that was used to create this invoice.
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -9984,7 +10028,7 @@ Get temporary link for payer to send payment
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -10054,7 +10098,7 @@ Trigger email to payer inviting them to make payment
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -10133,7 +10177,7 @@ Get temporary link for vendor to accept payment
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -10203,7 +10247,7 @@ Trigger email to vendor inviting them into the vendor portal
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -10274,8 +10318,8 @@ Run OCR on an Base64 encoded image or PDF. This endpoint will block until the OC
 <dd>
 
 ```python
-from mercoa import OcrRequest
-from mercoa.client import Mercoa
+from mercoa import Mercoa
+from mercoa.ocr import OcrRequest
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -10350,8 +10394,8 @@ Run OCR on an Base64 encoded image or PDF. This endpoint will return immediately
 <dd>
 
 ```python
-from mercoa import OcrRequest
-from mercoa.client import Mercoa
+from mercoa import Mercoa
+from mercoa.ocr import OcrRequest
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -10426,7 +10470,7 @@ Get the status and results of an asynchronous OCR job.
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -10497,7 +10541,7 @@ Retrieve all notification configurations
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -10557,7 +10601,7 @@ Retrieve notification configuration for this notification type
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -10627,8 +10671,8 @@ Update notification configuration for this notification type
 <dd>
 
 ```python
-from mercoa import NotificationConfigurationRequest_Invoice
-from mercoa.client import Mercoa
+from mercoa import Mercoa
+from mercoa.organization_types import NotificationConfigurationRequest_Invoice
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -10709,7 +10753,7 @@ Reset notification configuration for this notification type
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -10766,7 +10810,7 @@ client.organization.notification_configuration.reset(
 <dd>
 
 ```python
-from mercoa.client import Mercoa
+from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",

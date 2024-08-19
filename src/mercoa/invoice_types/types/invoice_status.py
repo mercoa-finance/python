@@ -4,7 +4,17 @@ import typing
 
 InvoiceStatus = typing.Union[
     typing.Literal[
-        "DRAFT", "NEW", "APPROVED", "SCHEDULED", "PENDING", "PAID", "ARCHIVED", "REFUSED", "CANCELED", "FAILED"
+        "UNASSIGNED",
+        "DRAFT",
+        "NEW",
+        "APPROVED",
+        "SCHEDULED",
+        "PENDING",
+        "PAID",
+        "ARCHIVED",
+        "REFUSED",
+        "CANCELED",
+        "FAILED",
     ],
     typing.Any,
 ]

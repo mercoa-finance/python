@@ -14,6 +14,7 @@ from .check_payment_destination_options import CheckPaymentDestinationOptions
 from .comment_id import CommentId
 from .comment_request import CommentRequest
 from .comment_response import CommentResponse
+from .day_of_week import DayOfWeek
 from .find_invoice_response import FindInvoiceResponse
 from .invoice_creation_request import InvoiceCreationRequest
 from .invoice_date_filter import InvoiceDateFilter
@@ -42,6 +43,21 @@ from .payment_destination_options import (
     PaymentDestinationOptions_Check,
     PaymentDestinationOptions_Utility,
 )
+from .payment_month_repeat_type import PaymentMonthRepeatType
+from .payment_month_schedule import PaymentMonthSchedule
+from .payment_schedule import (
+    PaymentSchedule,
+    PaymentSchedule_Daily,
+    PaymentSchedule_Monthly,
+    PaymentSchedule_OneTime,
+    PaymentSchedule_Weekly,
+    PaymentSchedule_Yearly,
+)
+from .payment_schedule_base import PaymentScheduleBase
+from .payment_schedule_end_condition import PaymentScheduleEndCondition
+from .payment_type import PaymentType
+from .payment_week_schedule import PaymentWeekSchedule
+from .payment_year_schedule import PaymentYearSchedule
 from .utility_payment_destination_options import UtilityPaymentDestinationOptions
 
 __all__ = [
@@ -59,6 +75,7 @@ __all__ = [
     "CommentId",
     "CommentRequest",
     "CommentResponse",
+    "DayOfWeek",
     "FindInvoiceResponse",
     "InvoiceCreationRequest",
     "InvoiceDateFilter",
@@ -85,5 +102,18 @@ __all__ = [
     "PaymentDestinationOptions_BankAccount",
     "PaymentDestinationOptions_Check",
     "PaymentDestinationOptions_Utility",
+    "PaymentMonthRepeatType",
+    "PaymentMonthSchedule",
+    "PaymentSchedule",
+    "PaymentScheduleBase",
+    "PaymentScheduleEndCondition",
+    "PaymentSchedule_Daily",
+    "PaymentSchedule_Monthly",
+    "PaymentSchedule_OneTime",
+    "PaymentSchedule_Weekly",
+    "PaymentSchedule_Yearly",
+    "PaymentType",
+    "PaymentWeekSchedule",
+    "PaymentYearSchedule",
     "UtilityPaymentDestinationOptions",
 ]
