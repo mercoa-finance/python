@@ -394,12 +394,21 @@ class EntityClient:
                 )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def get(self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None) -> EntityResponse:
+    def get(
+        self,
+        entity_id: EntityId,
+        *,
+        metadata: typing.Optional[bool] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> EntityResponse:
         """
         Parameters
         ----------
         entity_id : EntityId
             Entity ID or Entity ForeignID
+
+        metadata : typing.Optional[bool]
+            If true, will return simple key/value metadata for the entity. For more complex metadata, use the Metadata API.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -422,6 +431,9 @@ class EntityClient:
         _response = self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}",
             method="GET",
+            params={
+                "metadata": metadata,
+            },
             request_options=request_options,
         )
         try:
@@ -1910,13 +1922,20 @@ class AsyncEntityClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get(
-        self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_id: EntityId,
+        *,
+        metadata: typing.Optional[bool] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityResponse:
         """
         Parameters
         ----------
         entity_id : EntityId
             Entity ID or Entity ForeignID
+
+        metadata : typing.Optional[bool]
+            If true, will return simple key/value metadata for the entity. For more complex metadata, use the Metadata API.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1947,6 +1966,9 @@ class AsyncEntityClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}",
             method="GET",
+            params={
+                "metadata": metadata,
+            },
             request_options=request_options,
         )
         try:

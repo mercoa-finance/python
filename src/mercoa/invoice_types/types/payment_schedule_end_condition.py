@@ -3,4 +3,4 @@
 import typing
 import datetime as dt
 
-PaymentScheduleEndCondition = typing.Union[int, dt.date]
+PaymentScheduleEndCondition = typing.Union[int, dt.datetime]

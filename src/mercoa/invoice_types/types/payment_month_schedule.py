@@ -18,8 +18,8 @@ class PaymentMonthSchedule(PaymentScheduleBase):
     PaymentMonthSchedule(
         day_offset=10,
         offset_type="start",
-        ends=datetime.date.fromisoformat(
-            "2021-01-01",
+        ends=datetime.datetime.fromisoformat(
+            "2021-01-01 00:00:00+00:00",
         ),
     )
     """

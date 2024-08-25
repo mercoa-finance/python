@@ -123,6 +123,11 @@ class EntityResponse(UniversalBaseModel):
     True if this entity is available as a payee to any entity on your platform. Otherwise this entity will only be available as a payee to entities that have a direct relationship with this entity.
     """
 
+    metadata: typing.Optional[typing.Dict[str, str]] = pydantic.Field(default=None)
+    """
+    Simple key/value metadata associated with this entity. For more complex metadata, use the Metadata API.
+    """
+
     created_at: dt.datetime = pydantic.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
 

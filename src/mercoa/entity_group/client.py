@@ -20,6 +20,7 @@ from ..commons.errors.unimplemented import Unimplemented
 from ..entity_group_types.types.entity_group_request import EntityGroupRequest
 from ..entity_group_types.types.entity_group_response import EntityGroupResponse
 from ..core.jsonable_encoder import jsonable_encoder
+from ..entity_types.types.token_generation_options import TokenGenerationOptions
 from ..core.client_wrapper import AsyncClientWrapper
 from .user.client import AsyncUserClient
 from .invoice.client import AsyncInvoiceClient
@@ -291,7 +292,11 @@ class EntityGroupClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get(
-        self, entity_group_id: EntityGroupId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_group_id: EntityGroupId,
+        *,
+        entity_metadata: typing.Optional[bool] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityGroupResponse:
         """
         Get an entity group
@@ -300,6 +305,9 @@ class EntityGroupClient:
         ----------
         entity_group_id : EntityGroupId
             Entity Group ID or Entity Group ForeignID
+
+        entity_metadata : typing.Optional[bool]
+            If true, will return simple key/value metadata for entities in the group. For more complex metadata, use the Metadata API.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -322,6 +330,9 @@ class EntityGroupClient:
         _response = self._client_wrapper.httpx_client.request(
             f"entityGroup/{jsonable_encoder(entity_group_id)}",
             method="GET",
+            params={
+                "entityMetadata": entity_metadata,
+            },
             request_options=request_options,
         )
         try:
@@ -586,6 +597,139 @@ class EntityGroupClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def get_token(
+        self,
+        entity_group_id: EntityGroupId,
+        *,
+        request: TokenGenerationOptions,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> str:
+        """
+        Generate a JWT token for an entity group with the given options. This token can be used to authenticate to any entity in the entity group in the Mercoa API and iFrame.
+
+        <Warning>We recommend using [this endpoint](/api-reference/entity-group/user/get-token). This will enable features such as approvals and comments.</Warning>
+
+        Parameters
+        ----------
+        entity_group_id : EntityGroupId
+            Entity Group ID or Entity Group ForeignID
+
+        request : TokenGenerationOptions
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        str
+
+        Examples
+        --------
+        from mercoa import Mercoa
+        from mercoa.entity_types import TokenGenerationOptions
+
+        client = Mercoa(
+            token="YOUR_TOKEN",
+        )
+        client.entity_group.get_token(
+            entity_group_id="entg_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+            request=TokenGenerationOptions(
+                expires_in="1h",
+            ),
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"entityGroup/{jsonable_encoder(entity_group_id)}/token",
+            method="POST",
+            json=request,
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return typing.cast(
+                str,
+                parse_obj_as(
+                    type_=str,  # type: ignore
+                    object_=_response_json,
+                ),
+            )
         if "errorName" in _response_json:
             if _response_json["errorName"] == "BadRequest":
                 raise BadRequest(
@@ -939,7 +1083,11 @@ class AsyncEntityGroupClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get(
-        self, entity_group_id: EntityGroupId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_group_id: EntityGroupId,
+        *,
+        entity_metadata: typing.Optional[bool] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityGroupResponse:
         """
         Get an entity group
@@ -948,6 +1096,9 @@ class AsyncEntityGroupClient:
         ----------
         entity_group_id : EntityGroupId
             Entity Group ID or Entity Group ForeignID
+
+        entity_metadata : typing.Optional[bool]
+            If true, will return simple key/value metadata for entities in the group. For more complex metadata, use the Metadata API.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -978,6 +1129,9 @@ class AsyncEntityGroupClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"entityGroup/{jsonable_encoder(entity_group_id)}",
             method="GET",
+            params={
+                "entityMetadata": entity_metadata,
+            },
             request_options=request_options,
         )
         try:
@@ -1258,6 +1412,147 @@ class AsyncEntityGroupClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def get_token(
+        self,
+        entity_group_id: EntityGroupId,
+        *,
+        request: TokenGenerationOptions,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> str:
+        """
+        Generate a JWT token for an entity group with the given options. This token can be used to authenticate to any entity in the entity group in the Mercoa API and iFrame.
+
+        <Warning>We recommend using [this endpoint](/api-reference/entity-group/user/get-token). This will enable features such as approvals and comments.</Warning>
+
+        Parameters
+        ----------
+        entity_group_id : EntityGroupId
+            Entity Group ID or Entity Group ForeignID
+
+        request : TokenGenerationOptions
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        str
+
+        Examples
+        --------
+        import asyncio
+
+        from mercoa import AsyncMercoa
+        from mercoa.entity_types import TokenGenerationOptions
+
+        client = AsyncMercoa(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.entity_group.get_token(
+                entity_group_id="entg_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+                request=TokenGenerationOptions(
+                    expires_in="1h",
+                ),
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"entityGroup/{jsonable_encoder(entity_group_id)}/token",
+            method="POST",
+            json=request,
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return typing.cast(
+                str,
+                parse_obj_as(
+                    type_=str,  # type: ignore
+                    object_=_response_json,
+                ),
+            )
         if "errorName" in _response_json:
             if _response_json["errorName"] == "BadRequest":
                 raise BadRequest(

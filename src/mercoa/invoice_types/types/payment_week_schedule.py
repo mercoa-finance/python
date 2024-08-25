@@ -17,8 +17,8 @@ class PaymentWeekSchedule(PaymentScheduleBase):
 
     PaymentWeekSchedule(
         repeat_on=["1", "3", "5"],
-        ends=datetime.date.fromisoformat(
-            "2021-01-01",
+        ends=datetime.datetime.fromisoformat(
+            "2021-01-01 00:00:00+00:00",
         ),
     )
     """

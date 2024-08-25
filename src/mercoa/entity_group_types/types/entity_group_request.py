@@ -24,7 +24,7 @@ class EntityGroupRequest(UniversalBaseModel):
     )
     """
 
-    entity_ids: typing.List[EntityId] = pydantic.Field(alias="entityIds")
+    entity_ids: typing.Optional[typing.List[EntityId]] = pydantic.Field(alias="entityIds", default=None)
     foreign_id: typing.Optional[str] = pydantic.Field(alias="foreignId", default=None)
     name: typing.Optional[str] = None
     email_to_name: typing.Optional[str] = pydantic.Field(alias="emailToName", default=None)

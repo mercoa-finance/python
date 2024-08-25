@@ -17,8 +17,8 @@ class PaymentYearSchedule(PaymentScheduleBase):
     PaymentYearSchedule(
         repeat_on_day=10,
         repeat_on_month=1,
-        ends=datetime.date.fromisoformat(
-            "2021-01-01",
+        ends=datetime.datetime.fromisoformat(
+            "2021-01-01 00:00:00+00:00",
         ),
     )
     """

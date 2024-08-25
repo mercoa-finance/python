@@ -213,6 +213,14 @@ client.entity_group.get(
 <dl>
 <dd>
 
+**entity_metadata:** `typing.Optional[bool]` — If true, will return simple key/value metadata for entities in the group. For more complex metadata, use the Metadata API.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -364,6 +372,90 @@ client.entity_group.delete(
 <dd>
 
 **entity_group_id:** `EntityGroupId` — Entity Group ID or Entity Group ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.entity_group.<a href="src/mercoa/entity_group/client.py">get_token</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Generate a JWT token for an entity group with the given options. This token can be used to authenticate to any entity in the entity group in the Mercoa API and iFrame.
+
+<Warning>We recommend using [this endpoint](/api-reference/entity-group/user/get-token). This will enable features such as approvals and comments.</Warning>
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+from mercoa.entity_types import TokenGenerationOptions
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.entity_group.get_token(
+    entity_group_id="entg_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+    request=TokenGenerationOptions(
+        expires_in="1h",
+    ),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entity_group_id:** `EntityGroupId` — Entity Group ID or Entity Group ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `TokenGenerationOptions` 
     
 </dd>
 </dl>
@@ -864,6 +956,97 @@ client.entity_group.user.delete(
 </dl>
 </details>
 
+<details><summary><code>client.entity_group.user.<a href="src/mercoa/entity_group/user/client.py">get_token</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Generate a JWT token for an entity group with the given options. This token can be used to authenticate to any entity in the entity group as the user in the Mercoa API and iFrame.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+from mercoa.entity_types import TokenGenerationOptions
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.entity_group.user.get_token(
+    entity_group_id="entg_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+    foreign_id="MY-DB-ID-12345",
+    request=TokenGenerationOptions(
+        expires_in="1h",
+    ),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entity_group_id:** `EntityGroupId` — Entity Group ID or Entity Group ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**foreign_id:** `str` — ID used to identify user in your system
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `TokenGenerationOptions` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Entity
 <details><summary><code>client.entity.<a href="src/mercoa/entity/client.py">find</a>(...)</code></summary>
 <dl>
@@ -1119,6 +1302,14 @@ client.entity.get(
 <dd>
 
 **entity_id:** `EntityId` — Entity ID or Entity ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**metadata:** `typing.Optional[bool]` — If true, will return simple key/value metadata for the entity. For more complex metadata, use the Metadata API.
     
 </dd>
 </dl>
@@ -5143,7 +5334,7 @@ client.entity.counterparty.find_payees(
 <dl>
 <dd>
 
-**counterparty_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter by counterparty ids
+**counterparty_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter by counterparty ids (Foreign ID is supported)
     
 </dd>
 </dl>
@@ -5276,7 +5467,7 @@ client.entity.counterparty.find_payors(
 <dl>
 <dd>
 
-**counterparty_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter by counterparty ids
+**counterparty_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter by counterparty ids (Foreign ID is supported)
     
 </dd>
 </dl>

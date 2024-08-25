@@ -67,7 +67,7 @@ class CounterpartyClient:
             If true, will include counterparty invoice metrics as part of the response
 
         counterparty_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
-            Filter by counterparty ids
+            Filter by counterparty ids (Foreign ID is supported)
 
         limit : typing.Optional[int]
             Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.
@@ -231,7 +231,7 @@ class CounterpartyClient:
             If true, will include counterparty invoice metrics as part of the response
 
         counterparty_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
-            Filter by counterparty ids
+            Filter by counterparty ids (Foreign ID is supported)
 
         limit : typing.Optional[int]
             Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.
@@ -932,7 +932,7 @@ class AsyncCounterpartyClient:
             If true, will include counterparty invoice metrics as part of the response
 
         counterparty_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
-            Filter by counterparty ids
+            Filter by counterparty ids (Foreign ID is supported)
 
         limit : typing.Optional[int]
             Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.
@@ -1104,7 +1104,7 @@ class AsyncCounterpartyClient:
             If true, will include counterparty invoice metrics as part of the response
 
         counterparty_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
-            Filter by counterparty ids
+            Filter by counterparty ids (Foreign ID is supported)
 
         limit : typing.Optional[int]
             Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.

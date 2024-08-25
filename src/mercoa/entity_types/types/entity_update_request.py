@@ -102,6 +102,11 @@ class EntityUpdateRequest(UniversalBaseModel):
     Base64 encoded PNG image data for the entity logo. Max size 100KB.
     """
 
+    metadata: typing.Optional[typing.Dict[str, str]] = pydantic.Field(default=None)
+    """
+    Simple key/value metadata associated with this entity. For more complex metadata, use the Metadata API.
+    """
+
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
     else:
