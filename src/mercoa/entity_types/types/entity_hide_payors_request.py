@@ -20,7 +20,7 @@ class EntityHidePayorsRequest(UniversalBaseModel):
 
     payors: typing.List[EntityId] = pydantic.Field()
     """
-    List of payor entity IDs to hide
+    List of payor entity IDs or foreign IDs to hide
     """
 
     if IS_PYDANTIC_V2:

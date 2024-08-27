@@ -41,6 +41,7 @@ from .commons import (
 )
 from .email_log_types import EmailLog, EmailLogId, EmailLogResponse
 from .entity_group_types import (
+    EntityGroupEntityUpdateRequest,
     EntityGroupFindResponse,
     EntityGroupId,
     EntityGroupRequest,
@@ -390,6 +391,7 @@ __all__ = [
     "EntityAddPayorsRequest",
     "EntityCustomizationRequest",
     "EntityCustomizationResponse",
+    "EntityGroupEntityUpdateRequest",
     "EntityGroupFindResponse",
     "EntityGroupId",
     "EntityGroupRequest",

@@ -58,12 +58,20 @@ class InvoiceRequestBase(UniversalBaseModel):
     service_start_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceStartDate", default=None)
     service_end_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceEndDate", default=None)
     payer_id: typing.Optional[EntityId] = pydantic.Field(alias="payerId", default=None)
+    """
+    ID or foreign ID of the payer of this invoice.
+    """
+
     payment_source_id: typing.Optional[PaymentMethodId] = pydantic.Field(alias="paymentSourceId", default=None)
     """
     ID of payment source for this invoice. If not provided, will attempt to use the default payment source for the payer when creating an invoice if a default payment source exists for the payer.
     """
 
     vendor_id: typing.Optional[EntityId] = pydantic.Field(alias="vendorId", default=None)
+    """
+    ID or foreign ID of the vendor of this invoice.
+    """
+
     payment_destination_id: typing.Optional[PaymentMethodId] = pydantic.Field(
         alias="paymentDestinationId", default=None
     )

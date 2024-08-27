@@ -438,6 +438,177 @@ class RepresentativeClient:
                 )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
+    def update(
+        self,
+        entity_id: EntityId,
+        representative_id: RepresentativeId,
+        *,
+        request: RepresentativeRequest,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> RepresentativeResponse:
+        """
+        Parameters
+        ----------
+        entity_id : EntityId
+            Entity ID or Entity ForeignID
+
+        representative_id : RepresentativeId
+
+        request : RepresentativeRequest
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        RepresentativeResponse
+
+        Examples
+        --------
+        from mercoa import Mercoa
+        from mercoa.commons import (
+            Address,
+            BirthDate,
+            FullName,
+            IndividualGovernmentId,
+            PhoneNumber,
+        )
+        from mercoa.entity_types import RepresentativeRequest, Responsibilities
+
+        client = Mercoa(
+            token="YOUR_TOKEN",
+        )
+        client.entity.representative.update(
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            representative_id="rep_7df2974a-4069-454c-912f-7e58ebe030fb",
+            request=RepresentativeRequest(
+                name=FullName(
+                    first_name="John",
+                    middle_name="Quincy",
+                    last_name="Adams",
+                    suffix="Jr.",
+                ),
+                phone=PhoneNumber(
+                    country_code="1",
+                    number="4155551234",
+                ),
+                email="john.doe@acme.com",
+                address=Address(
+                    address_line_1="123 Main St",
+                    address_line_2="Unit 1",
+                    city="San Francisco",
+                    state_or_province="CA",
+                    postal_code="94105",
+                    country="US",
+                ),
+                birth_date=BirthDate(
+                    day="1",
+                    month="1",
+                    year="1980",
+                ),
+                government_id=IndividualGovernmentId(
+                    ssn="123-45-6789",
+                ),
+                responsibilities=Responsibilities(
+                    is_owner=True,
+                    ownership_percentage=40,
+                    is_controller=True,
+                ),
+            ),
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"entity/{jsonable_encoder(entity_id)}/representative/{jsonable_encoder(representative_id)}",
+            method="POST",
+            json=request,
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return typing.cast(
+                RepresentativeResponse,
+                parse_obj_as(
+                    type_=RepresentativeResponse,  # type: ignore
+                    object_=_response_json,
+                ),
+            )
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
     def delete(
         self,
         entity_id: EntityId,
@@ -909,6 +1080,185 @@ class AsyncRepresentativeClient:
             f"entity/{jsonable_encoder(entity_id)}/representative/{jsonable_encoder(representative_id)}",
             method="GET",
             request_options=request_options,
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return typing.cast(
+                RepresentativeResponse,
+                parse_obj_as(
+                    type_=RepresentativeResponse,  # type: ignore
+                    object_=_response_json,
+                ),
+            )
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def update(
+        self,
+        entity_id: EntityId,
+        representative_id: RepresentativeId,
+        *,
+        request: RepresentativeRequest,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> RepresentativeResponse:
+        """
+        Parameters
+        ----------
+        entity_id : EntityId
+            Entity ID or Entity ForeignID
+
+        representative_id : RepresentativeId
+
+        request : RepresentativeRequest
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        RepresentativeResponse
+
+        Examples
+        --------
+        import asyncio
+
+        from mercoa import AsyncMercoa
+        from mercoa.commons import (
+            Address,
+            BirthDate,
+            FullName,
+            IndividualGovernmentId,
+            PhoneNumber,
+        )
+        from mercoa.entity_types import RepresentativeRequest, Responsibilities
+
+        client = AsyncMercoa(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.entity.representative.update(
+                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                representative_id="rep_7df2974a-4069-454c-912f-7e58ebe030fb",
+                request=RepresentativeRequest(
+                    name=FullName(
+                        first_name="John",
+                        middle_name="Quincy",
+                        last_name="Adams",
+                        suffix="Jr.",
+                    ),
+                    phone=PhoneNumber(
+                        country_code="1",
+                        number="4155551234",
+                    ),
+                    email="john.doe@acme.com",
+                    address=Address(
+                        address_line_1="123 Main St",
+                        address_line_2="Unit 1",
+                        city="San Francisco",
+                        state_or_province="CA",
+                        postal_code="94105",
+                        country="US",
+                    ),
+                    birth_date=BirthDate(
+                        day="1",
+                        month="1",
+                        year="1980",
+                    ),
+                    government_id=IndividualGovernmentId(
+                        ssn="123-45-6789",
+                    ),
+                    responsibilities=Responsibilities(
+                        is_owner=True,
+                        ownership_percentage=40,
+                        is_controller=True,
+                    ),
+                ),
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"entity/{jsonable_encoder(entity_id)}/representative/{jsonable_encoder(representative_id)}",
+            method="POST",
+            json=request,
+            request_options=request_options,
+            omit=OMIT,
         )
         try:
             _response_json = _response.json()

@@ -37,7 +37,7 @@ class EntityAddPayorsRequest(UniversalBaseModel):
 
     payors: typing.List[EntityId] = pydantic.Field()
     """
-    List of payor entity IDs to associate with the entity
+    List of payor entity IDs or foreign IDs to associate with the entity
     """
 
     customizations: typing.Optional[typing.List[CounterpartyCustomizationRequest]] = pydantic.Field(default=None)

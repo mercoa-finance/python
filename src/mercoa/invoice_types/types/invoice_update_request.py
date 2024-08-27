@@ -68,7 +68,7 @@ class InvoiceUpdateRequest(InvoiceRequestBase):
     )
     creator_entity_id: typing.Optional[EntityId] = pydantic.Field(alias="creatorEntityId", default=None)
     """
-    ID of entity who created this invoice. If creating a payable invoice (AP), this must be the same as the payerId. If creating a receivable invoice (AR), this must be the same as the vendorId.
+    ID or foreign ID of entity who created this invoice. If creating a payable invoice (AP), this must be the same as the payerId. If creating a receivable invoice (AR), this must be the same as the vendorId.
     """
 
     if IS_PYDANTIC_V2:

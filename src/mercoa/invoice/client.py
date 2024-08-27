@@ -87,7 +87,7 @@ class InvoiceClient:
         Parameters
         ----------
         entity_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
-            Filter invoices by the ID of the entity that created the invoice.
+            Filter invoices by the ID or foreign ID of the entity that created the invoice.
 
         start_date : typing.Optional[dt.datetime]
             Start date filter. Defaults to CREATED_AT unless specified the dateType is specified
@@ -123,10 +123,10 @@ class InvoiceClient:
             Filter invoices by line item GL account ID. Each filter will be applied as an OR condition. Duplicate keys will be ignored.
 
         payer_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
-            Filter invoices by payer ID.
+            Filter invoices by payer ID or payer foreign ID.
 
         vendor_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
-            Filter invoices by vendor ID.
+            Filter invoices by vendor ID or vendor foreign ID.
 
         approver_id : typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]
             Filter invoices by assigned approver user ID.
@@ -877,7 +877,7 @@ class AsyncInvoiceClient:
         Parameters
         ----------
         entity_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
-            Filter invoices by the ID of the entity that created the invoice.
+            Filter invoices by the ID or foreign ID of the entity that created the invoice.
 
         start_date : typing.Optional[dt.datetime]
             Start date filter. Defaults to CREATED_AT unless specified the dateType is specified
@@ -913,10 +913,10 @@ class AsyncInvoiceClient:
             Filter invoices by line item GL account ID. Each filter will be applied as an OR condition. Duplicate keys will be ignored.
 
         payer_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
-            Filter invoices by payer ID.
+            Filter invoices by payer ID or payer foreign ID.
 
         vendor_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
-            Filter invoices by vendor ID.
+            Filter invoices by vendor ID or vendor foreign ID.
 
         approver_id : typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]
             Filter invoices by assigned approver user ID.

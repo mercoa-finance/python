@@ -37,7 +37,7 @@ class EntityAddPayeesRequest(UniversalBaseModel):
 
     payees: typing.List[EntityId] = pydantic.Field()
     """
-    List of payee entity IDs to associate with the entity
+    List of payee entity IDs or foreign IDs to associate with the entity
     """
 
     customizations: typing.Optional[typing.List[CounterpartyCustomizationRequest]] = pydantic.Field(default=None)

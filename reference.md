@@ -475,6 +475,176 @@ client.entity_group.get_token(
 </dl>
 </details>
 
+<details><summary><code>client.entity_group.<a href="src/mercoa/entity_group/client.py">add_entities</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Add entities to an entity group
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+from mercoa.entity_group_types import EntityGroupEntityUpdateRequest
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.entity_group.add_entities(
+    entity_group_id="entg_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+    request=EntityGroupEntityUpdateRequest(
+        entity_ids=[
+            "ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            "ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+        ],
+    ),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entity_group_id:** `EntityGroupId` — Entity Group ID or Entity Group ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `EntityGroupEntityUpdateRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.entity_group.<a href="src/mercoa/entity_group/client.py">remove_entities</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Remove entities from an entity group
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+from mercoa.entity_group_types import EntityGroupEntityUpdateRequest
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.entity_group.remove_entities(
+    entity_group_id="entg_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+    request=EntityGroupEntityUpdateRequest(
+        entity_ids=[
+            "ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            "ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+        ],
+    ),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entity_group_id:** `EntityGroupId` — Entity Group ID or Entity Group ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `EntityGroupEntityUpdateRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## EntityGroup User
 <details><summary><code>client.entity_group.user.<a href="src/mercoa/entity_group/user/client.py">find</a>(...)</code></summary>
 <dl>
@@ -2846,7 +3016,7 @@ client.invoice.find(
 <dl>
 <dd>
 
-**entity_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter invoices by the ID of the entity that created the invoice.
+**entity_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter invoices by the ID or foreign ID of the entity that created the invoice.
     
 </dd>
 </dl>
@@ -2946,7 +3116,7 @@ client.invoice.find(
 <dl>
 <dd>
 
-**payer_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter invoices by payer ID.
+**payer_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter invoices by payer ID or payer foreign ID.
     
 </dd>
 </dl>
@@ -2954,7 +3124,7 @@ client.invoice.find(
 <dl>
 <dd>
 
-**vendor_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter invoices by vendor ID.
+**vendor_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter invoices by vendor ID or vendor foreign ID.
     
 </dd>
 </dl>
@@ -4520,7 +4690,7 @@ client.entity_group.invoice.find(
 <dl>
 <dd>
 
-**payer_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter invoices by payer ID.
+**payer_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter invoices by payer ID or payer foreign ID.
     
 </dd>
 </dl>
@@ -4528,7 +4698,7 @@ client.entity_group.invoice.find(
 <dl>
 <dd>
 
-**vendor_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter invoices by vendor ID.
+**vendor_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter invoices by vendor ID or vendor foreign ID.
     
 </dd>
 </dl>
@@ -6795,7 +6965,7 @@ client.entity.invoice.find(
 <dl>
 <dd>
 
-**payer_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter invoices by payer ID.
+**payer_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter invoices by payer ID or payer foreign ID.
     
 </dd>
 </dl>
@@ -6803,7 +6973,7 @@ client.entity.invoice.find(
 <dl>
 <dd>
 
-**vendor_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter invoices by vendor ID.
+**vendor_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter invoices by vendor ID or vendor foreign ID.
     
 </dd>
 </dl>
@@ -8490,6 +8660,121 @@ client.entity.representative.get(
 <dd>
 
 **representative_id:** `RepresentativeId` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.entity.representative.<a href="src/mercoa/entity/representative/client.py">update</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+from mercoa.commons import (
+    Address,
+    BirthDate,
+    FullName,
+    IndividualGovernmentId,
+    PhoneNumber,
+)
+from mercoa.entity_types import RepresentativeRequest, Responsibilities
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.entity.representative.update(
+    entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+    representative_id="rep_7df2974a-4069-454c-912f-7e58ebe030fb",
+    request=RepresentativeRequest(
+        name=FullName(
+            first_name="John",
+            middle_name="Quincy",
+            last_name="Adams",
+            suffix="Jr.",
+        ),
+        phone=PhoneNumber(
+            country_code="1",
+            number="4155551234",
+        ),
+        email="john.doe@acme.com",
+        address=Address(
+            address_line_1="123 Main St",
+            address_line_2="Unit 1",
+            city="San Francisco",
+            state_or_province="CA",
+            postal_code="94105",
+            country="US",
+        ),
+        birth_date=BirthDate(
+            day="1",
+            month="1",
+            year="1980",
+        ),
+        government_id=IndividualGovernmentId(
+            ssn="123-45-6789",
+        ),
+        responsibilities=Responsibilities(
+            is_owner=True,
+            ownership_percentage=40,
+            is_controller=True,
+        ),
+    ),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entity_id:** `EntityId` — Entity ID or Entity ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**representative_id:** `RepresentativeId` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `RepresentativeRequest` 
     
 </dd>
 </dl>

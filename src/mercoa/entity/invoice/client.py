@@ -113,10 +113,10 @@ class InvoiceClient:
             Find invoices by vendor name, invoice number, or amount. Partial matches are supported.
 
         payer_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
-            Filter invoices by payer ID.
+            Filter invoices by payer ID or payer foreign ID.
 
         vendor_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
-            Filter invoices by vendor ID.
+            Filter invoices by vendor ID or vendor foreign ID.
 
         approver_id : typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]
             Filter invoices by assigned approver user ID.
@@ -569,10 +569,10 @@ class AsyncInvoiceClient:
             Find invoices by vendor name, invoice number, or amount. Partial matches are supported.
 
         payer_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
-            Filter invoices by payer ID.
+            Filter invoices by payer ID or payer foreign ID.
 
         vendor_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
-            Filter invoices by vendor ID.
+            Filter invoices by vendor ID or vendor foreign ID.
 
         approver_id : typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]
             Filter invoices by assigned approver user ID.
