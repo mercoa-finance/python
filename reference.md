@@ -8700,7 +8700,7 @@ from mercoa.commons import (
     IndividualGovernmentId,
     PhoneNumber,
 )
-from mercoa.entity_types import RepresentativeRequest, Responsibilities
+from mercoa.entity_types import RepresentativeUpdateRequest, Responsibilities
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -8708,7 +8708,7 @@ client = Mercoa(
 client.entity.representative.update(
     entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
     representative_id="rep_7df2974a-4069-454c-912f-7e58ebe030fb",
-    request=RepresentativeRequest(
+    request=RepresentativeUpdateRequest(
         name=FullName(
             first_name="John",
             middle_name="Quincy",
@@ -8774,7 +8774,7 @@ client.entity.representative.update(
 <dl>
 <dd>
 
-**request:** `RepresentativeRequest` 
+**request:** `RepresentativeUpdateRequest` 
     
 </dd>
 </dl>

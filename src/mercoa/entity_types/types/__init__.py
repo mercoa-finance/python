@@ -58,6 +58,7 @@ from .profile_response import ProfileResponse
 from .representative_id import RepresentativeId
 from .representative_request import RepresentativeRequest
 from .representative_response import RepresentativeResponse
+from .representative_update_request import RepresentativeUpdateRequest
 from .responsibilities import Responsibilities
 from .rule import Rule, Rule_Approver
 from .tax_id import TaxId
@@ -134,6 +135,7 @@ __all__ = [
     "RepresentativeId",
     "RepresentativeRequest",
     "RepresentativeResponse",
+    "RepresentativeUpdateRequest",
     "Responsibilities",
     "Rule",
     "Rule_Approver",

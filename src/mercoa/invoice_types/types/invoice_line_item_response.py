@@ -5,6 +5,7 @@ from .invoice_line_item_id import InvoiceLineItemId
 import typing
 import pydantic
 from ...payment_method_types.types.currency_code import CurrencyCode
+from .invoice_line_item_category import InvoiceLineItemCategory
 import datetime as dt
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
@@ -25,6 +26,7 @@ class InvoiceLineItemResponse(UniversalBaseModel):
         name="Product A",
         quantity=1.0,
         unit_price=100.0,
+        category="EXPENSE",
         service_start_date=datetime.datetime.fromisoformat(
             "2021-01-01 00:00:00+00:00",
         ),
@@ -57,6 +59,7 @@ class InvoiceLineItemResponse(UniversalBaseModel):
     Unit price of line item in major units.
     """
 
+    category: InvoiceLineItemCategory
     service_start_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceStartDate", default=None)
     service_end_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceEndDate", default=None)
     metadata: typing.Optional[typing.Dict[str, str]] = None

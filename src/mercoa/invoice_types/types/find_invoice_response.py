@@ -280,6 +280,7 @@ class FindInvoiceResponse(UniversalBaseModel):
                         name="Product A",
                         quantity=1.0,
                         unit_price=100.0,
+                        category="EXPENSE",
                         service_start_date=datetime.datetime.fromisoformat(
                             "2021-01-01 00:00:00+00:00",
                         ),

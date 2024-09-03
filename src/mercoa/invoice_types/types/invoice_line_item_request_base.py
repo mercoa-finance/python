@@ -4,6 +4,7 @@ from ...core.pydantic_utilities import UniversalBaseModel
 import typing
 from ...payment_method_types.types.currency_code import CurrencyCode
 import pydantic
+from .invoice_line_item_category import InvoiceLineItemCategory
 import datetime as dt
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
@@ -19,6 +20,11 @@ class InvoiceLineItemRequestBase(UniversalBaseModel):
     unit_price: typing.Optional[float] = pydantic.Field(alias="unitPrice", default=None)
     """
     Unit price of the line item in major units. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.
+    """
+
+    category: typing.Optional[InvoiceLineItemCategory] = pydantic.Field(default=None)
+    """
+    Category of the line item. Defaults to EXPENSE.
     """
 
     service_start_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceStartDate", default=None)

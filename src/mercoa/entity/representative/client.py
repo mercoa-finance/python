@@ -18,6 +18,7 @@ from ...commons.errors.internal_server_error import InternalServerError
 from ...commons.errors.unimplemented import Unimplemented
 from ...entity_types.types.representative_request import RepresentativeRequest
 from ...entity_types.types.representative_id import RepresentativeId
+from ...entity_types.types.representative_update_request import RepresentativeUpdateRequest
 from ...core.client_wrapper import AsyncClientWrapper
 
 # this is used as the default value for optional parameters
@@ -443,7 +444,7 @@ class RepresentativeClient:
         entity_id: EntityId,
         representative_id: RepresentativeId,
         *,
-        request: RepresentativeRequest,
+        request: RepresentativeUpdateRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> RepresentativeResponse:
         """
@@ -454,7 +455,7 @@ class RepresentativeClient:
 
         representative_id : RepresentativeId
 
-        request : RepresentativeRequest
+        request : RepresentativeUpdateRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -473,7 +474,7 @@ class RepresentativeClient:
             IndividualGovernmentId,
             PhoneNumber,
         )
-        from mercoa.entity_types import RepresentativeRequest, Responsibilities
+        from mercoa.entity_types import RepresentativeUpdateRequest, Responsibilities
 
         client = Mercoa(
             token="YOUR_TOKEN",
@@ -481,7 +482,7 @@ class RepresentativeClient:
         client.entity.representative.update(
             entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             representative_id="rep_7df2974a-4069-454c-912f-7e58ebe030fb",
-            request=RepresentativeRequest(
+            request=RepresentativeUpdateRequest(
                 name=FullName(
                     first_name="John",
                     middle_name="Quincy",
@@ -1171,7 +1172,7 @@ class AsyncRepresentativeClient:
         entity_id: EntityId,
         representative_id: RepresentativeId,
         *,
-        request: RepresentativeRequest,
+        request: RepresentativeUpdateRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> RepresentativeResponse:
         """
@@ -1182,7 +1183,7 @@ class AsyncRepresentativeClient:
 
         representative_id : RepresentativeId
 
-        request : RepresentativeRequest
+        request : RepresentativeUpdateRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1203,7 +1204,7 @@ class AsyncRepresentativeClient:
             IndividualGovernmentId,
             PhoneNumber,
         )
-        from mercoa.entity_types import RepresentativeRequest, Responsibilities
+        from mercoa.entity_types import RepresentativeUpdateRequest, Responsibilities
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
@@ -1214,7 +1215,7 @@ class AsyncRepresentativeClient:
             await client.entity.representative.update(
                 entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
                 representative_id="rep_7df2974a-4069-454c-912f-7e58ebe030fb",
-                request=RepresentativeRequest(
+                request=RepresentativeUpdateRequest(
                     name=FullName(
                         first_name="John",
                         middle_name="Quincy",
