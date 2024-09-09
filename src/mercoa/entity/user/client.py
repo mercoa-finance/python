@@ -454,6 +454,7 @@ class UserClient:
             Entity ID or Entity ForeignID
 
         user_id : EntityUserId
+            User ID or User ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -581,6 +582,7 @@ class UserClient:
             Entity ID or Entity ForeignID
 
         user_id : EntityUserId
+            User ID or User ForeignID
 
         request : EntityUserRequest
 
@@ -714,6 +716,7 @@ class UserClient:
             Entity ID or Entity ForeignID
 
         user_id : EntityUserId
+            User ID or User ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -835,6 +838,7 @@ class UserClient:
             Entity ID or Entity ForeignID
 
         user_id : EntityUserId
+            User ID or User ForeignID
 
         request : TokenGenerationOptions
 
@@ -1402,6 +1406,7 @@ class AsyncUserClient:
             Entity ID or Entity ForeignID
 
         user_id : EntityUserId
+            User ID or User ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1537,6 +1542,7 @@ class AsyncUserClient:
             Entity ID or Entity ForeignID
 
         user_id : EntityUserId
+            User ID or User ForeignID
 
         request : EntityUserRequest
 
@@ -1678,6 +1684,7 @@ class AsyncUserClient:
             Entity ID or Entity ForeignID
 
         user_id : EntityUserId
+            User ID or User ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1807,6 +1814,7 @@ class AsyncUserClient:
             Entity ID or Entity ForeignID
 
         user_id : EntityUserId
+            User ID or User ForeignID
 
         request : TokenGenerationOptions
 

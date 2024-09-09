@@ -18,6 +18,8 @@ from .day_of_week import DayOfWeek
 from .find_invoice_response import FindInvoiceResponse
 from .invoice_creation_request import InvoiceCreationRequest
 from .invoice_date_filter import InvoiceDateFilter
+from .invoice_event import InvoiceEvent
+from .invoice_events_response import InvoiceEventsResponse
 from .invoice_failure_type import InvoiceFailureType
 from .invoice_fees_request import InvoiceFeesRequest
 from .invoice_fees_response import InvoiceFeesResponse
@@ -80,6 +82,8 @@ __all__ = [
     "FindInvoiceResponse",
     "InvoiceCreationRequest",
     "InvoiceDateFilter",
+    "InvoiceEvent",
+    "InvoiceEventsResponse",
     "InvoiceFailureType",
     "InvoiceFeesRequest",
     "InvoiceFeesResponse",

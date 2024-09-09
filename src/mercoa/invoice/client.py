@@ -35,6 +35,7 @@ from ..commons.errors.unimplemented import Unimplemented
 from ..invoice_types.types.invoice_creation_request import InvoiceCreationRequest
 from ..invoice_types.types.invoice_response import InvoiceResponse
 from ..invoice_types.types.invoice_update_request import InvoiceUpdateRequest
+from ..invoice_types.types.invoice_events_response import InvoiceEventsResponse
 from ..core.client_wrapper import AsyncClientWrapper
 from .line_item.client import AsyncLineItemClient
 from .approval.client import AsyncApprovalClient
@@ -764,6 +765,140 @@ class InvoiceClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def events(
+        self,
+        invoice_id: InvoiceId,
+        *,
+        start_date: typing.Optional[dt.datetime] = None,
+        end_date: typing.Optional[dt.datetime] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> InvoiceEventsResponse:
+        """
+        Get all events for an invoice
+
+        Parameters
+        ----------
+        invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
+
+        start_date : typing.Optional[dt.datetime]
+            Start date filter. If not provided, events from the start of time will be returned.
+
+        end_date : typing.Optional[dt.datetime]
+            End date filter. If not provided, events to the end of time will be returned.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        InvoiceEventsResponse
+
+        Examples
+        --------
+        from mercoa import Mercoa
+
+        client = Mercoa(
+            token="YOUR_TOKEN",
+        )
+        client.invoice.events(
+            invoice_id="inv_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"invoice/{jsonable_encoder(invoice_id)}/events",
+            method="GET",
+            params={
+                "startDate": serialize_datetime(start_date) if start_date is not None else None,
+                "endDate": serialize_datetime(end_date) if end_date is not None else None,
+            },
+            request_options=request_options,
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return typing.cast(
+                InvoiceEventsResponse,
+                parse_obj_as(
+                    type_=InvoiceEventsResponse,  # type: ignore
+                    object_=_response_json,
+                ),
+            )
         if "errorName" in _response_json:
             if _response_json["errorName"] == "BadRequest":
                 raise BadRequest(
@@ -1596,6 +1731,148 @@ class AsyncInvoiceClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def events(
+        self,
+        invoice_id: InvoiceId,
+        *,
+        start_date: typing.Optional[dt.datetime] = None,
+        end_date: typing.Optional[dt.datetime] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> InvoiceEventsResponse:
+        """
+        Get all events for an invoice
+
+        Parameters
+        ----------
+        invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
+
+        start_date : typing.Optional[dt.datetime]
+            Start date filter. If not provided, events from the start of time will be returned.
+
+        end_date : typing.Optional[dt.datetime]
+            End date filter. If not provided, events to the end of time will be returned.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        InvoiceEventsResponse
+
+        Examples
+        --------
+        import asyncio
+
+        from mercoa import AsyncMercoa
+
+        client = AsyncMercoa(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.invoice.events(
+                invoice_id="inv_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"invoice/{jsonable_encoder(invoice_id)}/events",
+            method="GET",
+            params={
+                "startDate": serialize_datetime(start_date) if start_date is not None else None,
+                "endDate": serialize_datetime(end_date) if end_date is not None else None,
+            },
+            request_options=request_options,
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return typing.cast(
+                InvoiceEventsResponse,
+                parse_obj_as(
+                    type_=InvoiceEventsResponse,  # type: ignore
+                    object_=_response_json,
+                ),
+            )
         if "errorName" in _response_json:
             if _response_json["errorName"] == "BadRequest":
                 raise BadRequest(

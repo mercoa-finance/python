@@ -3,12 +3,12 @@
 from ...core.pydantic_utilities import UniversalBaseModel
 from .representative_id import RepresentativeId
 from ...commons.types.full_name import FullName
+import typing
 from ...commons.types.phone_number import PhoneNumber
 from ...commons.types.address import Address
 import pydantic
 from .responsibilities import Responsibilities
 import datetime as dt
-import typing
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -60,8 +60,8 @@ class RepresentativeResponse(UniversalBaseModel):
 
     id: RepresentativeId
     name: FullName
-    phone: PhoneNumber
-    email: str
+    phone: typing.Optional[PhoneNumber] = None
+    email: typing.Optional[str] = None
     address: Address
     birth_date_provided: bool = pydantic.Field(alias="birthDateProvided")
     government_id_provided: bool = pydantic.Field(alias="governmentIDProvided")

@@ -42,6 +42,7 @@ class CounterpartyClient:
         payment_methods: typing.Optional[bool] = None,
         invoice_metrics: typing.Optional[bool] = None,
         counterparty_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
+        return_metadata: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -68,6 +69,9 @@ class CounterpartyClient:
 
         counterparty_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
             Filter by counterparty ids (Foreign ID is supported)
+
+        return_metadata : typing.Optional[bool]
+            If true, will return simple key/value metadata for the counterparties.
 
         limit : typing.Optional[int]
             Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.
@@ -105,6 +109,7 @@ class CounterpartyClient:
                 "paymentMethods": payment_methods,
                 "invoiceMetrics": invoice_metrics,
                 "counterpartyId": counterparty_id,
+                "returnMetadata": return_metadata,
                 "limit": limit,
                 "startingAfter": starting_after,
             },
@@ -206,6 +211,7 @@ class CounterpartyClient:
         payment_methods: typing.Optional[bool] = None,
         invoice_metrics: typing.Optional[bool] = None,
         counterparty_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
+        return_metadata: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -232,6 +238,9 @@ class CounterpartyClient:
 
         counterparty_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
             Filter by counterparty ids (Foreign ID is supported)
+
+        return_metadata : typing.Optional[bool]
+            If true, will return simple key/value metadata for the counterparties.
 
         limit : typing.Optional[int]
             Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.
@@ -269,6 +278,7 @@ class CounterpartyClient:
                 "paymentMethods": payment_methods,
                 "invoiceMetrics": invoice_metrics,
                 "counterpartyId": counterparty_id,
+                "returnMetadata": return_metadata,
                 "limit": limit,
                 "startingAfter": starting_after,
             },
@@ -907,6 +917,7 @@ class AsyncCounterpartyClient:
         payment_methods: typing.Optional[bool] = None,
         invoice_metrics: typing.Optional[bool] = None,
         counterparty_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
+        return_metadata: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -933,6 +944,9 @@ class AsyncCounterpartyClient:
 
         counterparty_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
             Filter by counterparty ids (Foreign ID is supported)
+
+        return_metadata : typing.Optional[bool]
+            If true, will return simple key/value metadata for the counterparties.
 
         limit : typing.Optional[int]
             Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.
@@ -978,6 +992,7 @@ class AsyncCounterpartyClient:
                 "paymentMethods": payment_methods,
                 "invoiceMetrics": invoice_metrics,
                 "counterpartyId": counterparty_id,
+                "returnMetadata": return_metadata,
                 "limit": limit,
                 "startingAfter": starting_after,
             },
@@ -1079,6 +1094,7 @@ class AsyncCounterpartyClient:
         payment_methods: typing.Optional[bool] = None,
         invoice_metrics: typing.Optional[bool] = None,
         counterparty_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
+        return_metadata: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1105,6 +1121,9 @@ class AsyncCounterpartyClient:
 
         counterparty_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
             Filter by counterparty ids (Foreign ID is supported)
+
+        return_metadata : typing.Optional[bool]
+            If true, will return simple key/value metadata for the counterparties.
 
         limit : typing.Optional[int]
             Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.
@@ -1150,6 +1169,7 @@ class AsyncCounterpartyClient:
                 "paymentMethods": payment_methods,
                 "invoiceMetrics": invoice_metrics,
                 "counterpartyId": counterparty_id,
+                "returnMetadata": return_metadata,
                 "limit": limit,
                 "startingAfter": starting_after,
             },

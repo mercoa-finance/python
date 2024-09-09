@@ -27,6 +27,7 @@ class EntityGroupResponse(UniversalBaseModel):
         foreign_id="your-group-id",
         name="AcmeConglomerate",
         email_to_name="acmegroup",
+        metadata={"key1": "value1"},
         entities=[
             EntityResponse(
                 id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
@@ -107,6 +108,7 @@ class EntityGroupResponse(UniversalBaseModel):
     name: typing.Optional[str] = None
     email_to_name: typing.Optional[str] = pydantic.Field(alias="emailToName", default=None)
     entities: typing.List[EntityResponse]
+    metadata: typing.Dict[str, str]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

@@ -26,6 +26,10 @@ class EntityGroupRequest(EntityGroupEntityUpdateRequest):
     foreign_id: typing.Optional[str] = pydantic.Field(alias="foreignId", default=None)
     name: typing.Optional[str] = None
     email_to_name: typing.Optional[str] = pydantic.Field(alias="emailToName", default=None)
+    metadata: typing.Optional[typing.Dict[str, str]] = pydantic.Field(default=None)
+    """
+    Metadata key/value pairs to associate with this group. Will overwrite existing metadata.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

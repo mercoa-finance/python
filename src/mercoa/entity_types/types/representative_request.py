@@ -2,14 +2,14 @@
 
 from ...core.pydantic_utilities import UniversalBaseModel
 from ...commons.types.full_name import FullName
+import typing
 from ...commons.types.phone_number import PhoneNumber
+import pydantic
 from ...commons.types.address import Address
 from ...commons.types.birth_date import BirthDate
-import pydantic
 from ...commons.types.individual_government_id import IndividualGovernmentId
 from .responsibilities import Responsibilities
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
-import typing
 
 
 class RepresentativeRequest(UniversalBaseModel):
@@ -62,8 +62,16 @@ class RepresentativeRequest(UniversalBaseModel):
     """
 
     name: FullName
-    phone: PhoneNumber
-    email: str
+    phone: typing.Optional[PhoneNumber] = pydantic.Field(default=None)
+    """
+    Either phone or email is required.
+    """
+
+    email: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Either phone or email is required.
+    """
+
     address: Address
     birth_date: BirthDate = pydantic.Field(alias="birthDate")
     government_id: IndividualGovernmentId = pydantic.Field(alias="governmentID")

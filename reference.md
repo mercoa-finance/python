@@ -213,7 +213,7 @@ client.entity_group.get(
 <dl>
 <dd>
 
-**entity_metadata:** `typing.Optional[bool]` — If true, will return simple key/value metadata for entities in the group. For more complex metadata, use the Metadata API.
+**return_entity_metadata:** `typing.Optional[bool]` — If true, will return simple key/value metadata for entities in the group. For more complex metadata, use the Metadata API.
     
 </dd>
 </dl>
@@ -1332,6 +1332,14 @@ If false, entities that are marked as payors will not be returned.
 <dl>
 <dd>
 
+**return_metadata:** `typing.Optional[bool]` — If true, will return simple key/value metadata for the entity. For more complex metadata, use the Metadata API.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **limit:** `typing.Optional[int]` — Number of entities to return. Limit can range between 1 and 100, and the default is 10.
     
 </dd>
@@ -1479,7 +1487,7 @@ client.entity.get(
 <dl>
 <dd>
 
-**metadata:** `typing.Optional[bool]` — If true, will return simple key/value metadata for the entity. For more complex metadata, use the Metadata API.
+**return_metadata:** `typing.Optional[bool]` — If true, will return simple key/value metadata for the entity. For more complex metadata, use the Metadata API.
     
 </dd>
 </dl>
@@ -2171,6 +2179,92 @@ client.entity.send_onboarding_link(
 </dl>
 </details>
 
+<details><summary><code>client.entity.<a href="src/mercoa/entity/client.py">events</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Get all events for an entity
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.entity.events(
+    entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entity_id:** `EntityId` — Entity ID or Entity ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_date:** `typing.Optional[dt.datetime]` — Start date filter. If not provided, events from the start of time will be returned.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_date:** `typing.Optional[dt.datetime]` — End date filter. If not provided, events to the end of time will be returned.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Entity EmailLog
 <details><summary><code>client.entity.email_log.<a href="src/mercoa/entity/email_log/client.py">find</a>(...)</code></summary>
 <dl>
@@ -2681,7 +2775,7 @@ client.entity.user.get(
 <dl>
 <dd>
 
-**user_id:** `EntityUserId` 
+**user_id:** `EntityUserId` — User ID or User ForeignID
     
 </dd>
 </dl>
@@ -2767,7 +2861,7 @@ client.entity.user.update(
 <dl>
 <dd>
 
-**user_id:** `EntityUserId` 
+**user_id:** `EntityUserId` — User ID or User ForeignID
     
 </dd>
 </dl>
@@ -2854,7 +2948,7 @@ client.entity.user.delete(
 <dl>
 <dd>
 
-**user_id:** `EntityUserId` 
+**user_id:** `EntityUserId` — User ID or User ForeignID
     
 </dd>
 </dl>
@@ -2937,7 +3031,7 @@ client.entity.user.get_token(
 <dl>
 <dd>
 
-**user_id:** `EntityUserId` 
+**user_id:** `EntityUserId` — User ID or User ForeignID
     
 </dd>
 </dl>
@@ -3442,6 +3536,92 @@ client.invoice.delete(
 <dd>
 
 **invoice_id:** `InvoiceId` — Invoice ID or Invoice ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.invoice.<a href="src/mercoa/invoice/client.py">events</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Get all events for an invoice
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.invoice.events(
+    invoice_id="inv_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**invoice_id:** `InvoiceId` — Invoice ID or Invoice ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_date:** `typing.Optional[dt.datetime]` — Start date filter. If not provided, events from the start of time will be returned.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_date:** `typing.Optional[dt.datetime]` — End date filter. If not provided, events to the end of time will be returned.
     
 </dd>
 </dl>
@@ -5512,6 +5692,14 @@ client.entity.counterparty.find_payees(
 <dl>
 <dd>
 
+**return_metadata:** `typing.Optional[bool]` — If true, will return simple key/value metadata for the counterparties.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **limit:** `typing.Optional[int]` — Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.
     
 </dd>
@@ -5638,6 +5826,14 @@ client.entity.counterparty.find_payors(
 <dd>
 
 **counterparty_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter by counterparty ids (Foreign ID is supported)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**return_metadata:** `typing.Optional[bool]` — If true, will return simple key/value metadata for the counterparties.
     
 </dd>
 </dl>
@@ -8919,7 +9115,7 @@ client.entity.user.notification_policy.get_all(
 <dl>
 <dd>
 
-**user_id:** `EntityUserId` 
+**user_id:** `EntityUserId` — User ID or User ForeignID
     
 </dd>
 </dl>
@@ -8999,7 +9195,7 @@ client.entity.user.notification_policy.get(
 <dl>
 <dd>
 
-**user_id:** `EntityUserId` 
+**user_id:** `EntityUserId` — User ID or User ForeignID
     
 </dd>
 </dl>
@@ -9091,7 +9287,7 @@ client.entity.user.notification_policy.update(
 <dl>
 <dd>
 
-**user_id:** `EntityUserId` 
+**user_id:** `EntityUserId` — User ID or User ForeignID
     
 </dd>
 </dl>
@@ -9173,7 +9369,7 @@ client.entity.user.notifications.find(
 <dl>
 <dd>
 
-**user_id:** `EntityUserId` 
+**user_id:** `EntityUserId` — User ID or User ForeignID
     
 </dd>
 </dl>
@@ -9297,7 +9493,7 @@ client.entity.user.notifications.get(
 <dl>
 <dd>
 
-**user_id:** `EntityUserId` 
+**user_id:** `EntityUserId` — User ID or User ForeignID
     
 </dd>
 </dl>
@@ -9389,7 +9585,7 @@ client.entity.user.notifications.update(
 <dl>
 <dd>
 
-**user_id:** `EntityUserId` 
+**user_id:** `EntityUserId` — User ID or User ForeignID
     
 </dd>
 </dl>

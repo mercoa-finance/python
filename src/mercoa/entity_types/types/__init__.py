@@ -21,6 +21,8 @@ from .entity_add_payees_request import EntityAddPayeesRequest
 from .entity_add_payors_request import EntityAddPayorsRequest
 from .entity_customization_request import EntityCustomizationRequest
 from .entity_customization_response import EntityCustomizationResponse
+from .entity_event import EntityEvent
+from .entity_events_response import EntityEventsResponse
 from .entity_hide_payees_request import EntityHidePayeesRequest
 from .entity_hide_payors_request import EntityHidePayorsRequest
 from .entity_id import EntityId
@@ -96,6 +98,8 @@ __all__ = [
     "EntityAddPayorsRequest",
     "EntityCustomizationRequest",
     "EntityCustomizationResponse",
+    "EntityEvent",
+    "EntityEventsResponse",
     "EntityHidePayeesRequest",
     "EntityHidePayorsRequest",
     "EntityId",

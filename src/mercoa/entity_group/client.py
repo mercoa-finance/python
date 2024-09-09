@@ -296,7 +296,7 @@ class EntityGroupClient:
         self,
         entity_group_id: EntityGroupId,
         *,
-        entity_metadata: typing.Optional[bool] = None,
+        return_entity_metadata: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityGroupResponse:
         """
@@ -307,7 +307,7 @@ class EntityGroupClient:
         entity_group_id : EntityGroupId
             Entity Group ID or Entity Group ForeignID
 
-        entity_metadata : typing.Optional[bool]
+        return_entity_metadata : typing.Optional[bool]
             If true, will return simple key/value metadata for entities in the group. For more complex metadata, use the Metadata API.
 
         request_options : typing.Optional[RequestOptions]
@@ -332,7 +332,7 @@ class EntityGroupClient:
             f"entityGroup/{jsonable_encoder(entity_group_id)}",
             method="GET",
             params={
-                "entityMetadata": entity_metadata,
+                "returnEntityMetadata": return_entity_metadata,
             },
             request_options=request_options,
         )
@@ -1355,7 +1355,7 @@ class AsyncEntityGroupClient:
         self,
         entity_group_id: EntityGroupId,
         *,
-        entity_metadata: typing.Optional[bool] = None,
+        return_entity_metadata: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityGroupResponse:
         """
@@ -1366,7 +1366,7 @@ class AsyncEntityGroupClient:
         entity_group_id : EntityGroupId
             Entity Group ID or Entity Group ForeignID
 
-        entity_metadata : typing.Optional[bool]
+        return_entity_metadata : typing.Optional[bool]
             If true, will return simple key/value metadata for entities in the group. For more complex metadata, use the Metadata API.
 
         request_options : typing.Optional[RequestOptions]
@@ -1399,7 +1399,7 @@ class AsyncEntityGroupClient:
             f"entityGroup/{jsonable_encoder(entity_group_id)}",
             method="GET",
             params={
-                "entityMetadata": entity_metadata,
+                "returnEntityMetadata": return_entity_metadata,
             },
             request_options=request_options,
         )

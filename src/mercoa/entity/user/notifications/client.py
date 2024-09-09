@@ -56,6 +56,7 @@ class NotificationsClient:
             Entity ID or Entity ForeignID
 
         user_id : EntityUserId
+            User ID or User ForeignID
 
         start_date : typing.Optional[dt.datetime]
             Start date for notification created on date filter.
@@ -211,6 +212,7 @@ class NotificationsClient:
             Entity ID or Entity ForeignID
 
         user_id : EntityUserId
+            User ID or User ForeignID
 
         notification_id : NotificationId
 
@@ -342,6 +344,7 @@ class NotificationsClient:
             Entity ID or Entity ForeignID
 
         user_id : EntityUserId
+            User ID or User ForeignID
 
         notification_id : NotificationId
 
@@ -489,6 +492,7 @@ class AsyncNotificationsClient:
             Entity ID or Entity ForeignID
 
         user_id : EntityUserId
+            User ID or User ForeignID
 
         start_date : typing.Optional[dt.datetime]
             Start date for notification created on date filter.
@@ -652,6 +656,7 @@ class AsyncNotificationsClient:
             Entity ID or Entity ForeignID
 
         user_id : EntityUserId
+            User ID or User ForeignID
 
         notification_id : NotificationId
 
@@ -791,6 +796,7 @@ class AsyncNotificationsClient:
             Entity ID or Entity ForeignID
 
         user_id : EntityUserId
+            User ID or User ForeignID
 
         notification_id : NotificationId
 

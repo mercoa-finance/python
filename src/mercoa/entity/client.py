@@ -35,6 +35,9 @@ from ..entity_types.types.entity_update_request import EntityUpdateRequest
 from ..entity_types.types.token_generation_options import TokenGenerationOptions
 from ..payment_method_types.types.payment_method_id import PaymentMethodId
 from ..entity_types.types.entity_onboarding_link_type import EntityOnboardingLinkType
+import datetime as dt
+from ..entity_types.types.entity_events_response import EntityEventsResponse
+from ..core.datetime_utils import serialize_datetime
 from ..core.client_wrapper import AsyncClientWrapper
 from .email_log.client import AsyncEmailLogClient
 from .user.client import AsyncUserClient
@@ -79,6 +82,7 @@ class EntityClient:
         is_payee: typing.Optional[bool] = None,
         is_payor: typing.Optional[bool] = None,
         name: typing.Optional[str] = None,
+        return_metadata: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -109,6 +113,9 @@ class EntityClient:
 
         name : typing.Optional[str]
             Filter entities by name. Partial matches are supported.
+
+        return_metadata : typing.Optional[bool]
+            If true, will return simple key/value metadata for the entity. For more complex metadata, use the Metadata API.
 
         limit : typing.Optional[int]
             Number of entities to return. Limit can range between 1 and 100, and the default is 10.
@@ -147,6 +154,7 @@ class EntityClient:
                 "isPayee": is_payee,
                 "isPayor": is_payor,
                 "name": name,
+                "returnMetadata": return_metadata,
                 "limit": limit,
                 "startingAfter": starting_after,
             },
@@ -398,7 +406,7 @@ class EntityClient:
         self,
         entity_id: EntityId,
         *,
-        metadata: typing.Optional[bool] = None,
+        return_metadata: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityResponse:
         """
@@ -407,7 +415,7 @@ class EntityClient:
         entity_id : EntityId
             Entity ID or Entity ForeignID
 
-        metadata : typing.Optional[bool]
+        return_metadata : typing.Optional[bool]
             If true, will return simple key/value metadata for the entity. For more complex metadata, use the Metadata API.
 
         request_options : typing.Optional[RequestOptions]
@@ -432,7 +440,7 @@ class EntityClient:
             f"entity/{jsonable_encoder(entity_id)}",
             method="GET",
             params={
-                "metadata": metadata,
+                "returnMetadata": return_metadata,
             },
             request_options=request_options,
         )
@@ -1563,6 +1571,140 @@ class EntityClient:
                 )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
+    def events(
+        self,
+        entity_id: EntityId,
+        *,
+        start_date: typing.Optional[dt.datetime] = None,
+        end_date: typing.Optional[dt.datetime] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> EntityEventsResponse:
+        """
+        Get all events for an entity
+
+        Parameters
+        ----------
+        entity_id : EntityId
+            Entity ID or Entity ForeignID
+
+        start_date : typing.Optional[dt.datetime]
+            Start date filter. If not provided, events from the start of time will be returned.
+
+        end_date : typing.Optional[dt.datetime]
+            End date filter. If not provided, events to the end of time will be returned.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        EntityEventsResponse
+
+        Examples
+        --------
+        from mercoa import Mercoa
+
+        client = Mercoa(
+            token="YOUR_TOKEN",
+        )
+        client.entity.events(
+            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"entity/{jsonable_encoder(entity_id)}/events",
+            method="GET",
+            params={
+                "startDate": serialize_datetime(start_date) if start_date is not None else None,
+                "endDate": serialize_datetime(end_date) if end_date is not None else None,
+            },
+            request_options=request_options,
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return typing.cast(
+                EntityEventsResponse,
+                parse_obj_as(
+                    type_=EntityEventsResponse,  # type: ignore
+                    object_=_response_json,
+                ),
+            )
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
 
 class AsyncEntityClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
@@ -1590,6 +1732,7 @@ class AsyncEntityClient:
         is_payee: typing.Optional[bool] = None,
         is_payor: typing.Optional[bool] = None,
         name: typing.Optional[str] = None,
+        return_metadata: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1620,6 +1763,9 @@ class AsyncEntityClient:
 
         name : typing.Optional[str]
             Filter entities by name. Partial matches are supported.
+
+        return_metadata : typing.Optional[bool]
+            If true, will return simple key/value metadata for the entity. For more complex metadata, use the Metadata API.
 
         limit : typing.Optional[int]
             Number of entities to return. Limit can range between 1 and 100, and the default is 10.
@@ -1666,6 +1812,7 @@ class AsyncEntityClient:
                 "isPayee": is_payee,
                 "isPayor": is_payor,
                 "name": name,
+                "returnMetadata": return_metadata,
                 "limit": limit,
                 "startingAfter": starting_after,
             },
@@ -1925,7 +2072,7 @@ class AsyncEntityClient:
         self,
         entity_id: EntityId,
         *,
-        metadata: typing.Optional[bool] = None,
+        return_metadata: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityResponse:
         """
@@ -1934,7 +2081,7 @@ class AsyncEntityClient:
         entity_id : EntityId
             Entity ID or Entity ForeignID
 
-        metadata : typing.Optional[bool]
+        return_metadata : typing.Optional[bool]
             If true, will return simple key/value metadata for the entity. For more complex metadata, use the Metadata API.
 
         request_options : typing.Optional[RequestOptions]
@@ -1967,7 +2114,7 @@ class AsyncEntityClient:
             f"entity/{jsonable_encoder(entity_id)}",
             method="GET",
             params={
-                "metadata": metadata,
+                "returnMetadata": return_metadata,
             },
             request_options=request_options,
         )
@@ -3091,6 +3238,148 @@ class AsyncEntityClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def events(
+        self,
+        entity_id: EntityId,
+        *,
+        start_date: typing.Optional[dt.datetime] = None,
+        end_date: typing.Optional[dt.datetime] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> EntityEventsResponse:
+        """
+        Get all events for an entity
+
+        Parameters
+        ----------
+        entity_id : EntityId
+            Entity ID or Entity ForeignID
+
+        start_date : typing.Optional[dt.datetime]
+            Start date filter. If not provided, events from the start of time will be returned.
+
+        end_date : typing.Optional[dt.datetime]
+            End date filter. If not provided, events to the end of time will be returned.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        EntityEventsResponse
+
+        Examples
+        --------
+        import asyncio
+
+        from mercoa import AsyncMercoa
+
+        client = AsyncMercoa(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.entity.events(
+                entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"entity/{jsonable_encoder(entity_id)}/events",
+            method="GET",
+            params={
+                "startDate": serialize_datetime(start_date) if start_date is not None else None,
+                "endDate": serialize_datetime(end_date) if end_date is not None else None,
+            },
+            request_options=request_options,
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return typing.cast(
+                EntityEventsResponse,
+                parse_obj_as(
+                    type_=EntityEventsResponse,  # type: ignore
+                    object_=_response_json,
+                ),
+            )
         if "errorName" in _response_json:
             if _response_json["errorName"] == "BadRequest":
                 raise BadRequest(
