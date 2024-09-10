@@ -13,7 +13,7 @@ from ..invoice_types.types.invoice_date_filter import InvoiceDateFilter
 from ..invoice_types.types.invoice_order_by_field import InvoiceOrderByField
 from ..commons.types.order_direction import OrderDirection
 from ..invoice_types.types.invoice_id import InvoiceId
-from ..invoice_types.types.invoice_metadata_filter import InvoiceMetadataFilter
+from ..invoice_types.types.metadata_filter import MetadataFilter
 from ..entity_types.types.entity_user_id import EntityUserId
 from ..invoice_types.types.approver_action import ApproverAction
 from ..invoice_types.types.invoice_status import InvoiceStatus
@@ -68,10 +68,8 @@ class InvoiceClient:
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[InvoiceId] = None,
         search: typing.Optional[str] = None,
-        metadata: typing.Optional[typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]] = None,
-        line_item_metadata: typing.Optional[
-            typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]
-        ] = None,
+        metadata: typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]] = None,
+        line_item_metadata: typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]] = None,
         line_item_gl_account_id: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
@@ -114,10 +112,10 @@ class InvoiceClient:
         search : typing.Optional[str]
             Find invoices by vendor name, invoice number, or amount. Partial matches are supported.
 
-        metadata : typing.Optional[typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]]
+        metadata : typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]
             Filter invoices by metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
 
-        line_item_metadata : typing.Optional[typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]]
+        line_item_metadata : typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]
             Filter invoices by line item metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
 
         line_item_gl_account_id : typing.Optional[typing.Union[str, typing.Sequence[str]]]
@@ -994,10 +992,8 @@ class AsyncInvoiceClient:
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[InvoiceId] = None,
         search: typing.Optional[str] = None,
-        metadata: typing.Optional[typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]] = None,
-        line_item_metadata: typing.Optional[
-            typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]
-        ] = None,
+        metadata: typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]] = None,
+        line_item_metadata: typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]] = None,
         line_item_gl_account_id: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
@@ -1040,10 +1036,10 @@ class AsyncInvoiceClient:
         search : typing.Optional[str]
             Find invoices by vendor name, invoice number, or amount. Partial matches are supported.
 
-        metadata : typing.Optional[typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]]
+        metadata : typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]
             Filter invoices by metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
 
-        line_item_metadata : typing.Optional[typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]]
+        line_item_metadata : typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]
             Filter invoices by line item metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
 
         line_item_gl_account_id : typing.Optional[typing.Union[str, typing.Sequence[str]]]

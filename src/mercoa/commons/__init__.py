@@ -9,6 +9,7 @@ from .types import (
     IndividualGovernmentId,
     OrderDirection,
     PhoneNumber,
+    StringOrStringArray,
 )
 from .errors import BadRequest, Conflict, Forbidden, InternalServerError, NotFound, Unauthorized, Unimplemented
 
@@ -26,6 +27,7 @@ __all__ = [
     "NotFound",
     "OrderDirection",
     "PhoneNumber",
+    "StringOrStringArray",
     "Unauthorized",
     "Unimplemented",
 ]

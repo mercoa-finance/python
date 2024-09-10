@@ -31,7 +31,8 @@ from .invoice_line_item_individual_update_request import InvoiceLineItemIndividu
 from .invoice_line_item_request_base import InvoiceLineItemRequestBase
 from .invoice_line_item_response import InvoiceLineItemResponse
 from .invoice_line_item_update_request import InvoiceLineItemUpdateRequest
-from .invoice_metadata_filter import InvoiceMetadataFilter
+from .invoice_metrics_group_by import InvoiceMetricsGroupBy
+from .invoice_metrics_per_date_frequency import InvoiceMetricsPerDateFrequency
 from .invoice_metrics_per_date_group_by import InvoiceMetricsPerDateGroupBy
 from .invoice_metrics_per_date_response import InvoiceMetricsPerDateResponse
 from .invoice_metrics_response import InvoiceMetricsResponse
@@ -40,6 +41,7 @@ from .invoice_request_base import InvoiceRequestBase
 from .invoice_response import InvoiceResponse
 from .invoice_status import InvoiceStatus
 from .invoice_update_request import InvoiceUpdateRequest
+from .metadata_filter import MetadataFilter
 from .payment_destination_options import (
     PaymentDestinationOptions,
     PaymentDestinationOptions_BankAccount,
@@ -95,7 +97,8 @@ __all__ = [
     "InvoiceLineItemRequestBase",
     "InvoiceLineItemResponse",
     "InvoiceLineItemUpdateRequest",
-    "InvoiceMetadataFilter",
+    "InvoiceMetricsGroupBy",
+    "InvoiceMetricsPerDateFrequency",
     "InvoiceMetricsPerDateGroupBy",
     "InvoiceMetricsPerDateResponse",
     "InvoiceMetricsResponse",
@@ -104,6 +107,7 @@ __all__ = [
     "InvoiceResponse",
     "InvoiceStatus",
     "InvoiceUpdateRequest",
+    "MetadataFilter",
     "PaymentDestinationOptions",
     "PaymentDestinationOptions_BankAccount",
     "PaymentDestinationOptions_Check",

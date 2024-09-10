@@ -15,9 +15,11 @@ from .notification_policy.client import NotificationPolicyClient
 from .payment_method.client import PaymentMethodClient
 from .representative.client import RepresentativeClient
 from ..entity_types.types.entity_status import EntityStatus
+from ..invoice_types.types.metadata_filter import MetadataFilter
 from ..entity_types.types.entity_id import EntityId
 from ..core.request_options import RequestOptions
 from ..entity_types.types.find_entity_response import FindEntityResponse
+from ..core.jsonable_encoder import jsonable_encoder
 from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
 from ..core.pydantic_utilities import parse_obj_as
@@ -30,7 +32,6 @@ from ..commons.errors.internal_server_error import InternalServerError
 from ..commons.errors.unimplemented import Unimplemented
 from ..entity_types.types.entity_request import EntityRequest
 from ..entity_types.types.entity_response import EntityResponse
-from ..core.jsonable_encoder import jsonable_encoder
 from ..entity_types.types.entity_update_request import EntityUpdateRequest
 from ..entity_types.types.token_generation_options import TokenGenerationOptions
 from ..payment_method_types.types.payment_method_id import PaymentMethodId
@@ -82,6 +83,7 @@ class EntityClient:
         is_payee: typing.Optional[bool] = None,
         is_payor: typing.Optional[bool] = None,
         name: typing.Optional[str] = None,
+        metadata: typing.Optional[MetadataFilter] = None,
         return_metadata: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
@@ -114,8 +116,11 @@ class EntityClient:
         name : typing.Optional[str]
             Filter entities by name. Partial matches are supported.
 
+        metadata : typing.Optional[MetadataFilter]
+            Filter entities by simple key/value metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+
         return_metadata : typing.Optional[bool]
-            If true, will return simple key/value metadata for the entity. For more complex metadata, use the Metadata API.
+            If true, will return simple key/value metadata for the entities. For more complex metadata, use the Metadata API.
 
         limit : typing.Optional[int]
             Number of entities to return. Limit can range between 1 and 100, and the default is 10.
@@ -154,6 +159,7 @@ class EntityClient:
                 "isPayee": is_payee,
                 "isPayor": is_payor,
                 "name": name,
+                "metadata": jsonable_encoder(metadata),
                 "returnMetadata": return_metadata,
                 "limit": limit,
                 "startingAfter": starting_after,
@@ -1732,6 +1738,7 @@ class AsyncEntityClient:
         is_payee: typing.Optional[bool] = None,
         is_payor: typing.Optional[bool] = None,
         name: typing.Optional[str] = None,
+        metadata: typing.Optional[MetadataFilter] = None,
         return_metadata: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
@@ -1764,8 +1771,11 @@ class AsyncEntityClient:
         name : typing.Optional[str]
             Filter entities by name. Partial matches are supported.
 
+        metadata : typing.Optional[MetadataFilter]
+            Filter entities by simple key/value metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+
         return_metadata : typing.Optional[bool]
-            If true, will return simple key/value metadata for the entity. For more complex metadata, use the Metadata API.
+            If true, will return simple key/value metadata for the entities. For more complex metadata, use the Metadata API.
 
         limit : typing.Optional[int]
             Number of entities to return. Limit can range between 1 and 100, and the default is 10.
@@ -1812,6 +1822,7 @@ class AsyncEntityClient:
                 "isPayee": is_payee,
                 "isPayor": is_payor,
                 "name": name,
+                "metadata": jsonable_encoder(metadata),
                 "returnMetadata": return_metadata,
                 "limit": limit,
                 "startingAfter": starting_after,

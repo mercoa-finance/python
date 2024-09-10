@@ -8,6 +8,7 @@ from .full_name import FullName
 from .individual_government_id import IndividualGovernmentId
 from .order_direction import OrderDirection
 from .phone_number import PhoneNumber
+from .string_or_string_array import StringOrStringArray
 
 __all__ = [
     "Address",
@@ -18,4 +19,5 @@ __all__ = [
     "IndividualGovernmentId",
     "OrderDirection",
     "PhoneNumber",
+    "StringOrStringArray",
 ]

@@ -1332,7 +1332,15 @@ If false, entities that are marked as payors will not be returned.
 <dl>
 <dd>
 
-**return_metadata:** `typing.Optional[bool]` — If true, will return simple key/value metadata for the entity. For more complex metadata, use the Metadata API.
+**metadata:** `typing.Optional[MetadataFilter]` — Filter entities by simple key/value metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**return_metadata:** `typing.Optional[bool]` — If true, will return simple key/value metadata for the entities. For more complex metadata, use the Metadata API.
     
 </dd>
 </dl>
@@ -3182,9 +3190,7 @@ client.invoice.find(
 <dl>
 <dd>
 
-**metadata:** `typing.Optional[
-    typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]
-]` — Filter invoices by metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+**metadata:** `typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]` — Filter invoices by metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
     
 </dd>
 </dl>
@@ -3192,9 +3198,7 @@ client.invoice.find(
 <dl>
 <dd>
 
-**line_item_metadata:** `typing.Optional[
-    typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]
-]` — Filter invoices by line item metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+**line_item_metadata:** `typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]` — Filter invoices by line item metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
     
 </dd>
 </dl>
@@ -4852,9 +4856,7 @@ client.entity_group.invoice.find(
 <dl>
 <dd>
 
-**metadata:** `typing.Optional[
-    typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]
-]` — Filter invoices by metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+**metadata:** `typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]` — Filter invoices by metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
     
 </dd>
 </dl>
@@ -4976,10 +4978,10 @@ client.entity_group.invoice.metrics(
     entity_group_id="entg_8545a84e-a45f-41bf-bdf1-33b42a55812c",
     return_by_date="CREATION_DATE",
     exclude_receivables=True,
-    created_date_start=datetime.datetime.fromisoformat(
+    start_date=datetime.datetime.fromisoformat(
         "2021-01-01 00:00:00+00:00",
     ),
-    created_date_end=datetime.datetime.fromisoformat(
+    end_date=datetime.datetime.fromisoformat(
         "2021-01-31 23:59:59.999000+00:00",
     ),
     currency="USD",
@@ -5033,6 +5035,24 @@ client.entity_group.invoice.metrics(
 <dd>
 
 **return_by_date:** `typing.Optional[InvoiceMetricsPerDateGroupBy]` — Return invoice metrics grouped by date.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**return_by_date_frequency:** `typing.Optional[InvoiceMetricsPerDateFrequency]` — Return invoice metrics grouped by date. Defaults to daily.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**group_by:** `typing.Optional[
+    typing.Union[InvoiceMetricsGroupBy, typing.Sequence[InvoiceMetricsGroupBy]]
+]` — Return invoice metrics grouped by.
     
 </dd>
 </dl>
@@ -5097,38 +5117,6 @@ client.entity_group.invoice.metrics(
 <dd>
 
 **date_type:** `typing.Optional[InvoiceDateFilter]` — Type of date to filter by if startDate and endDate filters are provided. Defaults to CREATED_AT.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**due_date_start:** `typing.Optional[dt.datetime]` — DEPRECATED. Use startDate, endDate, and dateType instead. Start date for invoice dueDate filter.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**due_date_end:** `typing.Optional[dt.datetime]` — DEPRECATED. Use startDate, endDate, and dateType instead. End date for invoice dueDate filter.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**created_date_start:** `typing.Optional[dt.datetime]` — DEPRECATED. Use startDate, endDate, and dateType instead. Start date for invoice created on date filter.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**created_date_end:** `typing.Optional[dt.datetime]` — DEPRECATED. Use startDate, endDate, and dateType instead. End date for invoice created date filter.
     
 </dd>
 </dl>
@@ -5692,7 +5680,15 @@ client.entity.counterparty.find_payees(
 <dl>
 <dd>
 
-**return_metadata:** `typing.Optional[bool]` — If true, will return simple key/value metadata for the counterparties.
+**metadata:** `typing.Optional[MetadataFilter]` — Filter counterparties by simple key/value metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**return_metadata:** `typing.Optional[bool]` — If true, will return simple key/value metadata for the counterparties. For more complex metadata, use the Metadata API.
     
 </dd>
 </dl>
@@ -5833,7 +5829,15 @@ client.entity.counterparty.find_payors(
 <dl>
 <dd>
 
-**return_metadata:** `typing.Optional[bool]` — If true, will return simple key/value metadata for the counterparties.
+**metadata:** `typing.Optional[MetadataFilter]` — Filter counterparties by simple key/value metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**return_metadata:** `typing.Optional[bool]` — If true, will return simple key/value metadata for the counterparties. For more complex metadata, use the Metadata API.
     
 </dd>
 </dl>
@@ -7125,9 +7129,7 @@ client.entity.invoice.find(
 <dl>
 <dd>
 
-**metadata:** `typing.Optional[
-    typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]
-]` — Filter invoices by metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+**metadata:** `typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]` — Filter invoices by metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
     
 </dd>
 </dl>
@@ -7135,9 +7137,7 @@ client.entity.invoice.find(
 <dl>
 <dd>
 
-**line_item_metadata:** `typing.Optional[
-    typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]
-]` — Filter invoices by line item metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+**line_item_metadata:** `typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]` — Filter invoices by line item metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
     
 </dd>
 </dl>
@@ -7241,7 +7241,7 @@ client.entity.invoice.find(
 <dl>
 <dd>
 
-Get invoice metrics for an entity with the given filters. Invoices will be grouped by currency. If none of excludePayables, excludeReceivables, payerId, vendorId, or invoiceId status filters are provided, excludeReceivables will be set to true.
+Get invoice metrics for an entity with the given filters. Invoices will always be grouped by currency. If none of excludePayables, excludeReceivables, payerId, vendorId, or invoiceId status filters are provided, excludeReceivables will be set to true.
 </dd>
 </dl>
 </dd>
@@ -7267,10 +7267,10 @@ client.entity.invoice.metrics(
     entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
     return_by_date="CREATION_DATE",
     exclude_receivables=True,
-    created_date_start=datetime.datetime.fromisoformat(
+    start_date=datetime.datetime.fromisoformat(
         "2021-01-01 00:00:00+00:00",
     ),
-    created_date_end=datetime.datetime.fromisoformat(
+    end_date=datetime.datetime.fromisoformat(
         "2021-01-31 23:59:59.999000+00:00",
     ),
     currency="USD",
@@ -7324,6 +7324,24 @@ client.entity.invoice.metrics(
 <dd>
 
 **return_by_date:** `typing.Optional[InvoiceMetricsPerDateGroupBy]` — Return invoice metrics grouped by date.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**return_by_date_frequency:** `typing.Optional[InvoiceMetricsPerDateFrequency]` — Return invoice metrics grouped by date. Defaults to daily.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**group_by:** `typing.Optional[
+    typing.Union[InvoiceMetricsGroupBy, typing.Sequence[InvoiceMetricsGroupBy]]
+]` — Return invoice metrics grouped by.
     
 </dd>
 </dl>
@@ -7388,38 +7406,6 @@ client.entity.invoice.metrics(
 <dd>
 
 **date_type:** `typing.Optional[InvoiceDateFilter]` — Type of date to filter by if startDate and endDate filters are provided. Defaults to CREATED_AT.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**due_date_start:** `typing.Optional[dt.datetime]` — DEPRECATED. Use startDate, endDate, and dateType instead. Start date for invoice dueDate filter.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**due_date_end:** `typing.Optional[dt.datetime]` — DEPRECATED. Use startDate, endDate, and dateType instead. End date for invoice dueDate filter.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**created_date_start:** `typing.Optional[dt.datetime]` — DEPRECATED. Use startDate, endDate, and dateType instead. Start date for invoice created on date filter.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**created_date_end:** `typing.Optional[dt.datetime]` — DEPRECATED. Use startDate, endDate, and dateType instead. End date for invoice created date filter.
     
 </dd>
 </dl>

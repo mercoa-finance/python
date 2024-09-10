@@ -8,7 +8,7 @@ from ...invoice_types.types.invoice_date_filter import InvoiceDateFilter
 from ...invoice_types.types.invoice_order_by_field import InvoiceOrderByField
 from ...commons.types.order_direction import OrderDirection
 from ...invoice_types.types.invoice_id import InvoiceId
-from ...invoice_types.types.invoice_metadata_filter import InvoiceMetadataFilter
+from ...invoice_types.types.metadata_filter import MetadataFilter
 from ...entity_types.types.entity_user_id import EntityUserId
 from ...invoice_types.types.approver_action import ApproverAction
 from ...invoice_types.types.invoice_status import InvoiceStatus
@@ -28,6 +28,8 @@ from ...commons.errors.conflict import Conflict
 from ...commons.errors.internal_server_error import InternalServerError
 from ...commons.errors.unimplemented import Unimplemented
 from ...invoice_types.types.invoice_metrics_per_date_group_by import InvoiceMetricsPerDateGroupBy
+from ...invoice_types.types.invoice_metrics_per_date_frequency import InvoiceMetricsPerDateFrequency
+from ...invoice_types.types.invoice_metrics_group_by import InvoiceMetricsGroupBy
 from ...payment_method_types.types.currency_code import CurrencyCode
 from ...invoice_types.types.invoice_metrics_response import InvoiceMetricsResponse
 from ...core.client_wrapper import AsyncClientWrapper
@@ -50,10 +52,8 @@ class InvoiceClient:
         order_direction: typing.Optional[OrderDirection] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[InvoiceId] = None,
-        metadata: typing.Optional[typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]] = None,
-        line_item_metadata: typing.Optional[
-            typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]
-        ] = None,
+        metadata: typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]] = None,
+        line_item_metadata: typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]] = None,
         line_item_gl_account_id: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         search: typing.Optional[str] = None,
         payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
@@ -100,10 +100,10 @@ class InvoiceClient:
         starting_after : typing.Optional[InvoiceId]
             The ID of the invoice to start after. If not provided, the first page of invoices will be returned.
 
-        metadata : typing.Optional[typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]]
+        metadata : typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]
             Filter invoices by metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
 
-        line_item_metadata : typing.Optional[typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]]
+        line_item_metadata : typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]
             Filter invoices by line item metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
 
         line_item_gl_account_id : typing.Optional[typing.Union[str, typing.Sequence[str]]]
@@ -275,6 +275,8 @@ class InvoiceClient:
         exclude_payables: typing.Optional[bool] = None,
         exclude_receivables: typing.Optional[bool] = None,
         return_by_date: typing.Optional[InvoiceMetricsPerDateGroupBy] = None,
+        return_by_date_frequency: typing.Optional[InvoiceMetricsPerDateFrequency] = None,
+        group_by: typing.Optional[typing.Union[InvoiceMetricsGroupBy, typing.Sequence[InvoiceMetricsGroupBy]]] = None,
         payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]] = None,
@@ -283,15 +285,11 @@ class InvoiceClient:
         start_date: typing.Optional[dt.datetime] = None,
         end_date: typing.Optional[dt.datetime] = None,
         date_type: typing.Optional[InvoiceDateFilter] = None,
-        due_date_start: typing.Optional[dt.datetime] = None,
-        due_date_end: typing.Optional[dt.datetime] = None,
-        created_date_start: typing.Optional[dt.datetime] = None,
-        created_date_end: typing.Optional[dt.datetime] = None,
         currency: typing.Optional[typing.Union[CurrencyCode, typing.Sequence[CurrencyCode]]] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.List[InvoiceMetricsResponse]:
         """
-        Get invoice metrics for an entity with the given filters. Invoices will be grouped by currency. If none of excludePayables, excludeReceivables, payerId, vendorId, or invoiceId status filters are provided, excludeReceivables will be set to true.
+        Get invoice metrics for an entity with the given filters. Invoices will always be grouped by currency. If none of excludePayables, excludeReceivables, payerId, vendorId, or invoiceId status filters are provided, excludeReceivables will be set to true.
 
         Parameters
         ----------
@@ -309,6 +307,12 @@ class InvoiceClient:
 
         return_by_date : typing.Optional[InvoiceMetricsPerDateGroupBy]
             Return invoice metrics grouped by date.
+
+        return_by_date_frequency : typing.Optional[InvoiceMetricsPerDateFrequency]
+            Return invoice metrics grouped by date. Defaults to daily.
+
+        group_by : typing.Optional[typing.Union[InvoiceMetricsGroupBy, typing.Sequence[InvoiceMetricsGroupBy]]]
+            Return invoice metrics grouped by.
 
         payer_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
             Filter invoices by payer ID.
@@ -334,18 +338,6 @@ class InvoiceClient:
         date_type : typing.Optional[InvoiceDateFilter]
             Type of date to filter by if startDate and endDate filters are provided. Defaults to CREATED_AT.
 
-        due_date_start : typing.Optional[dt.datetime]
-            DEPRECATED. Use startDate, endDate, and dateType instead. Start date for invoice dueDate filter.
-
-        due_date_end : typing.Optional[dt.datetime]
-            DEPRECATED. Use startDate, endDate, and dateType instead. End date for invoice dueDate filter.
-
-        created_date_start : typing.Optional[dt.datetime]
-            DEPRECATED. Use startDate, endDate, and dateType instead. Start date for invoice created on date filter.
-
-        created_date_end : typing.Optional[dt.datetime]
-            DEPRECATED. Use startDate, endDate, and dateType instead. End date for invoice created date filter.
-
         currency : typing.Optional[typing.Union[CurrencyCode, typing.Sequence[CurrencyCode]]]
             Currency to filter on
 
@@ -369,10 +361,10 @@ class InvoiceClient:
             entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             return_by_date="CREATION_DATE",
             exclude_receivables=True,
-            created_date_start=datetime.datetime.fromisoformat(
+            start_date=datetime.datetime.fromisoformat(
                 "2021-01-01 00:00:00+00:00",
             ),
-            created_date_end=datetime.datetime.fromisoformat(
+            end_date=datetime.datetime.fromisoformat(
                 "2021-01-31 23:59:59.999000+00:00",
             ),
             currency="USD",
@@ -387,6 +379,8 @@ class InvoiceClient:
                 "excludePayables": exclude_payables,
                 "excludeReceivables": exclude_receivables,
                 "returnByDate": return_by_date,
+                "returnByDateFrequency": return_by_date_frequency,
+                "groupBy": group_by,
                 "payerId": payer_id,
                 "vendorId": vendor_id,
                 "approverId": approver_id,
@@ -395,10 +389,6 @@ class InvoiceClient:
                 "startDate": serialize_datetime(start_date) if start_date is not None else None,
                 "endDate": serialize_datetime(end_date) if end_date is not None else None,
                 "dateType": date_type,
-                "dueDateStart": serialize_datetime(due_date_start) if due_date_start is not None else None,
-                "dueDateEnd": serialize_datetime(due_date_end) if due_date_end is not None else None,
-                "createdDateStart": serialize_datetime(created_date_start) if created_date_start is not None else None,
-                "createdDateEnd": serialize_datetime(created_date_end) if created_date_end is not None else None,
                 "currency": currency,
             },
             request_options=request_options,
@@ -506,10 +496,8 @@ class AsyncInvoiceClient:
         order_direction: typing.Optional[OrderDirection] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[InvoiceId] = None,
-        metadata: typing.Optional[typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]] = None,
-        line_item_metadata: typing.Optional[
-            typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]
-        ] = None,
+        metadata: typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]] = None,
+        line_item_metadata: typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]] = None,
         line_item_gl_account_id: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         search: typing.Optional[str] = None,
         payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
@@ -556,10 +544,10 @@ class AsyncInvoiceClient:
         starting_after : typing.Optional[InvoiceId]
             The ID of the invoice to start after. If not provided, the first page of invoices will be returned.
 
-        metadata : typing.Optional[typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]]
+        metadata : typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]
             Filter invoices by metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
 
-        line_item_metadata : typing.Optional[typing.Union[InvoiceMetadataFilter, typing.Sequence[InvoiceMetadataFilter]]]
+        line_item_metadata : typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]
             Filter invoices by line item metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
 
         line_item_gl_account_id : typing.Optional[typing.Union[str, typing.Sequence[str]]]
@@ -739,6 +727,8 @@ class AsyncInvoiceClient:
         exclude_payables: typing.Optional[bool] = None,
         exclude_receivables: typing.Optional[bool] = None,
         return_by_date: typing.Optional[InvoiceMetricsPerDateGroupBy] = None,
+        return_by_date_frequency: typing.Optional[InvoiceMetricsPerDateFrequency] = None,
+        group_by: typing.Optional[typing.Union[InvoiceMetricsGroupBy, typing.Sequence[InvoiceMetricsGroupBy]]] = None,
         payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]] = None,
@@ -747,15 +737,11 @@ class AsyncInvoiceClient:
         start_date: typing.Optional[dt.datetime] = None,
         end_date: typing.Optional[dt.datetime] = None,
         date_type: typing.Optional[InvoiceDateFilter] = None,
-        due_date_start: typing.Optional[dt.datetime] = None,
-        due_date_end: typing.Optional[dt.datetime] = None,
-        created_date_start: typing.Optional[dt.datetime] = None,
-        created_date_end: typing.Optional[dt.datetime] = None,
         currency: typing.Optional[typing.Union[CurrencyCode, typing.Sequence[CurrencyCode]]] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.List[InvoiceMetricsResponse]:
         """
-        Get invoice metrics for an entity with the given filters. Invoices will be grouped by currency. If none of excludePayables, excludeReceivables, payerId, vendorId, or invoiceId status filters are provided, excludeReceivables will be set to true.
+        Get invoice metrics for an entity with the given filters. Invoices will always be grouped by currency. If none of excludePayables, excludeReceivables, payerId, vendorId, or invoiceId status filters are provided, excludeReceivables will be set to true.
 
         Parameters
         ----------
@@ -773,6 +759,12 @@ class AsyncInvoiceClient:
 
         return_by_date : typing.Optional[InvoiceMetricsPerDateGroupBy]
             Return invoice metrics grouped by date.
+
+        return_by_date_frequency : typing.Optional[InvoiceMetricsPerDateFrequency]
+            Return invoice metrics grouped by date. Defaults to daily.
+
+        group_by : typing.Optional[typing.Union[InvoiceMetricsGroupBy, typing.Sequence[InvoiceMetricsGroupBy]]]
+            Return invoice metrics grouped by.
 
         payer_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
             Filter invoices by payer ID.
@@ -797,18 +789,6 @@ class AsyncInvoiceClient:
 
         date_type : typing.Optional[InvoiceDateFilter]
             Type of date to filter by if startDate and endDate filters are provided. Defaults to CREATED_AT.
-
-        due_date_start : typing.Optional[dt.datetime]
-            DEPRECATED. Use startDate, endDate, and dateType instead. Start date for invoice dueDate filter.
-
-        due_date_end : typing.Optional[dt.datetime]
-            DEPRECATED. Use startDate, endDate, and dateType instead. End date for invoice dueDate filter.
-
-        created_date_start : typing.Optional[dt.datetime]
-            DEPRECATED. Use startDate, endDate, and dateType instead. Start date for invoice created on date filter.
-
-        created_date_end : typing.Optional[dt.datetime]
-            DEPRECATED. Use startDate, endDate, and dateType instead. End date for invoice created date filter.
 
         currency : typing.Optional[typing.Union[CurrencyCode, typing.Sequence[CurrencyCode]]]
             Currency to filter on
@@ -837,10 +817,10 @@ class AsyncInvoiceClient:
                 entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
                 return_by_date="CREATION_DATE",
                 exclude_receivables=True,
-                created_date_start=datetime.datetime.fromisoformat(
+                start_date=datetime.datetime.fromisoformat(
                     "2021-01-01 00:00:00+00:00",
                 ),
-                created_date_end=datetime.datetime.fromisoformat(
+                end_date=datetime.datetime.fromisoformat(
                     "2021-01-31 23:59:59.999000+00:00",
                 ),
                 currency="USD",
@@ -858,6 +838,8 @@ class AsyncInvoiceClient:
                 "excludePayables": exclude_payables,
                 "excludeReceivables": exclude_receivables,
                 "returnByDate": return_by_date,
+                "returnByDateFrequency": return_by_date_frequency,
+                "groupBy": group_by,
                 "payerId": payer_id,
                 "vendorId": vendor_id,
                 "approverId": approver_id,
@@ -866,10 +848,6 @@ class AsyncInvoiceClient:
                 "startDate": serialize_datetime(start_date) if start_date is not None else None,
                 "endDate": serialize_datetime(end_date) if end_date is not None else None,
                 "dateType": date_type,
-                "dueDateStart": serialize_datetime(due_date_start) if due_date_start is not None else None,
-                "dueDateEnd": serialize_datetime(due_date_end) if due_date_end is not None else None,
-                "createdDateStart": serialize_datetime(created_date_start) if created_date_start is not None else None,
-                "createdDateEnd": serialize_datetime(created_date_end) if created_date_end is not None else None,
                 "currency": currency,
             },
             request_options=request_options,
