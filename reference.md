@@ -5680,7 +5680,7 @@ client.entity.counterparty.find_payees(
 <dl>
 <dd>
 
-**metadata:** `typing.Optional[MetadataFilter]` — Filter counterparties by simple key/value metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+**metadata:** `typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]` — Filter counterparties by simple key/value metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
     
 </dd>
 </dl>
@@ -5829,7 +5829,7 @@ client.entity.counterparty.find_payors(
 <dl>
 <dd>
 
-**metadata:** `typing.Optional[MetadataFilter]` — Filter counterparties by simple key/value metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+**metadata:** `typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]` — Filter counterparties by simple key/value metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
     
 </dd>
 </dl>

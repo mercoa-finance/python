@@ -43,7 +43,7 @@ class CounterpartyClient:
         payment_methods: typing.Optional[bool] = None,
         invoice_metrics: typing.Optional[bool] = None,
         counterparty_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
-        metadata: typing.Optional[MetadataFilter] = None,
+        metadata: typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]] = None,
         return_metadata: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
@@ -72,7 +72,7 @@ class CounterpartyClient:
         counterparty_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
             Filter by counterparty ids (Foreign ID is supported)
 
-        metadata : typing.Optional[MetadataFilter]
+        metadata : typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]
             Filter counterparties by simple key/value metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
 
         return_metadata : typing.Optional[bool]
@@ -217,7 +217,7 @@ class CounterpartyClient:
         payment_methods: typing.Optional[bool] = None,
         invoice_metrics: typing.Optional[bool] = None,
         counterparty_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
-        metadata: typing.Optional[MetadataFilter] = None,
+        metadata: typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]] = None,
         return_metadata: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
@@ -246,7 +246,7 @@ class CounterpartyClient:
         counterparty_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
             Filter by counterparty ids (Foreign ID is supported)
 
-        metadata : typing.Optional[MetadataFilter]
+        metadata : typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]
             Filter counterparties by simple key/value metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
 
         return_metadata : typing.Optional[bool]
@@ -928,7 +928,7 @@ class AsyncCounterpartyClient:
         payment_methods: typing.Optional[bool] = None,
         invoice_metrics: typing.Optional[bool] = None,
         counterparty_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
-        metadata: typing.Optional[MetadataFilter] = None,
+        metadata: typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]] = None,
         return_metadata: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
@@ -957,7 +957,7 @@ class AsyncCounterpartyClient:
         counterparty_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
             Filter by counterparty ids (Foreign ID is supported)
 
-        metadata : typing.Optional[MetadataFilter]
+        metadata : typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]
             Filter counterparties by simple key/value metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
 
         return_metadata : typing.Optional[bool]
@@ -1110,7 +1110,7 @@ class AsyncCounterpartyClient:
         payment_methods: typing.Optional[bool] = None,
         invoice_metrics: typing.Optional[bool] = None,
         counterparty_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
-        metadata: typing.Optional[MetadataFilter] = None,
+        metadata: typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]] = None,
         return_metadata: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
@@ -1139,7 +1139,7 @@ class AsyncCounterpartyClient:
         counterparty_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
             Filter by counterparty ids (Foreign ID is supported)
 
-        metadata : typing.Optional[MetadataFilter]
+        metadata : typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]
             Filter counterparties by simple key/value metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
 
         return_metadata : typing.Optional[bool]
