@@ -5,6 +5,7 @@ import typing
 import pydantic
 from .account_type import AccountType
 from .profile_request import ProfileRequest
+from .entity_id import EntityId
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -105,6 +106,11 @@ class EntityUpdateRequest(UniversalBaseModel):
     metadata: typing.Optional[typing.Dict[str, str]] = pydantic.Field(default=None)
     """
     Simple key/value metadata associated with this entity. For more complex metadata, use the Metadata API.
+    """
+
+    connected_entity_id: typing.Optional[EntityId] = pydantic.Field(alias="connectedEntityId", default=None)
+    """
+    The ID of the entity that this entity is connected to. This is used to trigger notifications to the connected entity when this entity is updated.
     """
 
     if IS_PYDANTIC_V2:

@@ -14,6 +14,7 @@ NotificationType = typing.Union[
         "INVOICE_CREATED",
         "INVOICE_EMAILED",
         "INVOICE_FAILED",
+        "COUNTERPARTY_ONBOARDING_COMPLETED",
     ],
     typing.Any,
 ]

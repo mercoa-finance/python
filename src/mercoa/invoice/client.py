@@ -292,7 +292,7 @@ class InvoiceClient:
 
         from mercoa import Mercoa
         from mercoa.invoice_types import (
-            InvoiceCreationRequest,
+            InvoiceCreationWithEntityRequest,
             InvoiceLineItemCreationRequest,
             PaymentDestinationOptions_Check,
         )
@@ -301,7 +301,7 @@ class InvoiceClient:
             token="YOUR_TOKEN",
         )
         client.invoice.create(
-            request=InvoiceCreationRequest(
+            request=InvoiceCreationWithEntityRequest(
                 status="NEW",
                 amount=100.0,
                 currency="USD",
@@ -1225,7 +1225,7 @@ class AsyncInvoiceClient:
 
         from mercoa import AsyncMercoa
         from mercoa.invoice_types import (
-            InvoiceCreationRequest,
+            InvoiceCreationWithEntityRequest,
             InvoiceLineItemCreationRequest,
             PaymentDestinationOptions_Check,
         )
@@ -1237,7 +1237,7 @@ class AsyncInvoiceClient:
 
         async def main() -> None:
             await client.invoice.create(
-                request=InvoiceCreationRequest(
+                request=InvoiceCreationWithEntityRequest(
                     status="NEW",
                     amount=100.0,
                     currency="USD",

@@ -17,6 +17,10 @@ from .counterparty_invoice_metrics_status_response import CounterpartyInvoiceMet
 from .counterparty_network_type import CounterpartyNetworkType
 from .counterparty_response import CounterpartyResponse
 from .ein import Ein
+from .email_template_id import EmailTemplateId
+from .email_template_request import EmailTemplateRequest
+from .email_template_response import EmailTemplateResponse
+from .email_template_type import EmailTemplateType
 from .entity_add_payees_request import EntityAddPayeesRequest
 from .entity_add_payors_request import EntityAddPayorsRequest
 from .entity_customization_request import EntityCustomizationRequest
@@ -94,6 +98,10 @@ __all__ = [
     "CounterpartyNetworkType",
     "CounterpartyResponse",
     "Ein",
+    "EmailTemplateId",
+    "EmailTemplateRequest",
+    "EmailTemplateResponse",
+    "EmailTemplateType",
     "EntityAddPayeesRequest",
     "EntityAddPayorsRequest",
     "EntityCustomizationRequest",

@@ -3,6 +3,7 @@
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
 import pydantic
+from .entity_user_id import EntityUserId
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -26,6 +27,11 @@ class NotificationPolicyRequest(UniversalBaseModel):
     additional_roles: typing.Optional[typing.List[str]] = pydantic.Field(alias="additionalRoles", default=None)
     """
     List of user roles that should receive notifications in addition to the default users for this notification type
+    """
+
+    additional_users: typing.Optional[typing.List[EntityUserId]] = pydantic.Field(alias="additionalUsers", default=None)
+    """
+    List of user IDs that should receive notifications in addition to the default users for this notification type
     """
 
     notify_payee_counterparty: typing.Optional[bool] = pydantic.Field(alias="notifyPayeeCounterparty", default=None)

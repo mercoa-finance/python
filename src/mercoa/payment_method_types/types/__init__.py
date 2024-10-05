@@ -58,7 +58,10 @@ from .payment_method_update_request import (
 )
 from .payment_method_with_entity_find_response import PaymentMethodWithEntityFindResponse
 from .payment_method_with_entity_response import PaymentMethodWithEntityResponse
+from .plaid_access_token_request import PlaidAccessTokenRequest
 from .plaid_link_request import PlaidLinkRequest
+from .plaid_processor_token_request import PlaidProcessorTokenRequest
+from .plaid_public_token_request import PlaidPublicTokenRequest
 from .utility_payment_method_request import UtilityPaymentMethodRequest
 from .utility_payment_method_response import UtilityPaymentMethodResponse
 
@@ -115,7 +118,10 @@ __all__ = [
     "PaymentMethodUpdateRequest_Utility",
     "PaymentMethodWithEntityFindResponse",
     "PaymentMethodWithEntityResponse",
+    "PlaidAccessTokenRequest",
     "PlaidLinkRequest",
+    "PlaidProcessorTokenRequest",
+    "PlaidPublicTokenRequest",
     "UtilityPaymentMethodRequest",
     "UtilityPaymentMethodResponse",
 ]

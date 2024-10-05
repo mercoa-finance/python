@@ -296,7 +296,7 @@ class EntityGroupClient:
         self,
         entity_group_id: EntityGroupId,
         *,
-        return_entity_metadata: typing.Optional[bool] = None,
+        return_entity_metadata: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityGroupResponse:
         """
@@ -307,8 +307,8 @@ class EntityGroupClient:
         entity_group_id : EntityGroupId
             Entity Group ID or Entity Group ForeignID
 
-        return_entity_metadata : typing.Optional[bool]
-            If true, will return simple key/value metadata for entities in the group. For more complex metadata, use the Metadata API.
+        return_entity_metadata : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return simple key/value metadata for the specified keys for the entities in the group. For more complex metadata, use the Metadata API.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1355,7 +1355,7 @@ class AsyncEntityGroupClient:
         self,
         entity_group_id: EntityGroupId,
         *,
-        return_entity_metadata: typing.Optional[bool] = None,
+        return_entity_metadata: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityGroupResponse:
         """
@@ -1366,8 +1366,8 @@ class AsyncEntityGroupClient:
         entity_group_id : EntityGroupId
             Entity Group ID or Entity Group ForeignID
 
-        return_entity_metadata : typing.Optional[bool]
-            If true, will return simple key/value metadata for entities in the group. For more complex metadata, use the Metadata API.
+        return_entity_metadata : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return simple key/value metadata for the specified keys for the entities in the group. For more complex metadata, use the Metadata API.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.

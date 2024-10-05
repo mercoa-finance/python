@@ -8,6 +8,7 @@ from .approval_policy.client import ApprovalPolicyClient
 from .counterparty.client import CounterpartyClient
 from .customization.client import CustomizationClient
 from .document.client import DocumentClient
+from .email_template.client import EmailTemplateClient
 from .external_accounting_system.client import ExternalAccountingSystemClient
 from .invoice.client import InvoiceClient
 from .metadata.client import MetadataClient
@@ -46,6 +47,7 @@ from .approval_policy.client import AsyncApprovalPolicyClient
 from .counterparty.client import AsyncCounterpartyClient
 from .customization.client import AsyncCustomizationClient
 from .document.client import AsyncDocumentClient
+from .email_template.client import AsyncEmailTemplateClient
 from .external_accounting_system.client import AsyncExternalAccountingSystemClient
 from .invoice.client import AsyncInvoiceClient
 from .metadata.client import AsyncMetadataClient
@@ -66,6 +68,7 @@ class EntityClient:
         self.counterparty = CounterpartyClient(client_wrapper=self._client_wrapper)
         self.customization = CustomizationClient(client_wrapper=self._client_wrapper)
         self.document = DocumentClient(client_wrapper=self._client_wrapper)
+        self.email_template = EmailTemplateClient(client_wrapper=self._client_wrapper)
         self.external_accounting_system = ExternalAccountingSystemClient(client_wrapper=self._client_wrapper)
         self.invoice = InvoiceClient(client_wrapper=self._client_wrapper)
         self.metadata = MetadataClient(client_wrapper=self._client_wrapper)
@@ -84,7 +87,7 @@ class EntityClient:
         is_payor: typing.Optional[bool] = None,
         name: typing.Optional[str] = None,
         metadata: typing.Optional[MetadataFilter] = None,
-        return_metadata: typing.Optional[bool] = None,
+        return_metadata: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -119,8 +122,8 @@ class EntityClient:
         metadata : typing.Optional[MetadataFilter]
             Filter entities by simple key/value metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
 
-        return_metadata : typing.Optional[bool]
-            If true, will return simple key/value metadata for the entities. For more complex metadata, use the Metadata API.
+        return_metadata : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return simple key/value metadata for the specified keys for the entities. For more complex metadata, use the Metadata API.
 
         limit : typing.Optional[int]
             Number of entities to return. Limit can range between 1 and 100, and the default is 10.
@@ -412,7 +415,7 @@ class EntityClient:
         self,
         entity_id: EntityId,
         *,
-        return_metadata: typing.Optional[bool] = None,
+        return_metadata: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityResponse:
         """
@@ -421,8 +424,8 @@ class EntityClient:
         entity_id : EntityId
             Entity ID or Entity ForeignID
 
-        return_metadata : typing.Optional[bool]
-            If true, will return simple key/value metadata for the entity. For more complex metadata, use the Metadata API.
+        return_metadata : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return simple key/value metadata for the specified keys for the entities. For more complex metadata, use the Metadata API.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1721,6 +1724,7 @@ class AsyncEntityClient:
         self.counterparty = AsyncCounterpartyClient(client_wrapper=self._client_wrapper)
         self.customization = AsyncCustomizationClient(client_wrapper=self._client_wrapper)
         self.document = AsyncDocumentClient(client_wrapper=self._client_wrapper)
+        self.email_template = AsyncEmailTemplateClient(client_wrapper=self._client_wrapper)
         self.external_accounting_system = AsyncExternalAccountingSystemClient(client_wrapper=self._client_wrapper)
         self.invoice = AsyncInvoiceClient(client_wrapper=self._client_wrapper)
         self.metadata = AsyncMetadataClient(client_wrapper=self._client_wrapper)
@@ -1739,7 +1743,7 @@ class AsyncEntityClient:
         is_payor: typing.Optional[bool] = None,
         name: typing.Optional[str] = None,
         metadata: typing.Optional[MetadataFilter] = None,
-        return_metadata: typing.Optional[bool] = None,
+        return_metadata: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityId] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1774,8 +1778,8 @@ class AsyncEntityClient:
         metadata : typing.Optional[MetadataFilter]
             Filter entities by simple key/value metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
 
-        return_metadata : typing.Optional[bool]
-            If true, will return simple key/value metadata for the entities. For more complex metadata, use the Metadata API.
+        return_metadata : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return simple key/value metadata for the specified keys for the entities. For more complex metadata, use the Metadata API.
 
         limit : typing.Optional[int]
             Number of entities to return. Limit can range between 1 and 100, and the default is 10.
@@ -2083,7 +2087,7 @@ class AsyncEntityClient:
         self,
         entity_id: EntityId,
         *,
-        return_metadata: typing.Optional[bool] = None,
+        return_metadata: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityResponse:
         """
@@ -2092,8 +2096,8 @@ class AsyncEntityClient:
         entity_id : EntityId
             Entity ID or Entity ForeignID
 
-        return_metadata : typing.Optional[bool]
-            If true, will return simple key/value metadata for the entity. For more complex metadata, use the Metadata API.
+        return_metadata : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Return simple key/value metadata for the specified keys for the entities. For more complex metadata, use the Metadata API.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.

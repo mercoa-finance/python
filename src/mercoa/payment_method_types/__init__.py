@@ -53,7 +53,10 @@ from .types import (
     PaymentMethodUpdateRequest_Utility,
     PaymentMethodWithEntityFindResponse,
     PaymentMethodWithEntityResponse,
+    PlaidAccessTokenRequest,
     PlaidLinkRequest,
+    PlaidProcessorTokenRequest,
+    PlaidPublicTokenRequest,
     UtilityPaymentMethodRequest,
     UtilityPaymentMethodResponse,
 )
@@ -111,7 +114,10 @@ __all__ = [
     "PaymentMethodUpdateRequest_Utility",
     "PaymentMethodWithEntityFindResponse",
     "PaymentMethodWithEntityResponse",
+    "PlaidAccessTokenRequest",
     "PlaidLinkRequest",
+    "PlaidProcessorTokenRequest",
+    "PlaidPublicTokenRequest",
     "UtilityPaymentMethodRequest",
     "UtilityPaymentMethodResponse",
 ]
