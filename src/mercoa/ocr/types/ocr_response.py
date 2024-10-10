@@ -21,7 +21,9 @@ class OcrResponse(UniversalBaseModel):
         BusinessProfileResponse,
         CounterpartyCustomizationAccount,
         CounterpartyResponse,
+        Ein,
         ProfileResponse,
+        TaxId,
     )
     from mercoa.invoice_types import InvoiceLineItemResponse, InvoiceResponse
     from mercoa.ocr import OcrResponse
@@ -89,6 +91,11 @@ class OcrResponse(UniversalBaseModel):
                             country="US",
                         ),
                         tax_id_provided=True,
+                        tax_id=TaxId(
+                            ein=Ein(
+                                number="12-3456789",
+                            ),
+                        ),
                         owners_provided=True,
                     ),
                 ),

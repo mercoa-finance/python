@@ -19,9 +19,11 @@ class PaymentMethodWebhook(UniversalBaseModel):
     from mercoa.commons import Address, PhoneNumber
     from mercoa.entity_types import (
         BusinessProfileResponse,
+        Ein,
         EntityResponse,
         EntityUserResponse,
         ProfileResponse,
+        TaxId,
     )
     from mercoa.payment_method_types import PaymentMethodResponse_BankAccount
     from mercoa.webhooks import PaymentMethodWebhook
@@ -86,6 +88,11 @@ class PaymentMethodWebhook(UniversalBaseModel):
                         country="US",
                     ),
                     tax_id_provided=True,
+                    tax_id=TaxId(
+                        ein=Ein(
+                            number="12-3456789",
+                        ),
+                    ),
                     owners_provided=True,
                 ),
             ),

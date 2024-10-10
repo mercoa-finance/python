@@ -26,6 +26,9 @@ class AddApproverRequest(UniversalBaseModel):
     """
 
     user_id: EntityUserId = pydantic.Field(alias="userId")
+    """
+    The ID or the Foreign ID of the user to add to the approval slot.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

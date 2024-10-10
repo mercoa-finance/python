@@ -13,7 +13,12 @@ class ProfileResponse(UniversalBaseModel):
     Examples
     --------
     from mercoa.commons import Address, PhoneNumber
-    from mercoa.entity_types import BusinessProfileResponse, ProfileResponse
+    from mercoa.entity_types import (
+        BusinessProfileResponse,
+        Ein,
+        ProfileResponse,
+        TaxId,
+    )
 
     ProfileResponse(
         business=BusinessProfileResponse(
@@ -33,6 +38,11 @@ class ProfileResponse(UniversalBaseModel):
                 country="US",
             ),
             tax_id_provided=True,
+            tax_id=TaxId(
+                ein=Ein(
+                    number="12-3456789",
+                ),
+            ),
             owners_provided=True,
         ),
     )

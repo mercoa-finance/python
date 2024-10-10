@@ -16,10 +16,12 @@ class EntityEventsResponse(UniversalBaseModel):
     from mercoa.commons import Address, PhoneNumber
     from mercoa.entity_types import (
         BusinessProfileResponse,
+        Ein,
         EntityEvent,
         EntityEventsResponse,
         EntityResponse,
         ProfileResponse,
+        TaxId,
     )
 
     EntityEventsResponse(
@@ -64,6 +66,11 @@ class EntityEventsResponse(UniversalBaseModel):
                                 country="US",
                             ),
                             tax_id_provided=True,
+                            tax_id=TaxId(
+                                ein=Ein(
+                                    number="12-3456789",
+                                ),
+                            ),
                             owners_provided=True,
                         ),
                     ),

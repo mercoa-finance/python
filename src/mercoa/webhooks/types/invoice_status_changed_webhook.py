@@ -17,8 +17,10 @@ class InvoiceStatusChangedWebhook(InvoiceWebhook):
         BusinessProfileResponse,
         CounterpartyCustomizationAccount,
         CounterpartyResponse,
+        Ein,
         EntityUserResponse,
         ProfileResponse,
+        TaxId,
     )
     from mercoa.invoice_types import InvoiceResponse
     from mercoa.payment_method_types import PaymentMethodResponse_BankAccount
@@ -67,6 +69,11 @@ class InvoiceStatusChangedWebhook(InvoiceWebhook):
                             country="US",
                         ),
                         tax_id_provided=True,
+                        tax_id=TaxId(
+                            ein=Ein(
+                                number="12-3456789",
+                            ),
+                        ),
                         owners_provided=True,
                     ),
                 ),

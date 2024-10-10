@@ -21,6 +21,9 @@ class CommentRequest(UniversalBaseModel):
 
     text: str
     user_id: typing.Optional[EntityUserId] = pydantic.Field(alias="userId", default=None)
+    """
+    The ID or the Foreign ID of the user who created the comment.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

@@ -17,8 +17,10 @@ class PaymentMethodWithEntityResponse(UniversalBaseModel):
     from mercoa.commons import Address, PhoneNumber
     from mercoa.entity_types import (
         BusinessProfileResponse,
+        Ein,
         EntityResponse,
         ProfileResponse,
+        TaxId,
     )
     from mercoa.payment_method_types import (
         PaymentMethodResponse_BankAccount,
@@ -83,6 +85,11 @@ class PaymentMethodWithEntityResponse(UniversalBaseModel):
                         country="US",
                     ),
                     tax_id_provided=True,
+                    tax_id=TaxId(
+                        ein=Ein(
+                            number="12-3456789",
+                        ),
+                    ),
                     owners_provided=True,
                 ),
             ),

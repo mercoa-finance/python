@@ -21,7 +21,9 @@ class CounterpartyResponse(EntityResponse):
         BusinessProfileResponse,
         CounterpartyCustomizationAccount,
         CounterpartyResponse,
+        Ein,
         ProfileResponse,
+        TaxId,
     )
     from mercoa.payment_method_types import PaymentMethodResponse_BankAccount
 
@@ -62,6 +64,11 @@ class CounterpartyResponse(EntityResponse):
                     country="US",
                 ),
                 tax_id_provided=True,
+                tax_id=TaxId(
+                    ein=Ein(
+                        number="12-3456789",
+                    ),
+                ),
                 owners_provided=True,
             ),
         ),

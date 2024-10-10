@@ -233,7 +233,7 @@ class UserClient:
                     ),
                     EntityGroupUserEntityRequest(
                         roles=["viewer"],
-                        entity_id="ent_574s93r-3943-fu39-g9dfr-33b42a55812c",
+                        entity_id="ent_9e02a20e-7749-47de-8d8a-f8ff2859fa90",
                     ),
                 ],
             ),
@@ -511,7 +511,7 @@ class UserClient:
                     ),
                     EntityGroupUserEntityRequest(
                         roles=["viewer"],
-                        entity_id="ent_574s93r-3943-fu39-g9dfr-33b42a55812c",
+                        entity_id="ent_9e02a20e-7749-47de-8d8a-f8ff2859fa90",
                     ),
                 ],
             ),
@@ -1087,7 +1087,7 @@ class AsyncUserClient:
                         ),
                         EntityGroupUserEntityRequest(
                             roles=["viewer"],
-                            entity_id="ent_574s93r-3943-fu39-g9dfr-33b42a55812c",
+                            entity_id="ent_9e02a20e-7749-47de-8d8a-f8ff2859fa90",
                         ),
                     ],
                 ),
@@ -1381,7 +1381,7 @@ class AsyncUserClient:
                         ),
                         EntityGroupUserEntityRequest(
                             roles=["viewer"],
-                            entity_id="ent_574s93r-3943-fu39-g9dfr-33b42a55812c",
+                            entity_id="ent_9e02a20e-7749-47de-8d8a-f8ff2859fa90",
                         ),
                     ],
                 ),

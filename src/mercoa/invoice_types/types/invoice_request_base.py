@@ -113,7 +113,7 @@ class InvoiceRequestBase(UniversalBaseModel):
 
     creator_user_id: typing.Optional[EntityUserId] = pydantic.Field(alias="creatorUserId", default=None)
     """
-    ID of entity user who created this invoice.
+    User ID or Foreign ID of entity user who created this invoice.
     """
 
     failure_type: typing.Optional[InvoiceFailureType] = pydantic.Field(alias="failureType", default=None)

@@ -2,31 +2,28 @@
 
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
+from ...entity_types.types.entity_id import EntityId
 import pydantic
-from ...entity_types.types.entity_user_id import EntityUserId
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
-class ApprovalRequest(UniversalBaseModel):
+class EntityGroupRemoveEntitiesRequest(UniversalBaseModel):
     """
     Examples
     --------
-    from mercoa.invoice_types import ApprovalRequest
+    from mercoa.entity_group_types import EntityGroupRemoveEntitiesRequest
 
-    ApprovalRequest(
-        text="This is a reason for my action",
-        user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+    EntityGroupRemoveEntitiesRequest(
+        entity_ids=[
+            "ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            "ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+        ],
     )
     """
 
-    text: typing.Optional[str] = pydantic.Field(default=None)
+    entity_ids: typing.List[EntityId] = pydantic.Field(alias="entityIds")
     """
-    Comment associated with this approval action.
-    """
-
-    user_id: EntityUserId = pydantic.Field(alias="userId")
-    """
-    The ID or the Foreign ID of the user
+    List of entity IDs or foreign IDs to remove from the group
     """
 
     if IS_PYDANTIC_V2:

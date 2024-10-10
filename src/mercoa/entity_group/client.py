@@ -17,11 +17,13 @@ from ..commons.errors.not_found import NotFound
 from ..commons.errors.conflict import Conflict
 from ..commons.errors.internal_server_error import InternalServerError
 from ..commons.errors.unimplemented import Unimplemented
-from ..entity_group_types.types.entity_group_request import EntityGroupRequest
+from ..entity_group_types.types.entity_group_create_request import EntityGroupCreateRequest
 from ..entity_group_types.types.entity_group_response import EntityGroupResponse
 from ..core.jsonable_encoder import jsonable_encoder
+from ..entity_group_types.types.entity_group_update_request import EntityGroupUpdateRequest
 from ..entity_types.types.token_generation_options import TokenGenerationOptions
-from ..entity_group_types.types.entity_group_entity_update_request import EntityGroupEntityUpdateRequest
+from ..entity_group_types.types.entity_group_add_entities_request import EntityGroupAddEntitiesRequest
+from ..entity_group_types.types.entity_group_remove_entities_request import EntityGroupRemoveEntitiesRequest
 from ..core.client_wrapper import AsyncClientWrapper
 from .user.client import AsyncUserClient
 from .invoice.client import AsyncInvoiceClient
@@ -164,14 +166,14 @@ class EntityGroupClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def create(
-        self, *, request: EntityGroupRequest, request_options: typing.Optional[RequestOptions] = None
+        self, *, request: EntityGroupCreateRequest, request_options: typing.Optional[RequestOptions] = None
     ) -> EntityGroupResponse:
         """
         Create an entity group
 
         Parameters
         ----------
-        request : EntityGroupRequest
+        request : EntityGroupCreateRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -183,13 +185,13 @@ class EntityGroupClient:
         Examples
         --------
         from mercoa import Mercoa
-        from mercoa.entity_group_types import EntityGroupRequest
+        from mercoa.entity_group_types import EntityGroupCreateRequest
 
         client = Mercoa(
             token="YOUR_TOKEN",
         )
         client.entity_group.create(
-            request=EntityGroupRequest(
+            request=EntityGroupCreateRequest(
                 foreign_id="your-group-id",
                 name="AcmeConglomerate",
                 email_to_name="acmegroup",
@@ -425,7 +427,7 @@ class EntityGroupClient:
         self,
         entity_group_id: EntityGroupId,
         *,
-        request: EntityGroupRequest,
+        request: EntityGroupUpdateRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityGroupResponse:
         """
@@ -436,7 +438,7 @@ class EntityGroupClient:
         entity_group_id : EntityGroupId
             Entity Group ID or Entity Group ForeignID
 
-        request : EntityGroupRequest
+        request : EntityGroupUpdateRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -448,21 +450,17 @@ class EntityGroupClient:
         Examples
         --------
         from mercoa import Mercoa
-        from mercoa.entity_group_types import EntityGroupRequest
+        from mercoa.entity_group_types import EntityGroupUpdateRequest
 
         client = Mercoa(
             token="YOUR_TOKEN",
         )
         client.entity_group.update(
             entity_group_id="entg_a3582b70-fd04-4888-9185-a640ae9048be",
-            request=EntityGroupRequest(
+            request=EntityGroupUpdateRequest(
                 foreign_id="your-group-id",
                 name="AcmeConglomerate",
                 email_to_name="acmegroup",
-                entity_ids=[
-                    "ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-                    "ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
-                ],
             ),
         )
         """
@@ -808,7 +806,7 @@ class EntityGroupClient:
         self,
         entity_group_id: EntityGroupId,
         *,
-        request: EntityGroupEntityUpdateRequest,
+        request: EntityGroupAddEntitiesRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityGroupResponse:
         """
@@ -819,7 +817,7 @@ class EntityGroupClient:
         entity_group_id : EntityGroupId
             Entity Group ID or Entity Group ForeignID
 
-        request : EntityGroupEntityUpdateRequest
+        request : EntityGroupAddEntitiesRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -831,14 +829,14 @@ class EntityGroupClient:
         Examples
         --------
         from mercoa import Mercoa
-        from mercoa.entity_group_types import EntityGroupEntityUpdateRequest
+        from mercoa.entity_group_types import EntityGroupAddEntitiesRequest
 
         client = Mercoa(
             token="YOUR_TOKEN",
         )
         client.entity_group.add_entities(
             entity_group_id="entg_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-            request=EntityGroupEntityUpdateRequest(
+            request=EntityGroupAddEntitiesRequest(
                 entity_ids=[
                     "ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
                     "ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
@@ -942,7 +940,7 @@ class EntityGroupClient:
         self,
         entity_group_id: EntityGroupId,
         *,
-        request: EntityGroupEntityUpdateRequest,
+        request: EntityGroupRemoveEntitiesRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityGroupResponse:
         """
@@ -953,7 +951,7 @@ class EntityGroupClient:
         entity_group_id : EntityGroupId
             Entity Group ID or Entity Group ForeignID
 
-        request : EntityGroupEntityUpdateRequest
+        request : EntityGroupRemoveEntitiesRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -965,14 +963,14 @@ class EntityGroupClient:
         Examples
         --------
         from mercoa import Mercoa
-        from mercoa.entity_group_types import EntityGroupEntityUpdateRequest
+        from mercoa.entity_group_types import EntityGroupRemoveEntitiesRequest
 
         client = Mercoa(
             token="YOUR_TOKEN",
         )
         client.entity_group.remove_entities(
             entity_group_id="entg_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-            request=EntityGroupEntityUpdateRequest(
+            request=EntityGroupRemoveEntitiesRequest(
                 entity_ids=[
                     "ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
                     "ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
@@ -1215,14 +1213,14 @@ class AsyncEntityGroupClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def create(
-        self, *, request: EntityGroupRequest, request_options: typing.Optional[RequestOptions] = None
+        self, *, request: EntityGroupCreateRequest, request_options: typing.Optional[RequestOptions] = None
     ) -> EntityGroupResponse:
         """
         Create an entity group
 
         Parameters
         ----------
-        request : EntityGroupRequest
+        request : EntityGroupCreateRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1236,7 +1234,7 @@ class AsyncEntityGroupClient:
         import asyncio
 
         from mercoa import AsyncMercoa
-        from mercoa.entity_group_types import EntityGroupRequest
+        from mercoa.entity_group_types import EntityGroupCreateRequest
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
@@ -1245,7 +1243,7 @@ class AsyncEntityGroupClient:
 
         async def main() -> None:
             await client.entity_group.create(
-                request=EntityGroupRequest(
+                request=EntityGroupCreateRequest(
                     foreign_id="your-group-id",
                     name="AcmeConglomerate",
                     email_to_name="acmegroup",
@@ -1492,7 +1490,7 @@ class AsyncEntityGroupClient:
         self,
         entity_group_id: EntityGroupId,
         *,
-        request: EntityGroupRequest,
+        request: EntityGroupUpdateRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityGroupResponse:
         """
@@ -1503,7 +1501,7 @@ class AsyncEntityGroupClient:
         entity_group_id : EntityGroupId
             Entity Group ID or Entity Group ForeignID
 
-        request : EntityGroupRequest
+        request : EntityGroupUpdateRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1517,7 +1515,7 @@ class AsyncEntityGroupClient:
         import asyncio
 
         from mercoa import AsyncMercoa
-        from mercoa.entity_group_types import EntityGroupRequest
+        from mercoa.entity_group_types import EntityGroupUpdateRequest
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
@@ -1527,14 +1525,10 @@ class AsyncEntityGroupClient:
         async def main() -> None:
             await client.entity_group.update(
                 entity_group_id="entg_a3582b70-fd04-4888-9185-a640ae9048be",
-                request=EntityGroupRequest(
+                request=EntityGroupUpdateRequest(
                     foreign_id="your-group-id",
                     name="AcmeConglomerate",
                     email_to_name="acmegroup",
-                    entity_ids=[
-                        "ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-                        "ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
-                    ],
                 ),
             )
 
@@ -1899,7 +1893,7 @@ class AsyncEntityGroupClient:
         self,
         entity_group_id: EntityGroupId,
         *,
-        request: EntityGroupEntityUpdateRequest,
+        request: EntityGroupAddEntitiesRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityGroupResponse:
         """
@@ -1910,7 +1904,7 @@ class AsyncEntityGroupClient:
         entity_group_id : EntityGroupId
             Entity Group ID or Entity Group ForeignID
 
-        request : EntityGroupEntityUpdateRequest
+        request : EntityGroupAddEntitiesRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1924,7 +1918,7 @@ class AsyncEntityGroupClient:
         import asyncio
 
         from mercoa import AsyncMercoa
-        from mercoa.entity_group_types import EntityGroupEntityUpdateRequest
+        from mercoa.entity_group_types import EntityGroupAddEntitiesRequest
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
@@ -1934,7 +1928,7 @@ class AsyncEntityGroupClient:
         async def main() -> None:
             await client.entity_group.add_entities(
                 entity_group_id="entg_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-                request=EntityGroupEntityUpdateRequest(
+                request=EntityGroupAddEntitiesRequest(
                     entity_ids=[
                         "ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
                         "ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
@@ -2041,7 +2035,7 @@ class AsyncEntityGroupClient:
         self,
         entity_group_id: EntityGroupId,
         *,
-        request: EntityGroupEntityUpdateRequest,
+        request: EntityGroupRemoveEntitiesRequest,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityGroupResponse:
         """
@@ -2052,7 +2046,7 @@ class AsyncEntityGroupClient:
         entity_group_id : EntityGroupId
             Entity Group ID or Entity Group ForeignID
 
-        request : EntityGroupEntityUpdateRequest
+        request : EntityGroupRemoveEntitiesRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -2066,7 +2060,7 @@ class AsyncEntityGroupClient:
         import asyncio
 
         from mercoa import AsyncMercoa
-        from mercoa.entity_group_types import EntityGroupEntityUpdateRequest
+        from mercoa.entity_group_types import EntityGroupRemoveEntitiesRequest
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
@@ -2076,7 +2070,7 @@ class AsyncEntityGroupClient:
         async def main() -> None:
             await client.entity_group.remove_entities(
                 entity_group_id="entg_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-                request=EntityGroupEntityUpdateRequest(
+                request=EntityGroupRemoveEntitiesRequest(
                     entity_ids=[
                         "ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
                         "ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",

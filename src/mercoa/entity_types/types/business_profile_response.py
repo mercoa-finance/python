@@ -6,6 +6,7 @@ import pydantic
 from .business_type import BusinessType
 from ...commons.types.phone_number import PhoneNumber
 from ...commons.types.address import Address
+from .tax_id import TaxId
 from .industry_codes import IndustryCodes
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
@@ -15,7 +16,7 @@ class BusinessProfileResponse(UniversalBaseModel):
     Examples
     --------
     from mercoa.commons import Address, PhoneNumber
-    from mercoa.entity_types import BusinessProfileResponse
+    from mercoa.entity_types import BusinessProfileResponse, Ein, TaxId
 
     BusinessProfileResponse(
         email="customer@acme.com",
@@ -34,6 +35,11 @@ class BusinessProfileResponse(UniversalBaseModel):
             country="US",
         ),
         tax_id_provided=True,
+        tax_id=TaxId(
+            ein=Ein(
+                number="12-3456789",
+            ),
+        ),
         owners_provided=True,
     )
     """
@@ -52,6 +58,7 @@ class BusinessProfileResponse(UniversalBaseModel):
     """
 
     tax_id_provided: bool = pydantic.Field(alias="taxIDProvided")
+    tax_id: typing.Optional[TaxId] = pydantic.Field(alias="taxId", default=None)
     industry_codes: typing.Optional[IndustryCodes] = pydantic.Field(alias="industryCodes", default=None)
     average_monthly_transaction_volume: typing.Optional[float] = pydantic.Field(
         alias="averageMonthlyTransactionVolume", default=None

@@ -35,10 +35,12 @@ class InvoiceResponse(UniversalBaseModel):
         BusinessProfileResponse,
         CounterpartyCustomizationAccount,
         CounterpartyResponse,
+        Ein,
         EntityUserResponse,
         IdentifierList_RolesList,
         ProfileResponse,
         Rule_Approver,
+        TaxId,
         Trigger_Amount,
     )
     from mercoa.invoice_types import (
@@ -117,6 +119,11 @@ class InvoiceResponse(UniversalBaseModel):
                         country="US",
                     ),
                     tax_id_provided=True,
+                    tax_id=TaxId(
+                        ein=Ein(
+                            number="12-3456789",
+                        ),
+                    ),
                     owners_provided=True,
                 ),
             ),

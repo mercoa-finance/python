@@ -18,8 +18,10 @@ class EntityGroupResponse(UniversalBaseModel):
     from mercoa.entity_group_types import EntityGroupResponse
     from mercoa.entity_types import (
         BusinessProfileResponse,
+        Ein,
         EntityResponse,
         ProfileResponse,
+        TaxId,
     )
 
     EntityGroupResponse(
@@ -66,6 +68,11 @@ class EntityGroupResponse(UniversalBaseModel):
                             country="US",
                         ),
                         tax_id_provided=True,
+                        tax_id=TaxId(
+                            ein=Ein(
+                                number="12-3456789",
+                            ),
+                        ),
                         owners_provided=True,
                     ),
                 ),
