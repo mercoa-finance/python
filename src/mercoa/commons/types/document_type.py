@@ -2,4 +2,4 @@
 
 import typing
 
-DocumentType = typing.Union[typing.Literal["INVOICE", "TEN_NINETY_NINE", "W9", "CHECK"], typing.Any]
+DocumentType = typing.Union[typing.Literal["INVOICE", "TEN_NINETY_NINE", "W9", "CHECK", "OTHER"], typing.Any]

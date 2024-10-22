@@ -11218,6 +11218,14 @@ client.invoice.document.get_all(
 <dl>
 <dd>
 
+**type:** `typing.Optional[typing.Union[DocumentType, typing.Sequence[DocumentType]]]` — Filter by document type
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -11290,6 +11298,14 @@ client.invoice.document.upload(
 <dd>
 
 **document:** `str` — Base64 encoded image or PDF of invoice document. PNG, JPG, WEBP, and PDF are supported. 10MB max.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**type:** `typing.Optional[DocumentType]` — Specify Document Type, defaults to INVOICE
     
 </dd>
 </dl>

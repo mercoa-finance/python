@@ -3,6 +3,7 @@
 import typing
 from ...core.client_wrapper import SyncClientWrapper
 from ...invoice_types.types.invoice_id import InvoiceId
+from ...commons.types.document_type import DocumentType
 from ...core.request_options import RequestOptions
 from ...commons.types.document_response import DocumentResponse
 from ...core.jsonable_encoder import jsonable_encoder
@@ -28,7 +29,11 @@ class DocumentClient:
         self._client_wrapper = client_wrapper
 
     def get_all(
-        self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        invoice_id: InvoiceId,
+        *,
+        type: typing.Optional[typing.Union[DocumentType, typing.Sequence[DocumentType]]] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.List[DocumentResponse]:
         """
         Get attachments (scanned/uploaded PDFs and images) associated with this invoice
@@ -37,6 +42,9 @@ class DocumentClient:
         ----------
         invoice_id : InvoiceId
             Invoice ID or Invoice ForeignID
+
+        type : typing.Optional[typing.Union[DocumentType, typing.Sequence[DocumentType]]]
+            Filter by document type
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -59,6 +67,9 @@ class DocumentClient:
         _response = self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/documents",
             method="GET",
+            params={
+                "type": type,
+            },
             request_options=request_options,
         )
         try:
@@ -147,7 +158,12 @@ class DocumentClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def upload(
-        self, invoice_id: InvoiceId, *, document: str, request_options: typing.Optional[RequestOptions] = None
+        self,
+        invoice_id: InvoiceId,
+        *,
+        document: str,
+        type: typing.Optional[DocumentType] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
         Upload documents (scanned/uploaded PDFs and images) associated with this Invoice
@@ -159,6 +175,9 @@ class DocumentClient:
 
         document : str
             Base64 encoded image or PDF of invoice document. PNG, JPG, WEBP, and PDF are supported. 10MB max.
+
+        type : typing.Optional[DocumentType]
+            Specify Document Type, defaults to INVOICE
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -184,6 +203,7 @@ class DocumentClient:
             method="POST",
             json={
                 "document": document,
+                "type": type,
             },
             request_options=request_options,
             omit=OMIT,
@@ -748,7 +768,11 @@ class AsyncDocumentClient:
         self._client_wrapper = client_wrapper
 
     async def get_all(
-        self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        invoice_id: InvoiceId,
+        *,
+        type: typing.Optional[typing.Union[DocumentType, typing.Sequence[DocumentType]]] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.List[DocumentResponse]:
         """
         Get attachments (scanned/uploaded PDFs and images) associated with this invoice
@@ -757,6 +781,9 @@ class AsyncDocumentClient:
         ----------
         invoice_id : InvoiceId
             Invoice ID or Invoice ForeignID
+
+        type : typing.Optional[typing.Union[DocumentType, typing.Sequence[DocumentType]]]
+            Filter by document type
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -787,6 +814,9 @@ class AsyncDocumentClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/documents",
             method="GET",
+            params={
+                "type": type,
+            },
             request_options=request_options,
         )
         try:
@@ -875,7 +905,12 @@ class AsyncDocumentClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def upload(
-        self, invoice_id: InvoiceId, *, document: str, request_options: typing.Optional[RequestOptions] = None
+        self,
+        invoice_id: InvoiceId,
+        *,
+        document: str,
+        type: typing.Optional[DocumentType] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
         Upload documents (scanned/uploaded PDFs and images) associated with this Invoice
@@ -887,6 +922,9 @@ class AsyncDocumentClient:
 
         document : str
             Base64 encoded image or PDF of invoice document. PNG, JPG, WEBP, and PDF are supported. 10MB max.
+
+        type : typing.Optional[DocumentType]
+            Specify Document Type, defaults to INVOICE
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -920,6 +958,7 @@ class AsyncDocumentClient:
             method="POST",
             json={
                 "document": document,
+                "type": type,
             },
             request_options=request_options,
             omit=OMIT,

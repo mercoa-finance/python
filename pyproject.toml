@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "mercoa"
-version = "0.5.10"
+version = "0.5.11-rc1"
 description = ""
 readme = "README.md"
 authors = []
