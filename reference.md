@@ -511,6 +511,7 @@ client.entity_group.add_entities(
             "ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             "ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
         ],
+        copy_users_from="ent_9e02a20e-7749-47de-8d8a-f8ff2859fa90",
     ),
 )
 
@@ -1944,8 +1945,8 @@ client = Mercoa(
     token="YOUR_TOKEN",
 )
 client.entity.plaid_link_token(
-    entity_id="string",
-    payment_method_id="string",
+    entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+    payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
 )
 
 ```
@@ -2440,6 +2441,387 @@ client.entity.email_log.get(
 <dd>
 
 **log_id:** `EmailLogId` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Entity PaymentMethod
+<details><summary><code>client.entity.payment_method.<a href="src/mercoa/entity/payment_method/client.py">get_all</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.entity.payment_method.get_all(
+    entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+    type="bankAccount",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entity_id:** `EntityId` — Entity ID or Entity ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**type:** `typing.Optional[
+    typing.Union[PaymentMethodType, typing.Sequence[PaymentMethodType]]
+]` — Type of payment method to filter
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.entity.payment_method.<a href="src/mercoa/entity/payment_method/client.py">create</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+from mercoa.payment_method_types import (
+    PaymentMethodRequest_BankAccount,
+    PlaidAccessTokenRequest,
+)
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.entity.payment_method.create(
+    entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+    request=PaymentMethodRequest_BankAccount(
+        routing_number="",
+        account_number="7623",
+        account_type="CHECKING",
+        plaid=PlaidAccessTokenRequest(
+            access_token="access-sandbox-af1a0311-da53-4636-b754-dd15cc058176",
+            account_id="account-sandbox-af1a0311-da53-4636-b754-dd15cc058176",
+        ),
+    ),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entity_id:** `EntityId` — Entity ID or Entity ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `PaymentMethodRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.entity.payment_method.<a href="src/mercoa/entity/payment_method/client.py">get</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.entity.payment_method.get(
+    entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+    payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entity_id:** `EntityId` — Entity ID or Entity ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payment_method_id:** `PaymentMethodId` — Payment Method ID or Payment Method ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.entity.payment_method.<a href="src/mercoa/entity/payment_method/client.py">update</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Only custom payment methods can be updated.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+from mercoa.payment_method_types import PaymentMethodUpdateRequest_BankAccount
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.entity.payment_method.update(
+    entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+    payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+    request=PaymentMethodUpdateRequest_BankAccount(
+        default_source=True,
+        default_destination=True,
+    ),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entity_id:** `EntityId` — Entity ID or Entity ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payment_method_id:** `PaymentMethodId` — Payment Method ID or Payment Method ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `PaymentMethodUpdateRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.entity.payment_method.<a href="src/mercoa/entity/payment_method/client.py">delete</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Mark a payment method as inactive. This will not remove the payment method from the system, but will prevent it from being used in the future.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.entity.payment_method.delete(
+    entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+    payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entity_id:** `EntityId` — Entity ID or Entity ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payment_method_id:** `PaymentMethodId` — Payment Method ID or Payment Method ForeignID
     
 </dd>
 </dl>
@@ -3785,6 +4167,7 @@ client.organization.get(
     payee_onboarding_options=True,
     payor_onboarding_options=True,
     metadata_schema=True,
+    notification_email_template=True,
 )
 
 ```
@@ -3857,6 +4240,14 @@ client.organization.get(
 <dl>
 <dd>
 
+**notification_email_template:** `typing.Optional[bool]` — include notification-email-template in response
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -3905,6 +4296,7 @@ from mercoa.organization_types import (
     ExternalAccountingSystemProviderRequest_None,
     IndividualOnboardingOptions,
     MetadataSchema,
+    NotificationEmailTemplateRequest,
     OnboardingOption,
     OnboardingOptionsRequest,
     OrganizationRequest,
@@ -3925,21 +4317,18 @@ client.organization.update(
             payer_payments=[
                 PaymentRailRequest(
                     type="custom",
-                    name={"key": "value"},
                     active=True,
                 )
             ],
             backup_disbursements=[
                 PaymentRailRequest(
                     type="custom",
-                    name={"key": "value"},
                     active=True,
                 )
             ],
             vendor_disbursements=[
                 PaymentRailRequest(
                     type="custom",
-                    name={"key": "value"},
                     active=True,
                 )
             ],
@@ -3952,7 +4341,7 @@ client.organization.update(
                 api_key="string",
             ),
             inbox_domain="string",
-            alternative_inbox_domains=[{"key": "value"}],
+            alternative_inbox_domains=[],
         ),
         external_accounting_system_provider=ExternalAccountingSystemProviderRequest_None(),
         color_scheme=ColorSchemeRequest(
@@ -4263,14 +4652,17 @@ client.organization.update(
             MetadataSchema(
                 key="string",
                 display_name="string",
-                description={"key": "value"},
-                line_item={"key": "value"},
                 type="STRING",
-                allow_multiple={"key": "value"},
-                validation_rules={"key": "value"},
-                show_conditions={"key": "value"},
             )
         ],
+        notification_email_template=NotificationEmailTemplateRequest(
+            background_style="string",
+            header="string",
+            body="string",
+            signature="string",
+            footer="string",
+            button="string",
+        ),
     ),
 )
 
@@ -4585,21 +4977,15 @@ Calculate the estimated payment timing given the deduction date, payment source,
 <dd>
 
 ```python
-import datetime
-
 from mercoa import Mercoa
-from mercoa.calculate import CalculatePaymentTimingRequest
+from mercoa.calculate import InvoiceTiming
 
 client = Mercoa(
     token="YOUR_TOKEN",
 )
 client.calculate.payment_timing(
-    request=CalculatePaymentTimingRequest(
-        estimated_deduction_date=datetime.datetime.fromisoformat(
-            "2024-01-02 00:00:00+00:00",
-        ),
-        payment_source_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
-        payment_destination_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+    request=InvoiceTiming(
+        invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
     ),
 )
 
@@ -8732,388 +9118,8 @@ client.entity.notification_policy.update(
 </dl>
 </details>
 
-## Entity PaymentMethod
-<details><summary><code>client.entity.payment_method.<a href="src/mercoa/entity/payment_method/client.py">get_all</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mercoa import Mercoa
-
-client = Mercoa(
-    token="YOUR_TOKEN",
-)
-client.entity.payment_method.get_all(
-    entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-    type="bankAccount",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entity_id:** `EntityId` — Entity ID or Entity ForeignID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**type:** `typing.Optional[
-    typing.Union[PaymentMethodType, typing.Sequence[PaymentMethodType]]
-]` — Type of payment method to filter
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.entity.payment_method.<a href="src/mercoa/entity/payment_method/client.py">create</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mercoa import Mercoa
-from mercoa.payment_method_types import PaymentMethodRequest_Custom
-
-client = Mercoa(
-    token="YOUR_TOKEN",
-)
-client.entity.payment_method.create(
-    entity_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
-    request=PaymentMethodRequest_Custom(
-        foreign_id="DB_FOREIGN_ID",
-        account_name="Vendor Wire Account",
-        account_number="123456789",
-        schema_id="cpms_4794d597-70dc-4fec-b6ec-c5988e759769",
-        data={
-            "bankName": "Chase",
-            "recipientName": "John Doe",
-            "routingNumber": "123456789",
-            "accountNumber": "99988767623",
-        },
-    ),
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entity_id:** `EntityId` — Entity ID or Entity ForeignID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `PaymentMethodRequest` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.entity.payment_method.<a href="src/mercoa/entity/payment_method/client.py">get</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mercoa import Mercoa
-
-client = Mercoa(
-    token="YOUR_TOKEN",
-)
-client.entity.payment_method.get(
-    entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-    payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entity_id:** `EntityId` — Entity ID or Entity ForeignID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**payment_method_id:** `PaymentMethodId` — Payment Method ID or Payment Method ForeignID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.entity.payment_method.<a href="src/mercoa/entity/payment_method/client.py">update</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Only custom payment methods can be updated.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mercoa import Mercoa
-from mercoa.payment_method_types import PaymentMethodUpdateRequest_BankAccount
-
-client = Mercoa(
-    token="YOUR_TOKEN",
-)
-client.entity.payment_method.update(
-    entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-    payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
-    request=PaymentMethodUpdateRequest_BankAccount(
-        default_source=True,
-        default_destination=True,
-    ),
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entity_id:** `EntityId` — Entity ID or Entity ForeignID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**payment_method_id:** `PaymentMethodId` — Payment Method ID or Payment Method ForeignID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `PaymentMethodUpdateRequest` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.entity.payment_method.<a href="src/mercoa/entity/payment_method/client.py">delete</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Mark a payment method as inactive. This will not remove the payment method from the system, but will prevent it from being used in the future.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mercoa import Mercoa
-
-client = Mercoa(
-    token="YOUR_TOKEN",
-)
-client.entity.payment_method.delete(
-    entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-    payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entity_id:** `EntityId` — Entity ID or Entity ForeignID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**payment_method_id:** `PaymentMethodId` — Payment Method ID or Payment Method ForeignID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.entity.payment_method.<a href="src/mercoa/entity/payment_method/client.py">initiate_micro_deposits</a>(...)</code></summary>
+## Entity PaymentMethod BankAccount
+<details><summary><code>client.entity.payment_method.bank_account.<a href="src/mercoa/entity/payment_method/bank_account/client.py">initiate_micro_deposits</a>(...)</code></summary>
 <dl>
 <dd>
 
@@ -9145,7 +9151,7 @@ from mercoa import Mercoa
 client = Mercoa(
     token="YOUR_TOKEN",
 )
-client.entity.payment_method.initiate_micro_deposits(
+client.entity.payment_method.bank_account.initiate_micro_deposits(
     entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
     payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
 )
@@ -9192,7 +9198,7 @@ client.entity.payment_method.initiate_micro_deposits(
 </dl>
 </details>
 
-<details><summary><code>client.entity.payment_method.<a href="src/mercoa/entity/payment_method/client.py">complete_micro_deposits</a>(...)</code></summary>
+<details><summary><code>client.entity.payment_method.bank_account.<a href="src/mercoa/entity/payment_method/bank_account/client.py">complete_micro_deposits</a>(...)</code></summary>
 <dl>
 <dd>
 
@@ -9224,7 +9230,7 @@ from mercoa import Mercoa
 client = Mercoa(
     token="YOUR_TOKEN",
 )
-client.entity.payment_method.complete_micro_deposits(
+client.entity.payment_method.bank_account.complete_micro_deposits(
     entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
     payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
     amounts=[40, 2],
@@ -9280,7 +9286,7 @@ client.entity.payment_method.complete_micro_deposits(
 </dl>
 </details>
 
-<details><summary><code>client.entity.payment_method.<a href="src/mercoa/entity/payment_method/client.py">get_balance</a>(...)</code></summary>
+<details><summary><code>client.entity.payment_method.bank_account.<a href="src/mercoa/entity/payment_method/bank_account/client.py">get_acceleration_funds</a>(...)</code></summary>
 <dl>
 <dd>
 
@@ -9292,7 +9298,7 @@ client.entity.payment_method.complete_micro_deposits(
 <dl>
 <dd>
 
-Deprecated. Get the available balance of a payment method. Only bank accounts added with Plaid are supported. This endpoint will return a cached value and will refresh the balance when called.
+Get the available and pending balance of this entity's acceleration funds. The specified payment method must be a bank account.
 </dd>
 </dl>
 </dd>
@@ -9312,9 +9318,9 @@ from mercoa import Mercoa
 client = Mercoa(
     token="YOUR_TOKEN",
 )
-client.entity.payment_method.get_balance(
-    entity_id="string",
-    payment_method_id="string",
+client.entity.payment_method.bank_account.get_acceleration_funds(
+    entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+    payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
 )
 
 ```
@@ -9340,6 +9346,200 @@ client.entity.payment_method.get_balance(
 <dd>
 
 **payment_method_id:** `PaymentMethodId` — Payment Method ID or Payment Method ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.entity.payment_method.bank_account.<a href="src/mercoa/entity/payment_method/bank_account/client.py">add_acceleration_funds</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Add acceleration funds to this entity from a bank account (this transfer is D+2). The specified payment method must be a bank account.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.entity.payment_method.bank_account.add_acceleration_funds(
+    entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+    payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+    amount=100.0,
+    currency="USD",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entity_id:** `EntityId` — Entity ID or Entity ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payment_method_id:** `PaymentMethodId` — Payment Method ID or Payment Method ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**amount:** `float` — The amount of the acceleration funds to add. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**currency:** `CurrencyCode` — The currency of the acceleration funds to add.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.entity.payment_method.bank_account.<a href="src/mercoa/entity/payment_method/bank_account/client.py">remove_acceleration_funds</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Remove acceleration funds from this entity to a bank account (this transfer is D+0). The specified payment method must be a bank account.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.entity.payment_method.bank_account.remove_acceleration_funds(
+    entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+    payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+    amount=100.0,
+    currency="USD",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entity_id:** `EntityId` — Entity ID or Entity ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payment_method_id:** `PaymentMethodId` — Payment Method ID or Payment Method ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**amount:** `float` — The amount of the acceleration funds to remove. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**currency:** `CurrencyCode` — The currency of the acceleration funds to remove.
     
 </dd>
 </dl>

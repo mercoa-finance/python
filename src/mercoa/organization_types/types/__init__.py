@@ -39,6 +39,8 @@ from .notification_configuration_response import (
     NotificationConfigurationResponse,
     NotificationConfigurationResponse_Invoice,
 )
+from .notification_email_template_request import NotificationEmailTemplateRequest
+from .notification_email_template_response import NotificationEmailTemplateResponse
 from .onboarding_option import OnboardingOption
 from .onboarding_options_request import OnboardingOptionsRequest
 from .onboarding_options_response import OnboardingOptionsResponse
@@ -85,6 +87,8 @@ __all__ = [
     "NotificationConfigurationRequest_Invoice",
     "NotificationConfigurationResponse",
     "NotificationConfigurationResponse_Invoice",
+    "NotificationEmailTemplateRequest",
+    "NotificationEmailTemplateResponse",
     "OnboardingOption",
     "OnboardingOptionsRequest",
     "OnboardingOptionsResponse",

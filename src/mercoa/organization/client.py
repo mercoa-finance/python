@@ -41,6 +41,7 @@ class OrganizationClient:
         payee_onboarding_options: typing.Optional[bool] = None,
         payor_onboarding_options: typing.Optional[bool] = None,
         metadata_schema: typing.Optional[bool] = None,
+        notification_email_template: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> OrganizationResponse:
         """
@@ -69,6 +70,9 @@ class OrganizationClient:
         metadata_schema : typing.Optional[bool]
             include metadata schema in response
 
+        notification_email_template : typing.Optional[bool]
+            include notification-email-template in response
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -91,6 +95,7 @@ class OrganizationClient:
             payee_onboarding_options=True,
             payor_onboarding_options=True,
             metadata_schema=True,
+            notification_email_template=True,
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -104,6 +109,7 @@ class OrganizationClient:
                 "payeeOnboardingOptions": payee_onboarding_options,
                 "payorOnboardingOptions": payor_onboarding_options,
                 "metadataSchema": metadata_schema,
+                "notificationEmailTemplate": notification_email_template,
             },
             request_options=request_options,
         )
@@ -220,6 +226,7 @@ class OrganizationClient:
             ExternalAccountingSystemProviderRequest_None,
             IndividualOnboardingOptions,
             MetadataSchema,
+            NotificationEmailTemplateRequest,
             OnboardingOption,
             OnboardingOptionsRequest,
             OrganizationRequest,
@@ -240,21 +247,18 @@ class OrganizationClient:
                     payer_payments=[
                         PaymentRailRequest(
                             type="custom",
-                            name={"key": "value"},
                             active=True,
                         )
                     ],
                     backup_disbursements=[
                         PaymentRailRequest(
                             type="custom",
-                            name={"key": "value"},
                             active=True,
                         )
                     ],
                     vendor_disbursements=[
                         PaymentRailRequest(
                             type="custom",
-                            name={"key": "value"},
                             active=True,
                         )
                     ],
@@ -267,7 +271,7 @@ class OrganizationClient:
                         api_key="string",
                     ),
                     inbox_domain="string",
-                    alternative_inbox_domains=[{"key": "value"}],
+                    alternative_inbox_domains=[],
                 ),
                 external_accounting_system_provider=ExternalAccountingSystemProviderRequest_None(),
                 color_scheme=ColorSchemeRequest(
@@ -578,14 +582,17 @@ class OrganizationClient:
                     MetadataSchema(
                         key="string",
                         display_name="string",
-                        description={"key": "value"},
-                        line_item={"key": "value"},
                         type="STRING",
-                        allow_multiple={"key": "value"},
-                        validation_rules={"key": "value"},
-                        show_conditions={"key": "value"},
                     )
                 ],
+                notification_email_template=NotificationEmailTemplateRequest(
+                    background_style="string",
+                    header="string",
+                    body="string",
+                    signature="string",
+                    footer="string",
+                    button="string",
+                ),
             ),
         )
         """
@@ -844,6 +851,7 @@ class AsyncOrganizationClient:
         payee_onboarding_options: typing.Optional[bool] = None,
         payor_onboarding_options: typing.Optional[bool] = None,
         metadata_schema: typing.Optional[bool] = None,
+        notification_email_template: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> OrganizationResponse:
         """
@@ -872,6 +880,9 @@ class AsyncOrganizationClient:
         metadata_schema : typing.Optional[bool]
             include metadata schema in response
 
+        notification_email_template : typing.Optional[bool]
+            include notification-email-template in response
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -899,6 +910,7 @@ class AsyncOrganizationClient:
                 payee_onboarding_options=True,
                 payor_onboarding_options=True,
                 metadata_schema=True,
+                notification_email_template=True,
             )
 
 
@@ -915,6 +927,7 @@ class AsyncOrganizationClient:
                 "payeeOnboardingOptions": payee_onboarding_options,
                 "payorOnboardingOptions": payor_onboarding_options,
                 "metadataSchema": metadata_schema,
+                "notificationEmailTemplate": notification_email_template,
             },
             request_options=request_options,
         )
@@ -1033,6 +1046,7 @@ class AsyncOrganizationClient:
             ExternalAccountingSystemProviderRequest_None,
             IndividualOnboardingOptions,
             MetadataSchema,
+            NotificationEmailTemplateRequest,
             OnboardingOption,
             OnboardingOptionsRequest,
             OrganizationRequest,
@@ -1056,21 +1070,18 @@ class AsyncOrganizationClient:
                         payer_payments=[
                             PaymentRailRequest(
                                 type="custom",
-                                name={"key": "value"},
                                 active=True,
                             )
                         ],
                         backup_disbursements=[
                             PaymentRailRequest(
                                 type="custom",
-                                name={"key": "value"},
                                 active=True,
                             )
                         ],
                         vendor_disbursements=[
                             PaymentRailRequest(
                                 type="custom",
-                                name={"key": "value"},
                                 active=True,
                             )
                         ],
@@ -1083,7 +1094,7 @@ class AsyncOrganizationClient:
                             api_key="string",
                         ),
                         inbox_domain="string",
-                        alternative_inbox_domains=[{"key": "value"}],
+                        alternative_inbox_domains=[],
                     ),
                     external_accounting_system_provider=ExternalAccountingSystemProviderRequest_None(),
                     color_scheme=ColorSchemeRequest(
@@ -1394,14 +1405,17 @@ class AsyncOrganizationClient:
                         MetadataSchema(
                             key="string",
                             display_name="string",
-                            description={"key": "value"},
-                            line_item={"key": "value"},
                             type="STRING",
-                            allow_multiple={"key": "value"},
-                            validation_rules={"key": "value"},
-                            show_conditions={"key": "value"},
                         )
                     ],
+                    notification_email_template=NotificationEmailTemplateRequest(
+                        background_style="string",
+                        header="string",
+                        body="string",
+                        signature="string",
+                        footer="string",
+                        button="string",
+                    ),
                 ),
             )
 

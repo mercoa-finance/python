@@ -9,6 +9,7 @@ from .external_accounting_system_provider_request import ExternalAccountingSyste
 from .color_scheme_request import ColorSchemeRequest
 from .onboarding_options_request import OnboardingOptionsRequest
 from .metadata_schema import MetadataSchema
+from .notification_email_template_request import NotificationEmailTemplateRequest
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -30,6 +31,9 @@ class OrganizationRequest(UniversalBaseModel):
         alias="payorOnboardingOptions", default=None
     )
     metadata_schema: typing.Optional[typing.List[MetadataSchema]] = pydantic.Field(alias="metadataSchema", default=None)
+    notification_email_template: typing.Optional[NotificationEmailTemplateRequest] = pydantic.Field(
+        alias="notificationEmailTemplate", default=None
+    )
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

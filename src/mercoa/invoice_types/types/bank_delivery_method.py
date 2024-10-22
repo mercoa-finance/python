@@ -2,4 +2,4 @@
 
 import typing
 
-BankDeliveryMethod = typing.Union[typing.Literal["ACH_STANDARD", "ACH_SAME_DAY"], typing.Any]
+BankDeliveryMethod = typing.Union[typing.Literal["ACH_STANDARD", "ACH_SAME_DAY", "ACH_ACCELERATED"], typing.Any]

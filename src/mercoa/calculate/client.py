@@ -174,13 +174,13 @@ class CalculateClient:
         import datetime
 
         from mercoa import Mercoa
-        from mercoa.calculate import CalculatePaymentTimingRequest
+        from mercoa.calculate import EstimatedTiming
 
         client = Mercoa(
             token="YOUR_TOKEN",
         )
         client.calculate.payment_timing(
-            request=CalculatePaymentTimingRequest(
+            request=EstimatedTiming(
                 estimated_deduction_date=datetime.datetime.fromisoformat(
                     "2024-01-02 00:00:00+00:00",
                 ),
@@ -442,7 +442,7 @@ class AsyncCalculateClient:
         import datetime
 
         from mercoa import AsyncMercoa
-        from mercoa.calculate import CalculatePaymentTimingRequest
+        from mercoa.calculate import EstimatedTiming
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
@@ -451,7 +451,7 @@ class AsyncCalculateClient:
 
         async def main() -> None:
             await client.calculate.payment_timing(
-                request=CalculatePaymentTimingRequest(
+                request=EstimatedTiming(
                     estimated_deduction_date=datetime.datetime.fromisoformat(
                         "2024-01-02 00:00:00+00:00",
                     ),

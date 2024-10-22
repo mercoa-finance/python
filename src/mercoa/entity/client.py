@@ -3,6 +3,7 @@
 import typing
 from ..core.client_wrapper import SyncClientWrapper
 from .email_log.client import EmailLogClient
+from .payment_method.client import PaymentMethodClient
 from .user.client import UserClient
 from .approval_policy.client import ApprovalPolicyClient
 from .counterparty.client import CounterpartyClient
@@ -13,7 +14,6 @@ from .external_accounting_system.client import ExternalAccountingSystemClient
 from .invoice.client import InvoiceClient
 from .metadata.client import MetadataClient
 from .notification_policy.client import NotificationPolicyClient
-from .payment_method.client import PaymentMethodClient
 from .representative.client import RepresentativeClient
 from ..entity_types.types.entity_status import EntityStatus
 from ..invoice_types.types.metadata_filter import MetadataFilter
@@ -42,6 +42,7 @@ from ..entity_types.types.entity_events_response import EntityEventsResponse
 from ..core.datetime_utils import serialize_datetime
 from ..core.client_wrapper import AsyncClientWrapper
 from .email_log.client import AsyncEmailLogClient
+from .payment_method.client import AsyncPaymentMethodClient
 from .user.client import AsyncUserClient
 from .approval_policy.client import AsyncApprovalPolicyClient
 from .counterparty.client import AsyncCounterpartyClient
@@ -52,7 +53,6 @@ from .external_accounting_system.client import AsyncExternalAccountingSystemClie
 from .invoice.client import AsyncInvoiceClient
 from .metadata.client import AsyncMetadataClient
 from .notification_policy.client import AsyncNotificationPolicyClient
-from .payment_method.client import AsyncPaymentMethodClient
 from .representative.client import AsyncRepresentativeClient
 
 # this is used as the default value for optional parameters
@@ -63,6 +63,7 @@ class EntityClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
         self.email_log = EmailLogClient(client_wrapper=self._client_wrapper)
+        self.payment_method = PaymentMethodClient(client_wrapper=self._client_wrapper)
         self.user = UserClient(client_wrapper=self._client_wrapper)
         self.approval_policy = ApprovalPolicyClient(client_wrapper=self._client_wrapper)
         self.counterparty = CounterpartyClient(client_wrapper=self._client_wrapper)
@@ -73,7 +74,6 @@ class EntityClient:
         self.invoice = InvoiceClient(client_wrapper=self._client_wrapper)
         self.metadata = MetadataClient(client_wrapper=self._client_wrapper)
         self.notification_policy = NotificationPolicyClient(client_wrapper=self._client_wrapper)
-        self.payment_method = PaymentMethodClient(client_wrapper=self._client_wrapper)
         self.representative = RepresentativeClient(client_wrapper=self._client_wrapper)
 
     def find(
@@ -1206,8 +1206,8 @@ class EntityClient:
             token="YOUR_TOKEN",
         )
         client.entity.plaid_link_token(
-            entity_id="string",
-            payment_method_id="string",
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -1719,6 +1719,7 @@ class AsyncEntityClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
         self.email_log = AsyncEmailLogClient(client_wrapper=self._client_wrapper)
+        self.payment_method = AsyncPaymentMethodClient(client_wrapper=self._client_wrapper)
         self.user = AsyncUserClient(client_wrapper=self._client_wrapper)
         self.approval_policy = AsyncApprovalPolicyClient(client_wrapper=self._client_wrapper)
         self.counterparty = AsyncCounterpartyClient(client_wrapper=self._client_wrapper)
@@ -1729,7 +1730,6 @@ class AsyncEntityClient:
         self.invoice = AsyncInvoiceClient(client_wrapper=self._client_wrapper)
         self.metadata = AsyncMetadataClient(client_wrapper=self._client_wrapper)
         self.notification_policy = AsyncNotificationPolicyClient(client_wrapper=self._client_wrapper)
-        self.payment_method = AsyncPaymentMethodClient(client_wrapper=self._client_wrapper)
         self.representative = AsyncRepresentativeClient(client_wrapper=self._client_wrapper)
 
     async def find(
@@ -2933,8 +2933,8 @@ class AsyncEntityClient:
 
         async def main() -> None:
             await client.entity.plaid_link_token(
-                entity_id="string",
-                payment_method_id="string",
+                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
             )
 
 
