@@ -445,6 +445,11 @@ class InvoiceResponse(UniversalBaseModel):
     True if the payment destination has been confirmed by the vendor. False if the payment destination has been set (for example, a check to an address) but has not been confirmed by the vendor.
     """
 
+    batch_payment: typing.Optional[bool] = pydantic.Field(alias="batchPayment", default=None)
+    """
+    If true, this invoice will be paid as a batch payment. Batches are automatically determined by Mercoa based on the payment source, destination, and scheduled payment date.
+    """
+
     has_documents: bool = pydantic.Field(alias="hasDocuments")
     """
     True if the invoice has documents attached.

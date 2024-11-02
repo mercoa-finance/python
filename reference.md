@@ -3806,8 +3806,6 @@ client.invoice.get(
 <dd>
 
 ```python
-import datetime
-
 from mercoa import Mercoa
 from mercoa.invoice_types import InvoiceUpdateRequest
 
@@ -3817,11 +3815,7 @@ client = Mercoa(
 client.invoice.update(
     invoice_id="inv_8545a84e-a45f-41bf-bdf1-33b42a55812c",
     request=InvoiceUpdateRequest(
-        status="SCHEDULED",
-        payment_destination_id="pm_5fde2f4a-facc-48ef-8f0d-6b7d087c7b18",
-        deduction_date=datetime.datetime.fromisoformat(
-            "2021-01-29 00:00:00+00:00",
-        ),
+        batch_payment=True,
     ),
 )
 
@@ -11673,6 +11667,14 @@ client.invoice.payment_links.get_payer_link(
 <dl>
 <dd>
 
+**expires_in:** `typing.Optional[str]` — Expressed in seconds or a string describing a time span. The default is 30d.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -11815,6 +11817,14 @@ client.invoice.payment_links.get_vendor_link(
 <dd>
 
 **invoice_id:** `InvoiceId` — Invoice ID or Invoice ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**expires_in:** `typing.Optional[str]` — Expressed in seconds or a string describing a time span. The default is 30d.
     
 </dd>
 </dl>

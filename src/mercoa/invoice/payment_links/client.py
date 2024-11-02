@@ -22,7 +22,13 @@ class PaymentLinksClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    def get_payer_link(self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None) -> str:
+    def get_payer_link(
+        self,
+        invoice_id: InvoiceId,
+        *,
+        expires_in: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> str:
         """
         Get temporary link for payer to send payment
 
@@ -30,6 +36,9 @@ class PaymentLinksClient:
         ----------
         invoice_id : InvoiceId
             Invoice ID or Invoice ForeignID
+
+        expires_in : typing.Optional[str]
+            Expressed in seconds or a string describing a time span. The default is 30d.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -52,6 +61,9 @@ class PaymentLinksClient:
         _response = self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/payerLink",
             method="GET",
+            params={
+                "expiresIn": expires_in,
+            },
             request_options=request_options,
         )
         try:
@@ -263,7 +275,13 @@ class PaymentLinksClient:
                 )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def get_vendor_link(self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None) -> str:
+    def get_vendor_link(
+        self,
+        invoice_id: InvoiceId,
+        *,
+        expires_in: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> str:
         """
         Get temporary link for vendor to accept payment
 
@@ -271,6 +289,9 @@ class PaymentLinksClient:
         ----------
         invoice_id : InvoiceId
             Invoice ID or Invoice ForeignID
+
+        expires_in : typing.Optional[str]
+            Expressed in seconds or a string describing a time span. The default is 30d.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -293,6 +314,9 @@ class PaymentLinksClient:
         _response = self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/vendorLink",
             method="GET",
+            params={
+                "expiresIn": expires_in,
+            },
             request_options=request_options,
         )
         try:
@@ -499,7 +523,11 @@ class AsyncPaymentLinksClient:
         self._client_wrapper = client_wrapper
 
     async def get_payer_link(
-        self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        invoice_id: InvoiceId,
+        *,
+        expires_in: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> str:
         """
         Get temporary link for payer to send payment
@@ -508,6 +536,9 @@ class AsyncPaymentLinksClient:
         ----------
         invoice_id : InvoiceId
             Invoice ID or Invoice ForeignID
+
+        expires_in : typing.Optional[str]
+            Expressed in seconds or a string describing a time span. The default is 30d.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -538,6 +569,9 @@ class AsyncPaymentLinksClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/payerLink",
             method="GET",
+            params={
+                "expiresIn": expires_in,
+            },
             request_options=request_options,
         )
         try:
@@ -758,7 +792,11 @@ class AsyncPaymentLinksClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get_vendor_link(
-        self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        invoice_id: InvoiceId,
+        *,
+        expires_in: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> str:
         """
         Get temporary link for vendor to accept payment
@@ -767,6 +805,9 @@ class AsyncPaymentLinksClient:
         ----------
         invoice_id : InvoiceId
             Invoice ID or Invoice ForeignID
+
+        expires_in : typing.Optional[str]
+            Expressed in seconds or a string describing a time span. The default is 30d.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -797,6 +838,9 @@ class AsyncPaymentLinksClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/vendorLink",
             method="GET",
+            params={
+                "expiresIn": expires_in,
+            },
             request_options=request_options,
         )
         try:

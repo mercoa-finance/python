@@ -11,6 +11,7 @@ from .color_scheme_response import ColorSchemeResponse
 from .onboarding_options_response import OnboardingOptionsResponse
 from .metadata_schema import MetadataSchema
 from .notification_email_template_response import NotificationEmailTemplateResponse
+from ...entity_types.types.entity_id import EntityId
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -37,6 +38,7 @@ class OrganizationResponse(UniversalBaseModel):
     notification_email_template: typing.Optional[NotificationEmailTemplateResponse] = pydantic.Field(
         alias="notificationEmailTemplate", default=None
     )
+    organization_entity_id: typing.Optional[EntityId] = pydantic.Field(alias="organizationEntityId", default=None)
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

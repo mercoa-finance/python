@@ -126,6 +126,11 @@ class InvoiceRequestBase(UniversalBaseModel):
     If using a custom payment method, you can override the default fees for this invoice. If not provided, the default fees for the custom payment method will be used.
     """
 
+    batch_payment: typing.Optional[bool] = pydantic.Field(alias="batchPayment", default=None)
+    """
+    If true, this invoice will be paid as a batch payment. Batches are automatically determined by Mercoa based on the payment source, destination, and scheduled payment date.
+    """
+
     payment_schedule: typing.Optional[PaymentSchedule] = pydantic.Field(alias="paymentSchedule", default=None)
     """
     If this is a recurring invoice, this will be the payment schedule for the invoice. If not provided, this will be a one-time invoice.
