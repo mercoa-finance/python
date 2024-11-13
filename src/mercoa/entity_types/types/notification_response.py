@@ -21,7 +21,7 @@ class NotificationResponse(UniversalBaseModel):
 
     NotificationResponse(
         id="notif_7df2974a-4069-454c-912f-7e58ebe030fb",
-        invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
+        invoice_id="in_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
         type="INVOICE_APPROVAL_NEEDED",
         status="SENT",
         created_at=datetime.datetime.fromisoformat(

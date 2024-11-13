@@ -29,7 +29,7 @@ class InvoiceStatusChangedWebhook(InvoiceWebhook):
     InvoiceStatusChangedWebhook(
         event_type="invoice.status.changed",
         invoice=InvoiceResponse(
-            id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
+            id="in_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
             status="NEW",
             payer_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             payer=CounterpartyResponse(

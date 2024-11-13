@@ -2,11 +2,11 @@
 
 import typing
 from ..core.client_wrapper import SyncClientWrapper
+from .counterparty.client import CounterpartyClient
 from .email_log.client import EmailLogClient
 from .payment_method.client import PaymentMethodClient
 from .user.client import UserClient
 from .approval_policy.client import ApprovalPolicyClient
-from .counterparty.client import CounterpartyClient
 from .customization.client import CustomizationClient
 from .document.client import DocumentClient
 from .email_template.client import EmailTemplateClient
@@ -41,11 +41,11 @@ import datetime as dt
 from ..entity_types.types.entity_events_response import EntityEventsResponse
 from ..core.datetime_utils import serialize_datetime
 from ..core.client_wrapper import AsyncClientWrapper
+from .counterparty.client import AsyncCounterpartyClient
 from .email_log.client import AsyncEmailLogClient
 from .payment_method.client import AsyncPaymentMethodClient
 from .user.client import AsyncUserClient
 from .approval_policy.client import AsyncApprovalPolicyClient
-from .counterparty.client import AsyncCounterpartyClient
 from .customization.client import AsyncCustomizationClient
 from .document.client import AsyncDocumentClient
 from .email_template.client import AsyncEmailTemplateClient
@@ -62,11 +62,11 @@ OMIT = typing.cast(typing.Any, ...)
 class EntityClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
+        self.counterparty = CounterpartyClient(client_wrapper=self._client_wrapper)
         self.email_log = EmailLogClient(client_wrapper=self._client_wrapper)
         self.payment_method = PaymentMethodClient(client_wrapper=self._client_wrapper)
         self.user = UserClient(client_wrapper=self._client_wrapper)
         self.approval_policy = ApprovalPolicyClient(client_wrapper=self._client_wrapper)
-        self.counterparty = CounterpartyClient(client_wrapper=self._client_wrapper)
         self.customization = CustomizationClient(client_wrapper=self._client_wrapper)
         self.document = DocumentClient(client_wrapper=self._client_wrapper)
         self.email_template = EmailTemplateClient(client_wrapper=self._client_wrapper)
@@ -1718,11 +1718,11 @@ class EntityClient:
 class AsyncEntityClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
+        self.counterparty = AsyncCounterpartyClient(client_wrapper=self._client_wrapper)
         self.email_log = AsyncEmailLogClient(client_wrapper=self._client_wrapper)
         self.payment_method = AsyncPaymentMethodClient(client_wrapper=self._client_wrapper)
         self.user = AsyncUserClient(client_wrapper=self._client_wrapper)
         self.approval_policy = AsyncApprovalPolicyClient(client_wrapper=self._client_wrapper)
-        self.counterparty = AsyncCounterpartyClient(client_wrapper=self._client_wrapper)
         self.customization = AsyncCustomizationClient(client_wrapper=self._client_wrapper)
         self.document = AsyncDocumentClient(client_wrapper=self._client_wrapper)
         self.email_template = AsyncEmailTemplateClient(client_wrapper=self._client_wrapper)

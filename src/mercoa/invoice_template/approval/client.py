@@ -2,547 +2,47 @@
 
 import typing
 from ...core.client_wrapper import SyncClientWrapper
-from ...invoice_types.types.invoice_id import InvoiceId
+from ...invoice_types.types.invoice_template_id import InvoiceTemplateId
+from ...invoice_types.types.add_approver_request import AddApproverRequest
 from ...core.request_options import RequestOptions
-from ...invoice_types.types.comment_response import CommentResponse
 from ...core.jsonable_encoder import jsonable_encoder
 from json.decoder import JSONDecodeError
 from ...core.api_error import ApiError
-from ...core.pydantic_utilities import parse_obj_as
 from ...commons.errors.bad_request import BadRequest
+from ...core.pydantic_utilities import parse_obj_as
 from ...commons.errors.unauthorized import Unauthorized
 from ...commons.errors.forbidden import Forbidden
 from ...commons.errors.not_found import NotFound
 from ...commons.errors.conflict import Conflict
 from ...commons.errors.internal_server_error import InternalServerError
 from ...commons.errors.unimplemented import Unimplemented
-from ...invoice_types.types.comment_request import CommentRequest
-from ...invoice_types.types.comment_id import CommentId
+from ...invoice_types.types.approval_request import ApprovalRequest
 from ...core.client_wrapper import AsyncClientWrapper
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
 
 
-class CommentClient:
+class ApprovalClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    def get_all(
-        self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> typing.List[CommentResponse]:
-        """
-        Get all comments associated with this invoice
-
-        Parameters
-        ----------
-        invoice_id : InvoiceId
-            Invoice ID or Invoice ForeignID
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        typing.List[CommentResponse]
-
-        Examples
-        --------
-        from mercoa import Mercoa
-
-        client = Mercoa(
-            token="YOUR_TOKEN",
-        )
-        client.invoice.comment.get_all(
-            invoice_id="in_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
-        )
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            f"invoice/{jsonable_encoder(invoice_id)}/comments",
-            method="GET",
-            request_options=request_options,
-        )
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if 200 <= _response.status_code < 300:
-            return typing.cast(
-                typing.List[CommentResponse],
-                parse_obj_as(
-                    type_=typing.List[CommentResponse],  # type: ignore
-                    object_=_response_json,
-                ),
-            )
-        if "errorName" in _response_json:
-            if _response_json["errorName"] == "BadRequest":
-                raise BadRequest(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Unauthorized":
-                raise Unauthorized(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Forbidden":
-                raise Forbidden(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "NotFound":
-                raise NotFound(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Conflict":
-                raise Conflict(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "InternalServerError":
-                raise InternalServerError(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Unimplemented":
-                raise Unimplemented(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    def create(
-        self, invoice_id: InvoiceId, *, request: CommentRequest, request_options: typing.Optional[RequestOptions] = None
-    ) -> CommentResponse:
-        """
-        Add a comment to this invoice
-
-        Parameters
-        ----------
-        invoice_id : InvoiceId
-            Invoice ID or Invoice ForeignID
-
-        request : CommentRequest
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        CommentResponse
-
-        Examples
-        --------
-        from mercoa import Mercoa
-        from mercoa.invoice_types import CommentRequest
-
-        client = Mercoa(
-            token="YOUR_TOKEN",
-        )
-        client.invoice.comment.create(
-            invoice_id="in_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
-            request=CommentRequest(
-                text="This is a comment",
-                user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
-            ),
-        )
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            f"invoice/{jsonable_encoder(invoice_id)}/comment",
-            method="POST",
-            json=request,
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if 200 <= _response.status_code < 300:
-            return typing.cast(
-                CommentResponse,
-                parse_obj_as(
-                    type_=CommentResponse,  # type: ignore
-                    object_=_response_json,
-                ),
-            )
-        if "errorName" in _response_json:
-            if _response_json["errorName"] == "BadRequest":
-                raise BadRequest(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Unauthorized":
-                raise Unauthorized(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Forbidden":
-                raise Forbidden(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "NotFound":
-                raise NotFound(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Conflict":
-                raise Conflict(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "InternalServerError":
-                raise InternalServerError(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Unimplemented":
-                raise Unimplemented(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    def get(
-        self, invoice_id: InvoiceId, comment_id: CommentId, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> CommentResponse:
-        """
-        Parameters
-        ----------
-        invoice_id : InvoiceId
-            Invoice ID or Invoice ForeignID
-
-        comment_id : CommentId
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        CommentResponse
-
-        Examples
-        --------
-        from mercoa import Mercoa
-
-        client = Mercoa(
-            token="YOUR_TOKEN",
-        )
-        client.invoice.comment.get(
-            invoice_id="in_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
-            comment_id="ic_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
-        )
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            f"invoice/{jsonable_encoder(invoice_id)}/comment/{jsonable_encoder(comment_id)}",
-            method="GET",
-            request_options=request_options,
-        )
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if 200 <= _response.status_code < 300:
-            return typing.cast(
-                CommentResponse,
-                parse_obj_as(
-                    type_=CommentResponse,  # type: ignore
-                    object_=_response_json,
-                ),
-            )
-        if "errorName" in _response_json:
-            if _response_json["errorName"] == "BadRequest":
-                raise BadRequest(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Unauthorized":
-                raise Unauthorized(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Forbidden":
-                raise Forbidden(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "NotFound":
-                raise NotFound(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Conflict":
-                raise Conflict(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "InternalServerError":
-                raise InternalServerError(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Unimplemented":
-                raise Unimplemented(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    def update(
+    def add_approver(
         self,
-        invoice_id: InvoiceId,
-        comment_id: CommentId,
+        invoice_template_id: InvoiceTemplateId,
         *,
-        request: CommentRequest,
+        request: AddApproverRequest,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> CommentResponse:
-        """
-        Edit a comment on this invoice
-
-        Parameters
-        ----------
-        invoice_id : InvoiceId
-            Invoice ID or Invoice ForeignID
-
-        comment_id : CommentId
-
-        request : CommentRequest
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        CommentResponse
-
-        Examples
-        --------
-        from mercoa import Mercoa
-        from mercoa.invoice_types import CommentRequest
-
-        client = Mercoa(
-            token="YOUR_TOKEN",
-        )
-        client.invoice.comment.update(
-            invoice_id="in_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
-            comment_id="ic_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
-            request=CommentRequest(
-                text="This is a comment",
-                user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
-            ),
-        )
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            f"invoice/{jsonable_encoder(invoice_id)}/comment/{jsonable_encoder(comment_id)}",
-            method="POST",
-            json=request,
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if 200 <= _response.status_code < 300:
-            return typing.cast(
-                CommentResponse,
-                parse_obj_as(
-                    type_=CommentResponse,  # type: ignore
-                    object_=_response_json,
-                ),
-            )
-        if "errorName" in _response_json:
-            if _response_json["errorName"] == "BadRequest":
-                raise BadRequest(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Unauthorized":
-                raise Unauthorized(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Forbidden":
-                raise Forbidden(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "NotFound":
-                raise NotFound(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Conflict":
-                raise Conflict(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "InternalServerError":
-                raise InternalServerError(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Unimplemented":
-                raise Unimplemented(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    def delete(
-        self, invoice_id: InvoiceId, comment_id: CommentId, *, request_options: typing.Optional[RequestOptions] = None
     ) -> None:
         """
-        Delete a comment on this invoice
+        Adds an approver to the invoice template. Will select the first available approver slot that is not already filled and assign the approver to it. If no approver slots are available, an error will be returned. An explicit approver slot can be specified by setting the `approverSlot` field.
 
         Parameters
         ----------
-        invoice_id : InvoiceId
-            Invoice ID or Invoice ForeignID
+        invoice_template_id : InvoiceTemplateId
+            Invoice Template ID
 
-        comment_id : CommentId
+        request : AddApproverRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -554,19 +54,273 @@ class CommentClient:
         Examples
         --------
         from mercoa import Mercoa
+        from mercoa.invoice_types import AddApproverRequest
 
         client = Mercoa(
             token="YOUR_TOKEN",
         )
-        client.invoice.comment.delete(
-            invoice_id="in_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
-            comment_id="ic_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
+        client.invoice_template.approval.add_approver(
+            invoice_template_id="invt_13c07096-5848-4aeb-ae7d-6576289034c4",
+            request=AddApproverRequest(
+                approval_slot_id="inap_9bb311c9-7c15-4c9e-8148-63814e0abec6",
+                user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+            ),
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"invoice/{jsonable_encoder(invoice_id)}/comment/{jsonable_encoder(comment_id)}",
-            method="DELETE",
+            f"invoice-template/{jsonable_encoder(invoice_template_id)}/add-approver",
+            method="POST",
+            json=request,
             request_options=request_options,
+            omit=OMIT,
+        )
+        if 200 <= _response.status_code < 300:
+            return
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def approve(
+        self,
+        invoice_template_id: InvoiceTemplateId,
+        *,
+        request: ApprovalRequest,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
+        """
+        Parameters
+        ----------
+        invoice_template_id : InvoiceTemplateId
+            Invoice Template ID
+
+        request : ApprovalRequest
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        from mercoa import Mercoa
+        from mercoa.invoice_types import ApprovalRequest
+
+        client = Mercoa(
+            token="YOUR_TOKEN",
+        )
+        client.invoice_template.approval.approve(
+            invoice_template_id="invt_13c07096-5848-4aeb-ae7d-6576289034c4",
+            request=ApprovalRequest(
+                text="This is a reason for my action",
+                user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+            ),
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"invoice-template/{jsonable_encoder(invoice_template_id)}/approve",
+            method="POST",
+            json=request,
+            request_options=request_options,
+            omit=OMIT,
+        )
+        if 200 <= _response.status_code < 300:
+            return
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def reject(
+        self,
+        invoice_template_id: InvoiceTemplateId,
+        *,
+        request: ApprovalRequest,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
+        """
+        Parameters
+        ----------
+        invoice_template_id : InvoiceTemplateId
+            Invoice Template ID
+
+        request : ApprovalRequest
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        from mercoa import Mercoa
+        from mercoa.invoice_types import ApprovalRequest
+
+        client = Mercoa(
+            token="YOUR_TOKEN",
+        )
+        client.invoice_template.approval.reject(
+            invoice_template_id="invt_13c07096-5848-4aeb-ae7d-6576289034c4",
+            request=ApprovalRequest(
+                text="This is a reason for my action",
+                user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+            ),
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"invoice-template/{jsonable_encoder(invoice_template_id)}/reject",
+            method="POST",
+            json=request,
+            request_options=request_options,
+            omit=OMIT,
         )
         if 200 <= _response.status_code < 300:
             return
@@ -648,557 +402,26 @@ class CommentClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
 
-class AsyncCommentClient:
+class AsyncApprovalClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    async def get_all(
-        self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> typing.List[CommentResponse]:
-        """
-        Get all comments associated with this invoice
-
-        Parameters
-        ----------
-        invoice_id : InvoiceId
-            Invoice ID or Invoice ForeignID
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        typing.List[CommentResponse]
-
-        Examples
-        --------
-        import asyncio
-
-        from mercoa import AsyncMercoa
-
-        client = AsyncMercoa(
-            token="YOUR_TOKEN",
-        )
-
-
-        async def main() -> None:
-            await client.invoice.comment.get_all(
-                invoice_id="in_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            f"invoice/{jsonable_encoder(invoice_id)}/comments",
-            method="GET",
-            request_options=request_options,
-        )
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if 200 <= _response.status_code < 300:
-            return typing.cast(
-                typing.List[CommentResponse],
-                parse_obj_as(
-                    type_=typing.List[CommentResponse],  # type: ignore
-                    object_=_response_json,
-                ),
-            )
-        if "errorName" in _response_json:
-            if _response_json["errorName"] == "BadRequest":
-                raise BadRequest(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Unauthorized":
-                raise Unauthorized(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Forbidden":
-                raise Forbidden(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "NotFound":
-                raise NotFound(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Conflict":
-                raise Conflict(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "InternalServerError":
-                raise InternalServerError(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Unimplemented":
-                raise Unimplemented(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    async def create(
-        self, invoice_id: InvoiceId, *, request: CommentRequest, request_options: typing.Optional[RequestOptions] = None
-    ) -> CommentResponse:
-        """
-        Add a comment to this invoice
-
-        Parameters
-        ----------
-        invoice_id : InvoiceId
-            Invoice ID or Invoice ForeignID
-
-        request : CommentRequest
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        CommentResponse
-
-        Examples
-        --------
-        import asyncio
-
-        from mercoa import AsyncMercoa
-        from mercoa.invoice_types import CommentRequest
-
-        client = AsyncMercoa(
-            token="YOUR_TOKEN",
-        )
-
-
-        async def main() -> None:
-            await client.invoice.comment.create(
-                invoice_id="in_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
-                request=CommentRequest(
-                    text="This is a comment",
-                    user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
-                ),
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            f"invoice/{jsonable_encoder(invoice_id)}/comment",
-            method="POST",
-            json=request,
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if 200 <= _response.status_code < 300:
-            return typing.cast(
-                CommentResponse,
-                parse_obj_as(
-                    type_=CommentResponse,  # type: ignore
-                    object_=_response_json,
-                ),
-            )
-        if "errorName" in _response_json:
-            if _response_json["errorName"] == "BadRequest":
-                raise BadRequest(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Unauthorized":
-                raise Unauthorized(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Forbidden":
-                raise Forbidden(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "NotFound":
-                raise NotFound(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Conflict":
-                raise Conflict(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "InternalServerError":
-                raise InternalServerError(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Unimplemented":
-                raise Unimplemented(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    async def get(
-        self, invoice_id: InvoiceId, comment_id: CommentId, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> CommentResponse:
-        """
-        Parameters
-        ----------
-        invoice_id : InvoiceId
-            Invoice ID or Invoice ForeignID
-
-        comment_id : CommentId
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        CommentResponse
-
-        Examples
-        --------
-        import asyncio
-
-        from mercoa import AsyncMercoa
-
-        client = AsyncMercoa(
-            token="YOUR_TOKEN",
-        )
-
-
-        async def main() -> None:
-            await client.invoice.comment.get(
-                invoice_id="in_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
-                comment_id="ic_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            f"invoice/{jsonable_encoder(invoice_id)}/comment/{jsonable_encoder(comment_id)}",
-            method="GET",
-            request_options=request_options,
-        )
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if 200 <= _response.status_code < 300:
-            return typing.cast(
-                CommentResponse,
-                parse_obj_as(
-                    type_=CommentResponse,  # type: ignore
-                    object_=_response_json,
-                ),
-            )
-        if "errorName" in _response_json:
-            if _response_json["errorName"] == "BadRequest":
-                raise BadRequest(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Unauthorized":
-                raise Unauthorized(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Forbidden":
-                raise Forbidden(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "NotFound":
-                raise NotFound(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Conflict":
-                raise Conflict(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "InternalServerError":
-                raise InternalServerError(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Unimplemented":
-                raise Unimplemented(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    async def update(
+    async def add_approver(
         self,
-        invoice_id: InvoiceId,
-        comment_id: CommentId,
+        invoice_template_id: InvoiceTemplateId,
         *,
-        request: CommentRequest,
+        request: AddApproverRequest,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> CommentResponse:
-        """
-        Edit a comment on this invoice
-
-        Parameters
-        ----------
-        invoice_id : InvoiceId
-            Invoice ID or Invoice ForeignID
-
-        comment_id : CommentId
-
-        request : CommentRequest
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        CommentResponse
-
-        Examples
-        --------
-        import asyncio
-
-        from mercoa import AsyncMercoa
-        from mercoa.invoice_types import CommentRequest
-
-        client = AsyncMercoa(
-            token="YOUR_TOKEN",
-        )
-
-
-        async def main() -> None:
-            await client.invoice.comment.update(
-                invoice_id="in_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
-                comment_id="ic_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
-                request=CommentRequest(
-                    text="This is a comment",
-                    user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
-                ),
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            f"invoice/{jsonable_encoder(invoice_id)}/comment/{jsonable_encoder(comment_id)}",
-            method="POST",
-            json=request,
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if 200 <= _response.status_code < 300:
-            return typing.cast(
-                CommentResponse,
-                parse_obj_as(
-                    type_=CommentResponse,  # type: ignore
-                    object_=_response_json,
-                ),
-            )
-        if "errorName" in _response_json:
-            if _response_json["errorName"] == "BadRequest":
-                raise BadRequest(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Unauthorized":
-                raise Unauthorized(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Forbidden":
-                raise Forbidden(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "NotFound":
-                raise NotFound(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Conflict":
-                raise Conflict(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "InternalServerError":
-                raise InternalServerError(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Unimplemented":
-                raise Unimplemented(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    async def delete(
-        self, invoice_id: InvoiceId, comment_id: CommentId, *, request_options: typing.Optional[RequestOptions] = None
     ) -> None:
         """
-        Delete a comment on this invoice
+        Adds an approver to the invoice template. Will select the first available approver slot that is not already filled and assign the approver to it. If no approver slots are available, an error will be returned. An explicit approver slot can be specified by setting the `approverSlot` field.
 
         Parameters
         ----------
-        invoice_id : InvoiceId
-            Invoice ID or Invoice ForeignID
+        invoice_template_id : InvoiceTemplateId
+            Invoice Template ID
 
-        comment_id : CommentId
+        request : AddApproverRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1212,6 +435,7 @@ class AsyncCommentClient:
         import asyncio
 
         from mercoa import AsyncMercoa
+        from mercoa.invoice_types import AddApproverRequest
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
@@ -1219,18 +443,287 @@ class AsyncCommentClient:
 
 
         async def main() -> None:
-            await client.invoice.comment.delete(
-                invoice_id="in_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
-                comment_id="ic_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
+            await client.invoice_template.approval.add_approver(
+                invoice_template_id="invt_13c07096-5848-4aeb-ae7d-6576289034c4",
+                request=AddApproverRequest(
+                    approval_slot_id="inap_9bb311c9-7c15-4c9e-8148-63814e0abec6",
+                    user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+                ),
             )
 
 
         asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"invoice/{jsonable_encoder(invoice_id)}/comment/{jsonable_encoder(comment_id)}",
-            method="DELETE",
+            f"invoice-template/{jsonable_encoder(invoice_template_id)}/add-approver",
+            method="POST",
+            json=request,
             request_options=request_options,
+            omit=OMIT,
+        )
+        if 200 <= _response.status_code < 300:
+            return
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def approve(
+        self,
+        invoice_template_id: InvoiceTemplateId,
+        *,
+        request: ApprovalRequest,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
+        """
+        Parameters
+        ----------
+        invoice_template_id : InvoiceTemplateId
+            Invoice Template ID
+
+        request : ApprovalRequest
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        import asyncio
+
+        from mercoa import AsyncMercoa
+        from mercoa.invoice_types import ApprovalRequest
+
+        client = AsyncMercoa(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.invoice_template.approval.approve(
+                invoice_template_id="invt_13c07096-5848-4aeb-ae7d-6576289034c4",
+                request=ApprovalRequest(
+                    text="This is a reason for my action",
+                    user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+                ),
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"invoice-template/{jsonable_encoder(invoice_template_id)}/approve",
+            method="POST",
+            json=request,
+            request_options=request_options,
+            omit=OMIT,
+        )
+        if 200 <= _response.status_code < 300:
+            return
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def reject(
+        self,
+        invoice_template_id: InvoiceTemplateId,
+        *,
+        request: ApprovalRequest,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
+        """
+        Parameters
+        ----------
+        invoice_template_id : InvoiceTemplateId
+            Invoice Template ID
+
+        request : ApprovalRequest
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        import asyncio
+
+        from mercoa import AsyncMercoa
+        from mercoa.invoice_types import ApprovalRequest
+
+        client = AsyncMercoa(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.invoice_template.approval.reject(
+                invoice_template_id="invt_13c07096-5848-4aeb-ae7d-6576289034c4",
+                request=ApprovalRequest(
+                    text="This is a reason for my action",
+                    user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+                ),
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"invoice-template/{jsonable_encoder(invoice_template_id)}/reject",
+            method="POST",
+            json=request,
+            request_options=request_options,
+            omit=OMIT,
         )
         if 200 <= _response.status_code < 300:
             return

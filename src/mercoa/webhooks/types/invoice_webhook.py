@@ -45,7 +45,7 @@ class InvoiceWebhook(UniversalBaseModel):
     InvoiceWebhook(
         event_type="invoice.created",
         invoice=InvoiceResponse(
-            id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
+            id="in_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
             status="PAID",
             amount=100.0,
             currency="USD",

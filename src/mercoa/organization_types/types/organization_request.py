@@ -34,6 +34,7 @@ class OrganizationRequest(UniversalBaseModel):
     notification_email_template: typing.Optional[NotificationEmailTemplateRequest] = pydantic.Field(
         alias="notificationEmailTemplate", default=None
     )
+    custom_domains: typing.Optional[typing.List[str]] = pydantic.Field(alias="customDomains", default=None)
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

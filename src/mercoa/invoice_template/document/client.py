@@ -2,12 +2,10 @@
 
 import typing
 from ...core.client_wrapper import SyncClientWrapper
-from .vendor_credit.client import VendorCreditClient
-from ...entity_types.types.entity_id import EntityId
-from ...entity_types.types.counterparty_network_type import CounterpartyNetworkType
-from ...invoice_types.types.metadata_filter import MetadataFilter
+from ...invoice_types.types.invoice_template_id import InvoiceTemplateId
+from ...commons.types.document_type import DocumentType
 from ...core.request_options import RequestOptions
-from ...entity_types.types.find_counterparties_response import FindCounterpartiesResponse
+from ...commons.types.document_response import DocumentResponse
 from ...core.jsonable_encoder import jsonable_encoder
 from json.decoder import JSONDecodeError
 from ...core.api_error import ApiError
@@ -19,80 +17,41 @@ from ...commons.errors.not_found import NotFound
 from ...commons.errors.conflict import Conflict
 from ...commons.errors.internal_server_error import InternalServerError
 from ...commons.errors.unimplemented import Unimplemented
-from ...entity_types.types.entity_add_payees_request import EntityAddPayeesRequest
-from ...entity_types.types.entity_hide_payees_request import EntityHidePayeesRequest
-from ...entity_types.types.entity_add_payors_request import EntityAddPayorsRequest
-from ...entity_types.types.entity_hide_payors_request import EntityHidePayorsRequest
+from ...email_log_types.types.email_log_response import EmailLogResponse
 from ...core.client_wrapper import AsyncClientWrapper
-from .vendor_credit.client import AsyncVendorCreditClient
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
 
 
-class CounterpartyClient:
+class DocumentClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
-        self.vendor_credit = VendorCreditClient(client_wrapper=self._client_wrapper)
 
-    def find_payees(
+    def get_all(
         self,
-        entity_id: EntityId,
+        invoice_template_id: InvoiceTemplateId,
         *,
-        name: typing.Optional[str] = None,
-        network_type: typing.Optional[
-            typing.Union[CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]]
-        ] = None,
-        payment_methods: typing.Optional[bool] = None,
-        invoice_metrics: typing.Optional[bool] = None,
-        counterparty_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
-        metadata: typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]] = None,
-        return_metadata: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        limit: typing.Optional[int] = None,
-        starting_after: typing.Optional[EntityId] = None,
+        type: typing.Optional[typing.Union[DocumentType, typing.Sequence[DocumentType]]] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> FindCounterpartiesResponse:
+    ) -> typing.List[DocumentResponse]:
         """
-        Find payee counterparties. This endpoint lets you find vendors linked to the entity.
+        Get attachments (scanned/uploaded PDFs and images) associated with this invoice template
 
         Parameters
         ----------
-        entity_id : EntityId
-            Entity ID or Entity ForeignID
+        invoice_template_id : InvoiceTemplateId
+            Invoice Template ID
 
-        name : typing.Optional[str]
-            Filter by counterparty name
-
-        network_type : typing.Optional[typing.Union[CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]]]
-            Filter by network type. By default, only ENTITY counterparties are returned.
-
-        payment_methods : typing.Optional[bool]
-            If true, will include counterparty payment methods as part of the response
-
-        invoice_metrics : typing.Optional[bool]
-            If true, will include counterparty invoice metrics as part of the response
-
-        counterparty_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
-            Filter by counterparty ids (Foreign ID is supported)
-
-        metadata : typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]
-            Filter counterparties by simple key/value metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
-
-        return_metadata : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            If true, will return simple key/value metadata for the counterparties. For more complex metadata, use the Metadata API.
-
-        limit : typing.Optional[int]
-            Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.
-
-        starting_after : typing.Optional[EntityId]
-            The ID of the counterparties to start after. If not provided, the first page of counterparties will be returned.
+        type : typing.Optional[typing.Union[DocumentType, typing.Sequence[DocumentType]]]
+            Filter by document type
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        FindCounterpartiesResponse
+        typing.List[DocumentResponse]
 
         Examples
         --------
@@ -101,26 +60,15 @@ class CounterpartyClient:
         client = Mercoa(
             token="YOUR_TOKEN",
         )
-        client.entity.counterparty.find_payees(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            name="Big Box",
-            payment_methods=True,
-            invoice_metrics=True,
+        client.invoice_template.document.get_all(
+            invoice_template_id="invt_13c07096-5848-4aeb-ae7d-6576289034c4",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"entity/{jsonable_encoder(entity_id)}/counterparties/payees",
+            f"invoice-template/{jsonable_encoder(invoice_template_id)}/documents",
             method="GET",
             params={
-                "name": name,
-                "networkType": network_type,
-                "paymentMethods": payment_methods,
-                "invoiceMetrics": invoice_metrics,
-                "counterpartyId": counterparty_id,
-                "metadata": jsonable_encoder(metadata),
-                "returnMetadata": return_metadata,
-                "limit": limit,
-                "startingAfter": starting_after,
+                "type": type,
             },
             request_options=request_options,
         )
@@ -130,9 +78,9 @@ class CounterpartyClient:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
             return typing.cast(
-                FindCounterpartiesResponse,
+                typing.List[DocumentResponse],
                 parse_obj_as(
-                    type_=FindCounterpartiesResponse,  # type: ignore
+                    type_=typing.List[DocumentResponse],  # type: ignore
                     object_=_response_json,
                 ),
             )
@@ -209,64 +157,34 @@ class CounterpartyClient:
                 )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def find_payors(
+    def upload(
         self,
-        entity_id: EntityId,
+        invoice_template_id: InvoiceTemplateId,
         *,
-        name: typing.Optional[str] = None,
-        network_type: typing.Optional[
-            typing.Union[CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]]
-        ] = None,
-        payment_methods: typing.Optional[bool] = None,
-        invoice_metrics: typing.Optional[bool] = None,
-        counterparty_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
-        metadata: typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]] = None,
-        return_metadata: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        limit: typing.Optional[int] = None,
-        starting_after: typing.Optional[EntityId] = None,
+        document: str,
+        type: typing.Optional[DocumentType] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> FindCounterpartiesResponse:
+    ) -> None:
         """
-        Find payor counterparties. This endpoint lets you find customers linked to the entity.
+        Upload documents (scanned/uploaded PDFs and images) associated with this invoice template
 
         Parameters
         ----------
-        entity_id : EntityId
-            Entity ID or Entity ForeignID
+        invoice_template_id : InvoiceTemplateId
+            Invoice Template ID
 
-        name : typing.Optional[str]
-            Filter by counterparty name
+        document : str
+            Base64 encoded image or PDF of invoice document. PNG, JPG, WEBP, and PDF are supported. 10MB max.
 
-        network_type : typing.Optional[typing.Union[CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]]]
-            Filter by network type. By default, only ENTITY counterparties are returned.
-
-        payment_methods : typing.Optional[bool]
-            If true, will include counterparty payment methods as part of the response
-
-        invoice_metrics : typing.Optional[bool]
-            If true, will include counterparty invoice metrics as part of the response
-
-        counterparty_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
-            Filter by counterparty ids (Foreign ID is supported)
-
-        metadata : typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]
-            Filter counterparties by simple key/value metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
-
-        return_metadata : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            If true, will return simple key/value metadata for the counterparties. For more complex metadata, use the Metadata API.
-
-        limit : typing.Optional[int]
-            Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.
-
-        starting_after : typing.Optional[EntityId]
-            The ID of the counterparties to start after. If not provided, the first page of counterparties will be returned.
+        type : typing.Optional[DocumentType]
+            Specify Document Type, defaults to INVOICE
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        FindCounterpartiesResponse
+        None
 
         Examples
         --------
@@ -275,27 +193,253 @@ class CounterpartyClient:
         client = Mercoa(
             token="YOUR_TOKEN",
         )
-        client.entity.counterparty.find_payors(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            name="Big Box",
-            payment_methods=True,
-            invoice_metrics=True,
+        client.invoice_template.document.upload(
+            invoice_template_id="invt_13c07096-5848-4aeb-ae7d-6576289034c4",
+            document="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"entity/{jsonable_encoder(entity_id)}/counterparties/payors",
-            method="GET",
-            params={
-                "name": name,
-                "networkType": network_type,
-                "paymentMethods": payment_methods,
-                "invoiceMetrics": invoice_metrics,
-                "counterpartyId": counterparty_id,
-                "metadata": jsonable_encoder(metadata),
-                "returnMetadata": return_metadata,
-                "limit": limit,
-                "startingAfter": starting_after,
+            f"invoice-template/{jsonable_encoder(invoice_template_id)}/document",
+            method="POST",
+            json={
+                "document": document,
+                "type": type,
             },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        if 200 <= _response.status_code < 300:
+            return
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def delete(
+        self,
+        invoice_template_id: InvoiceTemplateId,
+        document_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
+        """
+        Delete an attachment (scanned/uploaded PDFs and images) associated with this invoice template
+
+        Parameters
+        ----------
+        invoice_template_id : InvoiceTemplateId
+            Invoice Template ID
+
+        document_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        from mercoa import Mercoa
+
+        client = Mercoa(
+            token="YOUR_TOKEN",
+        )
+        client.invoice_template.document.delete(
+            invoice_template_id="invt_13c07096-5848-4aeb-ae7d-6576289034c4",
+            document_id="doc_37e6af0a-e637-48fd-b825-d6947b38c4e2",
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"invoice-template/{jsonable_encoder(invoice_template_id)}/document/{jsonable_encoder(document_id)}",
+            method="DELETE",
+            request_options=request_options,
+        )
+        if 200 <= _response.status_code < 300:
+            return
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def generate_invoice_pdf(
+        self, invoice_template_id: InvoiceTemplateId, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> DocumentResponse:
+        """
+        Generate a PDF of the invoice. This PDF is generated from the data in the invoice, not from the uploaded documents.
+
+        Parameters
+        ----------
+        invoice_template_id : InvoiceTemplateId
+            Invoice Template ID
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        DocumentResponse
+            Link to the PDF file. Will expire after 1 hour.
+
+        Examples
+        --------
+        from mercoa import Mercoa
+
+        client = Mercoa(
+            token="YOUR_TOKEN",
+        )
+        client.invoice_template.document.generate_invoice_pdf(
+            invoice_template_id="invt_13c07096-5848-4aeb-ae7d-6576289034c4",
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"invoice-template/{jsonable_encoder(invoice_template_id)}/pdf/generate",
+            method="GET",
             request_options=request_options,
         )
         try:
@@ -304,9 +448,9 @@ class CounterpartyClient:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
             return typing.cast(
-                FindCounterpartiesResponse,
+                DocumentResponse,
                 parse_obj_as(
-                    type_=FindCounterpartiesResponse,  # type: ignore
+                    type_=DocumentResponse,  # type: ignore
                     object_=_response_json,
                 ),
             )
@@ -383,74 +527,53 @@ class CounterpartyClient:
                 )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def add_payees(
-        self,
-        entity_id: EntityId,
-        *,
-        request: EntityAddPayeesRequest,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> None:
+    def generate_check_pdf(
+        self, invoice_template_id: InvoiceTemplateId, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> DocumentResponse:
         """
-        Create association between Entity and a given list of Payees. If a Payee has previously been archived, unarchive the Payee.
+        Get a PDF of the check for the invoice. If the invoice does not have check as the disbursement method, an error will be returned. If the disbursement option for the check is set to 'MAIL', a void copy of the check will be returned. If the disbursement option for the check is set to 'PRINT', a printable check will be returned. If the invoice is NOT marked as PAID, the check will be a void copy.
 
         Parameters
         ----------
-        entity_id : EntityId
-            Entity ID or Entity ForeignID
-
-        request : EntityAddPayeesRequest
+        invoice_template_id : InvoiceTemplateId
+            Invoice Template ID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        None
+        DocumentResponse
+            Link to the PDF file. Will expire after 1 hour.
 
         Examples
         --------
         from mercoa import Mercoa
-        from mercoa.entity_types import (
-            CounterpartyCustomizationAccount,
-            CounterpartyCustomizationRequest,
-            EntityAddPayeesRequest,
-        )
 
         client = Mercoa(
             token="YOUR_TOKEN",
         )
-        client.entity.counterparty.add_payees(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            request=EntityAddPayeesRequest(
-                payees=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
-                customizations=[
-                    CounterpartyCustomizationRequest(
-                        counterparty_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
-                        accounts=[
-                            CounterpartyCustomizationAccount(
-                                account_id="85866843",
-                                postal_code="94105",
-                                name_on_account="John Doe",
-                            )
-                        ],
-                    )
-                ],
-            ),
+        client.invoice_template.document.generate_check_pdf(
+            invoice_template_id="invt_13c07096-5848-4aeb-ae7d-6576289034c4",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"entity/{jsonable_encoder(entity_id)}/addPayees",
-            method="POST",
-            json=request,
+            f"invoice-template/{jsonable_encoder(invoice_template_id)}/check/generate",
+            method="GET",
             request_options=request_options,
-            omit=OMIT,
         )
-        if 200 <= _response.status_code < 300:
-            return
         try:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return typing.cast(
+                DocumentResponse,
+                parse_obj_as(
+                    type_=DocumentResponse,  # type: ignore
+                    object_=_response_json,
+                ),
+            )
         if "errorName" in _response_json:
             if _response_json["errorName"] == "BadRequest":
                 raise BadRequest(
@@ -524,324 +647,52 @@ class CounterpartyClient:
                 )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def hide_payees(
-        self,
-        entity_id: EntityId,
-        *,
-        request: EntityHidePayeesRequest,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> None:
+    def get_source_email(
+        self, invoice_template_id: InvoiceTemplateId, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> EmailLogResponse:
         """
-        Marks Payees as unsearchable by Entity via Counterparty search. Invoices associated with these Payees will still be searchable via Invoice search.
+        Get the email subject and body that was used to create this invoice.
 
         Parameters
         ----------
-        entity_id : EntityId
-            Entity ID or Entity ForeignID
-
-        request : EntityHidePayeesRequest
+        invoice_template_id : InvoiceTemplateId
+            Invoice Template ID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        None
+        EmailLogResponse
 
         Examples
         --------
         from mercoa import Mercoa
-        from mercoa.entity_types import EntityHidePayeesRequest
 
         client = Mercoa(
             token="YOUR_TOKEN",
         )
-        client.entity.counterparty.hide_payees(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            request=EntityHidePayeesRequest(
-                payees=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
-            ),
+        client.invoice_template.document.get_source_email(
+            invoice_template_id="invt_13c07096-5848-4aeb-ae7d-6576289034c4",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"entity/{jsonable_encoder(entity_id)}/hidePayees",
-            method="POST",
-            json=request,
+            f"invoice-template/{jsonable_encoder(invoice_template_id)}/source-email",
+            method="GET",
             request_options=request_options,
-            omit=OMIT,
         )
-        if 200 <= _response.status_code < 300:
-            return
         try:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
-        if "errorName" in _response_json:
-            if _response_json["errorName"] == "BadRequest":
-                raise BadRequest(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Unauthorized":
-                raise Unauthorized(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Forbidden":
-                raise Forbidden(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "NotFound":
-                raise NotFound(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Conflict":
-                raise Conflict(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "InternalServerError":
-                raise InternalServerError(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Unimplemented":
-                raise Unimplemented(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    def add_payors(
-        self,
-        entity_id: EntityId,
-        *,
-        request: EntityAddPayorsRequest,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> None:
-        """
-        Create association between Entity and a given list of Payors. If a Payor has previously been archived, unarchive the Payor.
-
-        Parameters
-        ----------
-        entity_id : EntityId
-            Entity ID or Entity ForeignID
-
-        request : EntityAddPayorsRequest
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        None
-
-        Examples
-        --------
-        from mercoa import Mercoa
-        from mercoa.entity_types import (
-            CounterpartyCustomizationAccount,
-            CounterpartyCustomizationRequest,
-            EntityAddPayorsRequest,
-        )
-
-        client = Mercoa(
-            token="YOUR_TOKEN",
-        )
-        client.entity.counterparty.add_payors(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            request=EntityAddPayorsRequest(
-                payors=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
-                customizations=[
-                    CounterpartyCustomizationRequest(
-                        counterparty_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
-                        accounts=[
-                            CounterpartyCustomizationAccount(
-                                account_id="85866843",
-                                postal_code="94105",
-                                name_on_account="John Doe",
-                            )
-                        ],
-                    )
-                ],
-            ),
-        )
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            f"entity/{jsonable_encoder(entity_id)}/addPayors",
-            method="POST",
-            json=request,
-            request_options=request_options,
-            omit=OMIT,
-        )
         if 200 <= _response.status_code < 300:
-            return
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if "errorName" in _response_json:
-            if _response_json["errorName"] == "BadRequest":
-                raise BadRequest(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Unauthorized":
-                raise Unauthorized(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Forbidden":
-                raise Forbidden(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "NotFound":
-                raise NotFound(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Conflict":
-                raise Conflict(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "InternalServerError":
-                raise InternalServerError(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Unimplemented":
-                raise Unimplemented(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    def hide_payors(
-        self,
-        entity_id: EntityId,
-        *,
-        request: EntityHidePayorsRequest,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> None:
-        """
-        Marks Payors as unsearchable by Entity via Counterparty search. Invoices associated with these Payors will still be searchable via Invoice search.
-
-        Parameters
-        ----------
-        entity_id : EntityId
-            Entity ID or Entity ForeignID
-
-        request : EntityHidePayorsRequest
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        None
-
-        Examples
-        --------
-        from mercoa import Mercoa
-        from mercoa.entity_types import EntityHidePayorsRequest
-
-        client = Mercoa(
-            token="YOUR_TOKEN",
-        )
-        client.entity.counterparty.hide_payors(
-            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            request=EntityHidePayorsRequest(
-                payors=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
-            ),
-        )
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            f"entity/{jsonable_encoder(entity_id)}/hidePayors",
-            method="POST",
-            json=request,
-            request_options=request_options,
-            omit=OMIT,
-        )
-        if 200 <= _response.status_code < 300:
-            return
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
+            return typing.cast(
+                EmailLogResponse,
+                parse_obj_as(
+                    type_=EmailLogResponse,  # type: ignore
+                    object_=_response_json,
+                ),
+            )
         if "errorName" in _response_json:
             if _response_json["errorName"] == "BadRequest":
                 raise BadRequest(
@@ -916,69 +767,34 @@ class CounterpartyClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
 
-class AsyncCounterpartyClient:
+class AsyncDocumentClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
-        self.vendor_credit = AsyncVendorCreditClient(client_wrapper=self._client_wrapper)
 
-    async def find_payees(
+    async def get_all(
         self,
-        entity_id: EntityId,
+        invoice_template_id: InvoiceTemplateId,
         *,
-        name: typing.Optional[str] = None,
-        network_type: typing.Optional[
-            typing.Union[CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]]
-        ] = None,
-        payment_methods: typing.Optional[bool] = None,
-        invoice_metrics: typing.Optional[bool] = None,
-        counterparty_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
-        metadata: typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]] = None,
-        return_metadata: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        limit: typing.Optional[int] = None,
-        starting_after: typing.Optional[EntityId] = None,
+        type: typing.Optional[typing.Union[DocumentType, typing.Sequence[DocumentType]]] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> FindCounterpartiesResponse:
+    ) -> typing.List[DocumentResponse]:
         """
-        Find payee counterparties. This endpoint lets you find vendors linked to the entity.
+        Get attachments (scanned/uploaded PDFs and images) associated with this invoice template
 
         Parameters
         ----------
-        entity_id : EntityId
-            Entity ID or Entity ForeignID
+        invoice_template_id : InvoiceTemplateId
+            Invoice Template ID
 
-        name : typing.Optional[str]
-            Filter by counterparty name
-
-        network_type : typing.Optional[typing.Union[CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]]]
-            Filter by network type. By default, only ENTITY counterparties are returned.
-
-        payment_methods : typing.Optional[bool]
-            If true, will include counterparty payment methods as part of the response
-
-        invoice_metrics : typing.Optional[bool]
-            If true, will include counterparty invoice metrics as part of the response
-
-        counterparty_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
-            Filter by counterparty ids (Foreign ID is supported)
-
-        metadata : typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]
-            Filter counterparties by simple key/value metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
-
-        return_metadata : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            If true, will return simple key/value metadata for the counterparties. For more complex metadata, use the Metadata API.
-
-        limit : typing.Optional[int]
-            Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.
-
-        starting_after : typing.Optional[EntityId]
-            The ID of the counterparties to start after. If not provided, the first page of counterparties will be returned.
+        type : typing.Optional[typing.Union[DocumentType, typing.Sequence[DocumentType]]]
+            Filter by document type
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        FindCounterpartiesResponse
+        typing.List[DocumentResponse]
 
         Examples
         --------
@@ -992,29 +808,18 @@ class AsyncCounterpartyClient:
 
 
         async def main() -> None:
-            await client.entity.counterparty.find_payees(
-                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-                name="Big Box",
-                payment_methods=True,
-                invoice_metrics=True,
+            await client.invoice_template.document.get_all(
+                invoice_template_id="invt_13c07096-5848-4aeb-ae7d-6576289034c4",
             )
 
 
         asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"entity/{jsonable_encoder(entity_id)}/counterparties/payees",
+            f"invoice-template/{jsonable_encoder(invoice_template_id)}/documents",
             method="GET",
             params={
-                "name": name,
-                "networkType": network_type,
-                "paymentMethods": payment_methods,
-                "invoiceMetrics": invoice_metrics,
-                "counterpartyId": counterparty_id,
-                "metadata": jsonable_encoder(metadata),
-                "returnMetadata": return_metadata,
-                "limit": limit,
-                "startingAfter": starting_after,
+                "type": type,
             },
             request_options=request_options,
         )
@@ -1024,9 +829,9 @@ class AsyncCounterpartyClient:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
             return typing.cast(
-                FindCounterpartiesResponse,
+                typing.List[DocumentResponse],
                 parse_obj_as(
-                    type_=FindCounterpartiesResponse,  # type: ignore
+                    type_=typing.List[DocumentResponse],  # type: ignore
                     object_=_response_json,
                 ),
             )
@@ -1103,64 +908,34 @@ class AsyncCounterpartyClient:
                 )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def find_payors(
+    async def upload(
         self,
-        entity_id: EntityId,
+        invoice_template_id: InvoiceTemplateId,
         *,
-        name: typing.Optional[str] = None,
-        network_type: typing.Optional[
-            typing.Union[CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]]
-        ] = None,
-        payment_methods: typing.Optional[bool] = None,
-        invoice_metrics: typing.Optional[bool] = None,
-        counterparty_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
-        metadata: typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]] = None,
-        return_metadata: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        limit: typing.Optional[int] = None,
-        starting_after: typing.Optional[EntityId] = None,
+        document: str,
+        type: typing.Optional[DocumentType] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> FindCounterpartiesResponse:
+    ) -> None:
         """
-        Find payor counterparties. This endpoint lets you find customers linked to the entity.
+        Upload documents (scanned/uploaded PDFs and images) associated with this invoice template
 
         Parameters
         ----------
-        entity_id : EntityId
-            Entity ID or Entity ForeignID
+        invoice_template_id : InvoiceTemplateId
+            Invoice Template ID
 
-        name : typing.Optional[str]
-            Filter by counterparty name
+        document : str
+            Base64 encoded image or PDF of invoice document. PNG, JPG, WEBP, and PDF are supported. 10MB max.
 
-        network_type : typing.Optional[typing.Union[CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]]]
-            Filter by network type. By default, only ENTITY counterparties are returned.
-
-        payment_methods : typing.Optional[bool]
-            If true, will include counterparty payment methods as part of the response
-
-        invoice_metrics : typing.Optional[bool]
-            If true, will include counterparty invoice metrics as part of the response
-
-        counterparty_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
-            Filter by counterparty ids (Foreign ID is supported)
-
-        metadata : typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]
-            Filter counterparties by simple key/value metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
-
-        return_metadata : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            If true, will return simple key/value metadata for the counterparties. For more complex metadata, use the Metadata API.
-
-        limit : typing.Optional[int]
-            Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.
-
-        starting_after : typing.Optional[EntityId]
-            The ID of the counterparties to start after. If not provided, the first page of counterparties will be returned.
+        type : typing.Optional[DocumentType]
+            Specify Document Type, defaults to INVOICE
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        FindCounterpartiesResponse
+        None
 
         Examples
         --------
@@ -1174,30 +949,272 @@ class AsyncCounterpartyClient:
 
 
         async def main() -> None:
-            await client.entity.counterparty.find_payors(
-                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-                name="Big Box",
-                payment_methods=True,
-                invoice_metrics=True,
+            await client.invoice_template.document.upload(
+                invoice_template_id="invt_13c07096-5848-4aeb-ae7d-6576289034c4",
+                document="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII",
             )
 
 
         asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"entity/{jsonable_encoder(entity_id)}/counterparties/payors",
-            method="GET",
-            params={
-                "name": name,
-                "networkType": network_type,
-                "paymentMethods": payment_methods,
-                "invoiceMetrics": invoice_metrics,
-                "counterpartyId": counterparty_id,
-                "metadata": jsonable_encoder(metadata),
-                "returnMetadata": return_metadata,
-                "limit": limit,
-                "startingAfter": starting_after,
+            f"invoice-template/{jsonable_encoder(invoice_template_id)}/document",
+            method="POST",
+            json={
+                "document": document,
+                "type": type,
             },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        if 200 <= _response.status_code < 300:
+            return
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def delete(
+        self,
+        invoice_template_id: InvoiceTemplateId,
+        document_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
+        """
+        Delete an attachment (scanned/uploaded PDFs and images) associated with this invoice template
+
+        Parameters
+        ----------
+        invoice_template_id : InvoiceTemplateId
+            Invoice Template ID
+
+        document_id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        import asyncio
+
+        from mercoa import AsyncMercoa
+
+        client = AsyncMercoa(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.invoice_template.document.delete(
+                invoice_template_id="invt_13c07096-5848-4aeb-ae7d-6576289034c4",
+                document_id="doc_37e6af0a-e637-48fd-b825-d6947b38c4e2",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"invoice-template/{jsonable_encoder(invoice_template_id)}/document/{jsonable_encoder(document_id)}",
+            method="DELETE",
+            request_options=request_options,
+        )
+        if 200 <= _response.status_code < 300:
+            return
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def generate_invoice_pdf(
+        self, invoice_template_id: InvoiceTemplateId, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> DocumentResponse:
+        """
+        Generate a PDF of the invoice. This PDF is generated from the data in the invoice, not from the uploaded documents.
+
+        Parameters
+        ----------
+        invoice_template_id : InvoiceTemplateId
+            Invoice Template ID
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        DocumentResponse
+            Link to the PDF file. Will expire after 1 hour.
+
+        Examples
+        --------
+        import asyncio
+
+        from mercoa import AsyncMercoa
+
+        client = AsyncMercoa(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.invoice_template.document.generate_invoice_pdf(
+                invoice_template_id="invt_13c07096-5848-4aeb-ae7d-6576289034c4",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"invoice-template/{jsonable_encoder(invoice_template_id)}/pdf/generate",
+            method="GET",
             request_options=request_options,
         )
         try:
@@ -1206,9 +1223,9 @@ class AsyncCounterpartyClient:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
             return typing.cast(
-                FindCounterpartiesResponse,
+                DocumentResponse,
                 parse_obj_as(
-                    type_=FindCounterpartiesResponse,  # type: ignore
+                    type_=DocumentResponse,  # type: ignore
                     object_=_response_json,
                 ),
             )
@@ -1285,40 +1302,30 @@ class AsyncCounterpartyClient:
                 )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def add_payees(
-        self,
-        entity_id: EntityId,
-        *,
-        request: EntityAddPayeesRequest,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> None:
+    async def generate_check_pdf(
+        self, invoice_template_id: InvoiceTemplateId, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> DocumentResponse:
         """
-        Create association between Entity and a given list of Payees. If a Payee has previously been archived, unarchive the Payee.
+        Get a PDF of the check for the invoice. If the invoice does not have check as the disbursement method, an error will be returned. If the disbursement option for the check is set to 'MAIL', a void copy of the check will be returned. If the disbursement option for the check is set to 'PRINT', a printable check will be returned. If the invoice is NOT marked as PAID, the check will be a void copy.
 
         Parameters
         ----------
-        entity_id : EntityId
-            Entity ID or Entity ForeignID
-
-        request : EntityAddPayeesRequest
+        invoice_template_id : InvoiceTemplateId
+            Invoice Template ID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        None
+        DocumentResponse
+            Link to the PDF file. Will expire after 1 hour.
 
         Examples
         --------
         import asyncio
 
         from mercoa import AsyncMercoa
-        from mercoa.entity_types import (
-            CounterpartyCustomizationAccount,
-            CounterpartyCustomizationRequest,
-            EntityAddPayeesRequest,
-        )
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
@@ -1326,41 +1333,30 @@ class AsyncCounterpartyClient:
 
 
         async def main() -> None:
-            await client.entity.counterparty.add_payees(
-                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-                request=EntityAddPayeesRequest(
-                    payees=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
-                    customizations=[
-                        CounterpartyCustomizationRequest(
-                            counterparty_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
-                            accounts=[
-                                CounterpartyCustomizationAccount(
-                                    account_id="85866843",
-                                    postal_code="94105",
-                                    name_on_account="John Doe",
-                                )
-                            ],
-                        )
-                    ],
-                ),
+            await client.invoice_template.document.generate_check_pdf(
+                invoice_template_id="invt_13c07096-5848-4aeb-ae7d-6576289034c4",
             )
 
 
         asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"entity/{jsonable_encoder(entity_id)}/addPayees",
-            method="POST",
-            json=request,
+            f"invoice-template/{jsonable_encoder(invoice_template_id)}/check/generate",
+            method="GET",
             request_options=request_options,
-            omit=OMIT,
         )
-        if 200 <= _response.status_code < 300:
-            return
         try:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return typing.cast(
+                DocumentResponse,
+                parse_obj_as(
+                    type_=DocumentResponse,  # type: ignore
+                    object_=_response_json,
+                ),
+            )
         if "errorName" in _response_json:
             if _response_json["errorName"] == "BadRequest":
                 raise BadRequest(
@@ -1434,36 +1430,29 @@ class AsyncCounterpartyClient:
                 )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def hide_payees(
-        self,
-        entity_id: EntityId,
-        *,
-        request: EntityHidePayeesRequest,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> None:
+    async def get_source_email(
+        self, invoice_template_id: InvoiceTemplateId, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> EmailLogResponse:
         """
-        Marks Payees as unsearchable by Entity via Counterparty search. Invoices associated with these Payees will still be searchable via Invoice search.
+        Get the email subject and body that was used to create this invoice.
 
         Parameters
         ----------
-        entity_id : EntityId
-            Entity ID or Entity ForeignID
-
-        request : EntityHidePayeesRequest
+        invoice_template_id : InvoiceTemplateId
+            Invoice Template ID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        None
+        EmailLogResponse
 
         Examples
         --------
         import asyncio
 
         from mercoa import AsyncMercoa
-        from mercoa.entity_types import EntityHidePayeesRequest
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
@@ -1471,311 +1460,30 @@ class AsyncCounterpartyClient:
 
 
         async def main() -> None:
-            await client.entity.counterparty.hide_payees(
-                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-                request=EntityHidePayeesRequest(
-                    payees=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
-                ),
+            await client.invoice_template.document.get_source_email(
+                invoice_template_id="invt_13c07096-5848-4aeb-ae7d-6576289034c4",
             )
 
 
         asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"entity/{jsonable_encoder(entity_id)}/hidePayees",
-            method="POST",
-            json=request,
+            f"invoice-template/{jsonable_encoder(invoice_template_id)}/source-email",
+            method="GET",
             request_options=request_options,
-            omit=OMIT,
         )
-        if 200 <= _response.status_code < 300:
-            return
         try:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
-        if "errorName" in _response_json:
-            if _response_json["errorName"] == "BadRequest":
-                raise BadRequest(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Unauthorized":
-                raise Unauthorized(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Forbidden":
-                raise Forbidden(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "NotFound":
-                raise NotFound(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Conflict":
-                raise Conflict(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "InternalServerError":
-                raise InternalServerError(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Unimplemented":
-                raise Unimplemented(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    async def add_payors(
-        self,
-        entity_id: EntityId,
-        *,
-        request: EntityAddPayorsRequest,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> None:
-        """
-        Create association between Entity and a given list of Payors. If a Payor has previously been archived, unarchive the Payor.
-
-        Parameters
-        ----------
-        entity_id : EntityId
-            Entity ID or Entity ForeignID
-
-        request : EntityAddPayorsRequest
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        None
-
-        Examples
-        --------
-        import asyncio
-
-        from mercoa import AsyncMercoa
-        from mercoa.entity_types import (
-            CounterpartyCustomizationAccount,
-            CounterpartyCustomizationRequest,
-            EntityAddPayorsRequest,
-        )
-
-        client = AsyncMercoa(
-            token="YOUR_TOKEN",
-        )
-
-
-        async def main() -> None:
-            await client.entity.counterparty.add_payors(
-                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-                request=EntityAddPayorsRequest(
-                    payors=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
-                    customizations=[
-                        CounterpartyCustomizationRequest(
-                            counterparty_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
-                            accounts=[
-                                CounterpartyCustomizationAccount(
-                                    account_id="85866843",
-                                    postal_code="94105",
-                                    name_on_account="John Doe",
-                                )
-                            ],
-                        )
-                    ],
+        if 200 <= _response.status_code < 300:
+            return typing.cast(
+                EmailLogResponse,
+                parse_obj_as(
+                    type_=EmailLogResponse,  # type: ignore
+                    object_=_response_json,
                 ),
             )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            f"entity/{jsonable_encoder(entity_id)}/addPayors",
-            method="POST",
-            json=request,
-            request_options=request_options,
-            omit=OMIT,
-        )
-        if 200 <= _response.status_code < 300:
-            return
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if "errorName" in _response_json:
-            if _response_json["errorName"] == "BadRequest":
-                raise BadRequest(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Unauthorized":
-                raise Unauthorized(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Forbidden":
-                raise Forbidden(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "NotFound":
-                raise NotFound(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Conflict":
-                raise Conflict(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "InternalServerError":
-                raise InternalServerError(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Unimplemented":
-                raise Unimplemented(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
-    async def hide_payors(
-        self,
-        entity_id: EntityId,
-        *,
-        request: EntityHidePayorsRequest,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> None:
-        """
-        Marks Payors as unsearchable by Entity via Counterparty search. Invoices associated with these Payors will still be searchable via Invoice search.
-
-        Parameters
-        ----------
-        entity_id : EntityId
-            Entity ID or Entity ForeignID
-
-        request : EntityHidePayorsRequest
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        None
-
-        Examples
-        --------
-        import asyncio
-
-        from mercoa import AsyncMercoa
-        from mercoa.entity_types import EntityHidePayorsRequest
-
-        client = AsyncMercoa(
-            token="YOUR_TOKEN",
-        )
-
-
-        async def main() -> None:
-            await client.entity.counterparty.hide_payors(
-                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-                request=EntityHidePayorsRequest(
-                    payors=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
-                ),
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            f"entity/{jsonable_encoder(entity_id)}/hidePayors",
-            method="POST",
-            json=request,
-            request_options=request_options,
-            omit=OMIT,
-        )
-        if 200 <= _response.status_code < 300:
-            return
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
         if "errorName" in _response_json:
             if _response_json["errorName"] == "BadRequest":
                 raise BadRequest(

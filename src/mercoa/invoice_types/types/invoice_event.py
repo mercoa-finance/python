@@ -31,7 +31,7 @@ class InvoiceEvent(UniversalBaseModel):
         webhook_ids=["webhook_12345"],
         user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
         data=InvoiceResponse(
-            id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
+            id="in_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
             status="DRAFT",
             payer_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             payer=CounterpartyResponse(

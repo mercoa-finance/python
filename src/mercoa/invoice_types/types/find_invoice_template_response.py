@@ -3,11 +3,11 @@
 from ...core.pydantic_utilities import UniversalBaseModel
 import pydantic
 import typing
-from .invoice_response import InvoiceResponse
+from .invoice_template_response import InvoiceTemplateResponse
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
-class FindInvoiceResponse(UniversalBaseModel):
+class FindInvoiceTemplateResponse(UniversalBaseModel):
     """
     Examples
     --------
@@ -29,11 +29,9 @@ class FindInvoiceResponse(UniversalBaseModel):
     )
     from mercoa.invoice_types import (
         ApprovalSlot,
-        AssociatedApprovalAction,
-        CommentResponse,
-        FindInvoiceResponse,
+        FindInvoiceTemplateResponse,
         InvoiceLineItemResponse,
-        InvoiceResponse,
+        InvoiceTemplateResponse,
         PaymentDestinationOptions_Check,
     )
     from mercoa.payment_method_types import (
@@ -41,13 +39,13 @@ class FindInvoiceResponse(UniversalBaseModel):
         PaymentMethodResponse_Check,
     )
 
-    FindInvoiceResponse(
+    FindInvoiceTemplateResponse(
         count=10,
         has_more=True,
         data=[
-            InvoiceResponse(
-                id="in_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
-                status="PAID",
+            InvoiceTemplateResponse(
+                id="invt_13c07096-5848-4aeb-ae7d-6576289034c4",
+                status="SCHEDULED",
                 amount=100.0,
                 currency="USD",
                 invoice_date=datetime.datetime.fromisoformat(
@@ -55,12 +53,6 @@ class FindInvoiceResponse(UniversalBaseModel):
                 ),
                 deduction_date=datetime.datetime.fromisoformat(
                     "2021-01-01 00:00:00+00:00",
-                ),
-                settlement_date=datetime.datetime.fromisoformat(
-                    "2021-01-03 00:00:00+00:00",
-                ),
-                due_date=datetime.datetime.fromisoformat(
-                    "2021-01-31 00:00:00+00:00",
                 ),
                 invoice_number="INV-123",
                 note_to_self="For the month of January",
@@ -249,35 +241,6 @@ class FindInvoiceResponse(UniversalBaseModel):
                 payment_destination_confirmed=True,
                 has_documents=True,
                 has_source_email=True,
-                comments=[
-                    CommentResponse(
-                        id="ic_b3525b66-da94-4525-9f31-426bcf657128",
-                        text="This is an approval comment",
-                        user=EntityUserResponse(
-                            id="user_ec3aafc8-ea86-408a-a6c1-545497badbbb",
-                            foreign_id="MY-DB-ID-12345",
-                            email="john.doe@acme.com",
-                            name="John Doe",
-                            roles=["admin", "approver"],
-                            created_at=datetime.datetime.fromisoformat(
-                                "2024-01-01 00:00:00+00:00",
-                            ),
-                            updated_at=datetime.datetime.fromisoformat(
-                                "2024-01-01 00:00:00+00:00",
-                            ),
-                        ),
-                        associated_approval_action=AssociatedApprovalAction(
-                            user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
-                            action="APPROVE",
-                        ),
-                        created_at=datetime.datetime.fromisoformat(
-                            "2021-01-01 00:00:00+00:00",
-                        ),
-                        updated_at=datetime.datetime.fromisoformat(
-                            "2021-01-01 00:00:00+00:00",
-                        ),
-                    )
-                ],
                 line_items=[
                     InvoiceLineItemResponse(
                         id="inli_26672f38-eb9a-48f1-a7a0-f1b855e38cd7",
@@ -344,7 +307,6 @@ class FindInvoiceResponse(UniversalBaseModel):
                     )
                 ],
                 metadata={"key1": "value1", "key2": "value2"},
-                foreign_id="YOUR-DATABASE-ID",
                 creator_user=EntityUserResponse(
                     id="user_ec3aafc8-ea86-408a-a6c1-545497badbbb",
                     foreign_id="MY-DB-ID-12345",
@@ -357,9 +319,6 @@ class FindInvoiceResponse(UniversalBaseModel):
                     updated_at=datetime.datetime.fromisoformat(
                         "2024-01-01 00:00:00+00:00",
                     ),
-                ),
-                processed_at=datetime.datetime.fromisoformat(
-                    "2021-01-01 00:00:00+00:00",
                 ),
                 created_at=datetime.datetime.fromisoformat(
                     "2021-01-01 00:00:00+00:00",
@@ -374,15 +333,15 @@ class FindInvoiceResponse(UniversalBaseModel):
 
     count: int = pydantic.Field()
     """
-    Total number of notifications for the given start and end date filters. This value is not limited by the limit parameter. It is provided so that you can determine how many pages of results are available.
+    Total number of invoice templates for the given filters. This value is not limited by the limit parameter. It is provided so that you can determine how many pages of results are available.
     """
 
     has_more: bool = pydantic.Field(alias="hasMore")
     """
-    True if there are more notifications available for the given start and end date filters.
+    True if there are more invoice templates available for the given filters.
     """
 
-    data: typing.List[InvoiceResponse]
+    data: typing.List[InvoiceTemplateResponse]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

@@ -42,6 +42,7 @@ class OrganizationClient:
         payor_onboarding_options: typing.Optional[bool] = None,
         metadata_schema: typing.Optional[bool] = None,
         notification_email_template: typing.Optional[bool] = None,
+        custom_domains: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> OrganizationResponse:
         """
@@ -73,6 +74,9 @@ class OrganizationClient:
         notification_email_template : typing.Optional[bool]
             include notification-email-template in response
 
+        custom_domains : typing.Optional[bool]
+            include custom domains in response
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -96,6 +100,7 @@ class OrganizationClient:
             payor_onboarding_options=True,
             metadata_schema=True,
             notification_email_template=True,
+            custom_domains=True,
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -110,6 +115,7 @@ class OrganizationClient:
                 "payorOnboardingOptions": payor_onboarding_options,
                 "metadataSchema": metadata_schema,
                 "notificationEmailTemplate": notification_email_template,
+                "customDomains": custom_domains,
             },
             request_options=request_options,
         )
@@ -380,6 +386,11 @@ class OrganizationClient:
                             edit=True,
                             required=True,
                         ),
+                        bank_statement=OnboardingOption(
+                            show=True,
+                            edit=True,
+                            required=True,
+                        ),
                     ),
                     individual=IndividualOnboardingOptions(
                         date_of_birth=OnboardingOption(
@@ -423,6 +434,11 @@ class OrganizationClient:
                             required=True,
                         ),
                         w_9=OnboardingOption(
+                            show=True,
+                            edit=True,
+                            required=True,
+                        ),
+                        bank_statement=OnboardingOption(
                             show=True,
                             edit=True,
                             required=True,
@@ -529,6 +545,11 @@ class OrganizationClient:
                             edit=True,
                             required=True,
                         ),
+                        bank_statement=OnboardingOption(
+                            show=True,
+                            edit=True,
+                            required=True,
+                        ),
                     ),
                     individual=IndividualOnboardingOptions(
                         date_of_birth=OnboardingOption(
@@ -576,6 +597,11 @@ class OrganizationClient:
                             edit=True,
                             required=True,
                         ),
+                        bank_statement=OnboardingOption(
+                            show=True,
+                            edit=True,
+                            required=True,
+                        ),
                     ),
                 ),
                 metadata_schema=[
@@ -593,6 +619,7 @@ class OrganizationClient:
                     footer="string",
                     button="string",
                 ),
+                custom_domains=["string"],
             ),
         )
         """
@@ -852,6 +879,7 @@ class AsyncOrganizationClient:
         payor_onboarding_options: typing.Optional[bool] = None,
         metadata_schema: typing.Optional[bool] = None,
         notification_email_template: typing.Optional[bool] = None,
+        custom_domains: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> OrganizationResponse:
         """
@@ -883,6 +911,9 @@ class AsyncOrganizationClient:
         notification_email_template : typing.Optional[bool]
             include notification-email-template in response
 
+        custom_domains : typing.Optional[bool]
+            include custom domains in response
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -911,6 +942,7 @@ class AsyncOrganizationClient:
                 payor_onboarding_options=True,
                 metadata_schema=True,
                 notification_email_template=True,
+                custom_domains=True,
             )
 
 
@@ -928,6 +960,7 @@ class AsyncOrganizationClient:
                 "payorOnboardingOptions": payor_onboarding_options,
                 "metadataSchema": metadata_schema,
                 "notificationEmailTemplate": notification_email_template,
+                "customDomains": custom_domains,
             },
             request_options=request_options,
         )
@@ -1203,6 +1236,11 @@ class AsyncOrganizationClient:
                                 edit=True,
                                 required=True,
                             ),
+                            bank_statement=OnboardingOption(
+                                show=True,
+                                edit=True,
+                                required=True,
+                            ),
                         ),
                         individual=IndividualOnboardingOptions(
                             date_of_birth=OnboardingOption(
@@ -1246,6 +1284,11 @@ class AsyncOrganizationClient:
                                 required=True,
                             ),
                             w_9=OnboardingOption(
+                                show=True,
+                                edit=True,
+                                required=True,
+                            ),
+                            bank_statement=OnboardingOption(
                                 show=True,
                                 edit=True,
                                 required=True,
@@ -1352,6 +1395,11 @@ class AsyncOrganizationClient:
                                 edit=True,
                                 required=True,
                             ),
+                            bank_statement=OnboardingOption(
+                                show=True,
+                                edit=True,
+                                required=True,
+                            ),
                         ),
                         individual=IndividualOnboardingOptions(
                             date_of_birth=OnboardingOption(
@@ -1399,6 +1447,11 @@ class AsyncOrganizationClient:
                                 edit=True,
                                 required=True,
                             ),
+                            bank_statement=OnboardingOption(
+                                show=True,
+                                edit=True,
+                                required=True,
+                            ),
                         ),
                     ),
                     metadata_schema=[
@@ -1416,6 +1469,7 @@ class AsyncOrganizationClient:
                         footer="string",
                         button="string",
                     ),
+                    custom_domains=["string"],
                 ),
             )
 

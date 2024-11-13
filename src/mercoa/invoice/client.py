@@ -18,6 +18,7 @@ from ..entity_types.types.entity_user_id import EntityUserId
 from ..invoice_types.types.approver_action import ApproverAction
 from ..invoice_types.types.invoice_status import InvoiceStatus
 from ..invoice_types.types.payment_type import PaymentType
+from ..invoice_types.types.invoice_template_id import InvoiceTemplateId
 from ..core.request_options import RequestOptions
 from ..invoice_types.types.find_invoice_response import FindInvoiceResponse
 from ..core.datetime_utils import serialize_datetime
@@ -78,6 +79,9 @@ class InvoiceClient:
         invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]] = None,
         status: typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]] = None,
         payment_type: typing.Optional[typing.Sequence[PaymentType]] = None,
+        invoice_template_id: typing.Optional[
+            typing.Union[InvoiceTemplateId, typing.Sequence[InvoiceTemplateId]]
+        ] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> FindInvoiceResponse:
         """
@@ -142,6 +146,9 @@ class InvoiceClient:
         payment_type : typing.Optional[typing.Sequence[PaymentType]]
             Filter invoices by recurring status
 
+        invoice_template_id : typing.Optional[typing.Union[InvoiceTemplateId, typing.Sequence[InvoiceTemplateId]]]
+            Filter invoice by invoice template ID
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -183,6 +190,7 @@ class InvoiceClient:
                 "invoiceId": invoice_id,
                 "status": status,
                 "paymentType": jsonable_encoder(payment_type),
+                "invoiceTemplateId": invoice_template_id,
             },
             request_options=request_options,
         )
@@ -458,7 +466,7 @@ class InvoiceClient:
             token="YOUR_TOKEN",
         )
         client.invoice.get(
-            invoice_id="inv_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            invoice_id="in_8545a84e-a45f-41bf-bdf1-33b42a55812c",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -588,7 +596,7 @@ class InvoiceClient:
             token="YOUR_TOKEN",
         )
         client.invoice.update(
-            invoice_id="inv_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            invoice_id="in_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             request=InvoiceUpdateRequest(
                 status="NEW",
                 amount=100.0,
@@ -727,7 +735,7 @@ class InvoiceClient:
 
     def delete(self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
-        Only invoices in the DRAFT and NEW status can be deleted.
+        Only invoices in the UNASSIGNED and DRAFT statuses can be deleted.
 
         Parameters
         ----------
@@ -749,7 +757,7 @@ class InvoiceClient:
             token="YOUR_TOKEN",
         )
         client.invoice.delete(
-            invoice_id="inv_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            invoice_id="in_8545a84e-a45f-41bf-bdf1-33b42a55812c",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -873,7 +881,7 @@ class InvoiceClient:
             token="YOUR_TOKEN",
         )
         client.invoice.events(
-            invoice_id="inv_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            invoice_id="in_8545a84e-a45f-41bf-bdf1-33b42a55812c",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -1002,6 +1010,9 @@ class AsyncInvoiceClient:
         invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]] = None,
         status: typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]] = None,
         payment_type: typing.Optional[typing.Sequence[PaymentType]] = None,
+        invoice_template_id: typing.Optional[
+            typing.Union[InvoiceTemplateId, typing.Sequence[InvoiceTemplateId]]
+        ] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> FindInvoiceResponse:
         """
@@ -1066,6 +1077,9 @@ class AsyncInvoiceClient:
         payment_type : typing.Optional[typing.Sequence[PaymentType]]
             Filter invoices by recurring status
 
+        invoice_template_id : typing.Optional[typing.Union[InvoiceTemplateId, typing.Sequence[InvoiceTemplateId]]]
+            Filter invoice by invoice template ID
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -1115,6 +1129,7 @@ class AsyncInvoiceClient:
                 "invoiceId": invoice_id,
                 "status": status,
                 "paymentType": jsonable_encoder(payment_type),
+                "invoiceTemplateId": invoice_template_id,
             },
             request_options=request_options,
         )
@@ -1404,7 +1419,7 @@ class AsyncInvoiceClient:
 
         async def main() -> None:
             await client.invoice.get(
-                invoice_id="inv_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                invoice_id="in_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             )
 
 
@@ -1541,7 +1556,7 @@ class AsyncInvoiceClient:
 
         async def main() -> None:
             await client.invoice.update(
-                invoice_id="inv_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                invoice_id="in_8545a84e-a45f-41bf-bdf1-33b42a55812c",
                 request=InvoiceUpdateRequest(
                     status="NEW",
                     amount=100.0,
@@ -1683,7 +1698,7 @@ class AsyncInvoiceClient:
 
     async def delete(self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
-        Only invoices in the DRAFT and NEW status can be deleted.
+        Only invoices in the UNASSIGNED and DRAFT statuses can be deleted.
 
         Parameters
         ----------
@@ -1710,7 +1725,7 @@ class AsyncInvoiceClient:
 
         async def main() -> None:
             await client.invoice.delete(
-                invoice_id="inv_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                invoice_id="in_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             )
 
 
@@ -1842,7 +1857,7 @@ class AsyncInvoiceClient:
 
         async def main() -> None:
             await client.invoice.events(
-                invoice_id="inv_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                invoice_id="in_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             )
 
 

@@ -55,7 +55,7 @@ class PaymentLinksClient:
             token="YOUR_TOKEN",
         )
         client.invoice.payment_links.get_payer_link(
-            invoice_id="inv_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+            invoice_id="in_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -184,7 +184,7 @@ class PaymentLinksClient:
             token="YOUR_TOKEN",
         )
         client.invoice.payment_links.send_payer_email(
-            invoice_id="inv_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+            invoice_id="in_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
             attach_invoice=True,
         )
         """
@@ -308,7 +308,7 @@ class PaymentLinksClient:
             token="YOUR_TOKEN",
         )
         client.invoice.payment_links.get_vendor_link(
-            invoice_id="inv_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+            invoice_id="in_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -430,7 +430,7 @@ class PaymentLinksClient:
             token="YOUR_TOKEN",
         )
         client.invoice.payment_links.send_vendor_email(
-            invoice_id="inv_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+            invoice_id="in_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -560,7 +560,7 @@ class AsyncPaymentLinksClient:
 
         async def main() -> None:
             await client.invoice.payment_links.get_payer_link(
-                invoice_id="inv_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+                invoice_id="in_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
             )
 
 
@@ -697,7 +697,7 @@ class AsyncPaymentLinksClient:
 
         async def main() -> None:
             await client.invoice.payment_links.send_payer_email(
-                invoice_id="inv_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+                invoice_id="in_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
                 attach_invoice=True,
             )
 
@@ -829,7 +829,7 @@ class AsyncPaymentLinksClient:
 
         async def main() -> None:
             await client.invoice.payment_links.get_vendor_link(
-                invoice_id="inv_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+                invoice_id="in_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
             )
 
 
@@ -959,7 +959,7 @@ class AsyncPaymentLinksClient:
 
         async def main() -> None:
             await client.invoice.payment_links.send_vendor_email(
-                invoice_id="inv_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+                invoice_id="in_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
             )
 
 

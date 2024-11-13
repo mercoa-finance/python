@@ -2270,6 +2270,665 @@ client.entity.events(
 </dl>
 </details>
 
+## Entity Counterparty
+<details><summary><code>client.entity.counterparty.<a href="src/mercoa/entity/counterparty/client.py">find_payees</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Find payee counterparties. This endpoint lets you find vendors linked to the entity.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.entity.counterparty.find_payees(
+    entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+    name="Big Box",
+    payment_methods=True,
+    invoice_metrics=True,
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entity_id:** `EntityId` — Entity ID or Entity ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `typing.Optional[str]` — Filter by counterparty name
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**network_type:** `typing.Optional[
+    typing.Union[
+        CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]
+    ]
+]` — Filter by network type. By default, only ENTITY counterparties are returned.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payment_methods:** `typing.Optional[bool]` — If true, will include counterparty payment methods as part of the response
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**invoice_metrics:** `typing.Optional[bool]` — If true, will include counterparty invoice metrics as part of the response
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**counterparty_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter by counterparty ids (Foreign ID is supported)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**metadata:** `typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]` — Filter counterparties by simple key/value metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**return_metadata:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — If true, will return simple key/value metadata for the counterparties. For more complex metadata, use the Metadata API.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**starting_after:** `typing.Optional[EntityId]` — The ID of the counterparties to start after. If not provided, the first page of counterparties will be returned.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.entity.counterparty.<a href="src/mercoa/entity/counterparty/client.py">find_payors</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Find payor counterparties. This endpoint lets you find customers linked to the entity.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.entity.counterparty.find_payors(
+    entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+    name="Big Box",
+    payment_methods=True,
+    invoice_metrics=True,
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entity_id:** `EntityId` — Entity ID or Entity ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `typing.Optional[str]` — Filter by counterparty name
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**network_type:** `typing.Optional[
+    typing.Union[
+        CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]
+    ]
+]` — Filter by network type. By default, only ENTITY counterparties are returned.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payment_methods:** `typing.Optional[bool]` — If true, will include counterparty payment methods as part of the response
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**invoice_metrics:** `typing.Optional[bool]` — If true, will include counterparty invoice metrics as part of the response
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**counterparty_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter by counterparty ids (Foreign ID is supported)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**metadata:** `typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]` — Filter counterparties by simple key/value metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**return_metadata:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — If true, will return simple key/value metadata for the counterparties. For more complex metadata, use the Metadata API.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**starting_after:** `typing.Optional[EntityId]` — The ID of the counterparties to start after. If not provided, the first page of counterparties will be returned.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.entity.counterparty.<a href="src/mercoa/entity/counterparty/client.py">add_payees</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Create association between Entity and a given list of Payees. If a Payee has previously been archived, unarchive the Payee.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+from mercoa.entity_types import (
+    CounterpartyCustomizationAccount,
+    CounterpartyCustomizationRequest,
+    EntityAddPayeesRequest,
+)
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.entity.counterparty.add_payees(
+    entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+    request=EntityAddPayeesRequest(
+        payees=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
+        customizations=[
+            CounterpartyCustomizationRequest(
+                counterparty_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+                accounts=[
+                    CounterpartyCustomizationAccount(
+                        account_id="85866843",
+                        postal_code="94105",
+                        name_on_account="John Doe",
+                    )
+                ],
+            )
+        ],
+    ),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entity_id:** `EntityId` — Entity ID or Entity ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `EntityAddPayeesRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.entity.counterparty.<a href="src/mercoa/entity/counterparty/client.py">hide_payees</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Marks Payees as unsearchable by Entity via Counterparty search. Invoices associated with these Payees will still be searchable via Invoice search.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+from mercoa.entity_types import EntityHidePayeesRequest
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.entity.counterparty.hide_payees(
+    entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+    request=EntityHidePayeesRequest(
+        payees=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
+    ),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entity_id:** `EntityId` — Entity ID or Entity ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `EntityHidePayeesRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.entity.counterparty.<a href="src/mercoa/entity/counterparty/client.py">add_payors</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Create association between Entity and a given list of Payors. If a Payor has previously been archived, unarchive the Payor.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+from mercoa.entity_types import (
+    CounterpartyCustomizationAccount,
+    CounterpartyCustomizationRequest,
+    EntityAddPayorsRequest,
+)
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.entity.counterparty.add_payors(
+    entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+    request=EntityAddPayorsRequest(
+        payors=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
+        customizations=[
+            CounterpartyCustomizationRequest(
+                counterparty_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+                accounts=[
+                    CounterpartyCustomizationAccount(
+                        account_id="85866843",
+                        postal_code="94105",
+                        name_on_account="John Doe",
+                    )
+                ],
+            )
+        ],
+    ),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entity_id:** `EntityId` — Entity ID or Entity ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `EntityAddPayorsRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.entity.counterparty.<a href="src/mercoa/entity/counterparty/client.py">hide_payors</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Marks Payors as unsearchable by Entity via Counterparty search. Invoices associated with these Payors will still be searchable via Invoice search.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+from mercoa.entity_types import EntityHidePayorsRequest
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.entity.counterparty.hide_payors(
+    entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+    request=EntityHidePayorsRequest(
+        payors=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
+    ),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entity_id:** `EntityId` — Entity ID or Entity ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `EntityHidePayorsRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Entity EmailLog
 <details><summary><code>client.entity.email_log.<a href="src/mercoa/entity/email_log/client.py">find</a>(...)</code></summary>
 <dl>
@@ -3445,6 +4104,677 @@ client.entity.user.get_token(
 </dl>
 </details>
 
+## InvoiceTemplate
+<details><summary><code>client.invoice_template.<a href="src/mercoa/invoice_template/client.py">find</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Search invoice templates for all entities in the organization
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.invoice_template.find(
+    entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entity_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter invoice templates by the ID or foreign ID of the entity that created the invoice template.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_date:** `typing.Optional[dt.datetime]` — Start date filter. Defaults to CREATED_AT unless specified the dateType is specified
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_date:** `typing.Optional[dt.datetime]` — End date filter. Defaults to CREATED_AT unless specified the dateType is specified
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**date_type:** `typing.Optional[InvoiceDateFilter]` — Type of date to filter by if startDate and endDate filters are provided. Defaults to CREATED_AT.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**order_by:** `typing.Optional[InvoiceOrderByField]` — Field to order invoice templates by. Defaults to CREATED_AT.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**order_direction:** `typing.Optional[OrderDirection]` — Direction to order invoice templates by. Defaults to asc.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Number of invoice templates to return. Limit can range between 1 and 100, and the default is 10.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**starting_after:** `typing.Optional[InvoiceTemplateId]` — The ID of the invoice template to start after. If not provided, the first page of invoice templates will be returned.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**search:** `typing.Optional[str]` — Find invoice templates by vendor name, invoice number, or amount. Partial matches are supported.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**metadata:** `typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]` — Filter invoice templates by metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**line_item_metadata:** `typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]` — Filter invoice templates by line item metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**line_item_gl_account_id:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter invoice templates by line item GL account ID. Each filter will be applied as an OR condition. Duplicate keys will be ignored.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payer_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter invoice templates by payer ID or payer foreign ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**vendor_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter invoice templates by vendor ID or vendor foreign ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**approver_id:** `typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]` — Filter invoice templates by assigned approver user ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**approver_action:** `typing.Optional[typing.Union[ApproverAction, typing.Sequence[ApproverAction]]]` — Filter invoice templates by approver action. Needs to be used with approverId. For example, if you want to find all invoice templates that have been approved by a specific user, you would use approverId and approverAction=APPROVE.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**invoice_id:** `typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]` — Filter invoice templates by invoice ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]]` — Invoice status to filter on
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payment_type:** `typing.Optional[typing.Sequence[PaymentType]]` — Filter invoice templates by recurring status
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.invoice_template.<a href="src/mercoa/invoice_template/client.py">create</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+import datetime
+
+from mercoa import Mercoa
+from mercoa.invoice_types import (
+    InvoiceLineItemCreationRequest,
+    InvoiceTemplateCreationRequest,
+    PaymentDestinationOptions_Check,
+    PaymentSchedule_Monthly,
+)
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.invoice_template.create(
+    request=InvoiceTemplateCreationRequest(
+        status="NEW",
+        amount=100.0,
+        currency="USD",
+        invoice_date=datetime.datetime.fromisoformat(
+            "2021-01-01 00:00:00+00:00",
+        ),
+        due_date=datetime.datetime.fromisoformat(
+            "2021-01-13 00:00:00+00:00",
+        ),
+        deduction_date=datetime.datetime.fromisoformat(
+            "2021-01-10 00:00:00+00:00",
+        ),
+        payment_schedule=PaymentSchedule_Monthly(
+            day_offset=10,
+            offset_type="start",
+            ends=datetime.datetime.fromisoformat(
+                "2021-01-01 00:00:00+00:00",
+            ),
+        ),
+        invoice_number="INV-123",
+        note_to_self="Monthly recurring payment",
+        payer_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+        payment_source_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+        vendor_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+        payment_destination_id="pm_5fde2f4a-facc-48ef-8f0d-6b7d087c7b18",
+        payment_destination_options=PaymentDestinationOptions_Check(
+            delivery="MAIL",
+        ),
+        line_items=[
+            InvoiceLineItemCreationRequest(
+                amount=100.0,
+                currency="USD",
+                description="Product A",
+                name="Product A",
+                quantity=1.0,
+                unit_price=100.0,
+                category="EXPENSE",
+                service_start_date=datetime.datetime.fromisoformat(
+                    "2021-01-01 00:00:00+00:00",
+                ),
+                service_end_date=datetime.datetime.fromisoformat(
+                    "2021-01-31 00:00:00+00:00",
+                ),
+                metadata={"key1": "value1", "key2": "value2"},
+                gl_account_id="600394",
+            )
+        ],
+        creator_entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+        creator_user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+    ),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `InvoiceTemplateCreationRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.invoice_template.<a href="src/mercoa/invoice_template/client.py">get</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.invoice_template.get(
+    invoice_template_id="invt_13c07096-5848-4aeb-ae7d-6576289034c4",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**invoice_template_id:** `InvoiceTemplateId` — Invoice Template ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.invoice_template.<a href="src/mercoa/invoice_template/client.py">update</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+import datetime
+
+from mercoa import Mercoa
+from mercoa.invoice_types import (
+    InvoiceLineItemUpdateRequest,
+    InvoiceTemplateUpdateRequest,
+    PaymentDestinationOptions_Check,
+)
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.invoice_template.update(
+    invoice_template_id="invt_13c07096-5848-4aeb-ae7d-6576289034c4",
+    request=InvoiceTemplateUpdateRequest(
+        status="NEW",
+        amount=100.0,
+        currency="USD",
+        invoice_date=datetime.datetime.fromisoformat(
+            "2021-01-01 00:00:00+00:00",
+        ),
+        due_date=datetime.datetime.fromisoformat(
+            "2021-01-31 00:00:00+00:00",
+        ),
+        invoice_number="INV-123",
+        note_to_self="For the month of January",
+        payer_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+        payment_source_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+        vendor_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+        payment_destination_id="pm_5fde2f4a-facc-48ef-8f0d-6b7d087c7b18",
+        payment_destination_options=PaymentDestinationOptions_Check(
+            delivery="MAIL",
+        ),
+        line_items=[
+            InvoiceLineItemUpdateRequest(
+                id="inli_26672f38-eb9a-48f1-a7a0-f1b855e38cd7",
+                amount=100.0,
+                currency="USD",
+                description="Product A",
+                name="Product A",
+                quantity=1.0,
+                unit_price=100.0,
+                category="EXPENSE",
+                service_start_date=datetime.datetime.fromisoformat(
+                    "2021-01-01 00:00:00+00:00",
+                ),
+                service_end_date=datetime.datetime.fromisoformat(
+                    "2021-01-31 00:00:00+00:00",
+                ),
+                metadata={"key1": "value1", "key2": "value2"},
+                gl_account_id="600394",
+            )
+        ],
+        creator_entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+        creator_user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+    ),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**invoice_template_id:** `InvoiceTemplateId` — Invoice Template ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `InvoiceTemplateUpdateRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.invoice_template.<a href="src/mercoa/invoice_template/client.py">delete</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Only invoice templates in the UNASSIGNED and DRAFT statuses can be deleted.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.invoice_template.delete(
+    invoice_template_id="invt_13c07096-5848-4aeb-ae7d-6576289034c4",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**invoice_template_id:** `InvoiceTemplateId` — Invoice Template ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## InvoiceTemplate LineItem
+<details><summary><code>client.invoice_template.line_item.<a href="src/mercoa/invoice_template/line_item/client.py">update</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Update invoice template line item
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+import datetime
+
+from mercoa import Mercoa
+from mercoa.invoice_types import InvoiceLineItemIndividualUpdateRequest
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.invoice_template.line_item.update(
+    invoice_template_id="invt_13c07096-5848-4aeb-ae7d-6576289034c4",
+    line_item_id="inli_8aa84cb8-2ae7-4579-8fa3-87586e7c14a7",
+    request=InvoiceLineItemIndividualUpdateRequest(
+        name="Product A",
+        description="Product A",
+        service_start_date=datetime.datetime.fromisoformat(
+            "2021-01-01 00:00:00+00:00",
+        ),
+        service_end_date=datetime.datetime.fromisoformat(
+            "2021-01-31 00:00:00+00:00",
+        ),
+        metadata={"key1": "value1", "key2": "value2"},
+        gl_account_id="600394",
+    ),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**invoice_template_id:** `InvoiceTemplateId` — Invoice Template ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**line_item_id:** `InvoiceLineItemId` — Invoice Line Item ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `InvoiceLineItemIndividualUpdateRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Invoice
 <details><summary><code>client.invoice.<a href="src/mercoa/invoice/client.py">find</a>(...)</code></summary>
 <dl>
@@ -3648,6 +4978,16 @@ client.invoice.find(
 <dl>
 <dd>
 
+**invoice_template_id:** `typing.Optional[
+    typing.Union[InvoiceTemplateId, typing.Sequence[InvoiceTemplateId]]
+]` — Filter invoice by invoice template ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -3756,7 +5096,7 @@ client = Mercoa(
     token="YOUR_TOKEN",
 )
 client.invoice.get(
-    invoice_id="inv_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+    invoice_id="in_8545a84e-a45f-41bf-bdf1-33b42a55812c",
 )
 
 ```
@@ -3813,7 +5153,7 @@ client = Mercoa(
     token="YOUR_TOKEN",
 )
 client.invoice.update(
-    invoice_id="inv_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+    invoice_id="in_8545a84e-a45f-41bf-bdf1-33b42a55812c",
     request=InvoiceUpdateRequest(
         batch_payment=True,
     ),
@@ -3873,7 +5213,7 @@ client.invoice.update(
 <dl>
 <dd>
 
-Only invoices in the DRAFT and NEW status can be deleted.
+Only invoices in the UNASSIGNED and DRAFT statuses can be deleted.
 </dd>
 </dl>
 </dd>
@@ -3894,7 +5234,7 @@ client = Mercoa(
     token="YOUR_TOKEN",
 )
 client.invoice.delete(
-    invoice_id="inv_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+    invoice_id="in_8545a84e-a45f-41bf-bdf1-33b42a55812c",
 )
 
 ```
@@ -3964,7 +5304,7 @@ client = Mercoa(
     token="YOUR_TOKEN",
 )
 client.invoice.events(
-    invoice_id="inv_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+    invoice_id="in_8545a84e-a45f-41bf-bdf1-33b42a55812c",
 )
 
 ```
@@ -4162,6 +5502,7 @@ client.organization.get(
     payor_onboarding_options=True,
     metadata_schema=True,
     notification_email_template=True,
+    custom_domains=True,
 )
 
 ```
@@ -4235,6 +5576,14 @@ client.organization.get(
 <dd>
 
 **notification_email_template:** `typing.Optional[bool]` — include notification-email-template in response
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**custom_domains:** `typing.Optional[bool]` — include custom domains in response
     
 </dd>
 </dl>
@@ -4444,6 +5793,11 @@ client.organization.update(
                     edit=True,
                     required=True,
                 ),
+                bank_statement=OnboardingOption(
+                    show=True,
+                    edit=True,
+                    required=True,
+                ),
             ),
             individual=IndividualOnboardingOptions(
                 date_of_birth=OnboardingOption(
@@ -4487,6 +5841,11 @@ client.organization.update(
                     required=True,
                 ),
                 w_9=OnboardingOption(
+                    show=True,
+                    edit=True,
+                    required=True,
+                ),
+                bank_statement=OnboardingOption(
                     show=True,
                     edit=True,
                     required=True,
@@ -4593,6 +5952,11 @@ client.organization.update(
                     edit=True,
                     required=True,
                 ),
+                bank_statement=OnboardingOption(
+                    show=True,
+                    edit=True,
+                    required=True,
+                ),
             ),
             individual=IndividualOnboardingOptions(
                 date_of_birth=OnboardingOption(
@@ -4640,6 +6004,11 @@ client.organization.update(
                     edit=True,
                     required=True,
                 ),
+                bank_statement=OnboardingOption(
+                    show=True,
+                    edit=True,
+                    required=True,
+                ),
             ),
         ),
         metadata_schema=[
@@ -4657,6 +6026,7 @@ client.organization.update(
             footer="string",
             button="string",
         ),
+        custom_domains=["string"],
     ),
 )
 
@@ -4979,7 +6349,7 @@ client = Mercoa(
 )
 client.calculate.payment_timing(
     request=InvoiceTiming(
-        invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
+        invoice_id="in_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
     ),
 )
 
@@ -6298,24 +7668,10 @@ client.entity.approval_policy.delete(
 </dl>
 </details>
 
-## Entity Counterparty
-<details><summary><code>client.entity.counterparty.<a href="src/mercoa/entity/counterparty/client.py">find_payees</a>(...)</code></summary>
+## Entity Counterparty VendorCredit
+<details><summary><code>client.entity.counterparty.vendor_credit.<a href="src/mercoa/entity/counterparty/vendor_credit/client.py">get_all</a>(...)</code></summary>
 <dl>
 <dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Find payee counterparties. This endpoint lets you find vendors linked to the entity.
-</dd>
-</dl>
-</dd>
-</dl>
 
 #### 🔌 Usage
 
@@ -6331,11 +7687,9 @@ from mercoa import Mercoa
 client = Mercoa(
     token="YOUR_TOKEN",
 )
-client.entity.counterparty.find_payees(
+client.entity.counterparty.vendor_credit.get_all(
     entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-    name="Big Box",
-    payment_methods=True,
-    invoice_metrics=True,
+    counterparty_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
 )
 
 ```
@@ -6360,75 +7714,7 @@ client.entity.counterparty.find_payees(
 <dl>
 <dd>
 
-**name:** `typing.Optional[str]` — Filter by counterparty name
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**network_type:** `typing.Optional[
-    typing.Union[
-        CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]
-    ]
-]` — Filter by network type. By default, only ENTITY counterparties are returned.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**payment_methods:** `typing.Optional[bool]` — If true, will include counterparty payment methods as part of the response
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**invoice_metrics:** `typing.Optional[bool]` — If true, will include counterparty invoice metrics as part of the response
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**counterparty_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter by counterparty ids (Foreign ID is supported)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**metadata:** `typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]` — Filter counterparties by simple key/value metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**return_metadata:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — If true, will return simple key/value metadata for the counterparties. For more complex metadata, use the Metadata API.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limit:** `typing.Optional[int]` — Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**starting_after:** `typing.Optional[EntityId]` — The ID of the counterparties to start after. If not provided, the first page of counterparties will be returned.
+**counterparty_id:** `EntityId` — Counterparty Entity ID or Counterparty Entity ForeignID
     
 </dd>
 </dl>
@@ -6448,23 +7734,9 @@ client.entity.counterparty.find_payees(
 </dl>
 </details>
 
-<details><summary><code>client.entity.counterparty.<a href="src/mercoa/entity/counterparty/client.py">find_payors</a>(...)</code></summary>
+<details><summary><code>client.entity.counterparty.vendor_credit.<a href="src/mercoa/entity/counterparty/vendor_credit/client.py">get</a>(...)</code></summary>
 <dl>
 <dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Find payor counterparties. This endpoint lets you find customers linked to the entity.
-</dd>
-</dl>
-</dd>
-</dl>
 
 #### 🔌 Usage
 
@@ -6480,11 +7752,10 @@ from mercoa import Mercoa
 client = Mercoa(
     token="YOUR_TOKEN",
 )
-client.entity.counterparty.find_payors(
+client.entity.counterparty.vendor_credit.get(
     entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-    name="Big Box",
-    payment_methods=True,
-    invoice_metrics=True,
+    counterparty_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+    vendor_credit_id="vcr_c3f4c87d-794d-4543-9562-575cdddfc0d7",
 )
 
 ```
@@ -6509,7 +7780,7 @@ client.entity.counterparty.find_payors(
 <dl>
 <dd>
 
-**name:** `typing.Optional[str]` — Filter by counterparty name
+**counterparty_id:** `EntityId` — Counterparty Entity ID or Counterparty Entity ForeignID
     
 </dd>
 </dl>
@@ -6517,67 +7788,7 @@ client.entity.counterparty.find_payors(
 <dl>
 <dd>
 
-**network_type:** `typing.Optional[
-    typing.Union[
-        CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]
-    ]
-]` — Filter by network type. By default, only ENTITY counterparties are returned.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**payment_methods:** `typing.Optional[bool]` — If true, will include counterparty payment methods as part of the response
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**invoice_metrics:** `typing.Optional[bool]` — If true, will include counterparty invoice metrics as part of the response
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**counterparty_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter by counterparty ids (Foreign ID is supported)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**metadata:** `typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]` — Filter counterparties by simple key/value metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**return_metadata:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — If true, will return simple key/value metadata for the counterparties. For more complex metadata, use the Metadata API.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limit:** `typing.Optional[int]` — Number of counterparties to return. Limit can range between 1 and 100, and the default is 10.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**starting_after:** `typing.Optional[EntityId]` — The ID of the counterparties to start after. If not provided, the first page of counterparties will be returned.
+**vendor_credit_id:** `VendorCreditId` — ID of the vendor credit to retrieve
     
 </dd>
 </dl>
@@ -6597,23 +7808,9 @@ client.entity.counterparty.find_payors(
 </dl>
 </details>
 
-<details><summary><code>client.entity.counterparty.<a href="src/mercoa/entity/counterparty/client.py">add_payees</a>(...)</code></summary>
+<details><summary><code>client.entity.counterparty.vendor_credit.<a href="src/mercoa/entity/counterparty/vendor_credit/client.py">create</a>(...)</code></summary>
 <dl>
 <dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Create association between Entity and a given list of Payees. If a Payee has previously been archived, unarchive the Payee.
-</dd>
-</dl>
-</dd>
-</dl>
 
 #### 🔌 Usage
 
@@ -6625,31 +7822,18 @@ Create association between Entity and a given list of Payees. If a Payee has pre
 
 ```python
 from mercoa import Mercoa
-from mercoa.entity_types import (
-    CounterpartyCustomizationAccount,
-    CounterpartyCustomizationRequest,
-    EntityAddPayeesRequest,
-)
+from mercoa.vendor_credit_types import VendorCreditRequest
 
 client = Mercoa(
     token="YOUR_TOKEN",
 )
-client.entity.counterparty.add_payees(
+client.entity.counterparty.vendor_credit.create(
     entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-    request=EntityAddPayeesRequest(
-        payees=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
-        customizations=[
-            CounterpartyCustomizationRequest(
-                counterparty_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
-                accounts=[
-                    CounterpartyCustomizationAccount(
-                        account_id="85866843",
-                        postal_code="94105",
-                        name_on_account="John Doe",
-                    )
-                ],
-            )
-        ],
+    counterparty_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+    request=VendorCreditRequest(
+        total_amount=100.0,
+        currency="USD",
+        note="This is a note",
     ),
 )
 
@@ -6675,7 +7859,15 @@ client.entity.counterparty.add_payees(
 <dl>
 <dd>
 
-**request:** `EntityAddPayeesRequest` 
+**counterparty_id:** `EntityId` — Counterparty Entity ID or Counterparty Entity ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `VendorCreditRequest` 
     
 </dd>
 </dl>
@@ -6695,23 +7887,9 @@ client.entity.counterparty.add_payees(
 </dl>
 </details>
 
-<details><summary><code>client.entity.counterparty.<a href="src/mercoa/entity/counterparty/client.py">hide_payees</a>(...)</code></summary>
+<details><summary><code>client.entity.counterparty.vendor_credit.<a href="src/mercoa/entity/counterparty/vendor_credit/client.py">delete</a>(...)</code></summary>
 <dl>
 <dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Marks Payees as unsearchable by Entity via Counterparty search. Invoices associated with these Payees will still be searchable via Invoice search.
-</dd>
-</dl>
-</dd>
-</dl>
 
 #### 🔌 Usage
 
@@ -6723,16 +7901,14 @@ Marks Payees as unsearchable by Entity via Counterparty search. Invoices associa
 
 ```python
 from mercoa import Mercoa
-from mercoa.entity_types import EntityHidePayeesRequest
 
 client = Mercoa(
     token="YOUR_TOKEN",
 )
-client.entity.counterparty.hide_payees(
+client.entity.counterparty.vendor_credit.delete(
     entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-    request=EntityHidePayeesRequest(
-        payees=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
-    ),
+    counterparty_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+    vendor_credit_id="vcr_c3f4c87d-794d-4543-9562-575cdddfc0d7",
 )
 
 ```
@@ -6757,7 +7933,7 @@ client.entity.counterparty.hide_payees(
 <dl>
 <dd>
 
-**request:** `EntityHidePayeesRequest` 
+**counterparty_id:** `EntityId` — Counterparty Entity ID or Counterparty Entity ForeignID
     
 </dd>
 </dl>
@@ -6765,179 +7941,7 @@ client.entity.counterparty.hide_payees(
 <dl>
 <dd>
 
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.entity.counterparty.<a href="src/mercoa/entity/counterparty/client.py">add_payors</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Create association between Entity and a given list of Payors. If a Payor has previously been archived, unarchive the Payor.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mercoa import Mercoa
-from mercoa.entity_types import (
-    CounterpartyCustomizationAccount,
-    CounterpartyCustomizationRequest,
-    EntityAddPayorsRequest,
-)
-
-client = Mercoa(
-    token="YOUR_TOKEN",
-)
-client.entity.counterparty.add_payors(
-    entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-    request=EntityAddPayorsRequest(
-        payors=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
-        customizations=[
-            CounterpartyCustomizationRequest(
-                counterparty_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
-                accounts=[
-                    CounterpartyCustomizationAccount(
-                        account_id="85866843",
-                        postal_code="94105",
-                        name_on_account="John Doe",
-                    )
-                ],
-            )
-        ],
-    ),
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entity_id:** `EntityId` — Entity ID or Entity ForeignID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `EntityAddPayorsRequest` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.entity.counterparty.<a href="src/mercoa/entity/counterparty/client.py">hide_payors</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Marks Payors as unsearchable by Entity via Counterparty search. Invoices associated with these Payors will still be searchable via Invoice search.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mercoa import Mercoa
-from mercoa.entity_types import EntityHidePayorsRequest
-
-client = Mercoa(
-    token="YOUR_TOKEN",
-)
-client.entity.counterparty.hide_payors(
-    entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-    request=EntityHidePayorsRequest(
-        payors=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
-    ),
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entity_id:** `EntityId` — Entity ID or Entity ForeignID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `EntityHidePayorsRequest` 
+**vendor_credit_id:** `VendorCreditId` — ID of the vendor credit to delete
     
 </dd>
 </dl>
@@ -10541,6 +11545,683 @@ client.entity.user.notifications.update(
 </dl>
 </details>
 
+## InvoiceTemplate Approval
+<details><summary><code>client.invoice_template.approval.<a href="src/mercoa/invoice_template/approval/client.py">add_approver</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Adds an approver to the invoice template. Will select the first available approver slot that is not already filled and assign the approver to it. If no approver slots are available, an error will be returned. An explicit approver slot can be specified by setting the `approverSlot` field.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+from mercoa.invoice_types import AddApproverRequest
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.invoice_template.approval.add_approver(
+    invoice_template_id="invt_13c07096-5848-4aeb-ae7d-6576289034c4",
+    request=AddApproverRequest(
+        approval_slot_id="inap_9bb311c9-7c15-4c9e-8148-63814e0abec6",
+        user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+    ),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**invoice_template_id:** `InvoiceTemplateId` — Invoice Template ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `AddApproverRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.invoice_template.approval.<a href="src/mercoa/invoice_template/approval/client.py">approve</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+from mercoa.invoice_types import ApprovalRequest
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.invoice_template.approval.approve(
+    invoice_template_id="invt_13c07096-5848-4aeb-ae7d-6576289034c4",
+    request=ApprovalRequest(
+        text="This is a reason for my action",
+        user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+    ),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**invoice_template_id:** `InvoiceTemplateId` — Invoice Template ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `ApprovalRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.invoice_template.approval.<a href="src/mercoa/invoice_template/approval/client.py">reject</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+from mercoa.invoice_types import ApprovalRequest
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.invoice_template.approval.reject(
+    invoice_template_id="invt_13c07096-5848-4aeb-ae7d-6576289034c4",
+    request=ApprovalRequest(
+        text="This is a reason for my action",
+        user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+    ),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**invoice_template_id:** `InvoiceTemplateId` — Invoice Template ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `ApprovalRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## InvoiceTemplate Document
+<details><summary><code>client.invoice_template.document.<a href="src/mercoa/invoice_template/document/client.py">get_all</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Get attachments (scanned/uploaded PDFs and images) associated with this invoice template
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.invoice_template.document.get_all(
+    invoice_template_id="invt_13c07096-5848-4aeb-ae7d-6576289034c4",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**invoice_template_id:** `InvoiceTemplateId` — Invoice Template ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**type:** `typing.Optional[typing.Union[DocumentType, typing.Sequence[DocumentType]]]` — Filter by document type
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.invoice_template.document.<a href="src/mercoa/invoice_template/document/client.py">upload</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Upload documents (scanned/uploaded PDFs and images) associated with this invoice template
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.invoice_template.document.upload(
+    invoice_template_id="invt_13c07096-5848-4aeb-ae7d-6576289034c4",
+    document="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**invoice_template_id:** `InvoiceTemplateId` — Invoice Template ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**document:** `str` — Base64 encoded image or PDF of invoice document. PNG, JPG, WEBP, and PDF are supported. 10MB max.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**type:** `typing.Optional[DocumentType]` — Specify Document Type, defaults to INVOICE
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.invoice_template.document.<a href="src/mercoa/invoice_template/document/client.py">delete</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Delete an attachment (scanned/uploaded PDFs and images) associated with this invoice template
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.invoice_template.document.delete(
+    invoice_template_id="invt_13c07096-5848-4aeb-ae7d-6576289034c4",
+    document_id="doc_37e6af0a-e637-48fd-b825-d6947b38c4e2",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**invoice_template_id:** `InvoiceTemplateId` — Invoice Template ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**document_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.invoice_template.document.<a href="src/mercoa/invoice_template/document/client.py">generate_invoice_pdf</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Generate a PDF of the invoice. This PDF is generated from the data in the invoice, not from the uploaded documents.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.invoice_template.document.generate_invoice_pdf(
+    invoice_template_id="invt_13c07096-5848-4aeb-ae7d-6576289034c4",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**invoice_template_id:** `InvoiceTemplateId` — Invoice Template ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.invoice_template.document.<a href="src/mercoa/invoice_template/document/client.py">generate_check_pdf</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Get a PDF of the check for the invoice. If the invoice does not have check as the disbursement method, an error will be returned. If the disbursement option for the check is set to 'MAIL', a void copy of the check will be returned. If the disbursement option for the check is set to 'PRINT', a printable check will be returned. If the invoice is NOT marked as PAID, the check will be a void copy.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.invoice_template.document.generate_check_pdf(
+    invoice_template_id="invt_13c07096-5848-4aeb-ae7d-6576289034c4",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**invoice_template_id:** `InvoiceTemplateId` — Invoice Template ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.invoice_template.document.<a href="src/mercoa/invoice_template/document/client.py">get_source_email</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Get the email subject and body that was used to create this invoice.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.invoice_template.document.get_source_email(
+    invoice_template_id="invt_13c07096-5848-4aeb-ae7d-6576289034c4",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**invoice_template_id:** `InvoiceTemplateId` — Invoice Template ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Invoice Approval
 <details><summary><code>client.invoice.approval.<a href="src/mercoa/invoice/approval/client.py">add_approver</a>(...)</code></summary>
 <dl>
@@ -10576,7 +12257,7 @@ client = Mercoa(
     token="YOUR_TOKEN",
 )
 client.invoice.approval.add_approver(
-    invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
+    invoice_id="in_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
     request=AddApproverRequest(
         approval_slot_id="inap_9bb311c9-7c15-4c9e-8148-63814e0abec6",
         user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
@@ -10645,7 +12326,7 @@ client = Mercoa(
     token="YOUR_TOKEN",
 )
 client.invoice.approval.approve(
-    invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
+    invoice_id="in_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
     request=ApprovalRequest(
         text="This is a reason for my action",
         user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
@@ -10714,7 +12395,7 @@ client = Mercoa(
     token="YOUR_TOKEN",
 )
 client.invoice.approval.reject(
-    invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
+    invoice_id="in_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
     request=ApprovalRequest(
         text="This is a reason for my action",
         user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
@@ -10797,7 +12478,7 @@ client = Mercoa(
     token="YOUR_TOKEN",
 )
 client.invoice.comment.get_all(
-    invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
+    invoice_id="in_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
 )
 
 ```
@@ -10868,7 +12549,7 @@ client = Mercoa(
     token="YOUR_TOKEN",
 )
 client.invoice.comment.create(
-    invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
+    invoice_id="in_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
     request=CommentRequest(
         text="This is a comment",
         user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
@@ -10936,7 +12617,7 @@ client = Mercoa(
     token="YOUR_TOKEN",
 )
 client.invoice.comment.get(
-    invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
+    invoice_id="in_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
     comment_id="ic_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
 )
 
@@ -11016,7 +12697,7 @@ client = Mercoa(
     token="YOUR_TOKEN",
 )
 client.invoice.comment.update(
-    invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
+    invoice_id="in_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
     comment_id="ic_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
     request=CommentRequest(
         text="This is a comment",
@@ -11107,7 +12788,7 @@ client = Mercoa(
     token="YOUR_TOKEN",
 )
 client.invoice.comment.delete(
-    invoice_id="inv_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
+    invoice_id="in_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
     comment_id="ic_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
 )
 
@@ -11187,7 +12868,7 @@ client = Mercoa(
     token="YOUR_TOKEN",
 )
 client.invoice.document.get_all(
-    invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
+    invoice_id="in_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
 )
 
 ```
@@ -11265,7 +12946,7 @@ client = Mercoa(
     token="YOUR_TOKEN",
 )
 client.invoice.document.upload(
-    invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
+    invoice_id="in_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
     document="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII",
 )
 
@@ -11352,7 +13033,7 @@ client = Mercoa(
     token="YOUR_TOKEN",
 )
 client.invoice.document.delete(
-    invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
+    invoice_id="in_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
     document_id="doc_37e6af0a-e637-48fd-b825-d6947b38c4e2",
 )
 
@@ -11431,7 +13112,7 @@ client = Mercoa(
     token="YOUR_TOKEN",
 )
 client.invoice.document.generate_invoice_pdf(
-    invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
+    invoice_id="in_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
 )
 
 ```
@@ -11501,7 +13182,7 @@ client = Mercoa(
     token="YOUR_TOKEN",
 )
 client.invoice.document.generate_check_pdf(
-    invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
+    invoice_id="in_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
 )
 
 ```
@@ -11571,7 +13252,7 @@ client = Mercoa(
     token="YOUR_TOKEN",
 )
 client.invoice.document.get_source_email(
-    invoice_id="inv_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
+    invoice_id="in_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
 )
 
 ```
@@ -11642,7 +13323,7 @@ client = Mercoa(
     token="YOUR_TOKEN",
 )
 client.invoice.payment_links.get_payer_link(
-    invoice_id="inv_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+    invoice_id="in_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
 )
 
 ```
@@ -11720,7 +13401,7 @@ client = Mercoa(
     token="YOUR_TOKEN",
 )
 client.invoice.payment_links.send_payer_email(
-    invoice_id="inv_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+    invoice_id="in_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
     attach_invoice=True,
 )
 
@@ -11799,7 +13480,7 @@ client = Mercoa(
     token="YOUR_TOKEN",
 )
 client.invoice.payment_links.get_vendor_link(
-    invoice_id="inv_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+    invoice_id="in_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
 )
 
 ```
@@ -11877,7 +13558,7 @@ client = Mercoa(
     token="YOUR_TOKEN",
 )
 client.invoice.payment_links.send_vendor_email(
-    invoice_id="inv_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+    invoice_id="in_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
 )
 
 ```

@@ -38,6 +38,7 @@ class OrganizationResponse(UniversalBaseModel):
     notification_email_template: typing.Optional[NotificationEmailTemplateResponse] = pydantic.Field(
         alias="notificationEmailTemplate", default=None
     )
+    custom_domains: typing.Optional[typing.List[str]] = pydantic.Field(alias="customDomains", default=None)
     organization_entity_id: typing.Optional[EntityId] = pydantic.Field(alias="organizationEntityId", default=None)
 
     if IS_PYDANTIC_V2:

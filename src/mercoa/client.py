@@ -6,6 +6,7 @@ import httpx
 from .core.client_wrapper import SyncClientWrapper
 from .entity_group.client import EntityGroupClient
 from .entity.client import EntityClient
+from .invoice_template.client import InvoiceTemplateClient
 from .invoice.client import InvoiceClient
 from .organization.client import OrganizationClient
 from .bank_lookup.client import BankLookupClient
@@ -16,6 +17,7 @@ from .payment_methods.client import PaymentMethodsClient
 from .core.client_wrapper import AsyncClientWrapper
 from .entity_group.client import AsyncEntityGroupClient
 from .entity.client import AsyncEntityClient
+from .invoice_template.client import AsyncInvoiceTemplateClient
 from .invoice.client import AsyncInvoiceClient
 from .organization.client import AsyncOrganizationClient
 from .bank_lookup.client import AsyncBankLookupClient
@@ -85,6 +87,7 @@ class Mercoa:
         )
         self.entity_group = EntityGroupClient(client_wrapper=self._client_wrapper)
         self.entity = EntityClient(client_wrapper=self._client_wrapper)
+        self.invoice_template = InvoiceTemplateClient(client_wrapper=self._client_wrapper)
         self.invoice = InvoiceClient(client_wrapper=self._client_wrapper)
         self.organization = OrganizationClient(client_wrapper=self._client_wrapper)
         self.bank_lookup = BankLookupClient(client_wrapper=self._client_wrapper)
@@ -154,6 +157,7 @@ class AsyncMercoa:
         )
         self.entity_group = AsyncEntityGroupClient(client_wrapper=self._client_wrapper)
         self.entity = AsyncEntityClient(client_wrapper=self._client_wrapper)
+        self.invoice_template = AsyncInvoiceTemplateClient(client_wrapper=self._client_wrapper)
         self.invoice = AsyncInvoiceClient(client_wrapper=self._client_wrapper)
         self.organization = AsyncOrganizationClient(client_wrapper=self._client_wrapper)
         self.bank_lookup = AsyncBankLookupClient(client_wrapper=self._client_wrapper)

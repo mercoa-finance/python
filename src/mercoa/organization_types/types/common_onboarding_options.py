@@ -15,6 +15,7 @@ class CommonOnboardingOptions(UniversalBaseModel):
     phone: OnboardingOption
     ten_ninety_nine: OnboardingOption = pydantic.Field(alias="tenNinetyNine")
     w_9: OnboardingOption = pydantic.Field(alias="w9")
+    bank_statement: OnboardingOption = pydantic.Field(alias="bankStatement")
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
