@@ -14,7 +14,6 @@ InvoiceOrderByField = typing.Union[
         "INVOICE_NUMBER",
         "VENDOR_NAME",
         "PAYER_NAME",
-        "NEXT_PAYMENT_DATE",
     ],
     typing.Any,
 ]

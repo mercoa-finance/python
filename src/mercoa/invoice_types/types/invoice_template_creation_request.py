@@ -77,7 +77,7 @@ class InvoiceTemplateCreationRequest(InvoiceTemplateRequestBase):
     line_items: typing.Optional[typing.List[InvoiceLineItemCreationRequest]] = pydantic.Field(
         alias="lineItems", default=None
     )
-    creator_entity_id: EntityId = pydantic.Field(alias="creatorEntityId")
+    creator_entity_id: typing.Optional[EntityId] = pydantic.Field(alias="creatorEntityId", default=None)
     """
     ID of the entity who created this invoice template.
     """

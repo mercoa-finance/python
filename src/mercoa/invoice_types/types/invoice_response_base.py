@@ -43,11 +43,6 @@ class InvoiceResponseBase(UniversalBaseModel):
     Initial date when funds are scheduled to be deducted from payer's account. The actual deduction date may differ from this date, and will be reflected in the processedAt field.
     """
 
-    next_deduction_date: typing.Optional[dt.datetime] = pydantic.Field(alias="nextDeductionDate", default=None)
-    """
-    If this is a recurring invoice, this will be the next date when funds are scheduled to be deducted from payer's account.
-    """
-
     due_date: typing.Optional[dt.datetime] = pydantic.Field(alias="dueDate", default=None)
     """
     Due date of invoice.
