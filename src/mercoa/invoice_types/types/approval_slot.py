@@ -43,6 +43,10 @@ class ApprovalSlot(UniversalBaseModel):
     """
 
     assigned_user_id: typing.Optional[EntityUserId] = pydantic.Field(alias="assignedUserId", default=None)
+    """
+    The ID of the user who is assigned to the approval slot. If undefined, the approval slot is assigned to all eligible approvers.
+    """
+
     action: ApproverAction
     eligible_roles: typing.List[str] = pydantic.Field(alias="eligibleRoles")
     eligible_user_ids: typing.List[EntityUserId] = pydantic.Field(alias="eligibleUserIds")

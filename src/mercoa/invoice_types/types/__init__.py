@@ -23,7 +23,6 @@ from .invoice_creation_with_entity_request import InvoiceCreationWithEntityReque
 from .invoice_date_filter import InvoiceDateFilter
 from .invoice_event import InvoiceEvent
 from .invoice_events_response import InvoiceEventsResponse
-from .invoice_failure_reason import InvoiceFailureReason
 from .invoice_failure_type import InvoiceFailureType
 from .invoice_fees_request import InvoiceFeesRequest
 from .invoice_fees_response import InvoiceFeesResponse
@@ -99,7 +98,6 @@ __all__ = [
     "InvoiceDateFilter",
     "InvoiceEvent",
     "InvoiceEventsResponse",
-    "InvoiceFailureReason",
     "InvoiceFailureType",
     "InvoiceFeesRequest",
     "InvoiceFeesResponse",

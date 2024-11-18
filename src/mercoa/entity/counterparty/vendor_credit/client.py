@@ -19,6 +19,8 @@ from ....commons.errors.unimplemented import Unimplemented
 from ....vendor_credit_types.types.vendor_credit_id import VendorCreditId
 from ....vendor_credit_types.types.vendor_credit_response import VendorCreditResponse
 from ....vendor_credit_types.types.vendor_credit_request import VendorCreditRequest
+from ....payment_method_types.types.currency_code import CurrencyCode
+from ....vendor_credit_types.types.calculate_vendor_credit_usage_response import CalculateVendorCreditUsageResponse
 from ....core.client_wrapper import AsyncClientWrapper
 
 # this is used as the default value for optional parameters
@@ -467,6 +469,148 @@ class VendorCreditClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def estimate_usage(
+        self,
+        entity_id: EntityId,
+        counterparty_id: EntityId,
+        *,
+        amount: float,
+        currency: typing.Optional[CurrencyCode] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CalculateVendorCreditUsageResponse:
+        """
+        Estimate the usage of vendor credits on an invoice of a given amount
+
+        Parameters
+        ----------
+        entity_id : EntityId
+            Entity ID or Entity ForeignID
+
+        counterparty_id : EntityId
+            Counterparty Entity ID or Counterparty Entity ForeignID
+
+        amount : float
+            The amount of the invoice to calculate vendor credit usage for.
+
+        currency : typing.Optional[CurrencyCode]
+            The currency of the invoice to calculate vendor credit usage for. Defaults to USD.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CalculateVendorCreditUsageResponse
+            The vendor credit usage estimate
+
+        Examples
+        --------
+        from mercoa import Mercoa
+
+        client = Mercoa(
+            token="YOUR_TOKEN",
+        )
+        client.entity.counterparty.vendor_credit.estimate_usage(
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            counterparty_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+            amount=150.0,
+            currency="USD",
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"entity/{jsonable_encoder(entity_id)}/counterparty/{jsonable_encoder(counterparty_id)}/vendor-credits/estimate-usage",
+            method="GET",
+            params={
+                "amount": amount,
+                "currency": currency,
+            },
+            request_options=request_options,
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return typing.cast(
+                CalculateVendorCreditUsageResponse,
+                parse_obj_as(
+                    type_=CalculateVendorCreditUsageResponse,  # type: ignore
+                    object_=_response_json,
+                ),
+            )
         if "errorName" in _response_json:
             if _response_json["errorName"] == "BadRequest":
                 raise BadRequest(
@@ -1015,6 +1159,156 @@ class AsyncVendorCreditClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def estimate_usage(
+        self,
+        entity_id: EntityId,
+        counterparty_id: EntityId,
+        *,
+        amount: float,
+        currency: typing.Optional[CurrencyCode] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CalculateVendorCreditUsageResponse:
+        """
+        Estimate the usage of vendor credits on an invoice of a given amount
+
+        Parameters
+        ----------
+        entity_id : EntityId
+            Entity ID or Entity ForeignID
+
+        counterparty_id : EntityId
+            Counterparty Entity ID or Counterparty Entity ForeignID
+
+        amount : float
+            The amount of the invoice to calculate vendor credit usage for.
+
+        currency : typing.Optional[CurrencyCode]
+            The currency of the invoice to calculate vendor credit usage for. Defaults to USD.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CalculateVendorCreditUsageResponse
+            The vendor credit usage estimate
+
+        Examples
+        --------
+        import asyncio
+
+        from mercoa import AsyncMercoa
+
+        client = AsyncMercoa(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.entity.counterparty.vendor_credit.estimate_usage(
+                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                counterparty_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+                amount=150.0,
+                currency="USD",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"entity/{jsonable_encoder(entity_id)}/counterparty/{jsonable_encoder(counterparty_id)}/vendor-credits/estimate-usage",
+            method="GET",
+            params={
+                "amount": amount,
+                "currency": currency,
+            },
+            request_options=request_options,
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return typing.cast(
+                CalculateVendorCreditUsageResponse,
+                parse_obj_as(
+                    type_=CalculateVendorCreditUsageResponse,  # type: ignore
+                    object_=_response_json,
+                ),
+            )
         if "errorName" in _response_json:
             if _response_json["errorName"] == "BadRequest":
                 raise BadRequest(

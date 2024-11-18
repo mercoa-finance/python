@@ -26,6 +26,9 @@ class ApprovalSlotAssignment(UniversalBaseModel):
     """
 
     assigned_user_id: EntityUserId = pydantic.Field(alias="assignedUserId")
+    """
+    The ID of the user who is assigned to the approval slot. To assign all eligible users to an approval slot, use "ANY".
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

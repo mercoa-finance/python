@@ -596,7 +596,7 @@ class InvoiceClient:
             token="YOUR_TOKEN",
         )
         client.invoice.update(
-            invoice_id="in_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            invoice_id="in_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
             request=InvoiceUpdateRequest(
                 status="NEW",
                 amount=100.0,
@@ -1556,7 +1556,7 @@ class AsyncInvoiceClient:
 
         async def main() -> None:
             await client.invoice.update(
-                invoice_id="in_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                invoice_id="in_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
                 request=InvoiceUpdateRequest(
                     status="NEW",
                     amount=100.0,

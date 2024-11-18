@@ -5,6 +5,8 @@ import typing
 from .metadata_customization_request import MetadataCustomizationRequest
 from .payment_method_customization_request import PaymentMethodCustomizationRequest
 import pydantic
+from .ocr_customization_request import OcrCustomizationRequest
+from .notification_customization_request import NotificationCustomizationRequest
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -15,6 +17,8 @@ class EntityCustomizationRequest(UniversalBaseModel):
     from mercoa.entity_types import (
         EntityCustomizationRequest,
         MetadataCustomizationRequest,
+        NotificationCustomizationRequest,
+        OcrCustomizationRequest,
         PaymentMethodCustomizationRequest,
     )
 
@@ -56,13 +60,31 @@ class EntityCustomizationRequest(UniversalBaseModel):
                 disabled=True,
             ),
         ],
+        ocr=OcrCustomizationRequest(
+            line_items=True,
+            invoice_metadata=True,
+            line_item_metadata=True,
+            line_item_gl_account_id=True,
+            predict_metadata=True,
+        ),
+        notifications=NotificationCustomizationRequest(
+            assume_role="admin",
+        ),
     )
     """
 
-    metadata: typing.List[MetadataCustomizationRequest]
-    payment_source: typing.List[PaymentMethodCustomizationRequest] = pydantic.Field(alias="paymentSource")
-    backup_disbursement: typing.List[PaymentMethodCustomizationRequest] = pydantic.Field(alias="backupDisbursement")
-    payment_destination: typing.List[PaymentMethodCustomizationRequest] = pydantic.Field(alias="paymentDestination")
+    metadata: typing.Optional[typing.List[MetadataCustomizationRequest]] = None
+    payment_source: typing.Optional[typing.List[PaymentMethodCustomizationRequest]] = pydantic.Field(
+        alias="paymentSource", default=None
+    )
+    backup_disbursement: typing.Optional[typing.List[PaymentMethodCustomizationRequest]] = pydantic.Field(
+        alias="backupDisbursement", default=None
+    )
+    payment_destination: typing.Optional[typing.List[PaymentMethodCustomizationRequest]] = pydantic.Field(
+        alias="paymentDestination", default=None
+    )
+    ocr: typing.Optional[OcrCustomizationRequest] = None
+    notifications: typing.Optional[NotificationCustomizationRequest] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

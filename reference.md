@@ -5153,9 +5153,9 @@ client = Mercoa(
     token="YOUR_TOKEN",
 )
 client.invoice.update(
-    invoice_id="in_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+    invoice_id="in_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
     request=InvoiceUpdateRequest(
-        batch_payment=True,
+        vendor_credit_ids=["vcr_c3f4c87d-794d-4543-9562-575cdddfc0d7"],
     ),
 )
 
@@ -7961,6 +7961,103 @@ client.entity.counterparty.vendor_credit.delete(
 </dl>
 </details>
 
+<details><summary><code>client.entity.counterparty.vendor_credit.<a href="src/mercoa/entity/counterparty/vendor_credit/client.py">estimate_usage</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Estimate the usage of vendor credits on an invoice of a given amount
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.entity.counterparty.vendor_credit.estimate_usage(
+    entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+    counterparty_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+    amount=150.0,
+    currency="USD",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entity_id:** `EntityId` — Entity ID or Entity ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**counterparty_id:** `EntityId` — Counterparty Entity ID or Counterparty Entity ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**amount:** `float` — The amount of the invoice to calculate vendor credit usage for.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**currency:** `typing.Optional[CurrencyCode]` — The currency of the invoice to calculate vendor credit usage for. Defaults to USD.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Entity Customization
 <details><summary><code>client.entity.customization.<a href="src/mercoa/entity/customization/client.py">get</a>(...)</code></summary>
 <dl>
@@ -8063,6 +8160,8 @@ from mercoa import Mercoa
 from mercoa.entity_types import (
     EntityCustomizationRequest,
     MetadataCustomizationRequest,
+    NotificationCustomizationRequest,
+    OcrCustomizationRequest,
     PaymentMethodCustomizationRequest,
 )
 
@@ -8109,6 +8208,16 @@ client.entity.customization.update(
                 disabled=True,
             ),
         ],
+        ocr=OcrCustomizationRequest(
+            line_items=True,
+            invoice_metadata=True,
+            line_item_metadata=True,
+            line_item_gl_account_id=True,
+            predict_metadata=True,
+        ),
+        notifications=NotificationCustomizationRequest(
+            assume_role="admin",
+        ),
     ),
 )
 

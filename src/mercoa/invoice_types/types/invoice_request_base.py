@@ -14,6 +14,7 @@ from ...entity_types.types.entity_user_id import EntityUserId
 from .invoice_failure_type import InvoiceFailureType
 from .invoice_fees_request import InvoiceFeesRequest
 from .payment_schedule import PaymentSchedule
+from ...vendor_credit_types.types.vendor_credit_id import VendorCreditId
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -134,6 +135,13 @@ class InvoiceRequestBase(UniversalBaseModel):
     payment_schedule: typing.Optional[PaymentSchedule] = pydantic.Field(alias="paymentSchedule", default=None)
     """
     If this is a recurring invoice, this will be the payment schedule for the invoice. If not provided, this will be a one-time invoice.
+    """
+
+    vendor_credit_ids: typing.Optional[typing.List[VendorCreditId]] = pydantic.Field(
+        alias="vendorCreditIds", default=None
+    )
+    """
+    The IDs of the vendor credits to be applied to this invoice. Passing this field will un-apply any previously applied vendor credits.
     """
 
     if IS_PYDANTIC_V2:

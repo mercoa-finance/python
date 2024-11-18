@@ -6,7 +6,8 @@ import typing
 import datetime as dt
 import pydantic
 from .invoice_failure_type import InvoiceFailureType
-from .invoice_failure_reason import InvoiceFailureReason
+from ...transaction.types.transaction_response_without_invoices import TransactionResponseWithoutInvoices
+from ...vendor_credit_types.types.vendor_credit_id import VendorCreditId
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -387,9 +388,16 @@ class InvoiceResponse(InvoiceResponseBase):
     If the invoice failed to be paid, this field will be populated with the type of failure.
     """
 
-    failure_reason: typing.Optional[InvoiceFailureReason] = pydantic.Field(alias="failureReason", default=None)
+    transactions: typing.Optional[typing.List[TransactionResponseWithoutInvoices]] = pydantic.Field(default=None)
     """
-    If the invoice failed to be paid, this field will be populated with the reason of failure.
+    Transactions associated with this invoice.
+    """
+
+    vendor_credit_ids: typing.Optional[typing.List[VendorCreditId]] = pydantic.Field(
+        alias="vendorCreditIds", default=None
+    )
+    """
+    The IDs of the vendor credits that are currently applied to this invoice.
     """
 
     if IS_PYDANTIC_V2:

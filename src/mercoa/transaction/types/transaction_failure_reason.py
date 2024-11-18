@@ -6,13 +6,13 @@ import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
-class InvoiceFailureReason(UniversalBaseModel):
+class TransactionFailureReason(UniversalBaseModel):
     """
     Examples
     --------
-    from mercoa.invoice_types import InvoiceFailureReason
+    from mercoa.transaction import TransactionFailureReason
 
-    InvoiceFailureReason(
+    TransactionFailureReason(
         code="R01",
         description="The source bank account does not have sufficient funds",
     )

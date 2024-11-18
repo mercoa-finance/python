@@ -53,6 +53,7 @@ from .industry_codes import IndustryCodes
 from .line_item_availabilities import LineItemAvailabilities
 from .metadata_customization_request import MetadataCustomizationRequest
 from .metadata_trigger import MetadataTrigger
+from .notification_customization_request import NotificationCustomizationRequest
 from .notification_id import NotificationId
 from .notification_policy_request import NotificationPolicyRequest
 from .notification_policy_response import NotificationPolicyResponse
@@ -60,6 +61,7 @@ from .notification_response import NotificationResponse
 from .notification_status import NotificationStatus
 from .notification_type import NotificationType
 from .notification_update_request import NotificationUpdateRequest
+from .ocr_customization_request import OcrCustomizationRequest
 from .payment_method_customization_request import PaymentMethodCustomizationRequest
 from .profile_request import ProfileRequest
 from .profile_response import ProfileResponse
@@ -138,6 +140,7 @@ __all__ = [
     "LineItemAvailabilities",
     "MetadataCustomizationRequest",
     "MetadataTrigger",
+    "NotificationCustomizationRequest",
     "NotificationId",
     "NotificationPolicyRequest",
     "NotificationPolicyResponse",
@@ -145,6 +148,7 @@ __all__ = [
     "NotificationStatus",
     "NotificationType",
     "NotificationUpdateRequest",
+    "OcrCustomizationRequest",
     "PaymentMethodCustomizationRequest",
     "ProfileRequest",
     "ProfileResponse",

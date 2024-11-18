@@ -3,13 +3,25 @@
 from ...core.pydantic_utilities import UniversalBaseModel
 import pydantic
 from .identifier_list import IdentifierList
-from ...core.pydantic_utilities import IS_PYDANTIC_V2
 import typing
+from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
 class ApproverRule(UniversalBaseModel):
     num_approvers: int = pydantic.Field(alias="numApprovers")
+    """
+    Number of approvals required to approve an invoice
+    """
+
     identifier_list: IdentifierList = pydantic.Field(alias="identifierList")
+    """
+    List of users or roles that should be used to determine eligible approvers
+    """
+
+    auto_assign: typing.Optional[bool] = pydantic.Field(alias="autoAssign", default=None)
+    """
+    If true, the policy will automatically assign approvers to the invoice. If more than one approver is eligible, the policy will assign all eligible approvers to the invoice.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

@@ -23,6 +23,7 @@ class Rule_Approver(UniversalBaseModel):
     type: typing.Literal["approver"] = "approver"
     num_approvers: int = pydantic.Field(alias="numApprovers")
     identifier_list: IdentifierList = pydantic.Field(alias="identifierList")
+    auto_assign: typing.Optional[bool] = pydantic.Field(alias="autoAssign", default=None)
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

@@ -176,6 +176,8 @@ class CustomizationClient:
         from mercoa.entity_types import (
             EntityCustomizationRequest,
             MetadataCustomizationRequest,
+            NotificationCustomizationRequest,
+            OcrCustomizationRequest,
             PaymentMethodCustomizationRequest,
         )
 
@@ -222,6 +224,16 @@ class CustomizationClient:
                         disabled=True,
                     ),
                 ],
+                ocr=OcrCustomizationRequest(
+                    line_items=True,
+                    invoice_metadata=True,
+                    line_item_metadata=True,
+                    line_item_gl_account_id=True,
+                    predict_metadata=True,
+                ),
+                notifications=NotificationCustomizationRequest(
+                    assume_role="admin",
+                ),
             ),
         )
         """
@@ -481,6 +493,8 @@ class AsyncCustomizationClient:
         from mercoa.entity_types import (
             EntityCustomizationRequest,
             MetadataCustomizationRequest,
+            NotificationCustomizationRequest,
+            OcrCustomizationRequest,
             PaymentMethodCustomizationRequest,
         )
 
@@ -530,6 +544,16 @@ class AsyncCustomizationClient:
                             disabled=True,
                         ),
                     ],
+                    ocr=OcrCustomizationRequest(
+                        line_items=True,
+                        invoice_metadata=True,
+                        line_item_metadata=True,
+                        line_item_gl_account_id=True,
+                        predict_metadata=True,
+                    ),
+                    notifications=NotificationCustomizationRequest(
+                        assume_role="admin",
+                    ),
                 ),
             )
 
