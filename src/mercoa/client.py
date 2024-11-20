@@ -14,6 +14,7 @@ from .calculate.client import CalculateClient
 from .custom_payment_method_schema.client import CustomPaymentMethodSchemaClient
 from .ocr.client import OcrClient
 from .payment_methods.client import PaymentMethodsClient
+from .transaction.client import TransactionClient
 from .core.client_wrapper import AsyncClientWrapper
 from .entity_group.client import AsyncEntityGroupClient
 from .entity.client import AsyncEntityClient
@@ -25,6 +26,7 @@ from .calculate.client import AsyncCalculateClient
 from .custom_payment_method_schema.client import AsyncCustomPaymentMethodSchemaClient
 from .ocr.client import AsyncOcrClient
 from .payment_methods.client import AsyncPaymentMethodsClient
+from .transaction.client import AsyncTransactionClient
 
 
 class Mercoa:
@@ -95,6 +97,7 @@ class Mercoa:
         self.custom_payment_method_schema = CustomPaymentMethodSchemaClient(client_wrapper=self._client_wrapper)
         self.ocr = OcrClient(client_wrapper=self._client_wrapper)
         self.payment_methods = PaymentMethodsClient(client_wrapper=self._client_wrapper)
+        self.transaction = TransactionClient(client_wrapper=self._client_wrapper)
 
 
 class AsyncMercoa:
@@ -165,6 +168,7 @@ class AsyncMercoa:
         self.custom_payment_method_schema = AsyncCustomPaymentMethodSchemaClient(client_wrapper=self._client_wrapper)
         self.ocr = AsyncOcrClient(client_wrapper=self._client_wrapper)
         self.payment_methods = AsyncPaymentMethodsClient(client_wrapper=self._client_wrapper)
+        self.transaction = AsyncTransactionClient(client_wrapper=self._client_wrapper)
 
 
 def _get_base_url(*, base_url: typing.Optional[str] = None, environment: MercoaEnvironment) -> str:

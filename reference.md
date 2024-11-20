@@ -4374,6 +4374,7 @@ client.invoice_template.create(
         payment_destination_id="pm_5fde2f4a-facc-48ef-8f0d-6b7d087c7b18",
         payment_destination_options=PaymentDestinationOptions_Check(
             delivery="MAIL",
+            print_description=True,
         ),
         line_items=[
             InvoiceLineItemCreationRequest(
@@ -4534,6 +4535,7 @@ client.invoice_template.update(
         payment_destination_id="pm_5fde2f4a-facc-48ef-8f0d-6b7d087c7b18",
         payment_destination_options=PaymentDestinationOptions_Check(
             delivery="MAIL",
+            print_description=True,
         ),
         line_items=[
             InvoiceLineItemUpdateRequest(
@@ -14274,6 +14276,269 @@ client.payment_methods.find(
 <dd>
 
 **entity_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Entity ID to filter
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Transaction
+<details><summary><code>client.transaction.<a href="src/mercoa/transaction/client.py">find</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Search transactions
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+import datetime
+
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.transaction.find(
+    start_date=datetime.datetime.fromisoformat(
+        "2024-01-15 09:30:00+00:00",
+    ),
+    end_date=datetime.datetime.fromisoformat(
+        "2024-01-15 09:30:00+00:00",
+    ),
+    limit=10,
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entity_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter invoices by the ID or foreign ID of the entity that created the transaction.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_date:** `typing.Optional[dt.datetime]` — CREATED_AT Start date filter.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_date:** `typing.Optional[dt.datetime]` — CREATED_AT End date filter.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Number of invoices to return. Limit can range between 1 and 100, and the default is 10.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**starting_after:** `typing.Optional[InvoiceId]` — The ID of the invoice to start after. If not provided, the first page of invoices will be returned.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**search:** `typing.Optional[str]` — Find transactions by vendor name, invoice number, or amount. Partial matches are supported.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**metadata:** `typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]` — Filter transactions by invoice metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**line_item_metadata:** `typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]` — Filter transactions by invoice line item metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**line_item_gl_account_id:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter transactions by invoice line item GL account ID. Each filter will be applied as an OR condition. Duplicate keys will be ignored.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payer_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter transactions by payer ID or payer foreign ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**vendor_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter transactions by vendor ID or vendor foreign ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**invoice_id:** `typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]` — Filter transactions by invoice ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**transaction_id:** `typing.Optional[typing.Union[TransactionId, typing.Sequence[TransactionId]]]` — Filter transactions by transaction ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `typing.Optional[
+    typing.Union[TransactionStatus, typing.Sequence[TransactionStatus]]
+]` — Transaction status to filter on
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**transaction_type:** `typing.Optional[typing.Union[TransactionType, typing.Sequence[TransactionType]]]` — Filter transactions by transaction type
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.transaction.<a href="src/mercoa/transaction/client.py">get</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Get Transaction
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.transaction.get(
+    transaction_id="trx_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**transaction_id:** `TransactionId` 
     
 </dd>
 </dl>

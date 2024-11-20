@@ -324,6 +324,7 @@ class InvoiceTemplateClient:
                 payment_destination_id="pm_5fde2f4a-facc-48ef-8f0d-6b7d087c7b18",
                 payment_destination_options=PaymentDestinationOptions_Check(
                     delivery="MAIL",
+                    print_description=True,
                 ),
                 line_items=[
                     InvoiceLineItemCreationRequest(
@@ -614,6 +615,7 @@ class InvoiceTemplateClient:
                 payment_destination_id="pm_5fde2f4a-facc-48ef-8f0d-6b7d087c7b18",
                 payment_destination_options=PaymentDestinationOptions_Check(
                     delivery="MAIL",
+                    print_description=True,
                 ),
                 line_items=[
                     InvoiceLineItemUpdateRequest(
@@ -1139,6 +1141,7 @@ class AsyncInvoiceTemplateClient:
                     payment_destination_id="pm_5fde2f4a-facc-48ef-8f0d-6b7d087c7b18",
                     payment_destination_options=PaymentDestinationOptions_Check(
                         delivery="MAIL",
+                        print_description=True,
                     ),
                     line_items=[
                         InvoiceLineItemCreationRequest(
@@ -1444,6 +1447,7 @@ class AsyncInvoiceTemplateClient:
                     payment_destination_id="pm_5fde2f4a-facc-48ef-8f0d-6b7d087c7b18",
                     payment_destination_options=PaymentDestinationOptions_Check(
                         delivery="MAIL",
+                        print_description=True,
                     ),
                     line_items=[
                         InvoiceLineItemUpdateRequest(

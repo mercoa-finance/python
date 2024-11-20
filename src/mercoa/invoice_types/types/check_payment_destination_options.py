@@ -15,12 +15,18 @@ class CheckPaymentDestinationOptions(UniversalBaseModel):
 
     CheckPaymentDestinationOptions(
         delivery="MAIL",
+        print_description=True,
     )
     """
 
     delivery: typing.Optional[CheckDeliveryMethod] = pydantic.Field(default=None)
     """
     Delivery method for check disbursements. Defaults to MAIL.
+    """
+
+    print_description: typing.Optional[bool] = pydantic.Field(alias="printDescription", default=None)
+    """
+    If true, prints the invoice description (noteToSelf) on the check note. Defaults to false.
     """
 
     if IS_PYDANTIC_V2:

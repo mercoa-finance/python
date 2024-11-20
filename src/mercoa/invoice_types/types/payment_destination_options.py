@@ -4,8 +4,8 @@ from __future__ import annotations
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
 from .check_delivery_method import CheckDeliveryMethod
-from ...core.pydantic_utilities import IS_PYDANTIC_V2
 import pydantic
+from ...core.pydantic_utilities import IS_PYDANTIC_V2
 from .bank_delivery_method import BankDeliveryMethod
 
 
@@ -17,11 +17,13 @@ class PaymentDestinationOptions_Check(UniversalBaseModel):
 
     PaymentDestinationOptions_Check(
         delivery="MAIL",
+        print_description=True,
     )
     """
 
     type: typing.Literal["check"] = "check"
     delivery: typing.Optional[CheckDeliveryMethod] = None
+    print_description: typing.Optional[bool] = pydantic.Field(alias="printDescription", default=None)
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -41,6 +43,7 @@ class PaymentDestinationOptions_BankAccount(UniversalBaseModel):
 
     PaymentDestinationOptions_Check(
         delivery="MAIL",
+        print_description=True,
     )
     """
 
@@ -66,6 +69,7 @@ class PaymentDestinationOptions_Utility(UniversalBaseModel):
 
     PaymentDestinationOptions_Check(
         delivery="MAIL",
+        print_description=True,
     )
     """
 
@@ -87,6 +91,7 @@ from mercoa.invoice_types import PaymentDestinationOptions_Check
 
 PaymentDestinationOptions_Check(
     delivery="MAIL",
+    print_description=True,
 )
 """
 PaymentDestinationOptions = typing.Union[
