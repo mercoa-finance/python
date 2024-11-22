@@ -20,6 +20,7 @@ from ....vendor_credit_types.types.vendor_credit_id import VendorCreditId
 from ....vendor_credit_types.types.vendor_credit_response import VendorCreditResponse
 from ....vendor_credit_types.types.vendor_credit_request import VendorCreditRequest
 from ....payment_method_types.types.currency_code import CurrencyCode
+from ....invoice_types.types.invoice_id import InvoiceId
 from ....vendor_credit_types.types.calculate_vendor_credit_usage_response import CalculateVendorCreditUsageResponse
 from ....core.client_wrapper import AsyncClientWrapper
 
@@ -549,6 +550,8 @@ class VendorCreditClient:
         *,
         amount: float,
         currency: typing.Optional[CurrencyCode] = None,
+        excluded_invoice_ids: typing.Optional[typing.Sequence[InvoiceId]] = None,
+        included_vendor_credit_ids: typing.Optional[typing.Sequence[VendorCreditId]] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CalculateVendorCreditUsageResponse:
         """
@@ -567,6 +570,12 @@ class VendorCreditClient:
 
         currency : typing.Optional[CurrencyCode]
             The currency of the invoice to calculate vendor credit usage for. Defaults to USD.
+
+        excluded_invoice_ids : typing.Optional[typing.Sequence[InvoiceId]]
+            List of invoice IDs to exclude from the calculation. If not provided or an empty list, no invoices will be excluded. This is useful for recalculating vendor credit usage on invoices that already have vendor credits applied.
+
+        included_vendor_credit_ids : typing.Optional[typing.Sequence[VendorCreditId]]
+            List of vendor credit IDs to include in the calculation. If not provided, all applicable vendor credits will be included, while an empty list will not include ANY vendor credits. This is useful for recalculating vendor credit usage on invoices that have a fixed list of applied vendor credits (e.g. a SCHEDULED or PENDING invoice).
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -596,6 +605,8 @@ class VendorCreditClient:
             params={
                 "amount": amount,
                 "currency": currency,
+                "excludedInvoiceIds": jsonable_encoder(excluded_invoice_ids),
+                "includedVendorCreditIds": jsonable_encoder(included_vendor_credit_ids),
             },
             request_options=request_options,
         )
@@ -1239,6 +1250,8 @@ class AsyncVendorCreditClient:
         *,
         amount: float,
         currency: typing.Optional[CurrencyCode] = None,
+        excluded_invoice_ids: typing.Optional[typing.Sequence[InvoiceId]] = None,
+        included_vendor_credit_ids: typing.Optional[typing.Sequence[VendorCreditId]] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CalculateVendorCreditUsageResponse:
         """
@@ -1257,6 +1270,12 @@ class AsyncVendorCreditClient:
 
         currency : typing.Optional[CurrencyCode]
             The currency of the invoice to calculate vendor credit usage for. Defaults to USD.
+
+        excluded_invoice_ids : typing.Optional[typing.Sequence[InvoiceId]]
+            List of invoice IDs to exclude from the calculation. If not provided or an empty list, no invoices will be excluded. This is useful for recalculating vendor credit usage on invoices that already have vendor credits applied.
+
+        included_vendor_credit_ids : typing.Optional[typing.Sequence[VendorCreditId]]
+            List of vendor credit IDs to include in the calculation. If not provided, all applicable vendor credits will be included, while an empty list will not include ANY vendor credits. This is useful for recalculating vendor credit usage on invoices that have a fixed list of applied vendor credits (e.g. a SCHEDULED or PENDING invoice).
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1294,6 +1313,8 @@ class AsyncVendorCreditClient:
             params={
                 "amount": amount,
                 "currency": currency,
+                "excludedInvoiceIds": jsonable_encoder(excluded_invoice_ids),
+                "includedVendorCreditIds": jsonable_encoder(included_vendor_credit_ids),
             },
             request_options=request_options,
         )

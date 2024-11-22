@@ -5,8 +5,9 @@ from ...core.client_wrapper import SyncClientWrapper
 from .notification_policy.client import NotificationPolicyClient
 from .notifications.client import NotificationsClient
 from ...entity_types.types.entity_id import EntityId
+from ...entity_types.types.entity_user_id import EntityUserId
 from ...core.request_options import RequestOptions
-from ...entity_types.types.entity_user_response import EntityUserResponse
+from ...entity_types.types.find_entity_user_response import FindEntityUserResponse
 from ...core.jsonable_encoder import jsonable_encoder
 from json.decoder import JSONDecodeError
 from ...core.api_error import ApiError
@@ -18,9 +19,8 @@ from ...commons.errors.not_found import NotFound
 from ...commons.errors.conflict import Conflict
 from ...commons.errors.internal_server_error import InternalServerError
 from ...commons.errors.unimplemented import Unimplemented
-from ...entity_types.types.entity_user_id import EntityUserId
-from ...entity_types.types.find_entity_user_response import FindEntityUserResponse
 from ...entity_types.types.entity_user_request import EntityUserRequest
+from ...entity_types.types.entity_user_response import EntityUserResponse
 from ...entity_types.types.token_generation_options import TokenGenerationOptions
 from ...core.client_wrapper import AsyncClientWrapper
 from .notification_policy.client import AsyncNotificationPolicyClient
@@ -35,125 +35,6 @@ class UserClient:
         self._client_wrapper = client_wrapper
         self.notification_policy = NotificationPolicyClient(client_wrapper=self._client_wrapper)
         self.notifications = NotificationsClient(client_wrapper=self._client_wrapper)
-
-    def get_all(
-        self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> typing.List[EntityUserResponse]:
-        """
-        Get all entity users (DEPRECATED, use Search Entity Users)
-
-        Parameters
-        ----------
-        entity_id : EntityId
-            Entity ID or Entity ForeignID
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        typing.List[EntityUserResponse]
-
-        Examples
-        --------
-        from mercoa import Mercoa
-
-        client = Mercoa(
-            token="YOUR_TOKEN",
-        )
-        client.entity.user.get_all(
-            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-        )
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            f"entity/{jsonable_encoder(entity_id)}/users",
-            method="GET",
-            request_options=request_options,
-        )
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if 200 <= _response.status_code < 300:
-            return typing.cast(
-                typing.List[EntityUserResponse],
-                parse_obj_as(
-                    type_=typing.List[EntityUserResponse],  # type: ignore
-                    object_=_response_json,
-                ),
-            )
-        if "errorName" in _response_json:
-            if _response_json["errorName"] == "BadRequest":
-                raise BadRequest(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Unauthorized":
-                raise Unauthorized(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Forbidden":
-                raise Forbidden(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "NotFound":
-                raise NotFound(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Conflict":
-                raise Conflict(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "InternalServerError":
-                raise InternalServerError(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Unimplemented":
-                raise Unimplemented(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-        raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def find(
         self,
@@ -214,7 +95,7 @@ class UserClient:
         """
         _response = self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/users",
-            method="PUT",
+            method="GET",
             params={
                 "foreignId": foreign_id,
                 "role": role,
@@ -964,133 +845,6 @@ class AsyncUserClient:
         self.notification_policy = AsyncNotificationPolicyClient(client_wrapper=self._client_wrapper)
         self.notifications = AsyncNotificationsClient(client_wrapper=self._client_wrapper)
 
-    async def get_all(
-        self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> typing.List[EntityUserResponse]:
-        """
-        Get all entity users (DEPRECATED, use Search Entity Users)
-
-        Parameters
-        ----------
-        entity_id : EntityId
-            Entity ID or Entity ForeignID
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        typing.List[EntityUserResponse]
-
-        Examples
-        --------
-        import asyncio
-
-        from mercoa import AsyncMercoa
-
-        client = AsyncMercoa(
-            token="YOUR_TOKEN",
-        )
-
-
-        async def main() -> None:
-            await client.entity.user.get_all(
-                entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            f"entity/{jsonable_encoder(entity_id)}/users",
-            method="GET",
-            request_options=request_options,
-        )
-        try:
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, body=_response.text)
-        if 200 <= _response.status_code < 300:
-            return typing.cast(
-                typing.List[EntityUserResponse],
-                parse_obj_as(
-                    type_=typing.List[EntityUserResponse],  # type: ignore
-                    object_=_response_json,
-                ),
-            )
-        if "errorName" in _response_json:
-            if _response_json["errorName"] == "BadRequest":
-                raise BadRequest(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Unauthorized":
-                raise Unauthorized(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Forbidden":
-                raise Forbidden(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "NotFound":
-                raise NotFound(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Conflict":
-                raise Conflict(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "InternalServerError":
-                raise InternalServerError(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-            if _response_json["errorName"] == "Unimplemented":
-                raise Unimplemented(
-                    typing.cast(
-                        str,
-                        parse_obj_as(
-                            type_=str,  # type: ignore
-                            object_=_response_json["content"],
-                        ),
-                    )
-                )
-        raise ApiError(status_code=_response.status_code, body=_response_json)
-
     async def find(
         self,
         entity_id: EntityId,
@@ -1158,7 +912,7 @@ class AsyncUserClient:
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/users",
-            method="PUT",
+            method="GET",
             params={
                 "foreignId": foreign_id,
                 "role": role,

@@ -74,6 +74,7 @@ class InvoiceClient:
         line_item_gl_account_id: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
+        creator_user_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]] = None,
         approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]] = None,
         approver_action: typing.Optional[typing.Union[ApproverAction, typing.Sequence[ApproverAction]]] = None,
         invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]] = None,
@@ -90,7 +91,7 @@ class InvoiceClient:
         Parameters
         ----------
         entity_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
-            Filter invoices by the ID or foreign ID of the entity that created the invoice.
+            Filter invoices by the ID or foreign ID of the entity that is the payer or the vendor of the invoice.
 
         start_date : typing.Optional[dt.datetime]
             Start date filter. Defaults to CREATED_AT unless specified the dateType is specified
@@ -130,6 +131,9 @@ class InvoiceClient:
 
         vendor_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
             Filter invoices by vendor ID or vendor foreign ID.
+
+        creator_user_id : typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]
+            Filter invoices by the ID or foreign ID of the user that created the invoice.
 
         approver_id : typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]
             Filter invoices by assigned approver user ID.
@@ -185,6 +189,7 @@ class InvoiceClient:
                 "lineItemGlAccountId": line_item_gl_account_id,
                 "payerId": payer_id,
                 "vendorId": vendor_id,
+                "creatorUserId": creator_user_id,
                 "approverId": approver_id,
                 "approverAction": approver_action,
                 "invoiceId": invoice_id,
@@ -1007,6 +1012,7 @@ class AsyncInvoiceClient:
         line_item_gl_account_id: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
+        creator_user_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]] = None,
         approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]] = None,
         approver_action: typing.Optional[typing.Union[ApproverAction, typing.Sequence[ApproverAction]]] = None,
         invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]] = None,
@@ -1023,7 +1029,7 @@ class AsyncInvoiceClient:
         Parameters
         ----------
         entity_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
-            Filter invoices by the ID or foreign ID of the entity that created the invoice.
+            Filter invoices by the ID or foreign ID of the entity that is the payer or the vendor of the invoice.
 
         start_date : typing.Optional[dt.datetime]
             Start date filter. Defaults to CREATED_AT unless specified the dateType is specified
@@ -1063,6 +1069,9 @@ class AsyncInvoiceClient:
 
         vendor_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
             Filter invoices by vendor ID or vendor foreign ID.
+
+        creator_user_id : typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]
+            Filter invoices by the ID or foreign ID of the user that created the invoice.
 
         approver_id : typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]
             Filter invoices by assigned approver user ID.
@@ -1126,6 +1135,7 @@ class AsyncInvoiceClient:
                 "lineItemGlAccountId": line_item_gl_account_id,
                 "payerId": payer_id,
                 "vendorId": vendor_id,
+                "creatorUserId": creator_user_id,
                 "approverId": approver_id,
                 "approverAction": approver_action,
                 "invoiceId": invoice_id,

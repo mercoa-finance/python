@@ -4,9 +4,10 @@ from ..core.client_wrapper import SyncClientWrapper
 import typing
 from ..entity_types.types.entity_id import EntityId
 import datetime as dt
-from ..invoice_types.types.invoice_id import InvoiceId
-from ..invoice_types.types.metadata_filter import MetadataFilter
 from .types.transaction_id import TransactionId
+from ..invoice_types.types.metadata_filter import MetadataFilter
+from ..entity_types.types.entity_user_id import EntityUserId
+from ..invoice_types.types.invoice_id import InvoiceId
 from .types.transaction_status import TransactionStatus
 from .types.transaction_type import TransactionType
 from ..core.request_options import RequestOptions
@@ -38,13 +39,14 @@ class TransactionClient:
         start_date: typing.Optional[dt.datetime] = None,
         end_date: typing.Optional[dt.datetime] = None,
         limit: typing.Optional[int] = None,
-        starting_after: typing.Optional[InvoiceId] = None,
+        starting_after: typing.Optional[TransactionId] = None,
         search: typing.Optional[str] = None,
         metadata: typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]] = None,
         line_item_metadata: typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]] = None,
         line_item_gl_account_id: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
+        creator_user_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]] = None,
         invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]] = None,
         transaction_id: typing.Optional[typing.Union[TransactionId, typing.Sequence[TransactionId]]] = None,
         status: typing.Optional[typing.Union[TransactionStatus, typing.Sequence[TransactionStatus]]] = None,
@@ -57,7 +59,7 @@ class TransactionClient:
         Parameters
         ----------
         entity_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
-            Filter invoices by the ID or foreign ID of the entity that created the transaction.
+            Filter transactions by the ID or foreign ID of the entity that is the payer or the vendor of the invoice that created the transaction.
 
         start_date : typing.Optional[dt.datetime]
             CREATED_AT Start date filter.
@@ -66,10 +68,10 @@ class TransactionClient:
             CREATED_AT End date filter.
 
         limit : typing.Optional[int]
-            Number of invoices to return. Limit can range between 1 and 100, and the default is 10.
+            Number of transactions to return. Limit can range between 1 and 100, and the default is 10.
 
-        starting_after : typing.Optional[InvoiceId]
-            The ID of the invoice to start after. If not provided, the first page of invoices will be returned.
+        starting_after : typing.Optional[TransactionId]
+            The ID of the transactions to start after. If not provided, the first page of transactions will be returned.
 
         search : typing.Optional[str]
             Find transactions by vendor name, invoice number, or amount. Partial matches are supported.
@@ -88,6 +90,9 @@ class TransactionClient:
 
         vendor_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
             Filter transactions by vendor ID or vendor foreign ID.
+
+        creator_user_id : typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]
+            Filter transactions by the ID or foreign ID of the user that created the invoice that created the transaction.
 
         invoice_id : typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]
             Filter transactions by invoice ID.
@@ -142,6 +147,7 @@ class TransactionClient:
                 "lineItemGlAccountId": line_item_gl_account_id,
                 "payerId": payer_id,
                 "vendorId": vendor_id,
+                "creatorUserId": creator_user_id,
                 "invoiceId": invoice_id,
                 "transactionId": transaction_id,
                 "status": status,
@@ -364,13 +370,14 @@ class AsyncTransactionClient:
         start_date: typing.Optional[dt.datetime] = None,
         end_date: typing.Optional[dt.datetime] = None,
         limit: typing.Optional[int] = None,
-        starting_after: typing.Optional[InvoiceId] = None,
+        starting_after: typing.Optional[TransactionId] = None,
         search: typing.Optional[str] = None,
         metadata: typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]] = None,
         line_item_metadata: typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]] = None,
         line_item_gl_account_id: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
+        creator_user_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]] = None,
         invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]] = None,
         transaction_id: typing.Optional[typing.Union[TransactionId, typing.Sequence[TransactionId]]] = None,
         status: typing.Optional[typing.Union[TransactionStatus, typing.Sequence[TransactionStatus]]] = None,
@@ -383,7 +390,7 @@ class AsyncTransactionClient:
         Parameters
         ----------
         entity_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
-            Filter invoices by the ID or foreign ID of the entity that created the transaction.
+            Filter transactions by the ID or foreign ID of the entity that is the payer or the vendor of the invoice that created the transaction.
 
         start_date : typing.Optional[dt.datetime]
             CREATED_AT Start date filter.
@@ -392,10 +399,10 @@ class AsyncTransactionClient:
             CREATED_AT End date filter.
 
         limit : typing.Optional[int]
-            Number of invoices to return. Limit can range between 1 and 100, and the default is 10.
+            Number of transactions to return. Limit can range between 1 and 100, and the default is 10.
 
-        starting_after : typing.Optional[InvoiceId]
-            The ID of the invoice to start after. If not provided, the first page of invoices will be returned.
+        starting_after : typing.Optional[TransactionId]
+            The ID of the transactions to start after. If not provided, the first page of transactions will be returned.
 
         search : typing.Optional[str]
             Find transactions by vendor name, invoice number, or amount. Partial matches are supported.
@@ -414,6 +421,9 @@ class AsyncTransactionClient:
 
         vendor_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
             Filter transactions by vendor ID or vendor foreign ID.
+
+        creator_user_id : typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]
+            Filter transactions by the ID or foreign ID of the user that created the invoice that created the transaction.
 
         invoice_id : typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]
             Filter transactions by invoice ID.
@@ -475,6 +485,7 @@ class AsyncTransactionClient:
                 "lineItemGlAccountId": line_item_gl_account_id,
                 "payerId": payer_id,
                 "vendorId": vendor_id,
+                "creatorUserId": creator_user_id,
                 "invoiceId": invoice_id,
                 "transactionId": transaction_id,
                 "status": status,

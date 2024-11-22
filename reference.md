@@ -3501,76 +3501,6 @@ client.entity.payment_method.delete(
 </details>
 
 ## Entity User
-<details><summary><code>client.entity.user.<a href="src/mercoa/entity/user/client.py">get_all</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Get all entity users (DEPRECATED, use Search Entity Users)
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mercoa import Mercoa
-
-client = Mercoa(
-    token="YOUR_TOKEN",
-)
-client.entity.user.get_all(
-    entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entity_id:** `EntityId` — Entity ID or Entity ForeignID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 <details><summary><code>client.entity.user.<a href="src/mercoa/entity/user/client.py">find</a>(...)</code></summary>
 <dl>
 <dd>
@@ -4155,7 +4085,7 @@ client.invoice_template.find(
 <dl>
 <dd>
 
-**entity_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter invoice templates by the ID or foreign ID of the entity that created the invoice template.
+**entity_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter invoice templates by the ID or foreign ID of the entity that is the payer or the vendor of the invoice template.
     
 </dd>
 </dl>
@@ -4260,6 +4190,14 @@ client.invoice_template.find(
 <dd>
 
 **vendor_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter invoice templates by vendor ID or vendor foreign ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**creator_user_id:** `typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]` — Filter invoices by the ID or foreign ID of the user that created the invoice.
     
 </dd>
 </dl>
@@ -4828,7 +4766,7 @@ client.invoice.find(
 <dl>
 <dd>
 
-**entity_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter invoices by the ID or foreign ID of the entity that created the invoice.
+**entity_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter invoices by the ID or foreign ID of the entity that is the payer or the vendor of the invoice.
     
 </dd>
 </dl>
@@ -4933,6 +4871,14 @@ client.invoice.find(
 <dd>
 
 **vendor_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter invoices by vendor ID or vendor foreign ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**creator_user_id:** `typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]` — Filter invoices by the ID or foreign ID of the user that created the invoice.
     
 </dd>
 </dl>
@@ -6984,6 +6930,14 @@ client.entity_group.invoice.find(
 <dl>
 <dd>
 
+**creator_user_id:** `typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]` — Filter invoices by the ID or foreign ID of the user that created the invoice.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **approver_id:** `typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]` — Filter invoices by assigned approver user ID.
     
 </dd>
@@ -8041,6 +7995,22 @@ client.entity.counterparty.vendor_credit.estimate_usage(
 <dd>
 
 **currency:** `typing.Optional[CurrencyCode]` — The currency of the invoice to calculate vendor credit usage for. Defaults to USD.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**excluded_invoice_ids:** `typing.Optional[typing.Sequence[InvoiceId]]` — List of invoice IDs to exclude from the calculation. If not provided or an empty list, no invoices will be excluded. This is useful for recalculating vendor credit usage on invoices that already have vendor credits applied.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**included_vendor_credit_ids:** `typing.Optional[typing.Sequence[VendorCreditId]]` — List of vendor credit IDs to include in the calculation. If not provided, all applicable vendor credits will be included, while an empty list will not include ANY vendor credits. This is useful for recalculating vendor credit usage on invoices that have a fixed list of applied vendor credits (e.g. a SCHEDULED or PENDING invoice).
     
 </dd>
 </dl>
@@ -9405,6 +9375,14 @@ client.entity.invoice.find(
 <dd>
 
 **vendor_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter invoices by vendor ID or vendor foreign ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**creator_user_id:** `typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]` — Filter invoices by the ID or foreign ID of the user that created the invoice.
     
 </dd>
 </dl>
@@ -14354,7 +14332,7 @@ client.transaction.find(
 <dl>
 <dd>
 
-**entity_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter invoices by the ID or foreign ID of the entity that created the transaction.
+**entity_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter transactions by the ID or foreign ID of the entity that is the payer or the vendor of the invoice that created the transaction.
     
 </dd>
 </dl>
@@ -14378,7 +14356,7 @@ client.transaction.find(
 <dl>
 <dd>
 
-**limit:** `typing.Optional[int]` — Number of invoices to return. Limit can range between 1 and 100, and the default is 10.
+**limit:** `typing.Optional[int]` — Number of transactions to return. Limit can range between 1 and 100, and the default is 10.
     
 </dd>
 </dl>
@@ -14386,7 +14364,7 @@ client.transaction.find(
 <dl>
 <dd>
 
-**starting_after:** `typing.Optional[InvoiceId]` — The ID of the invoice to start after. If not provided, the first page of invoices will be returned.
+**starting_after:** `typing.Optional[TransactionId]` — The ID of the transactions to start after. If not provided, the first page of transactions will be returned.
     
 </dd>
 </dl>
@@ -14435,6 +14413,14 @@ client.transaction.find(
 <dd>
 
 **vendor_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter transactions by vendor ID or vendor foreign ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**creator_user_id:** `typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]` — Filter transactions by the ID or foreign ID of the user that created the invoice that created the transaction.
     
 </dd>
 </dl>
