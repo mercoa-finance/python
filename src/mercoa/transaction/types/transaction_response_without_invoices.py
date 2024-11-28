@@ -64,8 +64,26 @@ class TransactionResponseWithoutInvoices_Custom(UniversalBaseModel):
             extra = pydantic.Extra.allow
 
 
+class TransactionResponseWithoutInvoices_OffPlatform(UniversalBaseModel):
+    type: typing.Literal["offPlatform"] = "offPlatform"
+    id: TransactionId
+    status: TransactionStatus
+    created_at: dt.datetime = pydantic.Field(alias="createdAt")
+    updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow
+
+
 TransactionResponseWithoutInvoices = typing.Union[
     TransactionResponseWithoutInvoices_BankAccountToBankAccount,
     TransactionResponseWithoutInvoices_BankAccountToMailedCheck,
     TransactionResponseWithoutInvoices_Custom,
+    TransactionResponseWithoutInvoices_OffPlatform,
 ]

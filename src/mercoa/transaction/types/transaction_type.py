@@ -3,5 +3,5 @@
 import typing
 
 TransactionType = typing.Union[
-    typing.Literal["bankAccountToBankAccount", "bankAccountToMailedCheck", "custom"], typing.Any
+    typing.Literal["bankAccountToBankAccount", "bankAccountToMailedCheck", "custom", "offPlatform"], typing.Any
 ]

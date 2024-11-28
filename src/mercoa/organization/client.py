@@ -285,6 +285,8 @@ class OrganizationClient:
                     secondary_color="string",
                     logo_background_color="string",
                     rounded_corners=1,
+                    font_family="string",
+                    font_size="string",
                 ),
                 payee_onboarding_options=OnboardingOptionsRequest(
                     enable_business=True,
@@ -1135,6 +1137,8 @@ class AsyncOrganizationClient:
                         secondary_color="string",
                         logo_background_color="string",
                         rounded_corners=1,
+                        font_family="string",
+                        font_size="string",
                     ),
                     payee_onboarding_options=OnboardingOptionsRequest(
                         enable_business=True,

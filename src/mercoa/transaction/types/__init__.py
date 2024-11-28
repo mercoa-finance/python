@@ -8,6 +8,7 @@ from .transaction_response import (
     TransactionResponse_BankAccountToBankAccount,
     TransactionResponse_BankAccountToMailedCheck,
     TransactionResponse_Custom,
+    TransactionResponse_OffPlatform,
 )
 from .transaction_response_bank_to_bank_base import TransactionResponseBankToBankBase
 from .transaction_response_bank_to_bank_with_invoices import TransactionResponseBankToBankWithInvoices
@@ -20,6 +21,7 @@ from .transaction_response_without_invoices import (
     TransactionResponseWithoutInvoices_BankAccountToBankAccount,
     TransactionResponseWithoutInvoices_BankAccountToMailedCheck,
     TransactionResponseWithoutInvoices_Custom,
+    TransactionResponseWithoutInvoices_OffPlatform,
 )
 from .transaction_status import TransactionStatus
 from .transaction_type import TransactionType
@@ -39,9 +41,11 @@ __all__ = [
     "TransactionResponseWithoutInvoices_BankAccountToBankAccount",
     "TransactionResponseWithoutInvoices_BankAccountToMailedCheck",
     "TransactionResponseWithoutInvoices_Custom",
+    "TransactionResponseWithoutInvoices_OffPlatform",
     "TransactionResponse_BankAccountToBankAccount",
     "TransactionResponse_BankAccountToMailedCheck",
     "TransactionResponse_Custom",
+    "TransactionResponse_OffPlatform",
     "TransactionStatus",
     "TransactionType",
 ]

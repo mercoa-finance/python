@@ -15,9 +15,11 @@ from .types import (
     TransactionResponseWithoutInvoices_BankAccountToBankAccount,
     TransactionResponseWithoutInvoices_BankAccountToMailedCheck,
     TransactionResponseWithoutInvoices_Custom,
+    TransactionResponseWithoutInvoices_OffPlatform,
     TransactionResponse_BankAccountToBankAccount,
     TransactionResponse_BankAccountToMailedCheck,
     TransactionResponse_Custom,
+    TransactionResponse_OffPlatform,
     TransactionStatus,
     TransactionType,
 )
@@ -37,9 +39,11 @@ __all__ = [
     "TransactionResponseWithoutInvoices_BankAccountToBankAccount",
     "TransactionResponseWithoutInvoices_BankAccountToMailedCheck",
     "TransactionResponseWithoutInvoices_Custom",
+    "TransactionResponseWithoutInvoices_OffPlatform",
     "TransactionResponse_BankAccountToBankAccount",
     "TransactionResponse_BankAccountToMailedCheck",
     "TransactionResponse_Custom",
+    "TransactionResponse_OffPlatform",
     "TransactionStatus",
     "TransactionType",
 ]
