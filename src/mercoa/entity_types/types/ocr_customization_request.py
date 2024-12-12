@@ -18,6 +18,7 @@ class OcrCustomizationRequest(UniversalBaseModel):
         line_item_metadata=True,
         line_item_gl_account_id=True,
         predict_metadata=True,
+        tax_and_shipping_as_line_items=True,
     )
     """
 
@@ -44,6 +45,13 @@ class OcrCustomizationRequest(UniversalBaseModel):
     predict_metadata: typing.Optional[bool] = pydantic.Field(alias="predictMetadata", default=None)
     """
     Use AI to predict metadata from historical data. Defaults to true.
+    """
+
+    tax_and_shipping_as_line_items: typing.Optional[bool] = pydantic.Field(
+        alias="taxAndShippingAsLineItems", default=None
+    )
+    """
+    Pull tax and shipping information as line items. Defaults to true. If false, tax and shipping will extracted as invoice level fields.
     """
 
     if IS_PYDANTIC_V2:

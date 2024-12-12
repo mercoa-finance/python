@@ -86,6 +86,7 @@ class EntityClient:
         is_payee: typing.Optional[bool] = None,
         is_payor: typing.Optional[bool] = None,
         name: typing.Optional[str] = None,
+        search: typing.Optional[str] = None,
         metadata: typing.Optional[MetadataFilter] = None,
         return_metadata: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         limit: typing.Optional[int] = None,
@@ -117,7 +118,10 @@ class EntityClient:
             If false, entities that are marked as payors will not be returned.
 
         name : typing.Optional[str]
-            Filter entities by name. Partial matches are supported.
+            Use search instead. Deprecated. Filter entities by name. Partial matches are supported.
+
+        search : typing.Optional[str]
+            Find entities by name, email, or emailTo. Partial matches are supported.
 
         metadata : typing.Optional[MetadataFilter]
             Filter entities by simple key/value metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
@@ -162,6 +166,7 @@ class EntityClient:
                 "isPayee": is_payee,
                 "isPayor": is_payor,
                 "name": name,
+                "search": search,
                 "metadata": jsonable_encoder(metadata),
                 "returnMetadata": return_metadata,
                 "limit": limit,
@@ -1742,6 +1747,7 @@ class AsyncEntityClient:
         is_payee: typing.Optional[bool] = None,
         is_payor: typing.Optional[bool] = None,
         name: typing.Optional[str] = None,
+        search: typing.Optional[str] = None,
         metadata: typing.Optional[MetadataFilter] = None,
         return_metadata: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         limit: typing.Optional[int] = None,
@@ -1773,7 +1779,10 @@ class AsyncEntityClient:
             If false, entities that are marked as payors will not be returned.
 
         name : typing.Optional[str]
-            Filter entities by name. Partial matches are supported.
+            Use search instead. Deprecated. Filter entities by name. Partial matches are supported.
+
+        search : typing.Optional[str]
+            Find entities by name, email, or emailTo. Partial matches are supported.
 
         metadata : typing.Optional[MetadataFilter]
             Filter entities by simple key/value metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
@@ -1826,6 +1835,7 @@ class AsyncEntityClient:
                 "isPayee": is_payee,
                 "isPayor": is_payor,
                 "name": name,
+                "search": search,
                 "metadata": jsonable_encoder(metadata),
                 "returnMetadata": return_metadata,
                 "limit": limit,

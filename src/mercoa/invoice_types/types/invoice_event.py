@@ -3,9 +3,10 @@
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
 import pydantic
-from .invoice_response import InvoiceResponse
+from .invoice_update_request import InvoiceUpdateRequest
 from ...entity_types.types.entity_user_id import EntityUserId
 import datetime as dt
+from .invoice_status import InvoiceStatus
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -15,113 +16,58 @@ class InvoiceEvent(UniversalBaseModel):
     --------
     import datetime
 
-    from mercoa.commons import Address, PhoneNumber
-    from mercoa.entity_types import (
-        BusinessProfileResponse,
-        CounterpartyCustomizationAccount,
-        CounterpartyResponse,
-        Ein,
-        ProfileResponse,
-        TaxId,
+    from mercoa.invoice_types import (
+        InvoiceEvent,
+        InvoiceLineItemUpdateRequest,
+        InvoiceUpdateRequest,
+        PaymentDestinationOptions_Check,
     )
-    from mercoa.invoice_types import InvoiceEvent, InvoiceResponse
-    from mercoa.payment_method_types import PaymentMethodResponse_BankAccount
 
     InvoiceEvent(
         webhook_ids=["webhook_12345"],
         user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
-        data=InvoiceResponse(
-            id="in_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
-            status="DRAFT",
+        data=InvoiceUpdateRequest(
+            status="NEW",
+            amount=100.0,
+            currency="USD",
+            invoice_date=datetime.datetime.fromisoformat(
+                "2021-01-01 00:00:00+00:00",
+            ),
+            due_date=datetime.datetime.fromisoformat(
+                "2021-01-31 00:00:00+00:00",
+            ),
+            invoice_number="INV-123",
+            note_to_self="For the month of January",
             payer_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            payer=CounterpartyResponse(
-                id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-                foreign_id="MY-DB-ID-12345",
-                name="Acme Inc.",
-                email="customer@acme.com",
-                accepted_tos=True,
-                status="verified",
-                is_customer=True,
-                is_payor=True,
-                is_payee=False,
-                is_network_payor=False,
-                is_network_payee=False,
-                account_type="business",
-                updated_at=datetime.datetime.fromisoformat(
-                    "2024-01-02 00:00:00+00:00",
-                ),
-                created_at=datetime.datetime.fromisoformat(
-                    "2024-01-01 00:00:00+00:00",
-                ),
-                profile=ProfileResponse(
-                    business=BusinessProfileResponse(
-                        email="customer@acme.com",
-                        legal_business_name="Acme Inc.",
-                        business_type="llc",
-                        phone=PhoneNumber(
-                            country_code="1",
-                            number="4155551234",
-                        ),
-                        address=Address(
-                            address_line_1="123 Main St",
-                            address_line_2="Unit 1",
-                            city="San Francisco",
-                            state_or_province="CA",
-                            postal_code="94105",
-                            country="US",
-                        ),
-                        tax_id_provided=True,
-                        tax_id=TaxId(
-                            ein=Ein(
-                                number="12-3456789",
-                            ),
-                        ),
-                        owners_provided=True,
+            payment_source_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+            vendor_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+            payment_destination_id="pm_5fde2f4a-facc-48ef-8f0d-6b7d087c7b18",
+            payment_destination_options=PaymentDestinationOptions_Check(
+                delivery="MAIL",
+                print_description=True,
+            ),
+            line_items=[
+                InvoiceLineItemUpdateRequest(
+                    id="inli_26672f38-eb9a-48f1-a7a0-f1b855e38cd7",
+                    amount=100.0,
+                    currency="USD",
+                    description="Product A",
+                    name="Product A",
+                    quantity=1.0,
+                    unit_price=100.0,
+                    category="EXPENSE",
+                    service_start_date=datetime.datetime.fromisoformat(
+                        "2021-01-01 00:00:00+00:00",
                     ),
-                ),
-                accounts=[
-                    CounterpartyCustomizationAccount(
-                        account_id="85866843",
-                        postal_code="94105",
-                        name_on_account="John Doe",
-                    )
-                ],
-                payment_methods=[
-                    PaymentMethodResponse_BankAccount(
-                        id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
-                        account_name="My Checking Account",
-                        bank_name="Chase",
-                        routing_number="12345678",
-                        account_number="99988767623",
-                        account_type="CHECKING",
-                        status="VERIFIED",
-                        is_default_source=True,
-                        is_default_destination=True,
-                        supported_currencies=["USD"],
-                        metadata={},
-                        frozen=False,
-                        created_at=datetime.datetime.fromisoformat(
-                            "2021-01-01 00:00:00+00:00",
-                        ),
-                        updated_at=datetime.datetime.fromisoformat(
-                            "2021-01-01 00:00:00+00:00",
-                        ),
-                    )
-                ],
-                counterparty_type=["ENTITY"],
-            ),
-            payment_destination_confirmed=True,
-            has_documents=True,
-            has_source_email=True,
-            approvers=[],
-            approval_policy=[],
-            metadata={},
-            created_at=datetime.datetime.fromisoformat(
-                "2021-01-01 00:00:00+00:00",
-            ),
-            updated_at=datetime.datetime.fromisoformat(
-                "2021-01-01 00:00:00+00:00",
-            ),
+                    service_end_date=datetime.datetime.fromisoformat(
+                        "2021-01-31 00:00:00+00:00",
+                    ),
+                    metadata={"key1": "value1", "key2": "value2"},
+                    gl_account_id="600394",
+                )
+            ],
+            creator_entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            creator_user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
         ),
         created_at=datetime.datetime.fromisoformat(
             "2024-01-01 00:00:00+00:00",
@@ -130,13 +76,15 @@ class InvoiceEvent(UniversalBaseModel):
     """
 
     webhook_ids: typing.List[str] = pydantic.Field(alias="webhookIds")
-    data: InvoiceResponse
+    data: InvoiceUpdateRequest
     user_id: typing.Optional[EntityUserId] = pydantic.Field(alias="userId", default=None)
     """
     The ID of the user who triggered this event
     """
 
     created_at: dt.datetime = pydantic.Field(alias="createdAt")
+    ip_address: typing.Optional[str] = pydantic.Field(alias="ipAddress", default=None)
+    status: typing.Optional[InvoiceStatus] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

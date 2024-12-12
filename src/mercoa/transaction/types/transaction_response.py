@@ -44,11 +44,14 @@ class TransactionResponse_BankAccountToBankAccount(UniversalBaseModel):
         PaymentMethodResponse_BankAccount,
         PaymentMethodResponse_Check,
     )
-    from mercoa.transaction import TransactionResponse_BankAccountToBankAccount
+    from mercoa.transaction import (
+        TransactionResponse_BankAccountToBankAccount,
+        TransactionResponseWithoutInvoices_BankAccountToBankAccount,
+    )
 
     TransactionResponse_BankAccountToBankAccount(
         id="trx_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
-        status="COMPLETED",
+        status="PENDING",
         invoices=[
             InvoiceResponse(
                 id="in_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
@@ -253,6 +256,18 @@ class TransactionResponse_BankAccountToBankAccount(UniversalBaseModel):
                     print_description=True,
                 ),
                 payment_destination_confirmed=True,
+                transactions=[
+                    TransactionResponseWithoutInvoices_BankAccountToBankAccount(
+                        id="trx_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
+                        status="COMPLETED",
+                        created_at=datetime.datetime.fromisoformat(
+                            "2024-01-01 00:00:00+00:00",
+                        ),
+                        updated_at=datetime.datetime.fromisoformat(
+                            "2024-01-01 00:00:00+00:00",
+                        ),
+                    )
+                ],
                 has_documents=True,
                 has_source_email=True,
                 comments=[
@@ -434,11 +449,14 @@ class TransactionResponse_BankAccountToMailedCheck(UniversalBaseModel):
         PaymentMethodResponse_BankAccount,
         PaymentMethodResponse_Check,
     )
-    from mercoa.transaction import TransactionResponse_BankAccountToBankAccount
+    from mercoa.transaction import (
+        TransactionResponse_BankAccountToBankAccount,
+        TransactionResponseWithoutInvoices_BankAccountToBankAccount,
+    )
 
     TransactionResponse_BankAccountToBankAccount(
         id="trx_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
-        status="COMPLETED",
+        status="PENDING",
         invoices=[
             InvoiceResponse(
                 id="in_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
@@ -643,6 +661,18 @@ class TransactionResponse_BankAccountToMailedCheck(UniversalBaseModel):
                     print_description=True,
                 ),
                 payment_destination_confirmed=True,
+                transactions=[
+                    TransactionResponseWithoutInvoices_BankAccountToBankAccount(
+                        id="trx_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
+                        status="COMPLETED",
+                        created_at=datetime.datetime.fromisoformat(
+                            "2024-01-01 00:00:00+00:00",
+                        ),
+                        updated_at=datetime.datetime.fromisoformat(
+                            "2024-01-01 00:00:00+00:00",
+                        ),
+                    )
+                ],
                 has_documents=True,
                 has_source_email=True,
                 comments=[
@@ -824,11 +854,14 @@ class TransactionResponse_Custom(UniversalBaseModel):
         PaymentMethodResponse_BankAccount,
         PaymentMethodResponse_Check,
     )
-    from mercoa.transaction import TransactionResponse_BankAccountToBankAccount
+    from mercoa.transaction import (
+        TransactionResponse_BankAccountToBankAccount,
+        TransactionResponseWithoutInvoices_BankAccountToBankAccount,
+    )
 
     TransactionResponse_BankAccountToBankAccount(
         id="trx_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
-        status="COMPLETED",
+        status="PENDING",
         invoices=[
             InvoiceResponse(
                 id="in_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
@@ -1033,6 +1066,18 @@ class TransactionResponse_Custom(UniversalBaseModel):
                     print_description=True,
                 ),
                 payment_destination_confirmed=True,
+                transactions=[
+                    TransactionResponseWithoutInvoices_BankAccountToBankAccount(
+                        id="trx_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
+                        status="COMPLETED",
+                        created_at=datetime.datetime.fromisoformat(
+                            "2024-01-01 00:00:00+00:00",
+                        ),
+                        updated_at=datetime.datetime.fromisoformat(
+                            "2024-01-01 00:00:00+00:00",
+                        ),
+                    )
+                ],
                 has_documents=True,
                 has_source_email=True,
                 comments=[
@@ -1213,11 +1258,14 @@ class TransactionResponse_OffPlatform(UniversalBaseModel):
         PaymentMethodResponse_BankAccount,
         PaymentMethodResponse_Check,
     )
-    from mercoa.transaction import TransactionResponse_BankAccountToBankAccount
+    from mercoa.transaction import (
+        TransactionResponse_BankAccountToBankAccount,
+        TransactionResponseWithoutInvoices_BankAccountToBankAccount,
+    )
 
     TransactionResponse_BankAccountToBankAccount(
         id="trx_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
-        status="COMPLETED",
+        status="PENDING",
         invoices=[
             InvoiceResponse(
                 id="in_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
@@ -1422,6 +1470,18 @@ class TransactionResponse_OffPlatform(UniversalBaseModel):
                     print_description=True,
                 ),
                 payment_destination_confirmed=True,
+                transactions=[
+                    TransactionResponseWithoutInvoices_BankAccountToBankAccount(
+                        id="trx_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
+                        status="COMPLETED",
+                        created_at=datetime.datetime.fromisoformat(
+                            "2024-01-01 00:00:00+00:00",
+                        ),
+                        updated_at=datetime.datetime.fromisoformat(
+                            "2024-01-01 00:00:00+00:00",
+                        ),
+                    )
+                ],
                 has_documents=True,
                 has_source_email=True,
                 comments=[
@@ -1599,11 +1659,14 @@ from mercoa.payment_method_types import (
     PaymentMethodResponse_BankAccount,
     PaymentMethodResponse_Check,
 )
-from mercoa.transaction import TransactionResponse_BankAccountToBankAccount
+from mercoa.transaction import (
+    TransactionResponse_BankAccountToBankAccount,
+    TransactionResponseWithoutInvoices_BankAccountToBankAccount,
+)
 
 TransactionResponse_BankAccountToBankAccount(
     id="trx_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
-    status="COMPLETED",
+    status="PENDING",
     invoices=[
         InvoiceResponse(
             id="in_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
@@ -1808,6 +1871,18 @@ TransactionResponse_BankAccountToBankAccount(
                 print_description=True,
             ),
             payment_destination_confirmed=True,
+            transactions=[
+                TransactionResponseWithoutInvoices_BankAccountToBankAccount(
+                    id="trx_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
+                    status="COMPLETED",
+                    created_at=datetime.datetime.fromisoformat(
+                        "2024-01-01 00:00:00+00:00",
+                    ),
+                    updated_at=datetime.datetime.fromisoformat(
+                        "2024-01-01 00:00:00+00:00",
+                    ),
+                )
+            ],
             has_documents=True,
             has_source_email=True,
             comments=[

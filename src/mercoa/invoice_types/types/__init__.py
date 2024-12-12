@@ -57,7 +57,6 @@ from .payment_destination_options import (
     PaymentDestinationOptions_Check,
     PaymentDestinationOptions_Utility,
 )
-from .payment_month_repeat_type import PaymentMonthRepeatType
 from .payment_month_schedule import PaymentMonthSchedule
 from .payment_schedule import (
     PaymentSchedule,
@@ -130,7 +129,6 @@ __all__ = [
     "PaymentDestinationOptions_BankAccount",
     "PaymentDestinationOptions_Check",
     "PaymentDestinationOptions_Utility",
-    "PaymentMonthRepeatType",
     "PaymentMonthSchedule",
     "PaymentSchedule",
     "PaymentScheduleBase",

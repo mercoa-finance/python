@@ -93,6 +93,16 @@ class InvoiceResponseBase(UniversalBaseModel):
     """
 
     line_items: typing.Optional[typing.List[InvoiceLineItemResponse]] = pydantic.Field(alias="lineItems", default=None)
+    tax_amount: typing.Optional[float] = pydantic.Field(alias="taxAmount", default=None)
+    """
+    Tax amount for this invoice.
+    """
+
+    shipping_amount: typing.Optional[float] = pydantic.Field(alias="shippingAmount", default=None)
+    """
+    Shipping amount for this invoice.
+    """
+
     approvers: typing.List[ApprovalSlot]
     approval_policy: typing.List[ApprovalPolicyResponse] = pydantic.Field(alias="approvalPolicy")
     metadata: typing.Dict[str, str] = pydantic.Field()

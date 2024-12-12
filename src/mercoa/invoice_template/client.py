@@ -315,8 +315,7 @@ class InvoiceTemplateClient:
                     "2021-01-10 00:00:00+00:00",
                 ),
                 payment_schedule=PaymentSchedule_Monthly(
-                    day_offset=10,
-                    offset_type="start",
+                    repeat_on_day=10,
                     ends=datetime.datetime.fromisoformat(
                         "2021-01-01 00:00:00+00:00",
                     ),
@@ -1137,8 +1136,7 @@ class AsyncInvoiceTemplateClient:
                         "2021-01-10 00:00:00+00:00",
                     ),
                     payment_schedule=PaymentSchedule_Monthly(
-                        day_offset=10,
-                        offset_type="start",
+                        repeat_on_day=10,
                         ends=datetime.datetime.fromisoformat(
                             "2021-01-01 00:00:00+00:00",
                         ),

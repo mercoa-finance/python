@@ -44,6 +44,7 @@ class FindTransactionsResponse(UniversalBaseModel):
         TransactionFailureReason,
         TransactionResponse_BankAccountToBankAccount,
         TransactionResponse_BankAccountToMailedCheck,
+        TransactionResponseWithoutInvoices_BankAccountToBankAccount,
     )
 
     FindTransactionsResponse(
@@ -257,6 +258,18 @@ class FindTransactionsResponse(UniversalBaseModel):
                             print_description=True,
                         ),
                         payment_destination_confirmed=True,
+                        transactions=[
+                            TransactionResponseWithoutInvoices_BankAccountToBankAccount(
+                                id="trx_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
+                                status="COMPLETED",
+                                created_at=datetime.datetime.fromisoformat(
+                                    "2024-01-01 00:00:00+00:00",
+                                ),
+                                updated_at=datetime.datetime.fromisoformat(
+                                    "2024-01-01 00:00:00+00:00",
+                                ),
+                            )
+                        ],
                         has_documents=True,
                         has_source_email=True,
                         comments=[
@@ -594,6 +607,18 @@ class FindTransactionsResponse(UniversalBaseModel):
                             print_description=True,
                         ),
                         payment_destination_confirmed=True,
+                        transactions=[
+                            TransactionResponseWithoutInvoices_BankAccountToBankAccount(
+                                id="trx_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
+                                status="COMPLETED",
+                                created_at=datetime.datetime.fromisoformat(
+                                    "2024-01-01 00:00:00+00:00",
+                                ),
+                                updated_at=datetime.datetime.fromisoformat(
+                                    "2024-01-01 00:00:00+00:00",
+                                ),
+                            )
+                        ],
                         has_documents=True,
                         has_source_email=True,
                         comments=[
@@ -925,6 +950,22 @@ class FindTransactionsResponse(UniversalBaseModel):
                         approvers=[],
                         approval_policy=[],
                         metadata={},
+                        transactions=[
+                            TransactionResponseWithoutInvoices_BankAccountToBankAccount(
+                                id="trx_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
+                                status="FAILED",
+                                failure_reason=TransactionFailureReason(
+                                    code="R01",
+                                    description="The source bank account does not have sufficient funds",
+                                ),
+                                created_at=datetime.datetime.fromisoformat(
+                                    "2024-01-01 00:00:00+00:00",
+                                ),
+                                updated_at=datetime.datetime.fromisoformat(
+                                    "2024-01-01 00:00:00+00:00",
+                                ),
+                            )
+                        ],
                         created_at=datetime.datetime.fromisoformat(
                             "2021-01-01 00:00:00+00:00",
                         ),

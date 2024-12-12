@@ -43,6 +43,9 @@ class InvoiceResponse(InvoiceResponseBase):
         PaymentMethodResponse_BankAccount,
         PaymentMethodResponse_Check,
     )
+    from mercoa.transaction import (
+        TransactionResponseWithoutInvoices_BankAccountToBankAccount,
+    )
 
     InvoiceResponse(
         id="in_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
@@ -247,6 +250,18 @@ class InvoiceResponse(InvoiceResponseBase):
             print_description=True,
         ),
         payment_destination_confirmed=True,
+        transactions=[
+            TransactionResponseWithoutInvoices_BankAccountToBankAccount(
+                id="trx_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
+                status="COMPLETED",
+                created_at=datetime.datetime.fromisoformat(
+                    "2024-01-01 00:00:00+00:00",
+                ),
+                updated_at=datetime.datetime.fromisoformat(
+                    "2024-01-01 00:00:00+00:00",
+                ),
+            )
+        ],
         has_documents=True,
         has_source_email=True,
         comments=[

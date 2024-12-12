@@ -115,6 +115,16 @@ class InvoiceTemplateRequestBase(UniversalBaseModel):
     If this is a recurring invoice, this will be the payment schedule for the invoice. If not provided, this will be a one-time invoice.
     """
 
+    tax_amount: typing.Optional[float] = pydantic.Field(alias="taxAmount", default=None)
+    """
+    Tax amount for this invoice.
+    """
+
+    shipping_amount: typing.Optional[float] = pydantic.Field(alias="shippingAmount", default=None)
+    """
+    Shipping amount for this invoice.
+    """
+
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
     else:

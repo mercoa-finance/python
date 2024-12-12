@@ -11,7 +11,7 @@ class MetadataFilter(UniversalBaseModel):
     key: str
     value: StringOrStringArray = pydantic.Field()
     """
-    If multiple values are provided, the filter will match if any of the values match (OR filter)
+    If multiple values are provided, the filter will match if any of the values match (OR filter). To filter for the absence of a key, use the value 'NULL'.
     """
 
     if IS_PYDANTIC_V2:

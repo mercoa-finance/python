@@ -144,6 +144,16 @@ class InvoiceRequestBase(UniversalBaseModel):
     The IDs of the vendor credits to be applied to this invoice. Passing this field will un-apply any previously applied vendor credits.
     """
 
+    tax_amount: typing.Optional[float] = pydantic.Field(alias="taxAmount", default=None)
+    """
+    Tax amount for this invoice.
+    """
+
+    shipping_amount: typing.Optional[float] = pydantic.Field(alias="shippingAmount", default=None)
+    """
+    Shipping amount for this invoice.
+    """
+
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
     else:

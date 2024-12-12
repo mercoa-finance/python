@@ -12,6 +12,27 @@ from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
 class TransactionResponseWithoutInvoices_BankAccountToBankAccount(UniversalBaseModel):
+    """
+    Examples
+    --------
+    import datetime
+
+    from mercoa.transaction import (
+        TransactionResponseWithoutInvoices_BankAccountToBankAccount,
+    )
+
+    TransactionResponseWithoutInvoices_BankAccountToBankAccount(
+        id="trx_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
+        status="PENDING",
+        created_at=datetime.datetime.fromisoformat(
+            "2024-01-01 00:00:00+00:00",
+        ),
+        updated_at=datetime.datetime.fromisoformat(
+            "2024-01-01 00:00:00+00:00",
+        ),
+    )
+    """
+
     type: typing.Literal["bankAccountToBankAccount"] = "bankAccountToBankAccount"
     failure_reason: typing.Optional[TransactionFailureReason] = pydantic.Field(alias="failureReason", default=None)
     id: TransactionId
@@ -30,6 +51,27 @@ class TransactionResponseWithoutInvoices_BankAccountToBankAccount(UniversalBaseM
 
 
 class TransactionResponseWithoutInvoices_BankAccountToMailedCheck(UniversalBaseModel):
+    """
+    Examples
+    --------
+    import datetime
+
+    from mercoa.transaction import (
+        TransactionResponseWithoutInvoices_BankAccountToBankAccount,
+    )
+
+    TransactionResponseWithoutInvoices_BankAccountToBankAccount(
+        id="trx_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
+        status="PENDING",
+        created_at=datetime.datetime.fromisoformat(
+            "2024-01-01 00:00:00+00:00",
+        ),
+        updated_at=datetime.datetime.fromisoformat(
+            "2024-01-01 00:00:00+00:00",
+        ),
+    )
+    """
+
     type: typing.Literal["bankAccountToMailedCheck"] = "bankAccountToMailedCheck"
     check_number: int = pydantic.Field(alias="checkNumber")
     id: TransactionId
@@ -48,6 +90,27 @@ class TransactionResponseWithoutInvoices_BankAccountToMailedCheck(UniversalBaseM
 
 
 class TransactionResponseWithoutInvoices_Custom(UniversalBaseModel):
+    """
+    Examples
+    --------
+    import datetime
+
+    from mercoa.transaction import (
+        TransactionResponseWithoutInvoices_BankAccountToBankAccount,
+    )
+
+    TransactionResponseWithoutInvoices_BankAccountToBankAccount(
+        id="trx_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
+        status="PENDING",
+        created_at=datetime.datetime.fromisoformat(
+            "2024-01-01 00:00:00+00:00",
+        ),
+        updated_at=datetime.datetime.fromisoformat(
+            "2024-01-01 00:00:00+00:00",
+        ),
+    )
+    """
+
     type: typing.Literal["custom"] = "custom"
     id: TransactionId
     status: TransactionStatus
@@ -65,6 +128,27 @@ class TransactionResponseWithoutInvoices_Custom(UniversalBaseModel):
 
 
 class TransactionResponseWithoutInvoices_OffPlatform(UniversalBaseModel):
+    """
+    Examples
+    --------
+    import datetime
+
+    from mercoa.transaction import (
+        TransactionResponseWithoutInvoices_BankAccountToBankAccount,
+    )
+
+    TransactionResponseWithoutInvoices_BankAccountToBankAccount(
+        id="trx_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
+        status="PENDING",
+        created_at=datetime.datetime.fromisoformat(
+            "2024-01-01 00:00:00+00:00",
+        ),
+        updated_at=datetime.datetime.fromisoformat(
+            "2024-01-01 00:00:00+00:00",
+        ),
+    )
+    """
+
     type: typing.Literal["offPlatform"] = "offPlatform"
     id: TransactionId
     status: TransactionStatus
@@ -81,6 +165,24 @@ class TransactionResponseWithoutInvoices_OffPlatform(UniversalBaseModel):
             extra = pydantic.Extra.allow
 
 
+"""
+import datetime
+
+from mercoa.transaction import (
+    TransactionResponseWithoutInvoices_BankAccountToBankAccount,
+)
+
+TransactionResponseWithoutInvoices_BankAccountToBankAccount(
+    id="trx_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
+    status="PENDING",
+    created_at=datetime.datetime.fromisoformat(
+        "2024-01-01 00:00:00+00:00",
+    ),
+    updated_at=datetime.datetime.fromisoformat(
+        "2024-01-01 00:00:00+00:00",
+    ),
+)
+"""
 TransactionResponseWithoutInvoices = typing.Union[
     TransactionResponseWithoutInvoices_BankAccountToBankAccount,
     TransactionResponseWithoutInvoices_BankAccountToMailedCheck,

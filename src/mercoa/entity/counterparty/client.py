@@ -40,6 +40,7 @@ class CounterpartyClient:
         entity_id: EntityId,
         *,
         name: typing.Optional[str] = None,
+        search: typing.Optional[str] = None,
         network_type: typing.Optional[
             typing.Union[CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]]
         ] = None,
@@ -61,7 +62,10 @@ class CounterpartyClient:
             Entity ID or Entity ForeignID
 
         name : typing.Optional[str]
-            Filter by counterparty name
+            Use search instead. Deprecated. Filter counterparties by name. Partial matches are supported.
+
+        search : typing.Optional[str]
+            Filter counterparties by name or email. Partial matches are supported.
 
         network_type : typing.Optional[typing.Union[CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]]]
             Filter by network type. By default, only ENTITY counterparties are returned.
@@ -113,6 +117,7 @@ class CounterpartyClient:
             method="GET",
             params={
                 "name": name,
+                "search": search,
                 "networkType": network_type,
                 "paymentMethods": payment_methods,
                 "invoiceMetrics": invoice_metrics,
@@ -214,6 +219,7 @@ class CounterpartyClient:
         entity_id: EntityId,
         *,
         name: typing.Optional[str] = None,
+        search: typing.Optional[str] = None,
         network_type: typing.Optional[
             typing.Union[CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]]
         ] = None,
@@ -235,7 +241,10 @@ class CounterpartyClient:
             Entity ID or Entity ForeignID
 
         name : typing.Optional[str]
-            Filter by counterparty name
+            Use search instead. Deprecated. Filter counterparties by name. Partial matches are supported.
+
+        search : typing.Optional[str]
+            Filter counterparties by name or email. Partial matches are supported.
 
         network_type : typing.Optional[typing.Union[CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]]]
             Filter by network type. By default, only ENTITY counterparties are returned.
@@ -287,6 +296,7 @@ class CounterpartyClient:
             method="GET",
             params={
                 "name": name,
+                "search": search,
                 "networkType": network_type,
                 "paymentMethods": payment_methods,
                 "invoiceMetrics": invoice_metrics,
@@ -926,6 +936,7 @@ class AsyncCounterpartyClient:
         entity_id: EntityId,
         *,
         name: typing.Optional[str] = None,
+        search: typing.Optional[str] = None,
         network_type: typing.Optional[
             typing.Union[CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]]
         ] = None,
@@ -947,7 +958,10 @@ class AsyncCounterpartyClient:
             Entity ID or Entity ForeignID
 
         name : typing.Optional[str]
-            Filter by counterparty name
+            Use search instead. Deprecated. Filter counterparties by name. Partial matches are supported.
+
+        search : typing.Optional[str]
+            Filter counterparties by name or email. Partial matches are supported.
 
         network_type : typing.Optional[typing.Union[CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]]]
             Filter by network type. By default, only ENTITY counterparties are returned.
@@ -1007,6 +1021,7 @@ class AsyncCounterpartyClient:
             method="GET",
             params={
                 "name": name,
+                "search": search,
                 "networkType": network_type,
                 "paymentMethods": payment_methods,
                 "invoiceMetrics": invoice_metrics,
@@ -1108,6 +1123,7 @@ class AsyncCounterpartyClient:
         entity_id: EntityId,
         *,
         name: typing.Optional[str] = None,
+        search: typing.Optional[str] = None,
         network_type: typing.Optional[
             typing.Union[CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]]
         ] = None,
@@ -1129,7 +1145,10 @@ class AsyncCounterpartyClient:
             Entity ID or Entity ForeignID
 
         name : typing.Optional[str]
-            Filter by counterparty name
+            Use search instead. Deprecated. Filter counterparties by name. Partial matches are supported.
+
+        search : typing.Optional[str]
+            Filter counterparties by name or email. Partial matches are supported.
 
         network_type : typing.Optional[typing.Union[CounterpartyNetworkType, typing.Sequence[CounterpartyNetworkType]]]
             Filter by network type. By default, only ENTITY counterparties are returned.
@@ -1189,6 +1208,7 @@ class AsyncCounterpartyClient:
             method="GET",
             params={
                 "name": name,
+                "search": search,
                 "networkType": network_type,
                 "paymentMethods": payment_methods,
                 "invoiceMetrics": invoice_metrics,

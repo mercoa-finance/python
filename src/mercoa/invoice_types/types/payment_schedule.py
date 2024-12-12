@@ -7,7 +7,6 @@ import pydantic
 from .payment_schedule_end_condition import PaymentScheduleEndCondition
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 from .day_of_week import DayOfWeek
-from .payment_month_repeat_type import PaymentMonthRepeatType
 
 
 class PaymentSchedule_OneTime(UniversalBaseModel):
@@ -90,8 +89,8 @@ class PaymentSchedule_Monthly(UniversalBaseModel):
     """
 
     type: typing.Literal["monthly"] = "monthly"
-    day_offset: int = pydantic.Field(alias="dayOffset")
-    offset_type: typing.Optional[PaymentMonthRepeatType] = pydantic.Field(alias="offsetType", default=None)
+    day_offset: typing.Optional[int] = pydantic.Field(alias="dayOffset", default=None)
+    repeat_on_day: int = pydantic.Field(alias="repeatOnDay")
     repeat_every: typing.Optional[int] = pydantic.Field(alias="repeatEvery", default=None)
     ends: typing.Optional[PaymentScheduleEndCondition] = None
 

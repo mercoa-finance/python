@@ -230,6 +230,7 @@ class CustomizationClient:
                     line_item_metadata=True,
                     line_item_gl_account_id=True,
                     predict_metadata=True,
+                    tax_and_shipping_as_line_items=True,
                 ),
                 notifications=NotificationCustomizationRequest(
                     assume_role="admin",
@@ -550,6 +551,7 @@ class AsyncCustomizationClient:
                         line_item_metadata=True,
                         line_item_gl_account_id=True,
                         predict_metadata=True,
+                        tax_and_shipping_as_line_items=True,
                     ),
                     notifications=NotificationCustomizationRequest(
                         assume_role="admin",

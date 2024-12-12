@@ -1321,7 +1321,15 @@ If false, entities that are marked as payors will not be returned.
 <dl>
 <dd>
 
-**name:** `typing.Optional[str]` — Filter entities by name. Partial matches are supported.
+**name:** `typing.Optional[str]` — Use search instead. Deprecated. Filter entities by name. Partial matches are supported.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**search:** `typing.Optional[str]` — Find entities by name, email, or emailTo. Partial matches are supported.
     
 </dd>
 </dl>
@@ -2332,7 +2340,15 @@ client.entity.counterparty.find_payees(
 <dl>
 <dd>
 
-**name:** `typing.Optional[str]` — Filter by counterparty name
+**name:** `typing.Optional[str]` — Use search instead. Deprecated. Filter counterparties by name. Partial matches are supported.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**search:** `typing.Optional[str]` — Filter counterparties by name or email. Partial matches are supported.
     
 </dd>
 </dl>
@@ -2481,7 +2497,15 @@ client.entity.counterparty.find_payors(
 <dl>
 <dd>
 
-**name:** `typing.Optional[str]` — Filter by counterparty name
+**name:** `typing.Optional[str]` — Use search instead. Deprecated. Filter counterparties by name. Partial matches are supported.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**search:** `typing.Optional[str]` — Filter counterparties by name or email. Partial matches are supported.
     
 </dd>
 </dl>
@@ -4298,8 +4322,7 @@ client.invoice_template.create(
             "2021-01-10 00:00:00+00:00",
         ),
         payment_schedule=PaymentSchedule_Monthly(
-            day_offset=10,
-            offset_type="start",
+            repeat_on_day=10,
             ends=datetime.datetime.fromisoformat(
                 "2021-01-01 00:00:00+00:00",
             ),
@@ -8188,6 +8211,7 @@ client.entity.customization.update(
             line_item_metadata=True,
             line_item_gl_account_id=True,
             predict_metadata=True,
+            tax_and_shipping_as_line_items=True,
         ),
         notifications=NotificationCustomizationRequest(
             assume_role="admin",
