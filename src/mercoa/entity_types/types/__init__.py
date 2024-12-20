@@ -25,6 +25,8 @@ from .email_template_response import EmailTemplateResponse
 from .email_template_type import EmailTemplateType
 from .entity_add_payees_request import EntityAddPayeesRequest
 from .entity_add_payors_request import EntityAddPayorsRequest
+from .entity_clone_request import EntityCloneRequest
+from .entity_creation_request import EntityCreationRequest
 from .entity_customization_request import EntityCustomizationRequest
 from .entity_customization_response import EntityCustomizationResponse
 from .entity_event import EntityEvent
@@ -83,6 +85,7 @@ from .user_notification_policy_request import UserNotificationPolicyRequest
 from .user_notification_policy_response import UserNotificationPolicyResponse
 from .vendor_network import VendorNetwork
 from .vendor_trigger import VendorTrigger
+from .workflow_customization_request import WorkflowCustomizationRequest
 
 __all__ = [
     "AccelerationFundsBalanceResponse",
@@ -110,6 +113,8 @@ __all__ = [
     "EmailTemplateType",
     "EntityAddPayeesRequest",
     "EntityAddPayorsRequest",
+    "EntityCloneRequest",
+    "EntityCreationRequest",
     "EntityCustomizationRequest",
     "EntityCustomizationResponse",
     "EntityEvent",
@@ -174,4 +179,5 @@ __all__ = [
     "UserNotificationPolicyResponse",
     "VendorNetwork",
     "VendorTrigger",
+    "WorkflowCustomizationRequest",
 ]

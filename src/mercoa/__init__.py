@@ -91,6 +91,8 @@ from .entity_types import (
     EmailTemplateType,
     EntityAddPayeesRequest,
     EntityAddPayorsRequest,
+    EntityCloneRequest,
+    EntityCreationRequest,
     EntityCustomizationRequest,
     EntityCustomizationResponse,
     EntityEvent,
@@ -155,6 +157,7 @@ from .entity_types import (
     UserNotificationPolicyResponse,
     VendorNetwork,
     VendorTrigger,
+    WorkflowCustomizationRequest,
 )
 from .environment import MercoaEnvironment
 from .invoice_types import (
@@ -185,7 +188,6 @@ from .invoice_types import (
     InvoiceFeesRequest,
     InvoiceFeesResponse,
     InvoiceId,
-    InvoiceLineItemCategory,
     InvoiceLineItemCreationRequest,
     InvoiceLineItemId,
     InvoiceLineItemIndividualUpdateRequest,
@@ -373,6 +375,7 @@ from .webhooks import (
     InvoiceStatusChangedWebhook,
     InvoiceWebhook,
     PaymentMethodWebhook,
+    TransactionWebhook,
 )
 
 __all__ = [
@@ -468,6 +471,8 @@ __all__ = [
     "EmailTemplateType",
     "EntityAddPayeesRequest",
     "EntityAddPayorsRequest",
+    "EntityCloneRequest",
+    "EntityCreationRequest",
     "EntityCustomizationRequest",
     "EntityCustomizationResponse",
     "EntityEvent",
@@ -538,7 +543,6 @@ __all__ = [
     "InvoiceFeesRequest",
     "InvoiceFeesResponse",
     "InvoiceId",
-    "InvoiceLineItemCategory",
     "InvoiceLineItemCreationRequest",
     "InvoiceLineItemId",
     "InvoiceLineItemIndividualUpdateRequest",
@@ -699,6 +703,7 @@ __all__ = [
     "TransactionResponse_OffPlatform",
     "TransactionStatus",
     "TransactionType",
+    "TransactionWebhook",
     "Trigger",
     "Trigger_Amount",
     "Trigger_Metadata",
@@ -715,6 +720,7 @@ __all__ = [
     "VendorCreditResponse",
     "VendorNetwork",
     "VendorTrigger",
+    "WorkflowCustomizationRequest",
     "__version__",
     "bank_lookup",
     "calculate",

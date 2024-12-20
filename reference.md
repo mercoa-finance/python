@@ -1397,7 +1397,7 @@ If false, entities that are marked as payors will not be returned.
 from mercoa import Mercoa
 from mercoa.entity_types import (
     BusinessProfileRequest,
-    EntityRequest,
+    EntityCreationRequest,
     ProfileRequest,
 )
 
@@ -1405,7 +1405,7 @@ client = Mercoa(
     token="YOUR_TOKEN",
 )
 client.entity.create(
-    request=EntityRequest(
+    request=EntityCreationRequest(
         is_customer=False,
         is_payor=False,
         is_payee=True,
@@ -8160,6 +8160,7 @@ from mercoa.entity_types import (
     NotificationCustomizationRequest,
     OcrCustomizationRequest,
     PaymentMethodCustomizationRequest,
+    WorkflowCustomizationRequest,
 )
 
 client = Mercoa(
@@ -8215,6 +8216,9 @@ client.entity.customization.update(
         ),
         notifications=NotificationCustomizationRequest(
             assume_role="admin",
+        ),
+        workflow=WorkflowCustomizationRequest(
+            auto_advance_invoice_status=True,
         ),
     ),
 )
@@ -9856,8 +9860,13 @@ client = Mercoa(
 )
 client.entity.metadata.update(
     entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-    key="projectId",
-    request=["proj_123", "proj_456"],
+    key="glAccountId",
+    request=[
+        "{key: '60205', value: {value: '60205 Marketing Expense', subtitle: 'Expense'}}",
+        "{key: '60215', value: {value: '60215 Office Expense', subtitle: 'Expense'}}",
+        "{key: '60225', value: {value: '60225 Payroll Expense', subtitle: 'Expense'}}",
+        "{key: '60550', value: {value: '60550 Rent Expense', subtitle: 'Expense'}}",
+    ],
 )
 
 ```

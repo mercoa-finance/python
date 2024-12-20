@@ -7,6 +7,7 @@ from .payment_method_customization_request import PaymentMethodCustomizationRequ
 import pydantic
 from .ocr_customization_request import OcrCustomizationRequest
 from .notification_customization_request import NotificationCustomizationRequest
+from .workflow_customization_request import WorkflowCustomizationRequest
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -20,6 +21,7 @@ class EntityCustomizationRequest(UniversalBaseModel):
         NotificationCustomizationRequest,
         OcrCustomizationRequest,
         PaymentMethodCustomizationRequest,
+        WorkflowCustomizationRequest,
     )
 
     EntityCustomizationRequest(
@@ -71,6 +73,9 @@ class EntityCustomizationRequest(UniversalBaseModel):
         notifications=NotificationCustomizationRequest(
             assume_role="admin",
         ),
+        workflow=WorkflowCustomizationRequest(
+            auto_advance_invoice_status=True,
+        ),
     )
     """
 
@@ -86,6 +91,7 @@ class EntityCustomizationRequest(UniversalBaseModel):
     )
     ocr: typing.Optional[OcrCustomizationRequest] = None
     notifications: typing.Optional[NotificationCustomizationRequest] = None
+    workflow: typing.Optional[WorkflowCustomizationRequest] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

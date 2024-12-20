@@ -281,7 +281,7 @@ class EntityClient:
         from mercoa.entity_types import (
             BusinessProfileRequest,
             Ein,
-            EntityRequest,
+            EntityCreationRequest,
             ProfileRequest,
             TaxId,
         )
@@ -290,7 +290,7 @@ class EntityClient:
             token="YOUR_TOKEN",
         )
         client.entity.create(
-            request=EntityRequest(
+            request=EntityCreationRequest(
                 is_customer=True,
                 is_payor=True,
                 is_payee=False,
@@ -1952,7 +1952,7 @@ class AsyncEntityClient:
         from mercoa.entity_types import (
             BusinessProfileRequest,
             Ein,
-            EntityRequest,
+            EntityCreationRequest,
             ProfileRequest,
             TaxId,
         )
@@ -1964,7 +1964,7 @@ class AsyncEntityClient:
 
         async def main() -> None:
             await client.entity.create(
-                request=EntityRequest(
+                request=EntityCreationRequest(
                     is_customer=True,
                     is_payor=True,
                     is_payee=False,

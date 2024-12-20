@@ -179,6 +179,7 @@ class CustomizationClient:
             NotificationCustomizationRequest,
             OcrCustomizationRequest,
             PaymentMethodCustomizationRequest,
+            WorkflowCustomizationRequest,
         )
 
         client = Mercoa(
@@ -234,6 +235,9 @@ class CustomizationClient:
                 ),
                 notifications=NotificationCustomizationRequest(
                     assume_role="admin",
+                ),
+                workflow=WorkflowCustomizationRequest(
+                    auto_advance_invoice_status=True,
                 ),
             ),
         )
@@ -497,6 +501,7 @@ class AsyncCustomizationClient:
             NotificationCustomizationRequest,
             OcrCustomizationRequest,
             PaymentMethodCustomizationRequest,
+            WorkflowCustomizationRequest,
         )
 
         client = AsyncMercoa(
@@ -555,6 +560,9 @@ class AsyncCustomizationClient:
                     ),
                     notifications=NotificationCustomizationRequest(
                         assume_role="admin",
+                    ),
+                    workflow=WorkflowCustomizationRequest(
+                        auto_advance_invoice_status=True,
                     ),
                 ),
             )

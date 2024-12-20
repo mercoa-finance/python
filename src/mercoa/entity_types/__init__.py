@@ -26,6 +26,8 @@ from .types import (
     EmailTemplateType,
     EntityAddPayeesRequest,
     EntityAddPayorsRequest,
+    EntityCloneRequest,
+    EntityCreationRequest,
     EntityCustomizationRequest,
     EntityCustomizationResponse,
     EntityEvent,
@@ -90,6 +92,7 @@ from .types import (
     UserNotificationPolicyResponse,
     VendorNetwork,
     VendorTrigger,
+    WorkflowCustomizationRequest,
 )
 
 __all__ = [
@@ -118,6 +121,8 @@ __all__ = [
     "EmailTemplateType",
     "EntityAddPayeesRequest",
     "EntityAddPayorsRequest",
+    "EntityCloneRequest",
+    "EntityCreationRequest",
     "EntityCustomizationRequest",
     "EntityCustomizationResponse",
     "EntityEvent",
@@ -182,4 +187,5 @@ __all__ = [
     "UserNotificationPolicyResponse",
     "VendorNetwork",
     "VendorTrigger",
+    "WorkflowCustomizationRequest",
 ]

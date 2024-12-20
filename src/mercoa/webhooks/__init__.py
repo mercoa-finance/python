@@ -8,6 +8,7 @@ from .types import (
     InvoiceStatusChangedWebhook,
     InvoiceWebhook,
     PaymentMethodWebhook,
+    TransactionWebhook,
 )
 
 __all__ = [
@@ -18,4 +19,5 @@ __all__ = [
     "InvoiceStatusChangedWebhook",
     "InvoiceWebhook",
     "PaymentMethodWebhook",
+    "TransactionWebhook",
 ]

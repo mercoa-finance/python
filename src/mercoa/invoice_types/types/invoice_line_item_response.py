@@ -5,7 +5,6 @@ from .invoice_line_item_id import InvoiceLineItemId
 import typing
 import pydantic
 from ...payment_method_types.types.currency_code import CurrencyCode
-from .invoice_line_item_category import InvoiceLineItemCategory
 import datetime as dt
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
@@ -59,7 +58,11 @@ class InvoiceLineItemResponse(UniversalBaseModel):
     Unit price of line item in major units.
     """
 
-    category: InvoiceLineItemCategory
+    category: str = pydantic.Field()
+    """
+    Category of the line item. Defaults to 'EXPENSE'.
+    """
+
     service_start_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceStartDate", default=None)
     service_end_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceEndDate", default=None)
     metadata: typing.Optional[typing.Dict[str, str]] = None

@@ -2,7 +2,6 @@
 
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
-from .invoice_line_item_category import InvoiceLineItemCategory
 import pydantic
 import datetime as dt
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
@@ -32,9 +31,9 @@ class InvoiceLineItemIndividualUpdateRequest(UniversalBaseModel):
 
     name: typing.Optional[str] = None
     description: typing.Optional[str] = None
-    category: typing.Optional[InvoiceLineItemCategory] = pydantic.Field(default=None)
+    category: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Category of the line item. Defaults to EXPENSE.
+    Category of the line item.
     """
 
     service_start_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceStartDate", default=None)

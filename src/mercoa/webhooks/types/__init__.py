@@ -7,6 +7,7 @@ from .invoice_email_webhook import InvoiceEmailWebhook
 from .invoice_status_changed_webhook import InvoiceStatusChangedWebhook
 from .invoice_webhook import InvoiceWebhook
 from .payment_method_webhook import PaymentMethodWebhook
+from .transaction_webhook import TransactionWebhook
 
 __all__ = [
     "CounterpartyEventWebhook",
@@ -16,4 +17,5 @@ __all__ = [
     "InvoiceStatusChangedWebhook",
     "InvoiceWebhook",
     "PaymentMethodWebhook",
+    "TransactionWebhook",
 ]
