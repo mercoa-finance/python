@@ -642,8 +642,8 @@ class UserClient:
             token="YOUR_TOKEN",
         )
         client.entity_group.user.delete(
-            entity_group_id="string",
-            foreign_id="string",
+            entity_group_id="entityGroupId",
+            foreign_id="foreignId",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -1520,8 +1520,8 @@ class AsyncUserClient:
 
         async def main() -> None:
             await client.entity_group.user.delete(
-                entity_group_id="string",
-                foreign_id="string",
+                entity_group_id="entityGroupId",
+                foreign_id="foreignId",
             )
 
 

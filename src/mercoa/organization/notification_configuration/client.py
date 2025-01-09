@@ -293,7 +293,7 @@ class NotificationConfigurationClient:
         client.organization.notification_configuration.update(
             notification_type="INVOICE_APPROVAL_NEEDED",
             request=NotificationConfigurationRequest_Invoice(
-                url="string",
+                url="url",
             ),
         )
         """
@@ -793,7 +793,7 @@ class AsyncNotificationConfigurationClient:
             await client.organization.notification_configuration.update(
                 notification_type="INVOICE_APPROVAL_NEEDED",
                 request=NotificationConfigurationRequest_Invoice(
-                    url="string",
+                    url="url",
                 ),
             )
 

@@ -582,7 +582,7 @@ class EntityGroupClient:
             token="YOUR_TOKEN",
         )
         client.entity_group.delete(
-            entity_group_id="string",
+            entity_group_id="entityGroupId",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -1658,7 +1658,7 @@ class AsyncEntityGroupClient:
 
         async def main() -> None:
             await client.entity_group.delete(
-                entity_group_id="string",
+                entity_group_id="entityGroupId",
             )
 
 

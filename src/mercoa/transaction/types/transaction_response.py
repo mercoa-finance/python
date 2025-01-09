@@ -8,6 +8,12 @@ from .transaction_failure_reason import TransactionFailureReason
 import pydantic
 from .transaction_id import TransactionId
 from .transaction_status import TransactionStatus
+from ...entity_types.types.entity_id import EntityId
+from ...entity_types.types.counterparty_response import CounterpartyResponse
+from ...payment_method_types.types.payment_method_response import PaymentMethodResponse
+from ...payment_method_types.types.payment_method_id import PaymentMethodId
+from ...invoice_types.types.payment_destination_options import PaymentDestinationOptions
+from ...invoice_types.types.invoice_fees_response import InvoiceFeesResponse
 import datetime as dt
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
@@ -52,6 +58,180 @@ class TransactionResponse_BankAccountToBankAccount(UniversalBaseModel):
     TransactionResponse_BankAccountToBankAccount(
         id="trx_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
         status="PENDING",
+        amount=10000,
+        currency="USD",
+        payer_id="ent_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
+        payer=CounterpartyResponse(
+            id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            foreign_id="MY-DB-ID-12345",
+            name="Acme Inc.",
+            email="customer@acme.com",
+            accepted_tos=True,
+            status="verified",
+            is_customer=True,
+            is_payor=True,
+            is_payee=False,
+            is_network_payor=False,
+            is_network_payee=False,
+            account_type="business",
+            updated_at=datetime.datetime.fromisoformat(
+                "2024-01-02 00:00:00+00:00",
+            ),
+            created_at=datetime.datetime.fromisoformat(
+                "2024-01-01 00:00:00+00:00",
+            ),
+            profile=ProfileResponse(
+                business=BusinessProfileResponse(
+                    email="customer@acme.com",
+                    legal_business_name="Acme Inc.",
+                    business_type="llc",
+                    phone=PhoneNumber(
+                        country_code="1",
+                        number="4155551234",
+                    ),
+                    address=Address(
+                        address_line_1="123 Main St",
+                        address_line_2="Unit 1",
+                        city="San Francisco",
+                        state_or_province="CA",
+                        postal_code="94105",
+                        country="US",
+                    ),
+                    tax_id_provided=True,
+                    tax_id=TaxId(
+                        ein=Ein(
+                            number="12-3456789",
+                        ),
+                    ),
+                    owners_provided=True,
+                ),
+            ),
+            accounts=[
+                CounterpartyCustomizationAccount(
+                    account_id="85866843",
+                    postal_code="94105",
+                    name_on_account="John Doe",
+                )
+            ],
+            payment_methods=[
+                PaymentMethodResponse_BankAccount(
+                    id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                    account_name="My Checking Account",
+                    bank_name="Chase",
+                    routing_number="12345678",
+                    account_number="99988767623",
+                    account_type="CHECKING",
+                    status="VERIFIED",
+                    is_default_source=True,
+                    is_default_destination=True,
+                    supported_currencies=["USD"],
+                    metadata={},
+                    frozen=False,
+                    created_at=datetime.datetime.fromisoformat(
+                        "2021-01-01 00:00:00+00:00",
+                    ),
+                    updated_at=datetime.datetime.fromisoformat(
+                        "2021-01-01 00:00:00+00:00",
+                    ),
+                )
+            ],
+            counterparty_type=["ENTITY"],
+        ),
+        payment_source=PaymentMethodResponse_BankAccount(
+            id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+            account_name="My Checking Account",
+            bank_name="Chase",
+            routing_number="12345678",
+            account_number="99988767623",
+            account_type="CHECKING",
+            status="VERIFIED",
+            is_default_source=True,
+            is_default_destination=True,
+            supported_currencies=["USD"],
+            metadata={},
+            frozen=False,
+            created_at=datetime.datetime.fromisoformat(
+                "2021-01-01 00:00:00+00:00",
+            ),
+            updated_at=datetime.datetime.fromisoformat(
+                "2021-01-01 00:00:00+00:00",
+            ),
+        ),
+        payment_source_id="pm_65523ab0-043d-4706-b2b2-0b73fed92269",
+        vendor_id="ent_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
+        vendor=CounterpartyResponse(
+            id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+            foreign_id="MY-DB-ID-90909",
+            name="Big Box Store",
+            email="vendor@bigboxstore.com",
+            accepted_tos=False,
+            status="unverified",
+            is_customer=False,
+            is_payor=False,
+            is_payee=True,
+            is_network_payor=False,
+            is_network_payee=False,
+            account_type="business",
+            updated_at=datetime.datetime.fromisoformat(
+                "2024-01-02 00:00:00+00:00",
+            ),
+            created_at=datetime.datetime.fromisoformat(
+                "2024-01-01 00:00:00+00:00",
+            ),
+            profile=ProfileResponse(
+                business=BusinessProfileResponse(
+                    email="vendor@bigboxstore.com",
+                    legal_business_name="Big Box Store",
+                    business_type="publicCorporation",
+                    tax_id_provided=False,
+                    owners_provided=False,
+                ),
+            ),
+            payment_methods=[
+                PaymentMethodResponse_BankAccount(
+                    id="pm_7610541f-4619-4033-8620-cfccfb811293",
+                    account_name="Vendor Checking Account",
+                    bank_name="Chase",
+                    routing_number="66554433",
+                    account_number="55934059697648",
+                    account_type="CHECKING",
+                    status="NEW",
+                    is_default_source=True,
+                    is_default_destination=True,
+                    supported_currencies=["USD"],
+                    metadata={},
+                    frozen=False,
+                    created_at=datetime.datetime.fromisoformat(
+                        "2021-01-01 00:00:00+00:00",
+                    ),
+                    updated_at=datetime.datetime.fromisoformat(
+                        "2021-01-01 00:00:00+00:00",
+                    ),
+                )
+            ],
+            counterparty_type=["ENTITY"],
+        ),
+        payment_destination=PaymentMethodResponse_BankAccount(
+            id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+            account_name="My Checking Account",
+            bank_name="Chase",
+            routing_number="12345678",
+            account_number="99988767623",
+            account_type="CHECKING",
+            status="VERIFIED",
+            is_default_source=True,
+            is_default_destination=True,
+            supported_currencies=["USD"],
+            metadata={},
+            frozen=False,
+            created_at=datetime.datetime.fromisoformat(
+                "2021-01-01 00:00:00+00:00",
+            ),
+            updated_at=datetime.datetime.fromisoformat(
+                "2021-01-01 00:00:00+00:00",
+            ),
+        ),
+        payment_destination_id="pm_65523ab0-043d-4706-b2b2-0b73fed92269",
         invoices=[
             InvoiceResponse(
                 id="in_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
@@ -260,6 +440,180 @@ class TransactionResponse_BankAccountToBankAccount(UniversalBaseModel):
                     TransactionResponseWithoutInvoices_BankAccountToBankAccount(
                         id="trx_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
                         status="COMPLETED",
+                        amount=10000,
+                        currency="USD",
+                        payer_id="ent_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
+                        payer=CounterpartyResponse(
+                            id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                            foreign_id="MY-DB-ID-12345",
+                            name="Acme Inc.",
+                            email="customer@acme.com",
+                            accepted_tos=True,
+                            status="verified",
+                            is_customer=True,
+                            is_payor=True,
+                            is_payee=False,
+                            is_network_payor=False,
+                            is_network_payee=False,
+                            account_type="business",
+                            updated_at=datetime.datetime.fromisoformat(
+                                "2024-01-02 00:00:00+00:00",
+                            ),
+                            created_at=datetime.datetime.fromisoformat(
+                                "2024-01-01 00:00:00+00:00",
+                            ),
+                            profile=ProfileResponse(
+                                business=BusinessProfileResponse(
+                                    email="customer@acme.com",
+                                    legal_business_name="Acme Inc.",
+                                    business_type="llc",
+                                    phone=PhoneNumber(
+                                        country_code="1",
+                                        number="4155551234",
+                                    ),
+                                    address=Address(
+                                        address_line_1="123 Main St",
+                                        address_line_2="Unit 1",
+                                        city="San Francisco",
+                                        state_or_province="CA",
+                                        postal_code="94105",
+                                        country="US",
+                                    ),
+                                    tax_id_provided=True,
+                                    tax_id=TaxId(
+                                        ein=Ein(
+                                            number="12-3456789",
+                                        ),
+                                    ),
+                                    owners_provided=True,
+                                ),
+                            ),
+                            accounts=[
+                                CounterpartyCustomizationAccount(
+                                    account_id="85866843",
+                                    postal_code="94105",
+                                    name_on_account="John Doe",
+                                )
+                            ],
+                            payment_methods=[
+                                PaymentMethodResponse_BankAccount(
+                                    id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                                    account_name="My Checking Account",
+                                    bank_name="Chase",
+                                    routing_number="12345678",
+                                    account_number="99988767623",
+                                    account_type="CHECKING",
+                                    status="VERIFIED",
+                                    is_default_source=True,
+                                    is_default_destination=True,
+                                    supported_currencies=["USD"],
+                                    metadata={},
+                                    frozen=False,
+                                    created_at=datetime.datetime.fromisoformat(
+                                        "2021-01-01 00:00:00+00:00",
+                                    ),
+                                    updated_at=datetime.datetime.fromisoformat(
+                                        "2021-01-01 00:00:00+00:00",
+                                    ),
+                                )
+                            ],
+                            counterparty_type=["ENTITY"],
+                        ),
+                        payment_source=PaymentMethodResponse_BankAccount(
+                            id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                            account_name="My Checking Account",
+                            bank_name="Chase",
+                            routing_number="12345678",
+                            account_number="99988767623",
+                            account_type="CHECKING",
+                            status="VERIFIED",
+                            is_default_source=True,
+                            is_default_destination=True,
+                            supported_currencies=["USD"],
+                            metadata={},
+                            frozen=False,
+                            created_at=datetime.datetime.fromisoformat(
+                                "2021-01-01 00:00:00+00:00",
+                            ),
+                            updated_at=datetime.datetime.fromisoformat(
+                                "2021-01-01 00:00:00+00:00",
+                            ),
+                        ),
+                        payment_source_id="pm_65523ab0-043d-4706-b2b2-0b73fed92269",
+                        vendor_id="ent_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
+                        vendor=CounterpartyResponse(
+                            id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+                            foreign_id="MY-DB-ID-90909",
+                            name="Big Box Store",
+                            email="vendor@bigboxstore.com",
+                            accepted_tos=False,
+                            status="unverified",
+                            is_customer=False,
+                            is_payor=False,
+                            is_payee=True,
+                            is_network_payor=False,
+                            is_network_payee=False,
+                            account_type="business",
+                            updated_at=datetime.datetime.fromisoformat(
+                                "2024-01-02 00:00:00+00:00",
+                            ),
+                            created_at=datetime.datetime.fromisoformat(
+                                "2024-01-01 00:00:00+00:00",
+                            ),
+                            profile=ProfileResponse(
+                                business=BusinessProfileResponse(
+                                    email="vendor@bigboxstore.com",
+                                    legal_business_name="Big Box Store",
+                                    business_type="publicCorporation",
+                                    tax_id_provided=False,
+                                    owners_provided=False,
+                                ),
+                            ),
+                            payment_methods=[
+                                PaymentMethodResponse_BankAccount(
+                                    id="pm_7610541f-4619-4033-8620-cfccfb811293",
+                                    account_name="Vendor Checking Account",
+                                    bank_name="Chase",
+                                    routing_number="66554433",
+                                    account_number="55934059697648",
+                                    account_type="CHECKING",
+                                    status="NEW",
+                                    is_default_source=True,
+                                    is_default_destination=True,
+                                    supported_currencies=["USD"],
+                                    metadata={},
+                                    frozen=False,
+                                    created_at=datetime.datetime.fromisoformat(
+                                        "2021-01-01 00:00:00+00:00",
+                                    ),
+                                    updated_at=datetime.datetime.fromisoformat(
+                                        "2021-01-01 00:00:00+00:00",
+                                    ),
+                                )
+                            ],
+                            counterparty_type=["ENTITY"],
+                        ),
+                        payment_destination=PaymentMethodResponse_BankAccount(
+                            id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                            account_name="My Checking Account",
+                            bank_name="Chase",
+                            routing_number="12345678",
+                            account_number="99988767623",
+                            account_type="CHECKING",
+                            status="VERIFIED",
+                            is_default_source=True,
+                            is_default_destination=True,
+                            supported_currencies=["USD"],
+                            metadata={},
+                            frozen=False,
+                            created_at=datetime.datetime.fromisoformat(
+                                "2021-01-01 00:00:00+00:00",
+                            ),
+                            updated_at=datetime.datetime.fromisoformat(
+                                "2021-01-01 00:00:00+00:00",
+                            ),
+                        ),
+                        payment_destination_id="pm_65523ab0-043d-4706-b2b2-0b73fed92269",
                         created_at=datetime.datetime.fromisoformat(
                             "2024-01-01 00:00:00+00:00",
                         ),
@@ -404,6 +758,20 @@ class TransactionResponse_BankAccountToBankAccount(UniversalBaseModel):
     failure_reason: typing.Optional[TransactionFailureReason] = pydantic.Field(alias="failureReason", default=None)
     id: TransactionId
     status: TransactionStatus
+    amount: int
+    currency: str
+    payer_id: EntityId = pydantic.Field(alias="payerId")
+    payer: CounterpartyResponse
+    payment_source: PaymentMethodResponse = pydantic.Field(alias="paymentSource")
+    payment_source_id: PaymentMethodId = pydantic.Field(alias="paymentSourceId")
+    vendor_id: EntityId = pydantic.Field(alias="vendorId")
+    vendor: CounterpartyResponse
+    payment_destination: PaymentMethodResponse = pydantic.Field(alias="paymentDestination")
+    payment_destination_id: PaymentMethodId = pydantic.Field(alias="paymentDestinationId")
+    payment_destination_options: typing.Optional[PaymentDestinationOptions] = pydantic.Field(
+        alias="paymentDestinationOptions", default=None
+    )
+    fees: typing.Optional[InvoiceFeesResponse] = None
     created_at: dt.datetime = pydantic.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
 
@@ -457,6 +825,180 @@ class TransactionResponse_BankAccountToMailedCheck(UniversalBaseModel):
     TransactionResponse_BankAccountToBankAccount(
         id="trx_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
         status="PENDING",
+        amount=10000,
+        currency="USD",
+        payer_id="ent_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
+        payer=CounterpartyResponse(
+            id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            foreign_id="MY-DB-ID-12345",
+            name="Acme Inc.",
+            email="customer@acme.com",
+            accepted_tos=True,
+            status="verified",
+            is_customer=True,
+            is_payor=True,
+            is_payee=False,
+            is_network_payor=False,
+            is_network_payee=False,
+            account_type="business",
+            updated_at=datetime.datetime.fromisoformat(
+                "2024-01-02 00:00:00+00:00",
+            ),
+            created_at=datetime.datetime.fromisoformat(
+                "2024-01-01 00:00:00+00:00",
+            ),
+            profile=ProfileResponse(
+                business=BusinessProfileResponse(
+                    email="customer@acme.com",
+                    legal_business_name="Acme Inc.",
+                    business_type="llc",
+                    phone=PhoneNumber(
+                        country_code="1",
+                        number="4155551234",
+                    ),
+                    address=Address(
+                        address_line_1="123 Main St",
+                        address_line_2="Unit 1",
+                        city="San Francisco",
+                        state_or_province="CA",
+                        postal_code="94105",
+                        country="US",
+                    ),
+                    tax_id_provided=True,
+                    tax_id=TaxId(
+                        ein=Ein(
+                            number="12-3456789",
+                        ),
+                    ),
+                    owners_provided=True,
+                ),
+            ),
+            accounts=[
+                CounterpartyCustomizationAccount(
+                    account_id="85866843",
+                    postal_code="94105",
+                    name_on_account="John Doe",
+                )
+            ],
+            payment_methods=[
+                PaymentMethodResponse_BankAccount(
+                    id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                    account_name="My Checking Account",
+                    bank_name="Chase",
+                    routing_number="12345678",
+                    account_number="99988767623",
+                    account_type="CHECKING",
+                    status="VERIFIED",
+                    is_default_source=True,
+                    is_default_destination=True,
+                    supported_currencies=["USD"],
+                    metadata={},
+                    frozen=False,
+                    created_at=datetime.datetime.fromisoformat(
+                        "2021-01-01 00:00:00+00:00",
+                    ),
+                    updated_at=datetime.datetime.fromisoformat(
+                        "2021-01-01 00:00:00+00:00",
+                    ),
+                )
+            ],
+            counterparty_type=["ENTITY"],
+        ),
+        payment_source=PaymentMethodResponse_BankAccount(
+            id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+            account_name="My Checking Account",
+            bank_name="Chase",
+            routing_number="12345678",
+            account_number="99988767623",
+            account_type="CHECKING",
+            status="VERIFIED",
+            is_default_source=True,
+            is_default_destination=True,
+            supported_currencies=["USD"],
+            metadata={},
+            frozen=False,
+            created_at=datetime.datetime.fromisoformat(
+                "2021-01-01 00:00:00+00:00",
+            ),
+            updated_at=datetime.datetime.fromisoformat(
+                "2021-01-01 00:00:00+00:00",
+            ),
+        ),
+        payment_source_id="pm_65523ab0-043d-4706-b2b2-0b73fed92269",
+        vendor_id="ent_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
+        vendor=CounterpartyResponse(
+            id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+            foreign_id="MY-DB-ID-90909",
+            name="Big Box Store",
+            email="vendor@bigboxstore.com",
+            accepted_tos=False,
+            status="unverified",
+            is_customer=False,
+            is_payor=False,
+            is_payee=True,
+            is_network_payor=False,
+            is_network_payee=False,
+            account_type="business",
+            updated_at=datetime.datetime.fromisoformat(
+                "2024-01-02 00:00:00+00:00",
+            ),
+            created_at=datetime.datetime.fromisoformat(
+                "2024-01-01 00:00:00+00:00",
+            ),
+            profile=ProfileResponse(
+                business=BusinessProfileResponse(
+                    email="vendor@bigboxstore.com",
+                    legal_business_name="Big Box Store",
+                    business_type="publicCorporation",
+                    tax_id_provided=False,
+                    owners_provided=False,
+                ),
+            ),
+            payment_methods=[
+                PaymentMethodResponse_BankAccount(
+                    id="pm_7610541f-4619-4033-8620-cfccfb811293",
+                    account_name="Vendor Checking Account",
+                    bank_name="Chase",
+                    routing_number="66554433",
+                    account_number="55934059697648",
+                    account_type="CHECKING",
+                    status="NEW",
+                    is_default_source=True,
+                    is_default_destination=True,
+                    supported_currencies=["USD"],
+                    metadata={},
+                    frozen=False,
+                    created_at=datetime.datetime.fromisoformat(
+                        "2021-01-01 00:00:00+00:00",
+                    ),
+                    updated_at=datetime.datetime.fromisoformat(
+                        "2021-01-01 00:00:00+00:00",
+                    ),
+                )
+            ],
+            counterparty_type=["ENTITY"],
+        ),
+        payment_destination=PaymentMethodResponse_BankAccount(
+            id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+            account_name="My Checking Account",
+            bank_name="Chase",
+            routing_number="12345678",
+            account_number="99988767623",
+            account_type="CHECKING",
+            status="VERIFIED",
+            is_default_source=True,
+            is_default_destination=True,
+            supported_currencies=["USD"],
+            metadata={},
+            frozen=False,
+            created_at=datetime.datetime.fromisoformat(
+                "2021-01-01 00:00:00+00:00",
+            ),
+            updated_at=datetime.datetime.fromisoformat(
+                "2021-01-01 00:00:00+00:00",
+            ),
+        ),
+        payment_destination_id="pm_65523ab0-043d-4706-b2b2-0b73fed92269",
         invoices=[
             InvoiceResponse(
                 id="in_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
@@ -665,6 +1207,180 @@ class TransactionResponse_BankAccountToMailedCheck(UniversalBaseModel):
                     TransactionResponseWithoutInvoices_BankAccountToBankAccount(
                         id="trx_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
                         status="COMPLETED",
+                        amount=10000,
+                        currency="USD",
+                        payer_id="ent_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
+                        payer=CounterpartyResponse(
+                            id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                            foreign_id="MY-DB-ID-12345",
+                            name="Acme Inc.",
+                            email="customer@acme.com",
+                            accepted_tos=True,
+                            status="verified",
+                            is_customer=True,
+                            is_payor=True,
+                            is_payee=False,
+                            is_network_payor=False,
+                            is_network_payee=False,
+                            account_type="business",
+                            updated_at=datetime.datetime.fromisoformat(
+                                "2024-01-02 00:00:00+00:00",
+                            ),
+                            created_at=datetime.datetime.fromisoformat(
+                                "2024-01-01 00:00:00+00:00",
+                            ),
+                            profile=ProfileResponse(
+                                business=BusinessProfileResponse(
+                                    email="customer@acme.com",
+                                    legal_business_name="Acme Inc.",
+                                    business_type="llc",
+                                    phone=PhoneNumber(
+                                        country_code="1",
+                                        number="4155551234",
+                                    ),
+                                    address=Address(
+                                        address_line_1="123 Main St",
+                                        address_line_2="Unit 1",
+                                        city="San Francisco",
+                                        state_or_province="CA",
+                                        postal_code="94105",
+                                        country="US",
+                                    ),
+                                    tax_id_provided=True,
+                                    tax_id=TaxId(
+                                        ein=Ein(
+                                            number="12-3456789",
+                                        ),
+                                    ),
+                                    owners_provided=True,
+                                ),
+                            ),
+                            accounts=[
+                                CounterpartyCustomizationAccount(
+                                    account_id="85866843",
+                                    postal_code="94105",
+                                    name_on_account="John Doe",
+                                )
+                            ],
+                            payment_methods=[
+                                PaymentMethodResponse_BankAccount(
+                                    id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                                    account_name="My Checking Account",
+                                    bank_name="Chase",
+                                    routing_number="12345678",
+                                    account_number="99988767623",
+                                    account_type="CHECKING",
+                                    status="VERIFIED",
+                                    is_default_source=True,
+                                    is_default_destination=True,
+                                    supported_currencies=["USD"],
+                                    metadata={},
+                                    frozen=False,
+                                    created_at=datetime.datetime.fromisoformat(
+                                        "2021-01-01 00:00:00+00:00",
+                                    ),
+                                    updated_at=datetime.datetime.fromisoformat(
+                                        "2021-01-01 00:00:00+00:00",
+                                    ),
+                                )
+                            ],
+                            counterparty_type=["ENTITY"],
+                        ),
+                        payment_source=PaymentMethodResponse_BankAccount(
+                            id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                            account_name="My Checking Account",
+                            bank_name="Chase",
+                            routing_number="12345678",
+                            account_number="99988767623",
+                            account_type="CHECKING",
+                            status="VERIFIED",
+                            is_default_source=True,
+                            is_default_destination=True,
+                            supported_currencies=["USD"],
+                            metadata={},
+                            frozen=False,
+                            created_at=datetime.datetime.fromisoformat(
+                                "2021-01-01 00:00:00+00:00",
+                            ),
+                            updated_at=datetime.datetime.fromisoformat(
+                                "2021-01-01 00:00:00+00:00",
+                            ),
+                        ),
+                        payment_source_id="pm_65523ab0-043d-4706-b2b2-0b73fed92269",
+                        vendor_id="ent_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
+                        vendor=CounterpartyResponse(
+                            id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+                            foreign_id="MY-DB-ID-90909",
+                            name="Big Box Store",
+                            email="vendor@bigboxstore.com",
+                            accepted_tos=False,
+                            status="unverified",
+                            is_customer=False,
+                            is_payor=False,
+                            is_payee=True,
+                            is_network_payor=False,
+                            is_network_payee=False,
+                            account_type="business",
+                            updated_at=datetime.datetime.fromisoformat(
+                                "2024-01-02 00:00:00+00:00",
+                            ),
+                            created_at=datetime.datetime.fromisoformat(
+                                "2024-01-01 00:00:00+00:00",
+                            ),
+                            profile=ProfileResponse(
+                                business=BusinessProfileResponse(
+                                    email="vendor@bigboxstore.com",
+                                    legal_business_name="Big Box Store",
+                                    business_type="publicCorporation",
+                                    tax_id_provided=False,
+                                    owners_provided=False,
+                                ),
+                            ),
+                            payment_methods=[
+                                PaymentMethodResponse_BankAccount(
+                                    id="pm_7610541f-4619-4033-8620-cfccfb811293",
+                                    account_name="Vendor Checking Account",
+                                    bank_name="Chase",
+                                    routing_number="66554433",
+                                    account_number="55934059697648",
+                                    account_type="CHECKING",
+                                    status="NEW",
+                                    is_default_source=True,
+                                    is_default_destination=True,
+                                    supported_currencies=["USD"],
+                                    metadata={},
+                                    frozen=False,
+                                    created_at=datetime.datetime.fromisoformat(
+                                        "2021-01-01 00:00:00+00:00",
+                                    ),
+                                    updated_at=datetime.datetime.fromisoformat(
+                                        "2021-01-01 00:00:00+00:00",
+                                    ),
+                                )
+                            ],
+                            counterparty_type=["ENTITY"],
+                        ),
+                        payment_destination=PaymentMethodResponse_BankAccount(
+                            id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                            account_name="My Checking Account",
+                            bank_name="Chase",
+                            routing_number="12345678",
+                            account_number="99988767623",
+                            account_type="CHECKING",
+                            status="VERIFIED",
+                            is_default_source=True,
+                            is_default_destination=True,
+                            supported_currencies=["USD"],
+                            metadata={},
+                            frozen=False,
+                            created_at=datetime.datetime.fromisoformat(
+                                "2021-01-01 00:00:00+00:00",
+                            ),
+                            updated_at=datetime.datetime.fromisoformat(
+                                "2021-01-01 00:00:00+00:00",
+                            ),
+                        ),
+                        payment_destination_id="pm_65523ab0-043d-4706-b2b2-0b73fed92269",
                         created_at=datetime.datetime.fromisoformat(
                             "2024-01-01 00:00:00+00:00",
                         ),
@@ -809,6 +1525,20 @@ class TransactionResponse_BankAccountToMailedCheck(UniversalBaseModel):
     check_number: int = pydantic.Field(alias="checkNumber")
     id: TransactionId
     status: TransactionStatus
+    amount: int
+    currency: str
+    payer_id: EntityId = pydantic.Field(alias="payerId")
+    payer: CounterpartyResponse
+    payment_source: PaymentMethodResponse = pydantic.Field(alias="paymentSource")
+    payment_source_id: PaymentMethodId = pydantic.Field(alias="paymentSourceId")
+    vendor_id: EntityId = pydantic.Field(alias="vendorId")
+    vendor: CounterpartyResponse
+    payment_destination: PaymentMethodResponse = pydantic.Field(alias="paymentDestination")
+    payment_destination_id: PaymentMethodId = pydantic.Field(alias="paymentDestinationId")
+    payment_destination_options: typing.Optional[PaymentDestinationOptions] = pydantic.Field(
+        alias="paymentDestinationOptions", default=None
+    )
+    fees: typing.Optional[InvoiceFeesResponse] = None
     created_at: dt.datetime = pydantic.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
 
@@ -862,6 +1592,180 @@ class TransactionResponse_Custom(UniversalBaseModel):
     TransactionResponse_BankAccountToBankAccount(
         id="trx_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
         status="PENDING",
+        amount=10000,
+        currency="USD",
+        payer_id="ent_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
+        payer=CounterpartyResponse(
+            id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            foreign_id="MY-DB-ID-12345",
+            name="Acme Inc.",
+            email="customer@acme.com",
+            accepted_tos=True,
+            status="verified",
+            is_customer=True,
+            is_payor=True,
+            is_payee=False,
+            is_network_payor=False,
+            is_network_payee=False,
+            account_type="business",
+            updated_at=datetime.datetime.fromisoformat(
+                "2024-01-02 00:00:00+00:00",
+            ),
+            created_at=datetime.datetime.fromisoformat(
+                "2024-01-01 00:00:00+00:00",
+            ),
+            profile=ProfileResponse(
+                business=BusinessProfileResponse(
+                    email="customer@acme.com",
+                    legal_business_name="Acme Inc.",
+                    business_type="llc",
+                    phone=PhoneNumber(
+                        country_code="1",
+                        number="4155551234",
+                    ),
+                    address=Address(
+                        address_line_1="123 Main St",
+                        address_line_2="Unit 1",
+                        city="San Francisco",
+                        state_or_province="CA",
+                        postal_code="94105",
+                        country="US",
+                    ),
+                    tax_id_provided=True,
+                    tax_id=TaxId(
+                        ein=Ein(
+                            number="12-3456789",
+                        ),
+                    ),
+                    owners_provided=True,
+                ),
+            ),
+            accounts=[
+                CounterpartyCustomizationAccount(
+                    account_id="85866843",
+                    postal_code="94105",
+                    name_on_account="John Doe",
+                )
+            ],
+            payment_methods=[
+                PaymentMethodResponse_BankAccount(
+                    id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                    account_name="My Checking Account",
+                    bank_name="Chase",
+                    routing_number="12345678",
+                    account_number="99988767623",
+                    account_type="CHECKING",
+                    status="VERIFIED",
+                    is_default_source=True,
+                    is_default_destination=True,
+                    supported_currencies=["USD"],
+                    metadata={},
+                    frozen=False,
+                    created_at=datetime.datetime.fromisoformat(
+                        "2021-01-01 00:00:00+00:00",
+                    ),
+                    updated_at=datetime.datetime.fromisoformat(
+                        "2021-01-01 00:00:00+00:00",
+                    ),
+                )
+            ],
+            counterparty_type=["ENTITY"],
+        ),
+        payment_source=PaymentMethodResponse_BankAccount(
+            id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+            account_name="My Checking Account",
+            bank_name="Chase",
+            routing_number="12345678",
+            account_number="99988767623",
+            account_type="CHECKING",
+            status="VERIFIED",
+            is_default_source=True,
+            is_default_destination=True,
+            supported_currencies=["USD"],
+            metadata={},
+            frozen=False,
+            created_at=datetime.datetime.fromisoformat(
+                "2021-01-01 00:00:00+00:00",
+            ),
+            updated_at=datetime.datetime.fromisoformat(
+                "2021-01-01 00:00:00+00:00",
+            ),
+        ),
+        payment_source_id="pm_65523ab0-043d-4706-b2b2-0b73fed92269",
+        vendor_id="ent_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
+        vendor=CounterpartyResponse(
+            id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+            foreign_id="MY-DB-ID-90909",
+            name="Big Box Store",
+            email="vendor@bigboxstore.com",
+            accepted_tos=False,
+            status="unverified",
+            is_customer=False,
+            is_payor=False,
+            is_payee=True,
+            is_network_payor=False,
+            is_network_payee=False,
+            account_type="business",
+            updated_at=datetime.datetime.fromisoformat(
+                "2024-01-02 00:00:00+00:00",
+            ),
+            created_at=datetime.datetime.fromisoformat(
+                "2024-01-01 00:00:00+00:00",
+            ),
+            profile=ProfileResponse(
+                business=BusinessProfileResponse(
+                    email="vendor@bigboxstore.com",
+                    legal_business_name="Big Box Store",
+                    business_type="publicCorporation",
+                    tax_id_provided=False,
+                    owners_provided=False,
+                ),
+            ),
+            payment_methods=[
+                PaymentMethodResponse_BankAccount(
+                    id="pm_7610541f-4619-4033-8620-cfccfb811293",
+                    account_name="Vendor Checking Account",
+                    bank_name="Chase",
+                    routing_number="66554433",
+                    account_number="55934059697648",
+                    account_type="CHECKING",
+                    status="NEW",
+                    is_default_source=True,
+                    is_default_destination=True,
+                    supported_currencies=["USD"],
+                    metadata={},
+                    frozen=False,
+                    created_at=datetime.datetime.fromisoformat(
+                        "2021-01-01 00:00:00+00:00",
+                    ),
+                    updated_at=datetime.datetime.fromisoformat(
+                        "2021-01-01 00:00:00+00:00",
+                    ),
+                )
+            ],
+            counterparty_type=["ENTITY"],
+        ),
+        payment_destination=PaymentMethodResponse_BankAccount(
+            id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+            account_name="My Checking Account",
+            bank_name="Chase",
+            routing_number="12345678",
+            account_number="99988767623",
+            account_type="CHECKING",
+            status="VERIFIED",
+            is_default_source=True,
+            is_default_destination=True,
+            supported_currencies=["USD"],
+            metadata={},
+            frozen=False,
+            created_at=datetime.datetime.fromisoformat(
+                "2021-01-01 00:00:00+00:00",
+            ),
+            updated_at=datetime.datetime.fromisoformat(
+                "2021-01-01 00:00:00+00:00",
+            ),
+        ),
+        payment_destination_id="pm_65523ab0-043d-4706-b2b2-0b73fed92269",
         invoices=[
             InvoiceResponse(
                 id="in_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
@@ -1070,6 +1974,180 @@ class TransactionResponse_Custom(UniversalBaseModel):
                     TransactionResponseWithoutInvoices_BankAccountToBankAccount(
                         id="trx_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
                         status="COMPLETED",
+                        amount=10000,
+                        currency="USD",
+                        payer_id="ent_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
+                        payer=CounterpartyResponse(
+                            id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                            foreign_id="MY-DB-ID-12345",
+                            name="Acme Inc.",
+                            email="customer@acme.com",
+                            accepted_tos=True,
+                            status="verified",
+                            is_customer=True,
+                            is_payor=True,
+                            is_payee=False,
+                            is_network_payor=False,
+                            is_network_payee=False,
+                            account_type="business",
+                            updated_at=datetime.datetime.fromisoformat(
+                                "2024-01-02 00:00:00+00:00",
+                            ),
+                            created_at=datetime.datetime.fromisoformat(
+                                "2024-01-01 00:00:00+00:00",
+                            ),
+                            profile=ProfileResponse(
+                                business=BusinessProfileResponse(
+                                    email="customer@acme.com",
+                                    legal_business_name="Acme Inc.",
+                                    business_type="llc",
+                                    phone=PhoneNumber(
+                                        country_code="1",
+                                        number="4155551234",
+                                    ),
+                                    address=Address(
+                                        address_line_1="123 Main St",
+                                        address_line_2="Unit 1",
+                                        city="San Francisco",
+                                        state_or_province="CA",
+                                        postal_code="94105",
+                                        country="US",
+                                    ),
+                                    tax_id_provided=True,
+                                    tax_id=TaxId(
+                                        ein=Ein(
+                                            number="12-3456789",
+                                        ),
+                                    ),
+                                    owners_provided=True,
+                                ),
+                            ),
+                            accounts=[
+                                CounterpartyCustomizationAccount(
+                                    account_id="85866843",
+                                    postal_code="94105",
+                                    name_on_account="John Doe",
+                                )
+                            ],
+                            payment_methods=[
+                                PaymentMethodResponse_BankAccount(
+                                    id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                                    account_name="My Checking Account",
+                                    bank_name="Chase",
+                                    routing_number="12345678",
+                                    account_number="99988767623",
+                                    account_type="CHECKING",
+                                    status="VERIFIED",
+                                    is_default_source=True,
+                                    is_default_destination=True,
+                                    supported_currencies=["USD"],
+                                    metadata={},
+                                    frozen=False,
+                                    created_at=datetime.datetime.fromisoformat(
+                                        "2021-01-01 00:00:00+00:00",
+                                    ),
+                                    updated_at=datetime.datetime.fromisoformat(
+                                        "2021-01-01 00:00:00+00:00",
+                                    ),
+                                )
+                            ],
+                            counterparty_type=["ENTITY"],
+                        ),
+                        payment_source=PaymentMethodResponse_BankAccount(
+                            id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                            account_name="My Checking Account",
+                            bank_name="Chase",
+                            routing_number="12345678",
+                            account_number="99988767623",
+                            account_type="CHECKING",
+                            status="VERIFIED",
+                            is_default_source=True,
+                            is_default_destination=True,
+                            supported_currencies=["USD"],
+                            metadata={},
+                            frozen=False,
+                            created_at=datetime.datetime.fromisoformat(
+                                "2021-01-01 00:00:00+00:00",
+                            ),
+                            updated_at=datetime.datetime.fromisoformat(
+                                "2021-01-01 00:00:00+00:00",
+                            ),
+                        ),
+                        payment_source_id="pm_65523ab0-043d-4706-b2b2-0b73fed92269",
+                        vendor_id="ent_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
+                        vendor=CounterpartyResponse(
+                            id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+                            foreign_id="MY-DB-ID-90909",
+                            name="Big Box Store",
+                            email="vendor@bigboxstore.com",
+                            accepted_tos=False,
+                            status="unverified",
+                            is_customer=False,
+                            is_payor=False,
+                            is_payee=True,
+                            is_network_payor=False,
+                            is_network_payee=False,
+                            account_type="business",
+                            updated_at=datetime.datetime.fromisoformat(
+                                "2024-01-02 00:00:00+00:00",
+                            ),
+                            created_at=datetime.datetime.fromisoformat(
+                                "2024-01-01 00:00:00+00:00",
+                            ),
+                            profile=ProfileResponse(
+                                business=BusinessProfileResponse(
+                                    email="vendor@bigboxstore.com",
+                                    legal_business_name="Big Box Store",
+                                    business_type="publicCorporation",
+                                    tax_id_provided=False,
+                                    owners_provided=False,
+                                ),
+                            ),
+                            payment_methods=[
+                                PaymentMethodResponse_BankAccount(
+                                    id="pm_7610541f-4619-4033-8620-cfccfb811293",
+                                    account_name="Vendor Checking Account",
+                                    bank_name="Chase",
+                                    routing_number="66554433",
+                                    account_number="55934059697648",
+                                    account_type="CHECKING",
+                                    status="NEW",
+                                    is_default_source=True,
+                                    is_default_destination=True,
+                                    supported_currencies=["USD"],
+                                    metadata={},
+                                    frozen=False,
+                                    created_at=datetime.datetime.fromisoformat(
+                                        "2021-01-01 00:00:00+00:00",
+                                    ),
+                                    updated_at=datetime.datetime.fromisoformat(
+                                        "2021-01-01 00:00:00+00:00",
+                                    ),
+                                )
+                            ],
+                            counterparty_type=["ENTITY"],
+                        ),
+                        payment_destination=PaymentMethodResponse_BankAccount(
+                            id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                            account_name="My Checking Account",
+                            bank_name="Chase",
+                            routing_number="12345678",
+                            account_number="99988767623",
+                            account_type="CHECKING",
+                            status="VERIFIED",
+                            is_default_source=True,
+                            is_default_destination=True,
+                            supported_currencies=["USD"],
+                            metadata={},
+                            frozen=False,
+                            created_at=datetime.datetime.fromisoformat(
+                                "2021-01-01 00:00:00+00:00",
+                            ),
+                            updated_at=datetime.datetime.fromisoformat(
+                                "2021-01-01 00:00:00+00:00",
+                            ),
+                        ),
+                        payment_destination_id="pm_65523ab0-043d-4706-b2b2-0b73fed92269",
                         created_at=datetime.datetime.fromisoformat(
                             "2024-01-01 00:00:00+00:00",
                         ),
@@ -1213,6 +2291,20 @@ class TransactionResponse_Custom(UniversalBaseModel):
     invoices: typing.List[InvoiceResponse]
     id: TransactionId
     status: TransactionStatus
+    amount: int
+    currency: str
+    payer_id: EntityId = pydantic.Field(alias="payerId")
+    payer: CounterpartyResponse
+    payment_source: PaymentMethodResponse = pydantic.Field(alias="paymentSource")
+    payment_source_id: PaymentMethodId = pydantic.Field(alias="paymentSourceId")
+    vendor_id: EntityId = pydantic.Field(alias="vendorId")
+    vendor: CounterpartyResponse
+    payment_destination: PaymentMethodResponse = pydantic.Field(alias="paymentDestination")
+    payment_destination_id: PaymentMethodId = pydantic.Field(alias="paymentDestinationId")
+    payment_destination_options: typing.Optional[PaymentDestinationOptions] = pydantic.Field(
+        alias="paymentDestinationOptions", default=None
+    )
+    fees: typing.Optional[InvoiceFeesResponse] = None
     created_at: dt.datetime = pydantic.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
 
@@ -1266,6 +2358,180 @@ class TransactionResponse_OffPlatform(UniversalBaseModel):
     TransactionResponse_BankAccountToBankAccount(
         id="trx_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
         status="PENDING",
+        amount=10000,
+        currency="USD",
+        payer_id="ent_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
+        payer=CounterpartyResponse(
+            id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            foreign_id="MY-DB-ID-12345",
+            name="Acme Inc.",
+            email="customer@acme.com",
+            accepted_tos=True,
+            status="verified",
+            is_customer=True,
+            is_payor=True,
+            is_payee=False,
+            is_network_payor=False,
+            is_network_payee=False,
+            account_type="business",
+            updated_at=datetime.datetime.fromisoformat(
+                "2024-01-02 00:00:00+00:00",
+            ),
+            created_at=datetime.datetime.fromisoformat(
+                "2024-01-01 00:00:00+00:00",
+            ),
+            profile=ProfileResponse(
+                business=BusinessProfileResponse(
+                    email="customer@acme.com",
+                    legal_business_name="Acme Inc.",
+                    business_type="llc",
+                    phone=PhoneNumber(
+                        country_code="1",
+                        number="4155551234",
+                    ),
+                    address=Address(
+                        address_line_1="123 Main St",
+                        address_line_2="Unit 1",
+                        city="San Francisco",
+                        state_or_province="CA",
+                        postal_code="94105",
+                        country="US",
+                    ),
+                    tax_id_provided=True,
+                    tax_id=TaxId(
+                        ein=Ein(
+                            number="12-3456789",
+                        ),
+                    ),
+                    owners_provided=True,
+                ),
+            ),
+            accounts=[
+                CounterpartyCustomizationAccount(
+                    account_id="85866843",
+                    postal_code="94105",
+                    name_on_account="John Doe",
+                )
+            ],
+            payment_methods=[
+                PaymentMethodResponse_BankAccount(
+                    id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                    account_name="My Checking Account",
+                    bank_name="Chase",
+                    routing_number="12345678",
+                    account_number="99988767623",
+                    account_type="CHECKING",
+                    status="VERIFIED",
+                    is_default_source=True,
+                    is_default_destination=True,
+                    supported_currencies=["USD"],
+                    metadata={},
+                    frozen=False,
+                    created_at=datetime.datetime.fromisoformat(
+                        "2021-01-01 00:00:00+00:00",
+                    ),
+                    updated_at=datetime.datetime.fromisoformat(
+                        "2021-01-01 00:00:00+00:00",
+                    ),
+                )
+            ],
+            counterparty_type=["ENTITY"],
+        ),
+        payment_source=PaymentMethodResponse_BankAccount(
+            id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+            account_name="My Checking Account",
+            bank_name="Chase",
+            routing_number="12345678",
+            account_number="99988767623",
+            account_type="CHECKING",
+            status="VERIFIED",
+            is_default_source=True,
+            is_default_destination=True,
+            supported_currencies=["USD"],
+            metadata={},
+            frozen=False,
+            created_at=datetime.datetime.fromisoformat(
+                "2021-01-01 00:00:00+00:00",
+            ),
+            updated_at=datetime.datetime.fromisoformat(
+                "2021-01-01 00:00:00+00:00",
+            ),
+        ),
+        payment_source_id="pm_65523ab0-043d-4706-b2b2-0b73fed92269",
+        vendor_id="ent_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
+        vendor=CounterpartyResponse(
+            id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+            foreign_id="MY-DB-ID-90909",
+            name="Big Box Store",
+            email="vendor@bigboxstore.com",
+            accepted_tos=False,
+            status="unverified",
+            is_customer=False,
+            is_payor=False,
+            is_payee=True,
+            is_network_payor=False,
+            is_network_payee=False,
+            account_type="business",
+            updated_at=datetime.datetime.fromisoformat(
+                "2024-01-02 00:00:00+00:00",
+            ),
+            created_at=datetime.datetime.fromisoformat(
+                "2024-01-01 00:00:00+00:00",
+            ),
+            profile=ProfileResponse(
+                business=BusinessProfileResponse(
+                    email="vendor@bigboxstore.com",
+                    legal_business_name="Big Box Store",
+                    business_type="publicCorporation",
+                    tax_id_provided=False,
+                    owners_provided=False,
+                ),
+            ),
+            payment_methods=[
+                PaymentMethodResponse_BankAccount(
+                    id="pm_7610541f-4619-4033-8620-cfccfb811293",
+                    account_name="Vendor Checking Account",
+                    bank_name="Chase",
+                    routing_number="66554433",
+                    account_number="55934059697648",
+                    account_type="CHECKING",
+                    status="NEW",
+                    is_default_source=True,
+                    is_default_destination=True,
+                    supported_currencies=["USD"],
+                    metadata={},
+                    frozen=False,
+                    created_at=datetime.datetime.fromisoformat(
+                        "2021-01-01 00:00:00+00:00",
+                    ),
+                    updated_at=datetime.datetime.fromisoformat(
+                        "2021-01-01 00:00:00+00:00",
+                    ),
+                )
+            ],
+            counterparty_type=["ENTITY"],
+        ),
+        payment_destination=PaymentMethodResponse_BankAccount(
+            id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+            account_name="My Checking Account",
+            bank_name="Chase",
+            routing_number="12345678",
+            account_number="99988767623",
+            account_type="CHECKING",
+            status="VERIFIED",
+            is_default_source=True,
+            is_default_destination=True,
+            supported_currencies=["USD"],
+            metadata={},
+            frozen=False,
+            created_at=datetime.datetime.fromisoformat(
+                "2021-01-01 00:00:00+00:00",
+            ),
+            updated_at=datetime.datetime.fromisoformat(
+                "2021-01-01 00:00:00+00:00",
+            ),
+        ),
+        payment_destination_id="pm_65523ab0-043d-4706-b2b2-0b73fed92269",
         invoices=[
             InvoiceResponse(
                 id="in_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
@@ -1474,6 +2740,180 @@ class TransactionResponse_OffPlatform(UniversalBaseModel):
                     TransactionResponseWithoutInvoices_BankAccountToBankAccount(
                         id="trx_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
                         status="COMPLETED",
+                        amount=10000,
+                        currency="USD",
+                        payer_id="ent_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
+                        payer=CounterpartyResponse(
+                            id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                            foreign_id="MY-DB-ID-12345",
+                            name="Acme Inc.",
+                            email="customer@acme.com",
+                            accepted_tos=True,
+                            status="verified",
+                            is_customer=True,
+                            is_payor=True,
+                            is_payee=False,
+                            is_network_payor=False,
+                            is_network_payee=False,
+                            account_type="business",
+                            updated_at=datetime.datetime.fromisoformat(
+                                "2024-01-02 00:00:00+00:00",
+                            ),
+                            created_at=datetime.datetime.fromisoformat(
+                                "2024-01-01 00:00:00+00:00",
+                            ),
+                            profile=ProfileResponse(
+                                business=BusinessProfileResponse(
+                                    email="customer@acme.com",
+                                    legal_business_name="Acme Inc.",
+                                    business_type="llc",
+                                    phone=PhoneNumber(
+                                        country_code="1",
+                                        number="4155551234",
+                                    ),
+                                    address=Address(
+                                        address_line_1="123 Main St",
+                                        address_line_2="Unit 1",
+                                        city="San Francisco",
+                                        state_or_province="CA",
+                                        postal_code="94105",
+                                        country="US",
+                                    ),
+                                    tax_id_provided=True,
+                                    tax_id=TaxId(
+                                        ein=Ein(
+                                            number="12-3456789",
+                                        ),
+                                    ),
+                                    owners_provided=True,
+                                ),
+                            ),
+                            accounts=[
+                                CounterpartyCustomizationAccount(
+                                    account_id="85866843",
+                                    postal_code="94105",
+                                    name_on_account="John Doe",
+                                )
+                            ],
+                            payment_methods=[
+                                PaymentMethodResponse_BankAccount(
+                                    id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                                    account_name="My Checking Account",
+                                    bank_name="Chase",
+                                    routing_number="12345678",
+                                    account_number="99988767623",
+                                    account_type="CHECKING",
+                                    status="VERIFIED",
+                                    is_default_source=True,
+                                    is_default_destination=True,
+                                    supported_currencies=["USD"],
+                                    metadata={},
+                                    frozen=False,
+                                    created_at=datetime.datetime.fromisoformat(
+                                        "2021-01-01 00:00:00+00:00",
+                                    ),
+                                    updated_at=datetime.datetime.fromisoformat(
+                                        "2021-01-01 00:00:00+00:00",
+                                    ),
+                                )
+                            ],
+                            counterparty_type=["ENTITY"],
+                        ),
+                        payment_source=PaymentMethodResponse_BankAccount(
+                            id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                            account_name="My Checking Account",
+                            bank_name="Chase",
+                            routing_number="12345678",
+                            account_number="99988767623",
+                            account_type="CHECKING",
+                            status="VERIFIED",
+                            is_default_source=True,
+                            is_default_destination=True,
+                            supported_currencies=["USD"],
+                            metadata={},
+                            frozen=False,
+                            created_at=datetime.datetime.fromisoformat(
+                                "2021-01-01 00:00:00+00:00",
+                            ),
+                            updated_at=datetime.datetime.fromisoformat(
+                                "2021-01-01 00:00:00+00:00",
+                            ),
+                        ),
+                        payment_source_id="pm_65523ab0-043d-4706-b2b2-0b73fed92269",
+                        vendor_id="ent_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
+                        vendor=CounterpartyResponse(
+                            id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+                            foreign_id="MY-DB-ID-90909",
+                            name="Big Box Store",
+                            email="vendor@bigboxstore.com",
+                            accepted_tos=False,
+                            status="unverified",
+                            is_customer=False,
+                            is_payor=False,
+                            is_payee=True,
+                            is_network_payor=False,
+                            is_network_payee=False,
+                            account_type="business",
+                            updated_at=datetime.datetime.fromisoformat(
+                                "2024-01-02 00:00:00+00:00",
+                            ),
+                            created_at=datetime.datetime.fromisoformat(
+                                "2024-01-01 00:00:00+00:00",
+                            ),
+                            profile=ProfileResponse(
+                                business=BusinessProfileResponse(
+                                    email="vendor@bigboxstore.com",
+                                    legal_business_name="Big Box Store",
+                                    business_type="publicCorporation",
+                                    tax_id_provided=False,
+                                    owners_provided=False,
+                                ),
+                            ),
+                            payment_methods=[
+                                PaymentMethodResponse_BankAccount(
+                                    id="pm_7610541f-4619-4033-8620-cfccfb811293",
+                                    account_name="Vendor Checking Account",
+                                    bank_name="Chase",
+                                    routing_number="66554433",
+                                    account_number="55934059697648",
+                                    account_type="CHECKING",
+                                    status="NEW",
+                                    is_default_source=True,
+                                    is_default_destination=True,
+                                    supported_currencies=["USD"],
+                                    metadata={},
+                                    frozen=False,
+                                    created_at=datetime.datetime.fromisoformat(
+                                        "2021-01-01 00:00:00+00:00",
+                                    ),
+                                    updated_at=datetime.datetime.fromisoformat(
+                                        "2021-01-01 00:00:00+00:00",
+                                    ),
+                                )
+                            ],
+                            counterparty_type=["ENTITY"],
+                        ),
+                        payment_destination=PaymentMethodResponse_BankAccount(
+                            id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                            account_name="My Checking Account",
+                            bank_name="Chase",
+                            routing_number="12345678",
+                            account_number="99988767623",
+                            account_type="CHECKING",
+                            status="VERIFIED",
+                            is_default_source=True,
+                            is_default_destination=True,
+                            supported_currencies=["USD"],
+                            metadata={},
+                            frozen=False,
+                            created_at=datetime.datetime.fromisoformat(
+                                "2021-01-01 00:00:00+00:00",
+                            ),
+                            updated_at=datetime.datetime.fromisoformat(
+                                "2021-01-01 00:00:00+00:00",
+                            ),
+                        ),
+                        payment_destination_id="pm_65523ab0-043d-4706-b2b2-0b73fed92269",
                         created_at=datetime.datetime.fromisoformat(
                             "2024-01-01 00:00:00+00:00",
                         ),
@@ -1617,6 +3057,20 @@ class TransactionResponse_OffPlatform(UniversalBaseModel):
     invoices: typing.List[InvoiceResponse]
     id: TransactionId
     status: TransactionStatus
+    amount: int
+    currency: str
+    payer_id: EntityId = pydantic.Field(alias="payerId")
+    payer: CounterpartyResponse
+    payment_source: PaymentMethodResponse = pydantic.Field(alias="paymentSource")
+    payment_source_id: PaymentMethodId = pydantic.Field(alias="paymentSourceId")
+    vendor_id: EntityId = pydantic.Field(alias="vendorId")
+    vendor: CounterpartyResponse
+    payment_destination: PaymentMethodResponse = pydantic.Field(alias="paymentDestination")
+    payment_destination_id: PaymentMethodId = pydantic.Field(alias="paymentDestinationId")
+    payment_destination_options: typing.Optional[PaymentDestinationOptions] = pydantic.Field(
+        alias="paymentDestinationOptions", default=None
+    )
+    fees: typing.Optional[InvoiceFeesResponse] = None
     created_at: dt.datetime = pydantic.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
 
@@ -1667,6 +3121,180 @@ from mercoa.transaction import (
 TransactionResponse_BankAccountToBankAccount(
     id="trx_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
     status="PENDING",
+    amount=10000,
+    currency="USD",
+    payer_id="ent_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
+    payer=CounterpartyResponse(
+        id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+        foreign_id="MY-DB-ID-12345",
+        name="Acme Inc.",
+        email="customer@acme.com",
+        accepted_tos=True,
+        status="verified",
+        is_customer=True,
+        is_payor=True,
+        is_payee=False,
+        is_network_payor=False,
+        is_network_payee=False,
+        account_type="business",
+        updated_at=datetime.datetime.fromisoformat(
+            "2024-01-02 00:00:00+00:00",
+        ),
+        created_at=datetime.datetime.fromisoformat(
+            "2024-01-01 00:00:00+00:00",
+        ),
+        profile=ProfileResponse(
+            business=BusinessProfileResponse(
+                email="customer@acme.com",
+                legal_business_name="Acme Inc.",
+                business_type="llc",
+                phone=PhoneNumber(
+                    country_code="1",
+                    number="4155551234",
+                ),
+                address=Address(
+                    address_line_1="123 Main St",
+                    address_line_2="Unit 1",
+                    city="San Francisco",
+                    state_or_province="CA",
+                    postal_code="94105",
+                    country="US",
+                ),
+                tax_id_provided=True,
+                tax_id=TaxId(
+                    ein=Ein(
+                        number="12-3456789",
+                    ),
+                ),
+                owners_provided=True,
+            ),
+        ),
+        accounts=[
+            CounterpartyCustomizationAccount(
+                account_id="85866843",
+                postal_code="94105",
+                name_on_account="John Doe",
+            )
+        ],
+        payment_methods=[
+            PaymentMethodResponse_BankAccount(
+                id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                account_name="My Checking Account",
+                bank_name="Chase",
+                routing_number="12345678",
+                account_number="99988767623",
+                account_type="CHECKING",
+                status="VERIFIED",
+                is_default_source=True,
+                is_default_destination=True,
+                supported_currencies=["USD"],
+                metadata={},
+                frozen=False,
+                created_at=datetime.datetime.fromisoformat(
+                    "2021-01-01 00:00:00+00:00",
+                ),
+                updated_at=datetime.datetime.fromisoformat(
+                    "2021-01-01 00:00:00+00:00",
+                ),
+            )
+        ],
+        counterparty_type=["ENTITY"],
+    ),
+    payment_source=PaymentMethodResponse_BankAccount(
+        id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+        account_name="My Checking Account",
+        bank_name="Chase",
+        routing_number="12345678",
+        account_number="99988767623",
+        account_type="CHECKING",
+        status="VERIFIED",
+        is_default_source=True,
+        is_default_destination=True,
+        supported_currencies=["USD"],
+        metadata={},
+        frozen=False,
+        created_at=datetime.datetime.fromisoformat(
+            "2021-01-01 00:00:00+00:00",
+        ),
+        updated_at=datetime.datetime.fromisoformat(
+            "2021-01-01 00:00:00+00:00",
+        ),
+    ),
+    payment_source_id="pm_65523ab0-043d-4706-b2b2-0b73fed92269",
+    vendor_id="ent_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
+    vendor=CounterpartyResponse(
+        id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+        foreign_id="MY-DB-ID-90909",
+        name="Big Box Store",
+        email="vendor@bigboxstore.com",
+        accepted_tos=False,
+        status="unverified",
+        is_customer=False,
+        is_payor=False,
+        is_payee=True,
+        is_network_payor=False,
+        is_network_payee=False,
+        account_type="business",
+        updated_at=datetime.datetime.fromisoformat(
+            "2024-01-02 00:00:00+00:00",
+        ),
+        created_at=datetime.datetime.fromisoformat(
+            "2024-01-01 00:00:00+00:00",
+        ),
+        profile=ProfileResponse(
+            business=BusinessProfileResponse(
+                email="vendor@bigboxstore.com",
+                legal_business_name="Big Box Store",
+                business_type="publicCorporation",
+                tax_id_provided=False,
+                owners_provided=False,
+            ),
+        ),
+        payment_methods=[
+            PaymentMethodResponse_BankAccount(
+                id="pm_7610541f-4619-4033-8620-cfccfb811293",
+                account_name="Vendor Checking Account",
+                bank_name="Chase",
+                routing_number="66554433",
+                account_number="55934059697648",
+                account_type="CHECKING",
+                status="NEW",
+                is_default_source=True,
+                is_default_destination=True,
+                supported_currencies=["USD"],
+                metadata={},
+                frozen=False,
+                created_at=datetime.datetime.fromisoformat(
+                    "2021-01-01 00:00:00+00:00",
+                ),
+                updated_at=datetime.datetime.fromisoformat(
+                    "2021-01-01 00:00:00+00:00",
+                ),
+            )
+        ],
+        counterparty_type=["ENTITY"],
+    ),
+    payment_destination=PaymentMethodResponse_BankAccount(
+        id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+        account_name="My Checking Account",
+        bank_name="Chase",
+        routing_number="12345678",
+        account_number="99988767623",
+        account_type="CHECKING",
+        status="VERIFIED",
+        is_default_source=True,
+        is_default_destination=True,
+        supported_currencies=["USD"],
+        metadata={},
+        frozen=False,
+        created_at=datetime.datetime.fromisoformat(
+            "2021-01-01 00:00:00+00:00",
+        ),
+        updated_at=datetime.datetime.fromisoformat(
+            "2021-01-01 00:00:00+00:00",
+        ),
+    ),
+    payment_destination_id="pm_65523ab0-043d-4706-b2b2-0b73fed92269",
     invoices=[
         InvoiceResponse(
             id="in_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
@@ -1875,6 +3503,180 @@ TransactionResponse_BankAccountToBankAccount(
                 TransactionResponseWithoutInvoices_BankAccountToBankAccount(
                     id="trx_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
                     status="COMPLETED",
+                    amount=10000,
+                    currency="USD",
+                    payer_id="ent_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
+                    payer=CounterpartyResponse(
+                        id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                        foreign_id="MY-DB-ID-12345",
+                        name="Acme Inc.",
+                        email="customer@acme.com",
+                        accepted_tos=True,
+                        status="verified",
+                        is_customer=True,
+                        is_payor=True,
+                        is_payee=False,
+                        is_network_payor=False,
+                        is_network_payee=False,
+                        account_type="business",
+                        updated_at=datetime.datetime.fromisoformat(
+                            "2024-01-02 00:00:00+00:00",
+                        ),
+                        created_at=datetime.datetime.fromisoformat(
+                            "2024-01-01 00:00:00+00:00",
+                        ),
+                        profile=ProfileResponse(
+                            business=BusinessProfileResponse(
+                                email="customer@acme.com",
+                                legal_business_name="Acme Inc.",
+                                business_type="llc",
+                                phone=PhoneNumber(
+                                    country_code="1",
+                                    number="4155551234",
+                                ),
+                                address=Address(
+                                    address_line_1="123 Main St",
+                                    address_line_2="Unit 1",
+                                    city="San Francisco",
+                                    state_or_province="CA",
+                                    postal_code="94105",
+                                    country="US",
+                                ),
+                                tax_id_provided=True,
+                                tax_id=TaxId(
+                                    ein=Ein(
+                                        number="12-3456789",
+                                    ),
+                                ),
+                                owners_provided=True,
+                            ),
+                        ),
+                        accounts=[
+                            CounterpartyCustomizationAccount(
+                                account_id="85866843",
+                                postal_code="94105",
+                                name_on_account="John Doe",
+                            )
+                        ],
+                        payment_methods=[
+                            PaymentMethodResponse_BankAccount(
+                                id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                                account_name="My Checking Account",
+                                bank_name="Chase",
+                                routing_number="12345678",
+                                account_number="99988767623",
+                                account_type="CHECKING",
+                                status="VERIFIED",
+                                is_default_source=True,
+                                is_default_destination=True,
+                                supported_currencies=["USD"],
+                                metadata={},
+                                frozen=False,
+                                created_at=datetime.datetime.fromisoformat(
+                                    "2021-01-01 00:00:00+00:00",
+                                ),
+                                updated_at=datetime.datetime.fromisoformat(
+                                    "2021-01-01 00:00:00+00:00",
+                                ),
+                            )
+                        ],
+                        counterparty_type=["ENTITY"],
+                    ),
+                    payment_source=PaymentMethodResponse_BankAccount(
+                        id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                        account_name="My Checking Account",
+                        bank_name="Chase",
+                        routing_number="12345678",
+                        account_number="99988767623",
+                        account_type="CHECKING",
+                        status="VERIFIED",
+                        is_default_source=True,
+                        is_default_destination=True,
+                        supported_currencies=["USD"],
+                        metadata={},
+                        frozen=False,
+                        created_at=datetime.datetime.fromisoformat(
+                            "2021-01-01 00:00:00+00:00",
+                        ),
+                        updated_at=datetime.datetime.fromisoformat(
+                            "2021-01-01 00:00:00+00:00",
+                        ),
+                    ),
+                    payment_source_id="pm_65523ab0-043d-4706-b2b2-0b73fed92269",
+                    vendor_id="ent_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
+                    vendor=CounterpartyResponse(
+                        id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+                        foreign_id="MY-DB-ID-90909",
+                        name="Big Box Store",
+                        email="vendor@bigboxstore.com",
+                        accepted_tos=False,
+                        status="unverified",
+                        is_customer=False,
+                        is_payor=False,
+                        is_payee=True,
+                        is_network_payor=False,
+                        is_network_payee=False,
+                        account_type="business",
+                        updated_at=datetime.datetime.fromisoformat(
+                            "2024-01-02 00:00:00+00:00",
+                        ),
+                        created_at=datetime.datetime.fromisoformat(
+                            "2024-01-01 00:00:00+00:00",
+                        ),
+                        profile=ProfileResponse(
+                            business=BusinessProfileResponse(
+                                email="vendor@bigboxstore.com",
+                                legal_business_name="Big Box Store",
+                                business_type="publicCorporation",
+                                tax_id_provided=False,
+                                owners_provided=False,
+                            ),
+                        ),
+                        payment_methods=[
+                            PaymentMethodResponse_BankAccount(
+                                id="pm_7610541f-4619-4033-8620-cfccfb811293",
+                                account_name="Vendor Checking Account",
+                                bank_name="Chase",
+                                routing_number="66554433",
+                                account_number="55934059697648",
+                                account_type="CHECKING",
+                                status="NEW",
+                                is_default_source=True,
+                                is_default_destination=True,
+                                supported_currencies=["USD"],
+                                metadata={},
+                                frozen=False,
+                                created_at=datetime.datetime.fromisoformat(
+                                    "2021-01-01 00:00:00+00:00",
+                                ),
+                                updated_at=datetime.datetime.fromisoformat(
+                                    "2021-01-01 00:00:00+00:00",
+                                ),
+                            )
+                        ],
+                        counterparty_type=["ENTITY"],
+                    ),
+                    payment_destination=PaymentMethodResponse_BankAccount(
+                        id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                        account_name="My Checking Account",
+                        bank_name="Chase",
+                        routing_number="12345678",
+                        account_number="99988767623",
+                        account_type="CHECKING",
+                        status="VERIFIED",
+                        is_default_source=True,
+                        is_default_destination=True,
+                        supported_currencies=["USD"],
+                        metadata={},
+                        frozen=False,
+                        created_at=datetime.datetime.fromisoformat(
+                            "2021-01-01 00:00:00+00:00",
+                        ),
+                        updated_at=datetime.datetime.fromisoformat(
+                            "2021-01-01 00:00:00+00:00",
+                        ),
+                    ),
+                    payment_destination_id="pm_65523ab0-043d-4706-b2b2-0b73fed92269",
                     created_at=datetime.datetime.fromisoformat(
                         "2024-01-01 00:00:00+00:00",
                     ),

@@ -7,6 +7,7 @@ from .email_log.client import EmailLogClient
 from .payment_method.client import PaymentMethodClient
 from .user.client import UserClient
 from .approval_policy.client import ApprovalPolicyClient
+from .bulk.client import BulkClient
 from .customization.client import CustomizationClient
 from .document.client import DocumentClient
 from .email_template.client import EmailTemplateClient
@@ -46,6 +47,7 @@ from .email_log.client import AsyncEmailLogClient
 from .payment_method.client import AsyncPaymentMethodClient
 from .user.client import AsyncUserClient
 from .approval_policy.client import AsyncApprovalPolicyClient
+from .bulk.client import AsyncBulkClient
 from .customization.client import AsyncCustomizationClient
 from .document.client import AsyncDocumentClient
 from .email_template.client import AsyncEmailTemplateClient
@@ -67,6 +69,7 @@ class EntityClient:
         self.payment_method = PaymentMethodClient(client_wrapper=self._client_wrapper)
         self.user = UserClient(client_wrapper=self._client_wrapper)
         self.approval_policy = ApprovalPolicyClient(client_wrapper=self._client_wrapper)
+        self.bulk = BulkClient(client_wrapper=self._client_wrapper)
         self.customization = CustomizationClient(client_wrapper=self._client_wrapper)
         self.document = DocumentClient(client_wrapper=self._client_wrapper)
         self.email_template = EmailTemplateClient(client_wrapper=self._client_wrapper)
@@ -732,7 +735,7 @@ class EntityClient:
             token="YOUR_TOKEN",
         )
         client.entity.delete(
-            entity_id="string",
+            entity_id="entityId",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -1490,10 +1493,8 @@ class EntityClient:
             token="YOUR_TOKEN",
         )
         client.entity.send_onboarding_link(
-            entity_id="string",
+            entity_id="entityId",
             type="PAYEE",
-            expires_in="string",
-            connected_entity_id="string",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -1728,6 +1729,7 @@ class AsyncEntityClient:
         self.payment_method = AsyncPaymentMethodClient(client_wrapper=self._client_wrapper)
         self.user = AsyncUserClient(client_wrapper=self._client_wrapper)
         self.approval_policy = AsyncApprovalPolicyClient(client_wrapper=self._client_wrapper)
+        self.bulk = AsyncBulkClient(client_wrapper=self._client_wrapper)
         self.customization = AsyncCustomizationClient(client_wrapper=self._client_wrapper)
         self.document = AsyncDocumentClient(client_wrapper=self._client_wrapper)
         self.email_template = AsyncEmailTemplateClient(client_wrapper=self._client_wrapper)
@@ -2430,7 +2432,7 @@ class AsyncEntityClient:
 
         async def main() -> None:
             await client.entity.delete(
-                entity_id="string",
+                entity_id="entityId",
             )
 
 
@@ -3238,10 +3240,8 @@ class AsyncEntityClient:
 
         async def main() -> None:
             await client.entity.send_onboarding_link(
-                entity_id="string",
+                entity_id="entityId",
                 type="PAYEE",
-                expires_in="string",
-                connected_entity_id="string",
             )
 
 

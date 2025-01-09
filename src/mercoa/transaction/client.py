@@ -95,7 +95,7 @@ class TransactionClient:
             Filter transactions by the ID or foreign ID of the user that created the invoice that created the transaction.
 
         invoice_id : typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]
-            Filter transactions by invoice ID.
+            Filter transactions by invoice ID. Does not support foreign ID.
 
         transaction_id : typing.Optional[typing.Union[TransactionId, typing.Sequence[TransactionId]]]
             Filter transactions by transaction ID.
@@ -426,7 +426,7 @@ class AsyncTransactionClient:
             Filter transactions by the ID or foreign ID of the user that created the invoice that created the transaction.
 
         invoice_id : typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]
-            Filter transactions by invoice ID.
+            Filter transactions by invoice ID. Does not support foreign ID.
 
         transaction_id : typing.Optional[typing.Union[TransactionId, typing.Sequence[TransactionId]]]
             Filter transactions by transaction ID.

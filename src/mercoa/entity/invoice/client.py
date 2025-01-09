@@ -129,7 +129,7 @@ class InvoiceClient:
             Filter invoices by approver action. Needs to be used with approverId. For example, if you want to find all invoices that have been approved by a specific user, you would use approverId and approverAction=APPROVE.
 
         invoice_id : typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]
-            Filter invoices by invoice ID.
+            Filter invoices by invoice ID or invoice foreign ID.
 
         status : typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]]
             Invoice status to filter on.
@@ -329,7 +329,7 @@ class InvoiceClient:
             Filter invoices by assigned approver user ID.
 
         invoice_id : typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]
-            Filter invoices by invoice ID.
+            Filter invoices by invoice ID or invoice foreign ID.
 
         status : typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]]
             Invoice status to filter on
@@ -578,7 +578,7 @@ class AsyncInvoiceClient:
             Filter invoices by approver action. Needs to be used with approverId. For example, if you want to find all invoices that have been approved by a specific user, you would use approverId and approverAction=APPROVE.
 
         invoice_id : typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]
-            Filter invoices by invoice ID.
+            Filter invoices by invoice ID or invoice foreign ID.
 
         status : typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]]
             Invoice status to filter on.
@@ -786,7 +786,7 @@ class AsyncInvoiceClient:
             Filter invoices by assigned approver user ID.
 
         invoice_id : typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]
-            Filter invoices by invoice ID.
+            Filter invoices by invoice ID or invoice foreign ID.
 
         status : typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]]
             Invoice status to filter on

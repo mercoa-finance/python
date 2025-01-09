@@ -580,8 +580,8 @@ class EmailTemplateClient:
             token="YOUR_TOKEN",
         )
         client.entity.email_template.delete(
-            entity_id="string",
-            email_template_id="string",
+            entity_id="entityId",
+            email_template_id="emailTemplateId",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -1262,8 +1262,8 @@ class AsyncEmailTemplateClient:
 
         async def main() -> None:
             await client.entity.email_template.delete(
-                entity_id="string",
-                email_template_id="string",
+                entity_id="entityId",
+                email_template_id="emailTemplateId",
             )
 
 

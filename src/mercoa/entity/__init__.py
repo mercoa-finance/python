@@ -2,6 +2,7 @@
 
 from . import (
     approval_policy,
+    bulk,
     counterparty,
     customization,
     document,
@@ -44,6 +45,7 @@ __all__ = [
     "RutterCompanyResponse",
     "SyncType",
     "approval_policy",
+    "bulk",
     "counterparty",
     "customization",
     "document",

@@ -18,6 +18,7 @@ from ...entity_types.types.entity_user_response import EntityUserResponse
 from .comment_response import CommentResponse
 from .invoice_fees_response import InvoiceFeesResponse
 from .payment_schedule import PaymentSchedule
+from ...ocr.types.ocr_job_id import OcrJobId
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -131,6 +132,11 @@ class InvoiceResponseBase(UniversalBaseModel):
     payment_schedule: typing.Optional[PaymentSchedule] = pydantic.Field(alias="paymentSchedule", default=None)
     """
     If this is a recurring invoice, this will be the payment schedule for the invoice. If not provided, this will be a one-time invoice.
+    """
+
+    ocr_job_id: typing.Optional[OcrJobId] = pydantic.Field(alias="ocrJobId", default=None)
+    """
+    ID of the OCR job that processed this invoice.
     """
 
     if IS_PYDANTIC_V2:

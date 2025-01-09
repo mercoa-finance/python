@@ -9,6 +9,11 @@ from .approval_policy_request import ApprovalPolicyRequest
 from .approval_policy_response import ApprovalPolicyResponse
 from .approval_policy_update_request import ApprovalPolicyUpdateRequest
 from .approver_rule import ApproverRule
+from .bulk_connected_entity import BulkConnectedEntity
+from .bulk_entity_creation_from_object import BulkEntityCreationFromObject
+from .bulk_entity_creation_from_object_response import BulkEntityCreationFromObjectResponse
+from .bulk_entity_creation_request import BulkEntityCreationRequest
+from .bulk_entity_creation_response import BulkEntityCreationResponse
 from .business_profile_request import BusinessProfileRequest
 from .business_profile_response import BusinessProfileResponse
 from .business_type import BusinessType
@@ -64,6 +69,7 @@ from .notification_status import NotificationStatus
 from .notification_type import NotificationType
 from .notification_update_request import NotificationUpdateRequest
 from .ocr_customization_request import OcrCustomizationRequest
+from .ocr_customization_response import OcrCustomizationResponse
 from .payment_method_customization_request import PaymentMethodCustomizationRequest
 from .profile_request import ProfileRequest
 from .profile_response import ProfileResponse
@@ -97,6 +103,11 @@ __all__ = [
     "ApprovalPolicyResponse",
     "ApprovalPolicyUpdateRequest",
     "ApproverRule",
+    "BulkConnectedEntity",
+    "BulkEntityCreationFromObject",
+    "BulkEntityCreationFromObjectResponse",
+    "BulkEntityCreationRequest",
+    "BulkEntityCreationResponse",
     "BusinessProfileRequest",
     "BusinessProfileResponse",
     "BusinessType",
@@ -154,6 +165,7 @@ __all__ = [
     "NotificationType",
     "NotificationUpdateRequest",
     "OcrCustomizationRequest",
+    "OcrCustomizationResponse",
     "PaymentMethodCustomizationRequest",
     "ProfileRequest",
     "ProfileResponse",

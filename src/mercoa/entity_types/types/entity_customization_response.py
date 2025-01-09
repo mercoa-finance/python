@@ -5,7 +5,7 @@ import typing
 from .metadata_customization_request import MetadataCustomizationRequest
 from .payment_method_customization_request import PaymentMethodCustomizationRequest
 import pydantic
-from .ocr_customization_request import OcrCustomizationRequest
+from .ocr_customization_response import OcrCustomizationResponse
 from .notification_customization_request import NotificationCustomizationRequest
 from .workflow_customization_request import WorkflowCustomizationRequest
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
@@ -19,7 +19,7 @@ class EntityCustomizationResponse(UniversalBaseModel):
         EntityCustomizationResponse,
         MetadataCustomizationRequest,
         NotificationCustomizationRequest,
-        OcrCustomizationRequest,
+        OcrCustomizationResponse,
         PaymentMethodCustomizationRequest,
         WorkflowCustomizationRequest,
     )
@@ -62,8 +62,9 @@ class EntityCustomizationResponse(UniversalBaseModel):
                 disabled=True,
             ),
         ],
-        ocr=OcrCustomizationRequest(
+        ocr=OcrCustomizationResponse(
             line_items=True,
+            collapse_line_items=True,
             invoice_metadata=True,
             line_item_metadata=True,
             line_item_gl_account_id=True,
@@ -83,7 +84,7 @@ class EntityCustomizationResponse(UniversalBaseModel):
     payment_source: typing.List[PaymentMethodCustomizationRequest] = pydantic.Field(alias="paymentSource")
     backup_disbursement: typing.List[PaymentMethodCustomizationRequest] = pydantic.Field(alias="backupDisbursement")
     payment_destination: typing.List[PaymentMethodCustomizationRequest] = pydantic.Field(alias="paymentDestination")
-    ocr: OcrCustomizationRequest
+    ocr: OcrCustomizationResponse
     notifications: NotificationCustomizationRequest
     workflow: WorkflowCustomizationRequest
 

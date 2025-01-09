@@ -64,6 +64,7 @@ class EntityCustomizationRequest(UniversalBaseModel):
         ],
         ocr=OcrCustomizationRequest(
             line_items=True,
+            collapse_line_items=True,
             invoice_metadata=True,
             line_item_metadata=True,
             line_item_gl_account_id=True,

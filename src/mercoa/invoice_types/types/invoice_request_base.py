@@ -15,6 +15,7 @@ from .invoice_failure_type import InvoiceFailureType
 from .invoice_fees_request import InvoiceFeesRequest
 from .payment_schedule import PaymentSchedule
 from ...vendor_credit_types.types.vendor_credit_id import VendorCreditId
+from ...ocr.types.ocr_job_id import OcrJobId
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -152,6 +153,11 @@ class InvoiceRequestBase(UniversalBaseModel):
     shipping_amount: typing.Optional[float] = pydantic.Field(alias="shippingAmount", default=None)
     """
     Shipping amount for this invoice.
+    """
+
+    ocr_job_id: typing.Optional[OcrJobId] = pydantic.Field(alias="ocrJobId", default=None)
+    """
+    ID of the OCR job that processed this invoice.
     """
 
     if IS_PYDANTIC_V2:

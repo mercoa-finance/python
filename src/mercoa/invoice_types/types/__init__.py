@@ -9,6 +9,9 @@ from .approver_action import ApproverAction
 from .associated_approval_action import AssociatedApprovalAction
 from .bank_account_payment_destination_options import BankAccountPaymentDestinationOptions
 from .bank_delivery_method import BankDeliveryMethod
+from .bulk_invoice_creation_from_object_response import BulkInvoiceCreationFromObjectResponse
+from .bulk_invoice_creation_request import BulkInvoiceCreationRequest
+from .bulk_invoice_creation_response import BulkInvoiceCreationResponse
 from .check_delivery_method import CheckDeliveryMethod
 from .check_payment_destination_options import CheckPaymentDestinationOptions
 from .comment_id import CommentId
@@ -82,6 +85,9 @@ __all__ = [
     "AssociatedApprovalAction",
     "BankAccountPaymentDestinationOptions",
     "BankDeliveryMethod",
+    "BulkInvoiceCreationFromObjectResponse",
+    "BulkInvoiceCreationRequest",
+    "BulkInvoiceCreationResponse",
     "CheckDeliveryMethod",
     "CheckPaymentDestinationOptions",
     "CommentId",

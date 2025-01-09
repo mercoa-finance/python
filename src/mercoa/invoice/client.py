@@ -4,6 +4,7 @@ import typing
 from ..core.client_wrapper import SyncClientWrapper
 from .line_item.client import LineItemClient
 from .approval.client import ApprovalClient
+from .bulk.client import BulkClient
 from .comment.client import CommentClient
 from .document.client import DocumentClient
 from .payment_links.client import PaymentLinksClient
@@ -40,6 +41,7 @@ from ..invoice_types.types.invoice_events_response import InvoiceEventsResponse
 from ..core.client_wrapper import AsyncClientWrapper
 from .line_item.client import AsyncLineItemClient
 from .approval.client import AsyncApprovalClient
+from .bulk.client import AsyncBulkClient
 from .comment.client import AsyncCommentClient
 from .document.client import AsyncDocumentClient
 from .payment_links.client import AsyncPaymentLinksClient
@@ -53,6 +55,7 @@ class InvoiceClient:
         self._client_wrapper = client_wrapper
         self.line_item = LineItemClient(client_wrapper=self._client_wrapper)
         self.approval = ApprovalClient(client_wrapper=self._client_wrapper)
+        self.bulk = BulkClient(client_wrapper=self._client_wrapper)
         self.comment = CommentClient(client_wrapper=self._client_wrapper)
         self.document = DocumentClient(client_wrapper=self._client_wrapper)
         self.payment_links = PaymentLinksClient(client_wrapper=self._client_wrapper)
@@ -136,13 +139,13 @@ class InvoiceClient:
             Filter invoices by the ID or foreign ID of the user that created the invoice.
 
         approver_id : typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]
-            Filter invoices by assigned approver user ID.
+            Filter invoices by assigned approver user ID. Only invoices with all upstream policies approved will be returned.
 
         approver_action : typing.Optional[typing.Union[ApproverAction, typing.Sequence[ApproverAction]]]
             Filter invoices by approver action. Needs to be used with approverId. For example, if you want to find all invoices that have been approved by a specific user, you would use approverId and approverAction=APPROVE.
 
         invoice_id : typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]
-            Filter invoices by invoice ID.
+            Filter invoices by invoice ID or invoice foreign ID.
 
         status : typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]]
             Invoice status to filter on
@@ -991,6 +994,7 @@ class AsyncInvoiceClient:
         self._client_wrapper = client_wrapper
         self.line_item = AsyncLineItemClient(client_wrapper=self._client_wrapper)
         self.approval = AsyncApprovalClient(client_wrapper=self._client_wrapper)
+        self.bulk = AsyncBulkClient(client_wrapper=self._client_wrapper)
         self.comment = AsyncCommentClient(client_wrapper=self._client_wrapper)
         self.document = AsyncDocumentClient(client_wrapper=self._client_wrapper)
         self.payment_links = AsyncPaymentLinksClient(client_wrapper=self._client_wrapper)
@@ -1074,13 +1078,13 @@ class AsyncInvoiceClient:
             Filter invoices by the ID or foreign ID of the user that created the invoice.
 
         approver_id : typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]
-            Filter invoices by assigned approver user ID.
+            Filter invoices by assigned approver user ID. Only invoices with all upstream policies approved will be returned.
 
         approver_action : typing.Optional[typing.Union[ApproverAction, typing.Sequence[ApproverAction]]]
             Filter invoices by approver action. Needs to be used with approverId. For example, if you want to find all invoices that have been approved by a specific user, you would use approverId and approverAction=APPROVE.
 
         invoice_id : typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]
-            Filter invoices by invoice ID.
+            Filter invoices by invoice ID or invoice foreign ID.
 
         status : typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]]
             Invoice status to filter on

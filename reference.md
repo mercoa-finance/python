@@ -350,7 +350,7 @@ client = Mercoa(
     token="YOUR_TOKEN",
 )
 client.entity_group.delete(
-    entity_group_id="string",
+    entity_group_id="entityGroupId",
 )
 
 ```
@@ -1077,8 +1077,8 @@ client = Mercoa(
     token="YOUR_TOKEN",
 )
 client.entity_group.user.delete(
-    entity_group_id="string",
-    foreign_id="string",
+    entity_group_id="entityGroupId",
+    foreign_id="foreignId",
 )
 
 ```
@@ -1657,7 +1657,7 @@ client = Mercoa(
     token="YOUR_TOKEN",
 )
 client.entity.delete(
-    entity_id="string",
+    entity_id="entityId",
 )
 
 ```
@@ -1776,7 +1776,7 @@ client.entity.accept_terms_of_service(
 <dl>
 <dd>
 
-This endpoint is used to initiate KYB for an entity.
+This endpoint is used to initiate KYB for an entity. 
 Send a request to this endpoint only after the entity has accepted the Mercoa ToS,
 all representatives have been added, and all required fields have been filled out.
 </dd>
@@ -2128,10 +2128,8 @@ client = Mercoa(
     token="YOUR_TOKEN",
 )
 client.entity.send_onboarding_link(
-    entity_id="string",
+    entity_id="entityId",
     type="PAYEE",
-    expires_in="string",
-    connected_entity_id="string",
 )
 
 ```
@@ -3921,8 +3919,8 @@ client = Mercoa(
     token="YOUR_TOKEN",
 )
 client.entity.user.delete(
-    entity_id="string",
-    user_id="string",
+    entity_id="entityId",
+    user_id="userId",
 )
 
 ```
@@ -4909,7 +4907,7 @@ client.invoice.find(
 <dl>
 <dd>
 
-**approver_id:** `typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]` — Filter invoices by assigned approver user ID.
+**approver_id:** `typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]` — Filter invoices by assigned approver user ID. Only invoices with all upstream policies approved will be returned.
     
 </dd>
 </dl>
@@ -4925,7 +4923,7 @@ client.invoice.find(
 <dl>
 <dd>
 
-**invoice_id:** `typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]` — Filter invoices by invoice ID.
+**invoice_id:** `typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]` — Filter invoices by invoice ID or invoice foreign ID.
     
 </dd>
 </dl>
@@ -5464,17 +5462,7 @@ from mercoa import Mercoa
 client = Mercoa(
     token="YOUR_TOKEN",
 )
-client.organization.get(
-    payment_methods=True,
-    email_provider=True,
-    external_accounting_system_provider=True,
-    color_scheme=True,
-    payee_onboarding_options=True,
-    payor_onboarding_options=True,
-    metadata_schema=True,
-    notification_email_template=True,
-    custom_domains=True,
-)
+client.organization.get()
 
 ```
 </dd>
@@ -5602,405 +5590,13 @@ Update current organization
 
 ```python
 from mercoa import Mercoa
-from mercoa.organization_types import (
-    BusinessOnboardingOptions,
-    ColorSchemeRequest,
-    EmailProviderRequest,
-    EmailSenderRequest,
-    ExternalAccountingSystemProviderRequest_None,
-    IndividualOnboardingOptions,
-    MetadataSchema,
-    NotificationEmailTemplateRequest,
-    OnboardingOption,
-    OnboardingOptionsRequest,
-    OrganizationRequest,
-    PaymentMethodsRequest,
-    PaymentRailRequest,
-)
+from mercoa.organization_types import OrganizationRequest
 
 client = Mercoa(
     token="YOUR_TOKEN",
 )
 client.organization.update(
-    request=OrganizationRequest(
-        name="string",
-        logo="string",
-        website_url="string",
-        support_email="string",
-        payment_methods=PaymentMethodsRequest(
-            payer_payments=[
-                PaymentRailRequest(
-                    type="custom",
-                    active=True,
-                )
-            ],
-            backup_disbursements=[
-                PaymentRailRequest(
-                    type="custom",
-                    active=True,
-                )
-            ],
-            vendor_disbursements=[
-                PaymentRailRequest(
-                    type="custom",
-                    active=True,
-                )
-            ],
-        ),
-        email_provider=EmailProviderRequest(
-            sender=EmailSenderRequest(
-                provider="none",
-                from_email="string",
-                from_name="string",
-                api_key="string",
-            ),
-            inbox_domain="string",
-            alternative_inbox_domains=[],
-        ),
-        external_accounting_system_provider=ExternalAccountingSystemProviderRequest_None(),
-        color_scheme=ColorSchemeRequest(
-            primary_color="string",
-            secondary_color="string",
-            logo_background_color="string",
-            rounded_corners=1,
-            font_family="string",
-            font_size="string",
-        ),
-        payee_onboarding_options=OnboardingOptionsRequest(
-            enable_business=True,
-            enable_individual=True,
-            payment_method=True,
-            business=BusinessOnboardingOptions(
-                type=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                doing_business_as=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                ein=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                mcc=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                formation_date=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                website=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                description=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                representatives=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                logo=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                average_transaction_size=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                average_monthly_transaction_volume=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                max_transaction_size=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                terms_of_service=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                email=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                name=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                address=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                phone=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                ten_ninety_nine=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                w_9=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                bank_statement=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-            ),
-            individual=IndividualOnboardingOptions(
-                date_of_birth=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                ssn=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                terms_of_service=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                email=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                name=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                address=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                phone=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                ten_ninety_nine=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                w_9=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                bank_statement=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-            ),
-        ),
-        payor_onboarding_options=OnboardingOptionsRequest(
-            enable_business=True,
-            enable_individual=True,
-            payment_method=True,
-            business=BusinessOnboardingOptions(
-                type=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                doing_business_as=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                ein=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                mcc=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                formation_date=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                website=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                description=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                representatives=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                logo=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                average_transaction_size=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                average_monthly_transaction_volume=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                max_transaction_size=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                terms_of_service=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                email=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                name=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                address=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                phone=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                ten_ninety_nine=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                w_9=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                bank_statement=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-            ),
-            individual=IndividualOnboardingOptions(
-                date_of_birth=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                ssn=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                terms_of_service=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                email=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                name=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                address=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                phone=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                ten_ninety_nine=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                w_9=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-                bank_statement=OnboardingOption(
-                    show=True,
-                    edit=True,
-                    required=True,
-                ),
-            ),
-        ),
-        metadata_schema=[
-            MetadataSchema(
-                key="string",
-                display_name="string",
-                type="STRING",
-            )
-        ],
-        notification_email_template=NotificationEmailTemplateRequest(
-            background_style="string",
-            header="string",
-            body="string",
-            signature="string",
-            footer="string",
-            button="string",
-        ),
-        custom_domains=["string"],
-    ),
+    request=OrganizationRequest(),
 )
 
 ```
@@ -6064,23 +5660,12 @@ Get log of all emails sent to this organization. Content format subject to chang
 <dd>
 
 ```python
-import datetime
-
 from mercoa import Mercoa
 
 client = Mercoa(
     token="YOUR_TOKEN",
 )
-client.organization.email_log(
-    start_date=datetime.datetime.fromisoformat(
-        "2024-01-15 09:30:00+00:00",
-    ),
-    end_date=datetime.datetime.fromisoformat(
-        "2024-01-15 09:30:00+00:00",
-    ),
-    limit=1,
-    starting_after="string",
-)
+client.organization.email_log()
 
 ```
 </dd>
@@ -6979,7 +6564,7 @@ client.entity_group.invoice.find(
 <dl>
 <dd>
 
-**invoice_id:** `typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]` — Filter invoices by invoice ID.
+**invoice_id:** `typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]` — Filter invoices by invoice ID or invoice foreign ID.
     
 </dd>
 </dl>
@@ -7159,7 +6744,7 @@ client.entity_group.invoice.metrics(
 <dl>
 <dd>
 
-**invoice_id:** `typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]` — Filter invoices by invoice ID.
+**invoice_id:** `typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]` — Filter invoices by invoice ID or invoice foreign ID.
     
 </dd>
 </dl>
@@ -7649,6 +7234,127 @@ client.entity.approval_policy.delete(
 </dl>
 </details>
 
+## Entity Bulk
+<details><summary><code>client.entity.bulk.<a href="src/mercoa/entity/bulk/client.py">create</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Create multiple entities in bulk. This endpoint will process synchronously and return a list of entities that were created or failed to create.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+from mercoa.commons import Address, PhoneNumber
+from mercoa.entity_types import (
+    BulkConnectedEntity,
+    BulkEntityCreationFromObject,
+    BusinessProfileRequest,
+    Ein,
+    EntityCreationRequest,
+    ProfileRequest,
+    TaxId,
+)
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.entity.bulk.create(
+    request=BulkEntityCreationFromObject(
+        connected_entity=BulkConnectedEntity(
+            id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+            link_created_as_payor=False,
+            link_created_as_payee=True,
+        ),
+        entities=[
+            EntityCreationRequest(
+                is_customer=True,
+                is_payor=True,
+                is_payee=False,
+                account_type="business",
+                foreign_id="MY-DB-ID-12345",
+                profile=ProfileRequest(
+                    business=BusinessProfileRequest(
+                        email="customer@acme.com",
+                        legal_business_name="Acme Inc.",
+                        website="http://www.acme.com",
+                        business_type="llc",
+                        phone=PhoneNumber(
+                            country_code="1",
+                            number="4155551234",
+                        ),
+                        address=Address(
+                            address_line_1="123 Main St",
+                            address_line_2="Unit 1",
+                            city="San Francisco",
+                            state_or_province="CA",
+                            postal_code="94105",
+                            country="US",
+                        ),
+                        tax_id=TaxId(
+                            ein=Ein(
+                                number="12-3456789",
+                            ),
+                        ),
+                    ),
+                ),
+            )
+        ],
+    ),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `BulkEntityCreationRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Entity Counterparty VendorCredit
 <details><summary><code>client.entity.counterparty.vendor_credit.<a href="src/mercoa/entity/counterparty/vendor_credit/client.py">get_all</a>(...)</code></summary>
 <dl>
@@ -8035,7 +7741,7 @@ client.entity.counterparty.vendor_credit.estimate_usage(
 <dl>
 <dd>
 
-**included_vendor_credit_ids:** `typing.Optional[typing.Sequence[VendorCreditId]]` — List of vendor credit IDs to include in the calculation. If not provided, all applicable vendor credits will be included, while an empty list will not include ANY vendor credits. This is useful for recalculating vendor credit usage on invoices that have a fixed list of applied vendor credits (e.g. a SCHEDULED or PENDING invoice).
+**included_vendor_credit_ids:** `typing.Optional[typing.Sequence[VendorCreditId]]` — List of vendor credit IDs to include in the calculation. If not provided, all applicable vendor credits will be included, while an empty list will not include ANY vendor credits.  This is useful for recalculating vendor credit usage on invoices that have a fixed list of applied vendor credits (e.g. a SCHEDULED or PENDING invoice).
     
 </dd>
 </dl>
@@ -8208,6 +7914,7 @@ client.entity.customization.update(
         ],
         ocr=OcrCustomizationRequest(
             line_items=True,
+            collapse_line_items=True,
             invoice_metadata=True,
             line_item_metadata=True,
             line_item_gl_account_id=True,
@@ -8861,8 +8568,8 @@ client = Mercoa(
     token="YOUR_TOKEN",
 )
 client.entity.email_template.delete(
-    entity_id="string",
-    email_template_id="string",
+    entity_id="entityId",
+    email_template_id="emailTemplateId",
 )
 
 ```
@@ -9436,7 +9143,7 @@ client.entity.invoice.find(
 <dl>
 <dd>
 
-**invoice_id:** `typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]` — Filter invoices by invoice ID.
+**invoice_id:** `typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]` — Filter invoices by invoice ID or invoice foreign ID.
     
 </dd>
 </dl>
@@ -9616,7 +9323,7 @@ client.entity.invoice.metrics(
 <dl>
 <dd>
 
-**invoice_id:** `typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]` — Filter invoices by invoice ID.
+**invoice_id:** `typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]` — Filter invoices by invoice ID or invoice foreign ID.
     
 </dd>
 </dl>
@@ -12568,6 +12275,130 @@ client.invoice.approval.reject(
 </dl>
 </details>
 
+## Invoice Bulk
+<details><summary><code>client.invoice.bulk.<a href="src/mercoa/invoice/bulk/client.py">create</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Create multiple invoices in bulk. This endpoint will process synchronously and return a list of invoices that were created or failed to create.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+import datetime
+
+from mercoa import Mercoa
+from mercoa.invoice_types import (
+    BulkInvoiceCreationRequest,
+    InvoiceCreationWithEntityRequest,
+    InvoiceLineItemCreationRequest,
+    PaymentDestinationOptions_Check,
+)
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.invoice.bulk.create(
+    request=BulkInvoiceCreationRequest(
+        invoices=[
+            InvoiceCreationWithEntityRequest(
+                status="NEW",
+                amount=100.0,
+                currency="USD",
+                invoice_date=datetime.datetime.fromisoformat(
+                    "2021-01-01 00:00:00+00:00",
+                ),
+                due_date=datetime.datetime.fromisoformat(
+                    "2021-01-31 00:00:00+00:00",
+                ),
+                invoice_number="INV-123",
+                note_to_self="For the month of January",
+                payer_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                payment_source_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                vendor_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+                payment_destination_id="pm_5fde2f4a-facc-48ef-8f0d-6b7d087c7b18",
+                payment_destination_options=PaymentDestinationOptions_Check(
+                    delivery="MAIL",
+                    print_description=True,
+                ),
+                line_items=[
+                    InvoiceLineItemCreationRequest(
+                        amount=100.0,
+                        currency="USD",
+                        description="Product A",
+                        name="Product A",
+                        quantity=1.0,
+                        unit_price=100.0,
+                        category="EXPENSE",
+                        service_start_date=datetime.datetime.fromisoformat(
+                            "2021-01-01 00:00:00+00:00",
+                        ),
+                        service_end_date=datetime.datetime.fromisoformat(
+                            "2021-01-31 00:00:00+00:00",
+                        ),
+                        metadata={"key1": "value1", "key2": "value2"},
+                        gl_account_id="600394",
+                    )
+                ],
+                creator_entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                creator_user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+            )
+        ],
+    ),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `BulkInvoiceCreationRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Invoice Comment
 <details><summary><code>client.invoice.comment.<a href="src/mercoa/invoice/comment/client.py">get_all</a>(...)</code></summary>
 <dl>
@@ -14109,7 +13940,7 @@ client = Mercoa(
 client.organization.notification_configuration.update(
     notification_type="INVOICE_APPROVAL_NEEDED",
     request=NotificationConfigurationRequest_Invoice(
-        url="string",
+        url="url",
     ),
 )
 
@@ -14463,7 +14294,7 @@ client.transaction.find(
 <dl>
 <dd>
 
-**invoice_id:** `typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]` — Filter transactions by invoice ID.
+**invoice_id:** `typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]` — Filter transactions by invoice ID. Does not support foreign ID.
     
 </dd>
 </dl>
