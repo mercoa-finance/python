@@ -2,4 +2,4 @@
 
 import typing
 
-EmailSenderProvider = typing.Union[typing.Literal["none", "sendgrid", "ses", "resend"], typing.Any]
+EmailSenderProvider = typing.Union[typing.Literal["none", "sendgrid", "ses", "resend", "cloudmailin"], typing.Any]

@@ -6,20 +6,9 @@ from ...core.pydantic_utilities import IS_PYDANTIC_V2
 import pydantic
 
 
-class EntityMetadataResponse(UniversalBaseModel):
-    """
-    Examples
-    --------
-    from mercoa.entity_types import EntityMetadataResponse
-
-    EntityMetadataResponse(
-        key="my_custom_field",
-        value=["my_value", "my_second_value"],
-    )
-    """
-
-    key: str
-    value: typing.List[str]
+class GenericPaymentRailRequest(UniversalBaseModel):
+    name: typing.Optional[str] = None
+    active: bool
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

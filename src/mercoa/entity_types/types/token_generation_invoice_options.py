@@ -14,12 +14,11 @@ class TokenGenerationInvoiceOptions(UniversalBaseModel):
     Defaults to OPTIONAL. If set to REQUIRED, the user will be required to provide at least one line item when creating an invoice. If set to DISABLED, the user will not be able to provide line items when creating an invoice.
     """
 
-    disable_line_items: typing.Optional[bool] = pydantic.Field(alias="disableLineItems", default=None)
-    """
-    DEPRECATED. Use lineItems instead.
-    """
-
     status: typing.List[InvoiceStatus]
+    recurring: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    If true, recurring invoice templates will be available to the user.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

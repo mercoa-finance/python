@@ -178,7 +178,9 @@ class CustomizationClient:
             MetadataCustomizationRequest,
             NotificationCustomizationRequest,
             OcrCustomizationRequest,
-            PaymentMethodCustomizationRequest,
+            PaymentMethodCustomizationRequest_BankAccount,
+            PaymentMethodCustomizationRequest_Check,
+            PaymentMethodCustomizationRequest_Custom,
             WorkflowCustomizationRequest,
         )
 
@@ -199,29 +201,24 @@ class CustomizationClient:
                     ),
                 ],
                 payment_source=[
-                    PaymentMethodCustomizationRequest(
-                        type="bankAccount",
+                    PaymentMethodCustomizationRequest_BankAccount(
                         disabled=True,
                     ),
-                    PaymentMethodCustomizationRequest(
-                        type="custom",
+                    PaymentMethodCustomizationRequest_Custom(
                         schema_id="cpms_7df2974a-4069-454c-912f-7e58ebe030fb",
                         disabled=True,
                     ),
                 ],
                 backup_disbursement=[
-                    PaymentMethodCustomizationRequest(
-                        type="check",
+                    PaymentMethodCustomizationRequest_Check(
                         disabled=True,
                     )
                 ],
                 payment_destination=[
-                    PaymentMethodCustomizationRequest(
-                        type="bankAccount",
+                    PaymentMethodCustomizationRequest_BankAccount(
                         disabled=True,
                     ),
-                    PaymentMethodCustomizationRequest(
-                        type="check",
+                    PaymentMethodCustomizationRequest_Check(
                         disabled=True,
                     ),
                 ],
@@ -501,7 +498,9 @@ class AsyncCustomizationClient:
             MetadataCustomizationRequest,
             NotificationCustomizationRequest,
             OcrCustomizationRequest,
-            PaymentMethodCustomizationRequest,
+            PaymentMethodCustomizationRequest_BankAccount,
+            PaymentMethodCustomizationRequest_Check,
+            PaymentMethodCustomizationRequest_Custom,
             WorkflowCustomizationRequest,
         )
 
@@ -525,29 +524,24 @@ class AsyncCustomizationClient:
                         ),
                     ],
                     payment_source=[
-                        PaymentMethodCustomizationRequest(
-                            type="bankAccount",
+                        PaymentMethodCustomizationRequest_BankAccount(
                             disabled=True,
                         ),
-                        PaymentMethodCustomizationRequest(
-                            type="custom",
+                        PaymentMethodCustomizationRequest_Custom(
                             schema_id="cpms_7df2974a-4069-454c-912f-7e58ebe030fb",
                             disabled=True,
                         ),
                     ],
                     backup_disbursement=[
-                        PaymentMethodCustomizationRequest(
-                            type="check",
+                        PaymentMethodCustomizationRequest_Check(
                             disabled=True,
                         )
                     ],
                     payment_destination=[
-                        PaymentMethodCustomizationRequest(
-                            type="bankAccount",
+                        PaymentMethodCustomizationRequest_BankAccount(
                             disabled=True,
                         ),
-                        PaymentMethodCustomizationRequest(
-                            type="check",
+                        PaymentMethodCustomizationRequest_Check(
                             disabled=True,
                         ),
                     ],

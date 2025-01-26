@@ -26,7 +26,11 @@ class BulkClient:
         self._client_wrapper = client_wrapper
 
     def create(
-        self, *, request: BulkEntityCreationRequest, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        request: BulkEntityCreationRequest,
+        emit_webhooks: typing.Optional[bool] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> BulkEntityCreationResponse:
         """
         Create multiple entities in bulk. This endpoint will process synchronously and return a list of entities that were created or failed to create.
@@ -34,6 +38,9 @@ class BulkClient:
         Parameters
         ----------
         request : BulkEntityCreationRequest
+
+        emit_webhooks : typing.Optional[bool]
+            If true, webhooks will be emitted for each entity that is created. By default, webhooks are not emitted.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -106,6 +113,9 @@ class BulkClient:
         _response = self._client_wrapper.httpx_client.request(
             "entities",
             method="POST",
+            params={
+                "emitWebhooks": emit_webhooks,
+            },
             json=request,
             request_options=request_options,
             omit=OMIT,
@@ -201,7 +211,11 @@ class AsyncBulkClient:
         self._client_wrapper = client_wrapper
 
     async def create(
-        self, *, request: BulkEntityCreationRequest, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        request: BulkEntityCreationRequest,
+        emit_webhooks: typing.Optional[bool] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> BulkEntityCreationResponse:
         """
         Create multiple entities in bulk. This endpoint will process synchronously and return a list of entities that were created or failed to create.
@@ -209,6 +223,9 @@ class AsyncBulkClient:
         Parameters
         ----------
         request : BulkEntityCreationRequest
+
+        emit_webhooks : typing.Optional[bool]
+            If true, webhooks will be emitted for each entity that is created. By default, webhooks are not emitted.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -289,6 +306,9 @@ class AsyncBulkClient:
         _response = await self._client_wrapper.httpx_client.request(
             "entities",
             method="POST",
+            params={
+                "emitWebhooks": emit_webhooks,
+            },
             json=request,
             request_options=request_options,
             omit=OMIT,

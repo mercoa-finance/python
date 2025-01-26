@@ -1920,85 +1920,6 @@ client.entity.get_token(
 </dl>
 </details>
 
-<details><summary><code>client.entity.<a href="src/mercoa/entity/client.py">plaid_link_token</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Get a Plaid link token for an entity. This token can be used to add or update a bank account to the entity using Plaid Link.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mercoa import Mercoa
-
-client = Mercoa(
-    token="YOUR_TOKEN",
-)
-client.entity.plaid_link_token(
-    entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-    payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entity_id:** `EntityId` — Entity ID or Entity ForeignID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**payment_method_id:** `typing.Optional[PaymentMethodId]` — ID of Bank Account to update
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 <details><summary><code>client.entity.<a href="src/mercoa/entity/client.py">get_onboarding_link</a>(...)</code></summary>
 <dl>
 <dd>
@@ -3503,6 +3424,155 @@ client.entity.payment_method.delete(
 <dd>
 
 **payment_method_id:** `PaymentMethodId` — Payment Method ID or Payment Method ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.entity.payment_method.<a href="src/mercoa/entity/payment_method/client.py">plaid_link_token</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Get a Plaid link token for an entity. This token can be used to add or update a bank account to the entity using Plaid Link.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.entity.payment_method.plaid_link_token(
+    entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+    payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entity_id:** `EntityId` — Entity ID or Entity ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payment_method_id:** `typing.Optional[PaymentMethodId]` — ID of Bank Account to update
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.entity.payment_method.<a href="src/mercoa/entity/payment_method/client.py">card_link_token</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Get a card link token for an entity. This token is used by the frontend components to generate a PCI compliant form to add a card to the entity.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.entity.payment_method.card_link_token(
+    entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entity_id:** `EntityId` — Entity ID or Entity ForeignID
     
 </dd>
 </dl>
@@ -7343,6 +7413,14 @@ client.entity.bulk.create(
 <dl>
 <dd>
 
+**emit_webhooks:** `typing.Optional[bool]` — If true, webhooks will be emitted for each entity that is created. By default, webhooks are not emitted.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -7865,7 +7943,9 @@ from mercoa.entity_types import (
     MetadataCustomizationRequest,
     NotificationCustomizationRequest,
     OcrCustomizationRequest,
-    PaymentMethodCustomizationRequest,
+    PaymentMethodCustomizationRequest_BankAccount,
+    PaymentMethodCustomizationRequest_Check,
+    PaymentMethodCustomizationRequest_Custom,
     WorkflowCustomizationRequest,
 )
 
@@ -7886,29 +7966,24 @@ client.entity.customization.update(
             ),
         ],
         payment_source=[
-            PaymentMethodCustomizationRequest(
-                type="bankAccount",
+            PaymentMethodCustomizationRequest_BankAccount(
                 disabled=True,
             ),
-            PaymentMethodCustomizationRequest(
-                type="custom",
+            PaymentMethodCustomizationRequest_Custom(
                 schema_id="cpms_7df2974a-4069-454c-912f-7e58ebe030fb",
                 disabled=True,
             ),
         ],
         backup_disbursement=[
-            PaymentMethodCustomizationRequest(
-                type="check",
+            PaymentMethodCustomizationRequest_Check(
                 disabled=True,
             )
         ],
         payment_destination=[
-            PaymentMethodCustomizationRequest(
-                type="bankAccount",
+            PaymentMethodCustomizationRequest_BankAccount(
                 disabled=True,
             ),
-            PaymentMethodCustomizationRequest(
-                type="check",
+            PaymentMethodCustomizationRequest_Check(
                 disabled=True,
             ),
         ],
@@ -11736,7 +11811,7 @@ client.invoice_template.document.upload(
 <dl>
 <dd>
 
-**document:** `str` — Base64 encoded image or PDF of invoice document. PNG, JPG, WEBP, and PDF are supported. 10MB max.
+**document:** `str` — Base64-encoded string. Supported file types include PNG, JPG, WEBP, PDF, and all Microsoft Office formats (automatically converted to PDF). Max file size 10MB.
     
 </dd>
 </dl>
@@ -12387,6 +12462,14 @@ client.invoice.bulk.create(
 <dl>
 <dd>
 
+**emit_webhooks:** `typing.Optional[bool]` — If true, webhooks will be emitted for each invoice that is created. By default, webhooks are not emitted.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -12927,7 +13010,7 @@ client.invoice.document.upload(
 <dl>
 <dd>
 
-**document:** `str` — Base64 encoded image or PDF of invoice document. PNG, JPG, WEBP, and PDF are supported. 10MB max.
+**document:** `str` — Base64-encoded string. Supported file types include PNG, JPG, WEBP, PDF, and all Microsoft Office formats (automatically converted to PDF). Max file size 10MB.
     
 </dd>
 </dl>

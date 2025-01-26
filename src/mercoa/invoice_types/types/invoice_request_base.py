@@ -105,7 +105,7 @@ class InvoiceRequestBase(UniversalBaseModel):
 
     document: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Base64 encoded image or PDF of invoice document. PNG, JPG, WEBP, and PDF are supported. 10MB max. If the invoice already has a document, this will add a new document to the invoice.
+    Base64-encoded string. Supported file types include PNG, JPG, WEBP, PDF, and all Microsoft Office formats (automatically converted to PDF). Max file size 10MB. If the invoice already has a document, this will add a new document to the invoice.
     """
 
     uploaded_image: typing.Optional[str] = pydantic.Field(alias="uploadedImage", default=None)

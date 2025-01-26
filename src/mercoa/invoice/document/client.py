@@ -174,7 +174,7 @@ class DocumentClient:
             Invoice ID or Invoice ForeignID
 
         document : str
-            Base64 encoded image or PDF of invoice document. PNG, JPG, WEBP, and PDF are supported. 10MB max.
+            Base64-encoded string. Supported file types include PNG, JPG, WEBP, PDF, and all Microsoft Office formats (automatically converted to PDF). Max file size 10MB.
 
         type : typing.Optional[DocumentType]
             Specify Document Type, defaults to INVOICE
@@ -921,7 +921,7 @@ class AsyncDocumentClient:
             Invoice ID or Invoice ForeignID
 
         document : str
-            Base64 encoded image or PDF of invoice document. PNG, JPG, WEBP, and PDF are supported. 10MB max.
+            Base64-encoded string. Supported file types include PNG, JPG, WEBP, PDF, and all Microsoft Office formats (automatically converted to PDF). Max file size 10MB.
 
         type : typing.Optional[DocumentType]
             Specify Document Type, defaults to INVOICE

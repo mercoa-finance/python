@@ -14,12 +14,18 @@ class BulkInvoiceCreationFromObjectResponse(UniversalBaseModel):
 
     BulkInvoiceCreationFromObjectResponse(
         id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+        foreign_id="YOUR-INVOICE-ID",
     )
     """
 
     id: typing.Optional[str] = pydantic.Field(default=None)
     """
     The ID of the invoice that was created. If the invoice was not created, this will be undefined
+    """
+
+    foreign_id: typing.Optional[str] = pydantic.Field(alias="foreignId", default=None)
+    """
+    If provided, this is the foreign ID of the invoice that was created.
     """
 
     error: typing.Optional[str] = pydantic.Field(default=None)
