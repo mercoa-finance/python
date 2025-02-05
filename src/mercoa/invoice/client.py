@@ -86,6 +86,8 @@ class InvoiceClient:
         invoice_template_id: typing.Optional[
             typing.Union[InvoiceTemplateId, typing.Sequence[InvoiceTemplateId]]
         ] = None,
+        return_payer_metadata: typing.Optional[bool] = None,
+        return_vendor_metadata: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> FindInvoiceResponse:
         """
@@ -118,7 +120,7 @@ class InvoiceClient:
             The ID of the invoice to start after. If not provided, the first page of invoices will be returned.
 
         search : typing.Optional[str]
-            Find invoices by vendor name, invoice number, or amount. Partial matches are supported.
+            Find invoices by vendor name, invoice number, check number, or amount. Partial matches are supported.
 
         metadata : typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]
             Filter invoices by metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
@@ -155,6 +157,12 @@ class InvoiceClient:
 
         invoice_template_id : typing.Optional[typing.Union[InvoiceTemplateId, typing.Sequence[InvoiceTemplateId]]]
             Filter invoice by invoice template ID
+
+        return_payer_metadata : typing.Optional[bool]
+            Whether to return payer metadata in the response
+
+        return_vendor_metadata : typing.Optional[bool]
+            Whether to return vendor metadata in the response
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -199,6 +207,8 @@ class InvoiceClient:
                 "status": status,
                 "paymentType": jsonable_encoder(payment_type),
                 "invoiceTemplateId": invoice_template_id,
+                "returnPayerMetadata": return_payer_metadata,
+                "returnVendorMetadata": return_vendor_metadata,
             },
             request_options=request_options,
         )
@@ -1025,6 +1035,8 @@ class AsyncInvoiceClient:
         invoice_template_id: typing.Optional[
             typing.Union[InvoiceTemplateId, typing.Sequence[InvoiceTemplateId]]
         ] = None,
+        return_payer_metadata: typing.Optional[bool] = None,
+        return_vendor_metadata: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> FindInvoiceResponse:
         """
@@ -1057,7 +1069,7 @@ class AsyncInvoiceClient:
             The ID of the invoice to start after. If not provided, the first page of invoices will be returned.
 
         search : typing.Optional[str]
-            Find invoices by vendor name, invoice number, or amount. Partial matches are supported.
+            Find invoices by vendor name, invoice number, check number, or amount. Partial matches are supported.
 
         metadata : typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]
             Filter invoices by metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
@@ -1094,6 +1106,12 @@ class AsyncInvoiceClient:
 
         invoice_template_id : typing.Optional[typing.Union[InvoiceTemplateId, typing.Sequence[InvoiceTemplateId]]]
             Filter invoice by invoice template ID
+
+        return_payer_metadata : typing.Optional[bool]
+            Whether to return payer metadata in the response
+
+        return_vendor_metadata : typing.Optional[bool]
+            Whether to return vendor metadata in the response
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1146,6 +1164,8 @@ class AsyncInvoiceClient:
                 "status": status,
                 "paymentType": jsonable_encoder(payment_type),
                 "invoiceTemplateId": invoice_template_id,
+                "returnPayerMetadata": return_payer_metadata,
+                "returnVendorMetadata": return_vendor_metadata,
             },
             request_options=request_options,
         )

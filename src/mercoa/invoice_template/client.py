@@ -105,7 +105,7 @@ class InvoiceTemplateClient:
             The ID of the invoice template to start after. If not provided, the first page of invoice templates will be returned.
 
         search : typing.Optional[str]
-            Find invoice templates by vendor name, invoice number, or amount. Partial matches are supported.
+            Find invoice templates by vendor name, check number, invoice number, or amount. Partial matches are supported.
 
         metadata : typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]
             Filter invoice templates by metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
@@ -914,7 +914,7 @@ class AsyncInvoiceTemplateClient:
             The ID of the invoice template to start after. If not provided, the first page of invoice templates will be returned.
 
         search : typing.Optional[str]
-            Find invoice templates by vendor name, invoice number, or amount. Partial matches are supported.
+            Find invoice templates by vendor name, check number, invoice number, or amount. Partial matches are supported.
 
         metadata : typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]
             Filter invoice templates by metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.

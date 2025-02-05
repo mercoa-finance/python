@@ -64,6 +64,8 @@ class InvoiceClient:
         invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]] = None,
         status: typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]] = None,
         payment_type: typing.Optional[typing.Sequence[PaymentType]] = None,
+        return_payer_metadata: typing.Optional[bool] = None,
+        return_vendor_metadata: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> FindInvoiceResponse:
         """
@@ -111,7 +113,7 @@ class InvoiceClient:
             Filter invoices by line item GL account ID. Each filter will be applied as an OR condition. Duplicate keys will be ignored.
 
         search : typing.Optional[str]
-            Find invoices by vendor name, invoice number, or amount. Partial matches are supported.
+            Find invoices by vendor name, invoice number, check number, or amount. Partial matches are supported.
 
         payer_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
             Filter invoices by payer ID or payer foreign ID.
@@ -136,6 +138,12 @@ class InvoiceClient:
 
         payment_type : typing.Optional[typing.Sequence[PaymentType]]
             Filter invoices by payment type.
+
+        return_payer_metadata : typing.Optional[bool]
+            Whether to return payer metadata in the response
+
+        return_vendor_metadata : typing.Optional[bool]
+            Whether to return vendor metadata in the response
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -184,6 +192,8 @@ class InvoiceClient:
                 "invoiceId": invoice_id,
                 "status": status,
                 "paymentType": jsonable_encoder(payment_type),
+                "returnPayerMetadata": return_payer_metadata,
+                "returnVendorMetadata": return_vendor_metadata,
             },
             request_options=request_options,
         )
@@ -302,7 +312,7 @@ class InvoiceClient:
             Entity ID or Entity ForeignID
 
         search : typing.Optional[str]
-            Find invoices by vendor name, invoice number, or amount. Partial matches are supported.
+            Find invoices by vendor name, invoice number, check number, or amount. Partial matches are supported.
 
         exclude_payables : typing.Optional[bool]
             Only return invoices that are not payable by the entity. This will return only invoices that are receivable by the entity.
@@ -513,6 +523,8 @@ class AsyncInvoiceClient:
         invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]] = None,
         status: typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]] = None,
         payment_type: typing.Optional[typing.Sequence[PaymentType]] = None,
+        return_payer_metadata: typing.Optional[bool] = None,
+        return_vendor_metadata: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> FindInvoiceResponse:
         """
@@ -560,7 +572,7 @@ class AsyncInvoiceClient:
             Filter invoices by line item GL account ID. Each filter will be applied as an OR condition. Duplicate keys will be ignored.
 
         search : typing.Optional[str]
-            Find invoices by vendor name, invoice number, or amount. Partial matches are supported.
+            Find invoices by vendor name, invoice number, check number, or amount. Partial matches are supported.
 
         payer_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
             Filter invoices by payer ID or payer foreign ID.
@@ -585,6 +597,12 @@ class AsyncInvoiceClient:
 
         payment_type : typing.Optional[typing.Sequence[PaymentType]]
             Filter invoices by payment type.
+
+        return_payer_metadata : typing.Optional[bool]
+            Whether to return payer metadata in the response
+
+        return_vendor_metadata : typing.Optional[bool]
+            Whether to return vendor metadata in the response
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -641,6 +659,8 @@ class AsyncInvoiceClient:
                 "invoiceId": invoice_id,
                 "status": status,
                 "paymentType": jsonable_encoder(payment_type),
+                "returnPayerMetadata": return_payer_metadata,
+                "returnVendorMetadata": return_vendor_metadata,
             },
             request_options=request_options,
         )
@@ -759,7 +779,7 @@ class AsyncInvoiceClient:
             Entity ID or Entity ForeignID
 
         search : typing.Optional[str]
-            Find invoices by vendor name, invoice number, or amount. Partial matches are supported.
+            Find invoices by vendor name, invoice number, check number, or amount. Partial matches are supported.
 
         exclude_payables : typing.Optional[bool]
             Only return invoices that are not payable by the entity. This will return only invoices that are receivable by the entity.

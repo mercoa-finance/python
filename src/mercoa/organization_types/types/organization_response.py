@@ -12,6 +12,7 @@ from .onboarding_options_response import OnboardingOptionsResponse
 from .metadata_schema import MetadataSchema
 from .notification_email_template_response import NotificationEmailTemplateResponse
 from ...entity_types.types.entity_id import EntityId
+from .role_permission_config_response import RolePermissionConfigResponse
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -40,6 +41,9 @@ class OrganizationResponse(UniversalBaseModel):
     )
     custom_domains: typing.Optional[typing.List[str]] = pydantic.Field(alias="customDomains", default=None)
     organization_entity_id: typing.Optional[EntityId] = pydantic.Field(alias="organizationEntityId", default=None)
+    role_permission_config: typing.Optional[RolePermissionConfigResponse] = pydantic.Field(
+        alias="rolePermissionConfig", default=None
+    )
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

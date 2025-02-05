@@ -4241,7 +4241,7 @@ client.invoice_template.find(
 <dl>
 <dd>
 
-**search:** `typing.Optional[str]` — Find invoice templates by vendor name, invoice number, or amount. Partial matches are supported.
+**search:** `typing.Optional[str]` — Find invoice templates by vendor name, check number, invoice number, or amount. Partial matches are supported.
     
 </dd>
 </dl>
@@ -4921,7 +4921,7 @@ client.invoice.find(
 <dl>
 <dd>
 
-**search:** `typing.Optional[str]` — Find invoices by vendor name, invoice number, or amount. Partial matches are supported.
+**search:** `typing.Optional[str]` — Find invoices by vendor name, invoice number, check number, or amount. Partial matches are supported.
     
 </dd>
 </dl>
@@ -5020,6 +5020,22 @@ client.invoice.find(
 **invoice_template_id:** `typing.Optional[
     typing.Union[InvoiceTemplateId, typing.Sequence[InvoiceTemplateId]]
 ]` — Filter invoice by invoice template ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**return_payer_metadata:** `typing.Optional[bool]` — Whether to return payer metadata in the response
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**return_vendor_metadata:** `typing.Optional[bool]` — Whether to return vendor metadata in the response
     
 </dd>
 </dl>
@@ -5605,6 +5621,14 @@ client.organization.get()
 <dd>
 
 **notification_email_template:** `typing.Optional[bool]` — include notification-email-template in response
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**role_permission_config:** `typing.Optional[bool]` — include role permission config in response
     
 </dd>
 </dl>
@@ -6586,7 +6610,7 @@ client.entity_group.invoice.find(
 <dl>
 <dd>
 
-**search:** `typing.Optional[str]` — Find invoices by vendor name, invoice number, or amount. Partial matches are supported.
+**search:** `typing.Optional[str]` — Find invoices by vendor name, invoice number, check number, or amount. Partial matches are supported.
     
 </dd>
 </dl>
@@ -6651,6 +6675,22 @@ client.entity_group.invoice.find(
 <dd>
 
 **payment_type:** `typing.Optional[typing.Sequence[PaymentType]]` — Filter invoices by recurring status
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**return_payer_metadata:** `typing.Optional[bool]` — Whether to return payer metadata in the response
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**return_vendor_metadata:** `typing.Optional[bool]` — Whether to return vendor metadata in the response
     
 </dd>
 </dl>
@@ -6740,7 +6780,7 @@ client.entity_group.invoice.metrics(
 <dl>
 <dd>
 
-**search:** `typing.Optional[str]` — Find invoices by vendor name, invoice number, or amount. Partial matches are supported.
+**search:** `typing.Optional[str]` — Find invoices by vendor name, invoice number, check number, or amount. Partial matches are supported.
     
 </dd>
 </dl>
@@ -7968,6 +8008,7 @@ client.entity.customization.update(
         payment_source=[
             PaymentMethodCustomizationRequest_BankAccount(
                 disabled=True,
+                default_delivery_method="ACH_SAME_DAY",
             ),
             PaymentMethodCustomizationRequest_Custom(
                 schema_id="cpms_7df2974a-4069-454c-912f-7e58ebe030fb",
@@ -7977,14 +8018,19 @@ client.entity.customization.update(
         backup_disbursement=[
             PaymentMethodCustomizationRequest_Check(
                 disabled=True,
+                default_delivery_method="MAIL",
+                print_description=True,
             )
         ],
         payment_destination=[
             PaymentMethodCustomizationRequest_BankAccount(
                 disabled=True,
+                default_delivery_method="ACH_SAME_DAY",
             ),
             PaymentMethodCustomizationRequest_Check(
                 disabled=True,
+                default_delivery_method="MAIL",
+                print_description=True,
             ),
         ],
         ocr=OcrCustomizationRequest(
@@ -9170,7 +9216,7 @@ client.entity.invoice.find(
 <dl>
 <dd>
 
-**search:** `typing.Optional[str]` — Find invoices by vendor name, invoice number, or amount. Partial matches are supported.
+**search:** `typing.Optional[str]` — Find invoices by vendor name, invoice number, check number, or amount. Partial matches are supported.
     
 </dd>
 </dl>
@@ -9235,6 +9281,22 @@ client.entity.invoice.find(
 <dd>
 
 **payment_type:** `typing.Optional[typing.Sequence[PaymentType]]` — Filter invoices by payment type.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**return_payer_metadata:** `typing.Optional[bool]` — Whether to return payer metadata in the response
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**return_vendor_metadata:** `typing.Optional[bool]` — Whether to return vendor metadata in the response
     
 </dd>
 </dl>
@@ -9324,7 +9386,7 @@ client.entity.invoice.metrics(
 <dl>
 <dd>
 
-**search:** `typing.Optional[str]` — Find invoices by vendor name, invoice number, or amount. Partial matches are supported.
+**search:** `typing.Optional[str]` — Find invoices by vendor name, invoice number, check number, or amount. Partial matches are supported.
     
 </dd>
 </dl>
@@ -14321,7 +14383,7 @@ client.transaction.find(
 <dl>
 <dd>
 
-**search:** `typing.Optional[str]` — Find transactions by vendor name, invoice number, or amount. Partial matches are supported.
+**search:** `typing.Optional[str]` — Find transactions by vendor name, invoice number, check number, or amount. Partial matches are supported.
     
 </dd>
 </dl>

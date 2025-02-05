@@ -40,6 +40,7 @@ class EntityCustomizationResponse(UniversalBaseModel):
         payment_source=[
             PaymentMethodCustomizationRequest_BankAccount(
                 disabled=True,
+                default_delivery_method="ACH_SAME_DAY",
             ),
             PaymentMethodCustomizationRequest_Custom(
                 schema_id="cpms_7df2974a-4069-454c-912f-7e58ebe030fb",
@@ -49,14 +50,19 @@ class EntityCustomizationResponse(UniversalBaseModel):
         backup_disbursement=[
             PaymentMethodCustomizationRequest_Check(
                 disabled=True,
+                default_delivery_method="MAIL",
+                print_description=True,
             )
         ],
         payment_destination=[
             PaymentMethodCustomizationRequest_BankAccount(
                 disabled=True,
+                default_delivery_method="ACH_SAME_DAY",
             ),
             PaymentMethodCustomizationRequest_Check(
                 disabled=True,
+                default_delivery_method="MAIL",
+                print_description=True,
             ),
         ],
         ocr=OcrCustomizationResponse(

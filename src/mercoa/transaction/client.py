@@ -74,7 +74,7 @@ class TransactionClient:
             The ID of the transactions to start after. If not provided, the first page of transactions will be returned.
 
         search : typing.Optional[str]
-            Find transactions by vendor name, invoice number, or amount. Partial matches are supported.
+            Find transactions by vendor name, invoice number, check number, or amount. Partial matches are supported.
 
         metadata : typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]
             Filter transactions by invoice metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
@@ -405,7 +405,7 @@ class AsyncTransactionClient:
             The ID of the transactions to start after. If not provided, the first page of transactions will be returned.
 
         search : typing.Optional[str]
-            Find transactions by vendor name, invoice number, or amount. Partial matches are supported.
+            Find transactions by vendor name, invoice number, check number, or amount. Partial matches are supported.
 
         metadata : typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]
             Filter transactions by invoice metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.

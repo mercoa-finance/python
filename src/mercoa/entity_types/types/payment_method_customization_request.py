@@ -17,6 +17,7 @@ class PaymentMethodCustomizationRequest_BankAccount(UniversalBaseModel):
 
     PaymentMethodCustomizationRequest_BankAccount(
         disabled=True,
+        default_delivery_method="ACH_SAME_DAY",
     )
     """
 
@@ -44,6 +45,7 @@ class PaymentMethodCustomizationRequest_Card(UniversalBaseModel):
 
     PaymentMethodCustomizationRequest_BankAccount(
         disabled=True,
+        default_delivery_method="ACH_SAME_DAY",
     )
     """
 
@@ -68,6 +70,7 @@ class PaymentMethodCustomizationRequest_VirtualCard(UniversalBaseModel):
 
     PaymentMethodCustomizationRequest_BankAccount(
         disabled=True,
+        default_delivery_method="ACH_SAME_DAY",
     )
     """
 
@@ -92,6 +95,7 @@ class PaymentMethodCustomizationRequest_Check(UniversalBaseModel):
 
     PaymentMethodCustomizationRequest_BankAccount(
         disabled=True,
+        default_delivery_method="ACH_SAME_DAY",
     )
     """
 
@@ -120,6 +124,7 @@ class PaymentMethodCustomizationRequest_Custom(UniversalBaseModel):
 
     PaymentMethodCustomizationRequest_BankAccount(
         disabled=True,
+        default_delivery_method="ACH_SAME_DAY",
     )
     """
 
@@ -145,6 +150,7 @@ class PaymentMethodCustomizationRequest_Bnpl(UniversalBaseModel):
 
     PaymentMethodCustomizationRequest_BankAccount(
         disabled=True,
+        default_delivery_method="ACH_SAME_DAY",
     )
     """
 
@@ -169,6 +175,7 @@ class PaymentMethodCustomizationRequest_OffPlatform(UniversalBaseModel):
 
     PaymentMethodCustomizationRequest_BankAccount(
         disabled=True,
+        default_delivery_method="ACH_SAME_DAY",
     )
     """
 
@@ -193,6 +200,7 @@ class PaymentMethodCustomizationRequest_Utility(UniversalBaseModel):
 
     PaymentMethodCustomizationRequest_BankAccount(
         disabled=True,
+        default_delivery_method="ACH_SAME_DAY",
     )
     """
 
@@ -217,6 +225,7 @@ class PaymentMethodCustomizationRequest_Na(UniversalBaseModel):
 
     PaymentMethodCustomizationRequest_BankAccount(
         disabled=True,
+        default_delivery_method="ACH_SAME_DAY",
     )
     """
 
@@ -238,6 +247,7 @@ from mercoa.entity_types import PaymentMethodCustomizationRequest_BankAccount
 
 PaymentMethodCustomizationRequest_BankAccount(
     disabled=True,
+    default_delivery_method="ACH_SAME_DAY",
 )
 """
 PaymentMethodCustomizationRequest = typing.Union[
