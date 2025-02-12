@@ -72,8 +72,8 @@ from .types import (
     PaymentRailResponse_Utility,
     PaymentRailResponse_VirtualCard,
     Permission,
-    RolePermissionConfigRequest,
-    RolePermissionConfigResponse,
+    RolePermissionRequest,
+    RolePermissionResponse,
     RutterProviderRequest,
     RutterProviderResponse,
 )
@@ -150,8 +150,8 @@ __all__ = [
     "PaymentRailResponse_Utility",
     "PaymentRailResponse_VirtualCard",
     "Permission",
-    "RolePermissionConfigRequest",
-    "RolePermissionConfigResponse",
+    "RolePermissionRequest",
+    "RolePermissionResponse",
     "RutterProviderRequest",
     "RutterProviderResponse",
 ]

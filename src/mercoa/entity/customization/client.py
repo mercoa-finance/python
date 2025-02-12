@@ -243,6 +243,7 @@ class CustomizationClient:
                 workflow=WorkflowCustomizationRequest(
                     auto_advance_invoice_status=True,
                 ),
+                role_permissions={"admin": ["invoice.all", "paymentMethod.all"]},
             ),
         )
         """
@@ -572,6 +573,7 @@ class AsyncCustomizationClient:
                     workflow=WorkflowCustomizationRequest(
                         auto_advance_invoice_status=True,
                     ),
+                    role_permissions={"admin": ["invoice.all", "paymentMethod.all"]},
                 ),
             )
 

@@ -82,8 +82,8 @@ from .payment_rail_response import (
     PaymentRailResponse_VirtualCard,
 )
 from .permission import Permission
-from .role_permission_config_request import RolePermissionConfigRequest
-from .role_permission_config_response import RolePermissionConfigResponse
+from .role_permission_request import RolePermissionRequest
+from .role_permission_response import RolePermissionResponse
 from .rutter_provider_request import RutterProviderRequest
 from .rutter_provider_response import RutterProviderResponse
 
@@ -159,8 +159,8 @@ __all__ = [
     "PaymentRailResponse_Utility",
     "PaymentRailResponse_VirtualCard",
     "Permission",
-    "RolePermissionConfigRequest",
-    "RolePermissionConfigResponse",
+    "RolePermissionRequest",
+    "RolePermissionResponse",
     "RutterProviderRequest",
     "RutterProviderResponse",
 ]

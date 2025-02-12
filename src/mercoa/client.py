@@ -4,6 +4,7 @@ import typing
 from .environment import MercoaEnvironment
 import httpx
 from .core.client_wrapper import SyncClientWrapper
+from .contract.client import ContractClient
 from .entity_group.client import EntityGroupClient
 from .entity.client import EntityClient
 from .invoice_template.client import InvoiceTemplateClient
@@ -16,6 +17,7 @@ from .ocr.client import OcrClient
 from .payment_methods.client import PaymentMethodsClient
 from .transaction.client import TransactionClient
 from .core.client_wrapper import AsyncClientWrapper
+from .contract.client import AsyncContractClient
 from .entity_group.client import AsyncEntityGroupClient
 from .entity.client import AsyncEntityClient
 from .invoice_template.client import AsyncInvoiceTemplateClient
@@ -87,6 +89,7 @@ class Mercoa:
             else httpx.Client(timeout=_defaulted_timeout),
             timeout=_defaulted_timeout,
         )
+        self.contract = ContractClient(client_wrapper=self._client_wrapper)
         self.entity_group = EntityGroupClient(client_wrapper=self._client_wrapper)
         self.entity = EntityClient(client_wrapper=self._client_wrapper)
         self.invoice_template = InvoiceTemplateClient(client_wrapper=self._client_wrapper)
@@ -158,6 +161,7 @@ class AsyncMercoa:
             else httpx.AsyncClient(timeout=_defaulted_timeout),
             timeout=_defaulted_timeout,
         )
+        self.contract = AsyncContractClient(client_wrapper=self._client_wrapper)
         self.entity_group = AsyncEntityGroupClient(client_wrapper=self._client_wrapper)
         self.entity = AsyncEntityClient(client_wrapper=self._client_wrapper)
         self.invoice_template = AsyncInvoiceTemplateClient(client_wrapper=self._client_wrapper)

@@ -8,6 +8,11 @@ from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
 class MetadataShowConditions(UniversalBaseModel):
+    always_hide: typing.Optional[bool] = pydantic.Field(alias="alwaysHide", default=None)
+    """
+    Always hide this field. Useful for getting data from OCR and AI predictions that you don't want to show in the UI.
+    """
+
     has_options: typing.Optional[bool] = pydantic.Field(alias="hasOptions", default=None)
     """
     Show this field only if the entity has values set for the metadata key.

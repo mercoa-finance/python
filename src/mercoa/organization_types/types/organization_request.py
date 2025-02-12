@@ -10,7 +10,7 @@ from .color_scheme_request import ColorSchemeRequest
 from .onboarding_options_request import OnboardingOptionsRequest
 from .metadata_schema import MetadataSchema
 from .notification_email_template_request import NotificationEmailTemplateRequest
-from .role_permission_config_request import RolePermissionConfigRequest
+from .role_permission_request import RolePermissionRequest
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -36,9 +36,7 @@ class OrganizationRequest(UniversalBaseModel):
         alias="notificationEmailTemplate", default=None
     )
     custom_domains: typing.Optional[typing.List[str]] = pydantic.Field(alias="customDomains", default=None)
-    role_permission_config: typing.Optional[RolePermissionConfigRequest] = pydantic.Field(
-        alias="rolePermissionConfig", default=None
-    )
+    role_permissions: typing.Optional[RolePermissionRequest] = pydantic.Field(alias="rolePermissions", default=None)
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

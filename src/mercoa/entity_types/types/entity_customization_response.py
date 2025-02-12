@@ -8,6 +8,7 @@ import pydantic
 from .ocr_customization_response import OcrCustomizationResponse
 from .notification_customization_request import NotificationCustomizationRequest
 from .workflow_customization_request import WorkflowCustomizationRequest
+from ...organization_types.types.role_permission_request import RolePermissionRequest
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -80,6 +81,7 @@ class EntityCustomizationResponse(UniversalBaseModel):
         workflow=WorkflowCustomizationRequest(
             auto_advance_invoice_status=True,
         ),
+        role_permissions={"admin": ["invoice.all", "paymentMethod.all"]},
     )
     """
 
@@ -90,6 +92,7 @@ class EntityCustomizationResponse(UniversalBaseModel):
     ocr: OcrCustomizationResponse
     notifications: NotificationCustomizationRequest
     workflow: WorkflowCustomizationRequest
+    role_permissions: RolePermissionRequest = pydantic.Field(alias="rolePermissions")
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

@@ -42,7 +42,7 @@ class OrganizationClient:
         payor_onboarding_options: typing.Optional[bool] = None,
         metadata_schema: typing.Optional[bool] = None,
         notification_email_template: typing.Optional[bool] = None,
-        role_permission_config: typing.Optional[bool] = None,
+        role_permissions: typing.Optional[bool] = None,
         custom_domains: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> OrganizationResponse:
@@ -75,7 +75,7 @@ class OrganizationClient:
         notification_email_template : typing.Optional[bool]
             include notification-email-template in response
 
-        role_permission_config : typing.Optional[bool]
+        role_permissions : typing.Optional[bool]
             include role permission config in response
 
         custom_domains : typing.Optional[bool]
@@ -109,7 +109,7 @@ class OrganizationClient:
                 "payorOnboardingOptions": payor_onboarding_options,
                 "metadataSchema": metadata_schema,
                 "notificationEmailTemplate": notification_email_template,
-                "rolePermissionConfig": role_permission_config,
+                "rolePermissions": role_permissions,
                 "customDomains": custom_domains,
             },
             request_options=request_options,
@@ -473,7 +473,7 @@ class AsyncOrganizationClient:
         payor_onboarding_options: typing.Optional[bool] = None,
         metadata_schema: typing.Optional[bool] = None,
         notification_email_template: typing.Optional[bool] = None,
-        role_permission_config: typing.Optional[bool] = None,
+        role_permissions: typing.Optional[bool] = None,
         custom_domains: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> OrganizationResponse:
@@ -506,7 +506,7 @@ class AsyncOrganizationClient:
         notification_email_template : typing.Optional[bool]
             include notification-email-template in response
 
-        role_permission_config : typing.Optional[bool]
+        role_permissions : typing.Optional[bool]
             include role permission config in response
 
         custom_domains : typing.Optional[bool]
@@ -548,7 +548,7 @@ class AsyncOrganizationClient:
                 "payorOnboardingOptions": payor_onboarding_options,
                 "metadataSchema": metadata_schema,
                 "notificationEmailTemplate": notification_email_template,
-                "rolePermissionConfig": role_permission_config,
+                "rolePermissions": role_permissions,
                 "customDomains": custom_domains,
             },
             request_options=request_options,
