@@ -3,8 +3,8 @@
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
 import pydantic
-from .business_onboarding_options import BusinessOnboardingOptions
-from .individual_onboarding_options import IndividualOnboardingOptions
+from .business_onboarding_options_request import BusinessOnboardingOptionsRequest
+from .individual_onboarding_options_request import IndividualOnboardingOptionsRequest
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -12,8 +12,8 @@ class OnboardingOptionsRequest(UniversalBaseModel):
     enable_business: typing.Optional[bool] = pydantic.Field(alias="enableBusiness", default=None)
     enable_individual: typing.Optional[bool] = pydantic.Field(alias="enableIndividual", default=None)
     payment_method: typing.Optional[bool] = pydantic.Field(alias="paymentMethod", default=None)
-    business: typing.Optional[BusinessOnboardingOptions] = None
-    individual: typing.Optional[IndividualOnboardingOptions] = None
+    business: typing.Optional[BusinessOnboardingOptionsRequest] = None
+    individual: typing.Optional[IndividualOnboardingOptionsRequest] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

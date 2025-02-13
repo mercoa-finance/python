@@ -2,14 +2,16 @@
 
 from .bank_payment_rail_request import BankPaymentRailRequest
 from .bank_payment_rail_response import BankPaymentRailResponse
-from .business_onboarding_options import BusinessOnboardingOptions
+from .business_onboarding_options_request import BusinessOnboardingOptionsRequest
+from .business_onboarding_options_response import BusinessOnboardingOptionsResponse
 from .check_payment_rail_request import CheckPaymentRailRequest
 from .check_payment_rail_response import CheckPaymentRailResponse
 from .codat_provider_request import CodatProviderRequest
 from .codat_provider_response import CodatProviderResponse
 from .color_scheme_request import ColorSchemeRequest
 from .color_scheme_response import ColorSchemeResponse
-from .common_onboarding_options import CommonOnboardingOptions
+from .common_onboarding_options_request import CommonOnboardingOptionsRequest
+from .common_onboarding_options_response import CommonOnboardingOptionsResponse
 from .custom_payment_rail_request import CustomPaymentRailRequest
 from .custom_payment_rail_response import CustomPaymentRailResponse
 from .email_provider_request import EmailProviderRequest
@@ -31,7 +33,8 @@ from .external_accounting_system_provider_response import (
 )
 from .generic_payment_rail_request import GenericPaymentRailRequest
 from .generic_payment_rail_response import GenericPaymentRailResponse
-from .individual_onboarding_options import IndividualOnboardingOptions
+from .individual_onboarding_options_request import IndividualOnboardingOptionsRequest
+from .individual_onboarding_options_response import IndividualOnboardingOptionsResponse
 from .invoice_notification_configuration_request import InvoiceNotificationConfigurationRequest
 from .invoice_notification_configuration_response import InvoiceNotificationConfigurationResponse
 from .metadata_regex_validation_rule import MetadataRegexValidationRule
@@ -49,7 +52,8 @@ from .notification_configuration_response import (
 )
 from .notification_email_template_request import NotificationEmailTemplateRequest
 from .notification_email_template_response import NotificationEmailTemplateResponse
-from .onboarding_option import OnboardingOption
+from .onboarding_option_request import OnboardingOptionRequest
+from .onboarding_option_response import OnboardingOptionResponse
 from .onboarding_options_request import OnboardingOptionsRequest
 from .onboarding_options_response import OnboardingOptionsResponse
 from .organization_id import OrganizationId
@@ -90,14 +94,16 @@ from .rutter_provider_response import RutterProviderResponse
 __all__ = [
     "BankPaymentRailRequest",
     "BankPaymentRailResponse",
-    "BusinessOnboardingOptions",
+    "BusinessOnboardingOptionsRequest",
+    "BusinessOnboardingOptionsResponse",
     "CheckPaymentRailRequest",
     "CheckPaymentRailResponse",
     "CodatProviderRequest",
     "CodatProviderResponse",
     "ColorSchemeRequest",
     "ColorSchemeResponse",
-    "CommonOnboardingOptions",
+    "CommonOnboardingOptionsRequest",
+    "CommonOnboardingOptionsResponse",
     "CustomPaymentRailRequest",
     "CustomPaymentRailResponse",
     "EmailProviderRequest",
@@ -115,7 +121,8 @@ __all__ = [
     "ExternalAccountingSystemProviderResponse_Rutter",
     "GenericPaymentRailRequest",
     "GenericPaymentRailResponse",
-    "IndividualOnboardingOptions",
+    "IndividualOnboardingOptionsRequest",
+    "IndividualOnboardingOptionsResponse",
     "InvoiceNotificationConfigurationRequest",
     "InvoiceNotificationConfigurationResponse",
     "MetadataRegexValidationRule",
@@ -130,7 +137,8 @@ __all__ = [
     "NotificationConfigurationResponse_Invoice",
     "NotificationEmailTemplateRequest",
     "NotificationEmailTemplateResponse",
-    "OnboardingOption",
+    "OnboardingOptionRequest",
+    "OnboardingOptionResponse",
     "OnboardingOptionsRequest",
     "OnboardingOptionsResponse",
     "OrganizationId",
