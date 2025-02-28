@@ -6,7 +6,6 @@ import pydantic
 import typing
 from .currency_code import CurrencyCode
 from .custom_payment_method_schema_field import CustomPaymentMethodSchemaField
-from .custom_payment_method_schema_fee import CustomPaymentMethodSchemaFee
 import datetime as dt
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
@@ -100,7 +99,6 @@ class CustomPaymentMethodSchemaResponse(UniversalBaseModel):
     The minimum amount that can be transferred from this payment method in a single transaction. Default is 1.
     """
 
-    fees: typing.Optional[CustomPaymentMethodSchemaFee] = None
     created_at: dt.datetime = pydantic.Field(alias="createdAt")
     updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
 

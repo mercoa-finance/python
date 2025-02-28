@@ -10,7 +10,7 @@ class OcrCustomizationResponse(UniversalBaseModel):
     """
     Examples
     --------
-    from mercoa.entity_types import OcrCustomizationResponse
+    from mercoa.customization_types import OcrCustomizationResponse
 
     OcrCustomizationResponse(
         line_items=True,

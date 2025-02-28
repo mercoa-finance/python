@@ -25,7 +25,9 @@ class BankAccountPaymentDestinationOptions(UniversalBaseModel):
 
     description: typing.Optional[str] = pydantic.Field(default=None)
     """
-    ACH Statement Description. By default, this will be 'AP' followed by the first 8 characters of the invoice ID. Must be at least 4 characters and no more than 10 characters, and follow this regex pattern ^[a-zA-Z0-9\-#.$&* ]{4,10}$
+    ACH Statement Description.
+    By default, this will be 'AP' followed by the first 8 characters of the invoice ID (for a single invoice) or the first 8 characters of the transaction ID (for a batch payment).
+    Must be at least 4 characters and no more than 10 characters, and follow this regex pattern `^[a-zA-Z0-9\-#.$&* ]{4,10}$`
     """
 
     if IS_PYDANTIC_V2:

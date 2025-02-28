@@ -5,7 +5,6 @@ import pydantic
 import typing
 from .currency_code import CurrencyCode
 from .custom_payment_method_schema_field import CustomPaymentMethodSchemaField
-from .custom_payment_method_schema_fee import CustomPaymentMethodSchemaFee
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -89,8 +88,6 @@ class CustomPaymentMethodSchemaRequest(UniversalBaseModel):
     """
     The minimum amount that can be transferred from this payment method in a single transaction. Default is 1.
     """
-
-    fees: typing.Optional[CustomPaymentMethodSchemaFee] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

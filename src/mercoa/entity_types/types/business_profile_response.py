@@ -7,6 +7,7 @@ from .business_type import BusinessType
 from ...commons.types.phone_number import PhoneNumber
 from ...commons.types.address import Address
 from .tax_id import TaxId
+import datetime as dt
 from .industry_codes import IndustryCodes
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
@@ -59,6 +60,7 @@ class BusinessProfileResponse(UniversalBaseModel):
 
     tax_id_provided: bool = pydantic.Field(alias="taxIDProvided")
     tax_id: typing.Optional[TaxId] = pydantic.Field(alias="taxId", default=None)
+    formation_date: typing.Optional[dt.datetime] = pydantic.Field(alias="formationDate", default=None)
     industry_codes: typing.Optional[IndustryCodes] = pydantic.Field(alias="industryCodes", default=None)
     average_monthly_transaction_volume: typing.Optional[float] = pydantic.Field(
         alias="averageMonthlyTransactionVolume", default=None

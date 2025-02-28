@@ -2,9 +2,9 @@
 
 import typing
 from ...core.client_wrapper import SyncClientWrapper
-from ...entity_types.types.entity_id import EntityId
+from ...invoice_types.types.invoice_id import InvoiceId
 from ...core.request_options import RequestOptions
-from ...entity_types.types.entity_customization_response import EntityCustomizationResponse
+from ...collection_types.types.action_response import ActionResponse
 from ...core.jsonable_encoder import jsonable_encoder
 from json.decoder import JSONDecodeError
 from ...core.api_error import ApiError
@@ -16,34 +16,34 @@ from ...commons.errors.not_found import NotFound
 from ...commons.errors.conflict import Conflict
 from ...commons.errors.internal_server_error import InternalServerError
 from ...commons.errors.unimplemented import Unimplemented
-from ...entity_types.types.entity_customization_request import EntityCustomizationRequest
+from ...collection_types.types.update_next_action_request import UpdateNextActionRequest
 from ...core.client_wrapper import AsyncClientWrapper
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
 
 
-class CustomizationClient:
+class CollectionClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    def get(
-        self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> EntityCustomizationResponse:
+    def get_next_action(
+        self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> typing.Optional[ActionResponse]:
         """
-        Get entity customization.
+        Get the collection agent's next action on this invoice. This endpoint will return an empty object if there is no action to return.
 
         Parameters
         ----------
-        entity_id : EntityId
-            Entity ID or Entity ForeignID
+        invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        EntityCustomizationResponse
+        typing.Optional[ActionResponse]
 
         Examples
         --------
@@ -52,12 +52,12 @@ class CustomizationClient:
         client = Mercoa(
             token="YOUR_TOKEN",
         )
-        client.entity.customization.get(
-            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+        client.invoice.collection.get_next_action(
+            invoice_id="in_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"entity/{jsonable_encoder(entity_id)}/customization",
+            f"invoice/{jsonable_encoder(invoice_id)}/collection/next-action",
             method="GET",
             request_options=request_options,
         )
@@ -67,9 +67,9 @@ class CustomizationClient:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
             return typing.cast(
-                EntityCustomizationResponse,
+                typing.Optional[ActionResponse],
                 parse_obj_as(
-                    type_=EntityCustomizationResponse,  # type: ignore
+                    type_=typing.Optional[ActionResponse],  # type: ignore
                     object_=_response_json,
                 ),
             )
@@ -146,177 +146,48 @@ class CustomizationClient:
                 )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def update(
+    def update_next_action(
         self,
-        entity_id: EntityId,
+        invoice_id: InvoiceId,
         *,
-        request: EntityCustomizationRequest,
+        request: UpdateNextActionRequest,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> EntityCustomizationResponse:
+    ) -> ActionResponse:
         """
-        Update entity customization. This lets you turn off metadata and payment methods for an entity.
+        Update the collection agent's next action on this invoice with natural language. Note that updating any APPROVED action will reset the action to SUGGESTED.  This endpoint will throw an error if there is no action to update.
 
         Parameters
         ----------
-        entity_id : EntityId
-            Entity ID or Entity ForeignID
+        invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
-        request : EntityCustomizationRequest
+        request : UpdateNextActionRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        EntityCustomizationResponse
+        ActionResponse
 
         Examples
         --------
         from mercoa import Mercoa
-        from mercoa.customization_types import (
-            FeeCustomizationDetailRequest,
-            FeeCustomizationRailRequest,
-            FeeCustomizationRequest,
-            MetadataCustomizationRequest,
-            NotificationCustomizationRequest,
-            OcrCustomizationRequest,
-            PaymentMethodCustomizationRequest_BankAccount,
-            PaymentMethodCustomizationRequest_Check,
-            PaymentMethodCustomizationRequest_Custom,
-            PaymentMethodFee_Flat,
-            PaymentMethodFee_Percentage,
-            WorkflowCustomizationRequest,
-        )
-        from mercoa.entity_types import EntityCustomizationRequest
+        from mercoa.collection_types import UpdateNextActionRequest
 
         client = Mercoa(
             token="YOUR_TOKEN",
         )
-        client.entity.customization.update(
-            entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-            request=EntityCustomizationRequest(
-                metadata=[
-                    MetadataCustomizationRequest(
-                        key="my_custom_field",
-                        disabled=True,
-                    ),
-                    MetadataCustomizationRequest(
-                        key="my_other_field",
-                        disabled=False,
-                    ),
-                ],
-                payment_source=[
-                    PaymentMethodCustomizationRequest_BankAccount(
-                        disabled=True,
-                        default_delivery_method="ACH_SAME_DAY",
-                    ),
-                    PaymentMethodCustomizationRequest_Custom(
-                        schema_id="cpms_7df2974a-4069-454c-912f-7e58ebe030fb",
-                        disabled=True,
-                    ),
-                ],
-                backup_disbursement=[
-                    PaymentMethodCustomizationRequest_Check(
-                        disabled=True,
-                        default_delivery_method="MAIL",
-                        print_description=True,
-                    )
-                ],
-                payment_destination=[
-                    PaymentMethodCustomizationRequest_BankAccount(
-                        disabled=True,
-                        default_delivery_method="ACH_SAME_DAY",
-                    ),
-                    PaymentMethodCustomizationRequest_Check(
-                        disabled=True,
-                        default_delivery_method="MAIL",
-                        print_description=True,
-                    ),
-                ],
-                ocr=OcrCustomizationRequest(
-                    line_items=True,
-                    collapse_line_items=True,
-                    invoice_metadata=True,
-                    line_item_metadata=True,
-                    line_item_gl_account_id=True,
-                    predict_metadata=True,
-                    tax_and_shipping_as_line_items=True,
-                ),
-                notifications=NotificationCustomizationRequest(
-                    assume_role="admin",
-                ),
-                workflow=WorkflowCustomizationRequest(
-                    auto_advance_invoice_status=True,
-                ),
-                role_permissions={"admin": ["invoice.all", "paymentMethod.all"]},
-                fees=FeeCustomizationRequest(
-                    payable=FeeCustomizationDetailRequest(
-                        source=FeeCustomizationRailRequest(
-                            ach_standard=PaymentMethodFee_Flat(
-                                amount=2.5,
-                            ),
-                            ach_same_day=PaymentMethodFee_Percentage(
-                                amount=2.5,
-                            ),
-                            check_print=PaymentMethodFee_Flat(
-                                amount=2.5,
-                            ),
-                            check_mail=PaymentMethodFee_Flat(
-                                amount=2.5,
-                            ),
-                        ),
-                        destination=FeeCustomizationRailRequest(
-                            ach_standard=PaymentMethodFee_Flat(
-                                amount=2.5,
-                            ),
-                            ach_same_day=PaymentMethodFee_Percentage(
-                                amount=2.5,
-                            ),
-                            check_print=PaymentMethodFee_Flat(
-                                amount=2.5,
-                            ),
-                            check_mail=PaymentMethodFee_Flat(
-                                amount=2.5,
-                            ),
-                        ),
-                    ),
-                    receivable=FeeCustomizationDetailRequest(
-                        source=FeeCustomizationRailRequest(
-                            ach_standard=PaymentMethodFee_Flat(
-                                amount=2.5,
-                            ),
-                            ach_same_day=PaymentMethodFee_Percentage(
-                                amount=2.5,
-                            ),
-                            check_print=PaymentMethodFee_Flat(
-                                amount=2.5,
-                            ),
-                            check_mail=PaymentMethodFee_Flat(
-                                amount=2.5,
-                            ),
-                        ),
-                        destination=FeeCustomizationRailRequest(
-                            ach_standard=PaymentMethodFee_Flat(
-                                amount=2.5,
-                            ),
-                            ach_same_day=PaymentMethodFee_Percentage(
-                                amount=2.5,
-                            ),
-                            check_print=PaymentMethodFee_Flat(
-                                amount=2.5,
-                            ),
-                            check_mail=PaymentMethodFee_Flat(
-                                amount=2.5,
-                            ),
-                        ),
-                    ),
-                ),
+        client.invoice.collection.update_next_action(
+            invoice_id="in_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
+            request=UpdateNextActionRequest(
+                feedback="Use a more stern tone",
             ),
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"entity/{jsonable_encoder(entity_id)}/customization",
-            method="POST",
+            f"invoice/{jsonable_encoder(invoice_id)}/collection/next-action",
+            method="PATCH",
             json=request,
             request_options=request_options,
             omit=OMIT,
@@ -327,9 +198,128 @@ class CustomizationClient:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
             return typing.cast(
-                EntityCustomizationResponse,
+                ActionResponse,
                 parse_obj_as(
-                    type_=EntityCustomizationResponse,  # type: ignore
+                    type_=ActionResponse,  # type: ignore
+                    object_=_response_json,
+                ),
+            )
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def approve_next_action(
+        self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> ActionResponse:
+        """
+        Approve the collection agent's next action on this invoice. This endpoint will throw an error if there is no action to approve.
+
+        Parameters
+        ----------
+        invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ActionResponse
+
+        Examples
+        --------
+        from mercoa import Mercoa
+
+        client = Mercoa(
+            token="YOUR_TOKEN",
+        )
+        client.invoice.collection.approve_next_action(
+            invoice_id="in_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"invoice/{jsonable_encoder(invoice_id)}/collection/next-action/approve",
+            method="PATCH",
+            request_options=request_options,
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return typing.cast(
+                ActionResponse,
+                parse_obj_as(
+                    type_=ActionResponse,  # type: ignore
                     object_=_response_json,
                 ),
             )
@@ -407,27 +397,27 @@ class CustomizationClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
 
-class AsyncCustomizationClient:
+class AsyncCollectionClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    async def get(
-        self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> EntityCustomizationResponse:
+    async def get_next_action(
+        self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> typing.Optional[ActionResponse]:
         """
-        Get entity customization.
+        Get the collection agent's next action on this invoice. This endpoint will return an empty object if there is no action to return.
 
         Parameters
         ----------
-        entity_id : EntityId
-            Entity ID or Entity ForeignID
+        invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        EntityCustomizationResponse
+        typing.Optional[ActionResponse]
 
         Examples
         --------
@@ -441,15 +431,15 @@ class AsyncCustomizationClient:
 
 
         async def main() -> None:
-            await client.entity.customization.get(
-                entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
+            await client.invoice.collection.get_next_action(
+                invoice_id="in_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
             )
 
 
         asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"entity/{jsonable_encoder(entity_id)}/customization",
+            f"invoice/{jsonable_encoder(invoice_id)}/collection/next-action",
             method="GET",
             request_options=request_options,
         )
@@ -459,9 +449,9 @@ class AsyncCustomizationClient:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
             return typing.cast(
-                EntityCustomizationResponse,
+                typing.Optional[ActionResponse],
                 parse_obj_as(
-                    type_=EntityCustomizationResponse,  # type: ignore
+                    type_=typing.Optional[ActionResponse],  # type: ignore
                     object_=_response_json,
                 ),
             )
@@ -538,50 +528,36 @@ class AsyncCustomizationClient:
                 )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def update(
+    async def update_next_action(
         self,
-        entity_id: EntityId,
+        invoice_id: InvoiceId,
         *,
-        request: EntityCustomizationRequest,
+        request: UpdateNextActionRequest,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> EntityCustomizationResponse:
+    ) -> ActionResponse:
         """
-        Update entity customization. This lets you turn off metadata and payment methods for an entity.
+        Update the collection agent's next action on this invoice with natural language. Note that updating any APPROVED action will reset the action to SUGGESTED.  This endpoint will throw an error if there is no action to update.
 
         Parameters
         ----------
-        entity_id : EntityId
-            Entity ID or Entity ForeignID
+        invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
-        request : EntityCustomizationRequest
+        request : UpdateNextActionRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        EntityCustomizationResponse
+        ActionResponse
 
         Examples
         --------
         import asyncio
 
         from mercoa import AsyncMercoa
-        from mercoa.customization_types import (
-            FeeCustomizationDetailRequest,
-            FeeCustomizationRailRequest,
-            FeeCustomizationRequest,
-            MetadataCustomizationRequest,
-            NotificationCustomizationRequest,
-            OcrCustomizationRequest,
-            PaymentMethodCustomizationRequest_BankAccount,
-            PaymentMethodCustomizationRequest_Check,
-            PaymentMethodCustomizationRequest_Custom,
-            PaymentMethodFee_Flat,
-            PaymentMethodFee_Percentage,
-            WorkflowCustomizationRequest,
-        )
-        from mercoa.entity_types import EntityCustomizationRequest
+        from mercoa.collection_types import UpdateNextActionRequest
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
@@ -589,125 +565,10 @@ class AsyncCustomizationClient:
 
 
         async def main() -> None:
-            await client.entity.customization.update(
-                entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-                request=EntityCustomizationRequest(
-                    metadata=[
-                        MetadataCustomizationRequest(
-                            key="my_custom_field",
-                            disabled=True,
-                        ),
-                        MetadataCustomizationRequest(
-                            key="my_other_field",
-                            disabled=False,
-                        ),
-                    ],
-                    payment_source=[
-                        PaymentMethodCustomizationRequest_BankAccount(
-                            disabled=True,
-                            default_delivery_method="ACH_SAME_DAY",
-                        ),
-                        PaymentMethodCustomizationRequest_Custom(
-                            schema_id="cpms_7df2974a-4069-454c-912f-7e58ebe030fb",
-                            disabled=True,
-                        ),
-                    ],
-                    backup_disbursement=[
-                        PaymentMethodCustomizationRequest_Check(
-                            disabled=True,
-                            default_delivery_method="MAIL",
-                            print_description=True,
-                        )
-                    ],
-                    payment_destination=[
-                        PaymentMethodCustomizationRequest_BankAccount(
-                            disabled=True,
-                            default_delivery_method="ACH_SAME_DAY",
-                        ),
-                        PaymentMethodCustomizationRequest_Check(
-                            disabled=True,
-                            default_delivery_method="MAIL",
-                            print_description=True,
-                        ),
-                    ],
-                    ocr=OcrCustomizationRequest(
-                        line_items=True,
-                        collapse_line_items=True,
-                        invoice_metadata=True,
-                        line_item_metadata=True,
-                        line_item_gl_account_id=True,
-                        predict_metadata=True,
-                        tax_and_shipping_as_line_items=True,
-                    ),
-                    notifications=NotificationCustomizationRequest(
-                        assume_role="admin",
-                    ),
-                    workflow=WorkflowCustomizationRequest(
-                        auto_advance_invoice_status=True,
-                    ),
-                    role_permissions={"admin": ["invoice.all", "paymentMethod.all"]},
-                    fees=FeeCustomizationRequest(
-                        payable=FeeCustomizationDetailRequest(
-                            source=FeeCustomizationRailRequest(
-                                ach_standard=PaymentMethodFee_Flat(
-                                    amount=2.5,
-                                ),
-                                ach_same_day=PaymentMethodFee_Percentage(
-                                    amount=2.5,
-                                ),
-                                check_print=PaymentMethodFee_Flat(
-                                    amount=2.5,
-                                ),
-                                check_mail=PaymentMethodFee_Flat(
-                                    amount=2.5,
-                                ),
-                            ),
-                            destination=FeeCustomizationRailRequest(
-                                ach_standard=PaymentMethodFee_Flat(
-                                    amount=2.5,
-                                ),
-                                ach_same_day=PaymentMethodFee_Percentage(
-                                    amount=2.5,
-                                ),
-                                check_print=PaymentMethodFee_Flat(
-                                    amount=2.5,
-                                ),
-                                check_mail=PaymentMethodFee_Flat(
-                                    amount=2.5,
-                                ),
-                            ),
-                        ),
-                        receivable=FeeCustomizationDetailRequest(
-                            source=FeeCustomizationRailRequest(
-                                ach_standard=PaymentMethodFee_Flat(
-                                    amount=2.5,
-                                ),
-                                ach_same_day=PaymentMethodFee_Percentage(
-                                    amount=2.5,
-                                ),
-                                check_print=PaymentMethodFee_Flat(
-                                    amount=2.5,
-                                ),
-                                check_mail=PaymentMethodFee_Flat(
-                                    amount=2.5,
-                                ),
-                            ),
-                            destination=FeeCustomizationRailRequest(
-                                ach_standard=PaymentMethodFee_Flat(
-                                    amount=2.5,
-                                ),
-                                ach_same_day=PaymentMethodFee_Percentage(
-                                    amount=2.5,
-                                ),
-                                check_print=PaymentMethodFee_Flat(
-                                    amount=2.5,
-                                ),
-                                check_mail=PaymentMethodFee_Flat(
-                                    amount=2.5,
-                                ),
-                            ),
-                        ),
-                    ),
+            await client.invoice.collection.update_next_action(
+                invoice_id="in_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
+                request=UpdateNextActionRequest(
+                    feedback="Use a more stern tone",
                 ),
             )
 
@@ -715,8 +576,8 @@ class AsyncCustomizationClient:
         asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"entity/{jsonable_encoder(entity_id)}/customization",
-            method="POST",
+            f"invoice/{jsonable_encoder(invoice_id)}/collection/next-action",
+            method="PATCH",
             json=request,
             request_options=request_options,
             omit=OMIT,
@@ -727,9 +588,136 @@ class AsyncCustomizationClient:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
             return typing.cast(
-                EntityCustomizationResponse,
+                ActionResponse,
                 parse_obj_as(
-                    type_=EntityCustomizationResponse,  # type: ignore
+                    type_=ActionResponse,  # type: ignore
+                    object_=_response_json,
+                ),
+            )
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def approve_next_action(
+        self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> ActionResponse:
+        """
+        Approve the collection agent's next action on this invoice. This endpoint will throw an error if there is no action to approve.
+
+        Parameters
+        ----------
+        invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ActionResponse
+
+        Examples
+        --------
+        import asyncio
+
+        from mercoa import AsyncMercoa
+
+        client = AsyncMercoa(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.invoice.collection.approve_next_action(
+                invoice_id="in_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"invoice/{jsonable_encoder(invoice_id)}/collection/next-action/approve",
+            method="PATCH",
+            request_options=request_options,
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return typing.cast(
+                ActionResponse,
+                parse_obj_as(
+                    type_=ActionResponse,  # type: ignore
                     object_=_response_json,
                 ),
             )

@@ -7,21 +7,30 @@ from .transaction_response import (
     TransactionResponse,
     TransactionResponse_BankAccountToBankAccount,
     TransactionResponse_BankAccountToMailedCheck,
+    TransactionResponse_BankAccountToWallet,
+    TransactionResponse_CardToWallet,
     TransactionResponse_Custom,
     TransactionResponse_OffPlatform,
+    TransactionResponse_WalletToBankAccount,
 )
-from .transaction_response_bank_to_bank_base import TransactionResponseBankToBankBase
+from .transaction_response_ach_base import TransactionResponseAchBase
 from .transaction_response_bank_to_bank_with_invoices import TransactionResponseBankToBankWithInvoices
-from .transaction_response_bank_to_mailed_check_base import TransactionResponseBankToMailedCheckBase
 from .transaction_response_bank_to_mailed_check_with_invoices import TransactionResponseBankToMailedCheckWithInvoices
+from .transaction_response_bank_to_wallet_with_invoices import TransactionResponseBankToWalletWithInvoices
 from .transaction_response_base import TransactionResponseBase
+from .transaction_response_card_to_wallet_with_invoices import TransactionResponseCardToWalletWithInvoices
 from .transaction_response_custom_with_invoices import TransactionResponseCustomWithInvoices
+from .transaction_response_mailed_check_base import TransactionResponseMailedCheckBase
+from .transaction_response_wallet_to_bank_with_invoices import TransactionResponseWalletToBankWithInvoices
 from .transaction_response_without_invoices import (
     TransactionResponseWithoutInvoices,
     TransactionResponseWithoutInvoices_BankAccountToBankAccount,
     TransactionResponseWithoutInvoices_BankAccountToMailedCheck,
+    TransactionResponseWithoutInvoices_BankAccountToWallet,
+    TransactionResponseWithoutInvoices_CardToWallet,
     TransactionResponseWithoutInvoices_Custom,
     TransactionResponseWithoutInvoices_OffPlatform,
+    TransactionResponseWithoutInvoices_WalletToBankAccount,
 )
 from .transaction_status import TransactionStatus
 from .transaction_type import TransactionType
@@ -31,21 +40,30 @@ __all__ = [
     "TransactionFailureReason",
     "TransactionId",
     "TransactionResponse",
-    "TransactionResponseBankToBankBase",
+    "TransactionResponseAchBase",
     "TransactionResponseBankToBankWithInvoices",
-    "TransactionResponseBankToMailedCheckBase",
     "TransactionResponseBankToMailedCheckWithInvoices",
+    "TransactionResponseBankToWalletWithInvoices",
     "TransactionResponseBase",
+    "TransactionResponseCardToWalletWithInvoices",
     "TransactionResponseCustomWithInvoices",
+    "TransactionResponseMailedCheckBase",
+    "TransactionResponseWalletToBankWithInvoices",
     "TransactionResponseWithoutInvoices",
     "TransactionResponseWithoutInvoices_BankAccountToBankAccount",
     "TransactionResponseWithoutInvoices_BankAccountToMailedCheck",
+    "TransactionResponseWithoutInvoices_BankAccountToWallet",
+    "TransactionResponseWithoutInvoices_CardToWallet",
     "TransactionResponseWithoutInvoices_Custom",
     "TransactionResponseWithoutInvoices_OffPlatform",
+    "TransactionResponseWithoutInvoices_WalletToBankAccount",
     "TransactionResponse_BankAccountToBankAccount",
     "TransactionResponse_BankAccountToMailedCheck",
+    "TransactionResponse_BankAccountToWallet",
+    "TransactionResponse_CardToWallet",
     "TransactionResponse_Custom",
     "TransactionResponse_OffPlatform",
+    "TransactionResponse_WalletToBankAccount",
     "TransactionStatus",
     "TransactionType",
 ]

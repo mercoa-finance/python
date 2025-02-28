@@ -13,7 +13,9 @@ class PaymentMethodCustomizationRequest_BankAccount(UniversalBaseModel):
     """
     Examples
     --------
-    from mercoa.entity_types import PaymentMethodCustomizationRequest_BankAccount
+    from mercoa.customization_types import (
+        PaymentMethodCustomizationRequest_BankAccount,
+    )
 
     PaymentMethodCustomizationRequest_BankAccount(
         disabled=True,
@@ -41,7 +43,9 @@ class PaymentMethodCustomizationRequest_Card(UniversalBaseModel):
     """
     Examples
     --------
-    from mercoa.entity_types import PaymentMethodCustomizationRequest_BankAccount
+    from mercoa.customization_types import (
+        PaymentMethodCustomizationRequest_BankAccount,
+    )
 
     PaymentMethodCustomizationRequest_BankAccount(
         disabled=True,
@@ -66,7 +70,9 @@ class PaymentMethodCustomizationRequest_VirtualCard(UniversalBaseModel):
     """
     Examples
     --------
-    from mercoa.entity_types import PaymentMethodCustomizationRequest_BankAccount
+    from mercoa.customization_types import (
+        PaymentMethodCustomizationRequest_BankAccount,
+    )
 
     PaymentMethodCustomizationRequest_BankAccount(
         disabled=True,
@@ -91,7 +97,9 @@ class PaymentMethodCustomizationRequest_Check(UniversalBaseModel):
     """
     Examples
     --------
-    from mercoa.entity_types import PaymentMethodCustomizationRequest_BankAccount
+    from mercoa.customization_types import (
+        PaymentMethodCustomizationRequest_BankAccount,
+    )
 
     PaymentMethodCustomizationRequest_BankAccount(
         disabled=True,
@@ -120,7 +128,9 @@ class PaymentMethodCustomizationRequest_Custom(UniversalBaseModel):
     """
     Examples
     --------
-    from mercoa.entity_types import PaymentMethodCustomizationRequest_BankAccount
+    from mercoa.customization_types import (
+        PaymentMethodCustomizationRequest_BankAccount,
+    )
 
     PaymentMethodCustomizationRequest_BankAccount(
         disabled=True,
@@ -146,7 +156,9 @@ class PaymentMethodCustomizationRequest_Bnpl(UniversalBaseModel):
     """
     Examples
     --------
-    from mercoa.entity_types import PaymentMethodCustomizationRequest_BankAccount
+    from mercoa.customization_types import (
+        PaymentMethodCustomizationRequest_BankAccount,
+    )
 
     PaymentMethodCustomizationRequest_BankAccount(
         disabled=True,
@@ -171,7 +183,9 @@ class PaymentMethodCustomizationRequest_OffPlatform(UniversalBaseModel):
     """
     Examples
     --------
-    from mercoa.entity_types import PaymentMethodCustomizationRequest_BankAccount
+    from mercoa.customization_types import (
+        PaymentMethodCustomizationRequest_BankAccount,
+    )
 
     PaymentMethodCustomizationRequest_BankAccount(
         disabled=True,
@@ -196,7 +210,9 @@ class PaymentMethodCustomizationRequest_Utility(UniversalBaseModel):
     """
     Examples
     --------
-    from mercoa.entity_types import PaymentMethodCustomizationRequest_BankAccount
+    from mercoa.customization_types import (
+        PaymentMethodCustomizationRequest_BankAccount,
+    )
 
     PaymentMethodCustomizationRequest_BankAccount(
         disabled=True,
@@ -221,7 +237,9 @@ class PaymentMethodCustomizationRequest_Na(UniversalBaseModel):
     """
     Examples
     --------
-    from mercoa.entity_types import PaymentMethodCustomizationRequest_BankAccount
+    from mercoa.customization_types import (
+        PaymentMethodCustomizationRequest_BankAccount,
+    )
 
     PaymentMethodCustomizationRequest_BankAccount(
         disabled=True,
@@ -243,7 +261,9 @@ class PaymentMethodCustomizationRequest_Na(UniversalBaseModel):
 
 
 """
-from mercoa.entity_types import PaymentMethodCustomizationRequest_BankAccount
+from mercoa.customization_types import (
+    PaymentMethodCustomizationRequest_BankAccount,
+)
 
 PaymentMethodCustomizationRequest_BankAccount(
     disabled=True,

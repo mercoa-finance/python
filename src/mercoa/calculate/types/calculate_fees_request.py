@@ -4,8 +4,10 @@ from ...core.pydantic_utilities import UniversalBaseModel
 import pydantic
 import typing
 from ...payment_method_types.types.currency_code import CurrencyCode
+from ...entity_types.types.entity_id import EntityId
 from ...payment_method_types.types.payment_method_id import PaymentMethodId
 from ...invoice_types.types.payment_destination_options import PaymentDestinationOptions
+from .fee_calculation_type import FeeCalculationType
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -32,6 +34,11 @@ class CalculateFeesRequest(UniversalBaseModel):
     Currency code for the amount. Defaults to USD.
     """
 
+    creator_entity_id: typing.Optional[EntityId] = pydantic.Field(alias="creatorEntityId", default=None)
+    """
+    ID of the entity creating the invoice. If not provided, the fees will be calculated with the default pricing for the organization.
+    """
+
     payment_source_id: PaymentMethodId = pydantic.Field(alias="paymentSourceId")
     """
     ID of payment source.
@@ -47,6 +54,11 @@ class CalculateFeesRequest(UniversalBaseModel):
     )
     """
     Options for the payment destination. Depending on the payment destination, this may include things such as check delivery method.
+    """
+
+    type: typing.Optional[FeeCalculationType] = pydantic.Field(default=None)
+    """
+    Type of payment to calculate fees for. Defaults to PAYABLE (Accounts Payable).
     """
 
     if IS_PYDANTIC_V2:

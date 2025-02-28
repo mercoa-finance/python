@@ -7,7 +7,7 @@ import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
-class TransactionResponseBankToBankWithInvoices(TransactionResponseAchBase):
+class TransactionResponseBankToWalletWithInvoices(TransactionResponseAchBase):
     invoices: typing.List[InvoiceResponse] = pydantic.Field()
     """
     Invoices associated with this transaction

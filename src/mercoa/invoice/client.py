@@ -5,6 +5,7 @@ from ..core.client_wrapper import SyncClientWrapper
 from .line_item.client import LineItemClient
 from .approval.client import ApprovalClient
 from .bulk.client import BulkClient
+from .collection.client import CollectionClient
 from .comment.client import CommentClient
 from .document.client import DocumentClient
 from .payment_links.client import PaymentLinksClient
@@ -42,6 +43,7 @@ from ..core.client_wrapper import AsyncClientWrapper
 from .line_item.client import AsyncLineItemClient
 from .approval.client import AsyncApprovalClient
 from .bulk.client import AsyncBulkClient
+from .collection.client import AsyncCollectionClient
 from .comment.client import AsyncCommentClient
 from .document.client import AsyncDocumentClient
 from .payment_links.client import AsyncPaymentLinksClient
@@ -56,6 +58,7 @@ class InvoiceClient:
         self.line_item = LineItemClient(client_wrapper=self._client_wrapper)
         self.approval = ApprovalClient(client_wrapper=self._client_wrapper)
         self.bulk = BulkClient(client_wrapper=self._client_wrapper)
+        self.collection = CollectionClient(client_wrapper=self._client_wrapper)
         self.comment = CommentClient(client_wrapper=self._client_wrapper)
         self.document = DocumentClient(client_wrapper=self._client_wrapper)
         self.payment_links = PaymentLinksClient(client_wrapper=self._client_wrapper)
@@ -1005,6 +1008,7 @@ class AsyncInvoiceClient:
         self.line_item = AsyncLineItemClient(client_wrapper=self._client_wrapper)
         self.approval = AsyncApprovalClient(client_wrapper=self._client_wrapper)
         self.bulk = AsyncBulkClient(client_wrapper=self._client_wrapper)
+        self.collection = AsyncCollectionClient(client_wrapper=self._client_wrapper)
         self.comment = AsyncCommentClient(client_wrapper=self._client_wrapper)
         self.document = AsyncDocumentClient(client_wrapper=self._client_wrapper)
         self.payment_links = AsyncPaymentLinksClient(client_wrapper=self._client_wrapper)

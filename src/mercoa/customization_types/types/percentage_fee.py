@@ -6,26 +6,20 @@ from ...core.pydantic_utilities import IS_PYDANTIC_V2
 import typing
 
 
-class MetadataCustomizationRequest(UniversalBaseModel):
+class PercentageFee(UniversalBaseModel):
     """
     Examples
     --------
-    from mercoa.entity_types import MetadataCustomizationRequest
+    from mercoa.customization_types import PercentageFee
 
-    MetadataCustomizationRequest(
-        key="my_custom_field",
-        disabled=True,
+    PercentageFee(
+        amount=2.5,
     )
     """
 
-    key: str = pydantic.Field()
+    amount: float = pydantic.Field()
     """
-    The key of the metadata field. This must be defined at the organization level, otherwise an error will be returned.
-    """
-
-    disabled: bool = pydantic.Field()
-    """
-    If true, this field will not be available to the entity.
+    The percentage of the payment amount that will be charged as a fee. For example, if the fee is 2.5%, set this to 2.5.
     """
 
     if IS_PYDANTIC_V2:

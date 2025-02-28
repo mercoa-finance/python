@@ -13,10 +13,8 @@ from .card_type import CardType
 from .check_request import CheckRequest
 from .check_response import CheckResponse
 from .currency_code import CurrencyCode
-from .custom_payment_method_fee_type import CustomPaymentMethodFeeType
 from .custom_payment_method_request import CustomPaymentMethodRequest
 from .custom_payment_method_response import CustomPaymentMethodResponse
-from .custom_payment_method_schema_fee import CustomPaymentMethodSchemaFee
 from .custom_payment_method_schema_field import CustomPaymentMethodSchemaField
 from .custom_payment_method_schema_field_type import CustomPaymentMethodSchemaFieldType
 from .custom_payment_method_schema_id import CustomPaymentMethodSchemaId
@@ -77,10 +75,8 @@ __all__ = [
     "CheckRequest",
     "CheckResponse",
     "CurrencyCode",
-    "CustomPaymentMethodFeeType",
     "CustomPaymentMethodRequest",
     "CustomPaymentMethodResponse",
-    "CustomPaymentMethodSchemaFee",
     "CustomPaymentMethodSchemaField",
     "CustomPaymentMethodSchemaFieldType",
     "CustomPaymentMethodSchemaId",

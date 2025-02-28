@@ -10,7 +10,7 @@ class WorkflowCustomizationRequest(UniversalBaseModel):
     """
     Examples
     --------
-    from mercoa.entity_types import WorkflowCustomizationRequest
+    from mercoa.customization_types import WorkflowCustomizationRequest
 
     WorkflowCustomizationRequest(
         auto_advance_invoice_status=True,

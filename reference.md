@@ -8828,16 +8828,21 @@ Update entity customization. This lets you turn off metadata and payment methods
 
 ```python
 from mercoa import Mercoa
-from mercoa.entity_types import (
-    EntityCustomizationRequest,
+from mercoa.customization_types import (
+    FeeCustomizationDetailRequest,
+    FeeCustomizationRailRequest,
+    FeeCustomizationRequest,
     MetadataCustomizationRequest,
     NotificationCustomizationRequest,
     OcrCustomizationRequest,
     PaymentMethodCustomizationRequest_BankAccount,
     PaymentMethodCustomizationRequest_Check,
     PaymentMethodCustomizationRequest_Custom,
+    PaymentMethodFee_Flat,
+    PaymentMethodFee_Percentage,
     WorkflowCustomizationRequest,
 )
+from mercoa.entity_types import EntityCustomizationRequest
 
 client = Mercoa(
     token="YOUR_TOKEN",
@@ -8899,6 +8904,68 @@ client.entity.customization.update(
             auto_advance_invoice_status=True,
         ),
         role_permissions={"admin": ["invoice.all", "paymentMethod.all"]},
+        fees=FeeCustomizationRequest(
+            payable=FeeCustomizationDetailRequest(
+                source=FeeCustomizationRailRequest(
+                    ach_standard=PaymentMethodFee_Flat(
+                        amount=2.5,
+                    ),
+                    ach_same_day=PaymentMethodFee_Percentage(
+                        amount=2.5,
+                    ),
+                    check_print=PaymentMethodFee_Flat(
+                        amount=2.5,
+                    ),
+                    check_mail=PaymentMethodFee_Flat(
+                        amount=2.5,
+                    ),
+                ),
+                destination=FeeCustomizationRailRequest(
+                    ach_standard=PaymentMethodFee_Flat(
+                        amount=2.5,
+                    ),
+                    ach_same_day=PaymentMethodFee_Percentage(
+                        amount=2.5,
+                    ),
+                    check_print=PaymentMethodFee_Flat(
+                        amount=2.5,
+                    ),
+                    check_mail=PaymentMethodFee_Flat(
+                        amount=2.5,
+                    ),
+                ),
+            ),
+            receivable=FeeCustomizationDetailRequest(
+                source=FeeCustomizationRailRequest(
+                    ach_standard=PaymentMethodFee_Flat(
+                        amount=2.5,
+                    ),
+                    ach_same_day=PaymentMethodFee_Percentage(
+                        amount=2.5,
+                    ),
+                    check_print=PaymentMethodFee_Flat(
+                        amount=2.5,
+                    ),
+                    check_mail=PaymentMethodFee_Flat(
+                        amount=2.5,
+                    ),
+                ),
+                destination=FeeCustomizationRailRequest(
+                    ach_standard=PaymentMethodFee_Flat(
+                        amount=2.5,
+                    ),
+                    ach_same_day=PaymentMethodFee_Percentage(
+                        amount=2.5,
+                    ),
+                    check_print=PaymentMethodFee_Flat(
+                        amount=2.5,
+                    ),
+                    check_mail=PaymentMethodFee_Flat(
+                        amount=2.5,
+                    ),
+                ),
+            ),
+        ),
     ),
 )
 
@@ -13376,6 +13443,229 @@ client.invoice.bulk.create(
 <dd>
 
 **emit_webhooks:** `typing.Optional[bool]` — If true, webhooks will be emitted for each invoice that is created. By default, webhooks are not emitted.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Invoice Collection
+<details><summary><code>client.invoice.collection.<a href="src/mercoa/invoice/collection/client.py">get_next_action</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Get the collection agent's next action on this invoice. This endpoint will return an empty object if there is no action to return.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.invoice.collection.get_next_action(
+    invoice_id="in_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**invoice_id:** `InvoiceId` — Invoice ID or Invoice ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.invoice.collection.<a href="src/mercoa/invoice/collection/client.py">update_next_action</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Update the collection agent's next action on this invoice with natural language. Note that updating any APPROVED action will reset the action to SUGGESTED.  This endpoint will throw an error if there is no action to update.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+from mercoa.collection_types import UpdateNextActionRequest
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.invoice.collection.update_next_action(
+    invoice_id="in_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
+    request=UpdateNextActionRequest(
+        feedback="Use a more stern tone",
+    ),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**invoice_id:** `InvoiceId` — Invoice ID or Invoice ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `UpdateNextActionRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.invoice.collection.<a href="src/mercoa/invoice/collection/client.py">approve_next_action</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Approve the collection agent's next action on this invoice. This endpoint will throw an error if there is no action to approve.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.invoice.collection.approve_next_action(
+    invoice_id="in_3d61faa9-1754-4b7b-9fcb-88ff97f368ff",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**invoice_id:** `InvoiceId` — Invoice ID or Invoice ForeignID
     
 </dd>
 </dl>

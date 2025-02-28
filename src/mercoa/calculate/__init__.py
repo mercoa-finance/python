@@ -5,6 +5,7 @@ from .types import (
     CalculatePaymentTimingRequest,
     CalculatePaymentTimingResponse,
     EstimatedTiming,
+    FeeCalculationType,
     InvoiceTiming,
 )
 
@@ -13,5 +14,6 @@ __all__ = [
     "CalculatePaymentTimingRequest",
     "CalculatePaymentTimingResponse",
     "EstimatedTiming",
+    "FeeCalculationType",
     "InvoiceTiming",
 ]

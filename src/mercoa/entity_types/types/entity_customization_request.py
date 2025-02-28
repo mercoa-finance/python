@@ -2,12 +2,13 @@
 
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
-from .metadata_customization_request import MetadataCustomizationRequest
-from .payment_method_customization_request import PaymentMethodCustomizationRequest
+from ...customization_types.types.metadata_customization_request import MetadataCustomizationRequest
+from ...customization_types.types.payment_method_customization_request import PaymentMethodCustomizationRequest
 import pydantic
-from .ocr_customization_request import OcrCustomizationRequest
-from .notification_customization_request import NotificationCustomizationRequest
-from .workflow_customization_request import WorkflowCustomizationRequest
+from ...customization_types.types.ocr_customization_request import OcrCustomizationRequest
+from ...customization_types.types.notification_customization_request import NotificationCustomizationRequest
+from ...customization_types.types.workflow_customization_request import WorkflowCustomizationRequest
+from ...customization_types.types.fee_customization_request import FeeCustomizationRequest
 from ...organization_types.types.role_permission_request import RolePermissionRequest
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
@@ -16,16 +17,21 @@ class EntityCustomizationRequest(UniversalBaseModel):
     """
     Examples
     --------
-    from mercoa.entity_types import (
-        EntityCustomizationRequest,
+    from mercoa.customization_types import (
+        FeeCustomizationDetailRequest,
+        FeeCustomizationRailRequest,
+        FeeCustomizationRequest,
         MetadataCustomizationRequest,
         NotificationCustomizationRequest,
         OcrCustomizationRequest,
         PaymentMethodCustomizationRequest_BankAccount,
         PaymentMethodCustomizationRequest_Check,
         PaymentMethodCustomizationRequest_Custom,
+        PaymentMethodFee_Flat,
+        PaymentMethodFee_Percentage,
         WorkflowCustomizationRequest,
     )
+    from mercoa.entity_types import EntityCustomizationRequest
 
     EntityCustomizationRequest(
         metadata=[
@@ -82,6 +88,68 @@ class EntityCustomizationRequest(UniversalBaseModel):
             auto_advance_invoice_status=True,
         ),
         role_permissions={"admin": ["invoice.all", "paymentMethod.all"]},
+        fees=FeeCustomizationRequest(
+            payable=FeeCustomizationDetailRequest(
+                source=FeeCustomizationRailRequest(
+                    ach_standard=PaymentMethodFee_Flat(
+                        amount=2.5,
+                    ),
+                    ach_same_day=PaymentMethodFee_Percentage(
+                        amount=2.5,
+                    ),
+                    check_print=PaymentMethodFee_Flat(
+                        amount=2.5,
+                    ),
+                    check_mail=PaymentMethodFee_Flat(
+                        amount=2.5,
+                    ),
+                ),
+                destination=FeeCustomizationRailRequest(
+                    ach_standard=PaymentMethodFee_Flat(
+                        amount=2.5,
+                    ),
+                    ach_same_day=PaymentMethodFee_Percentage(
+                        amount=2.5,
+                    ),
+                    check_print=PaymentMethodFee_Flat(
+                        amount=2.5,
+                    ),
+                    check_mail=PaymentMethodFee_Flat(
+                        amount=2.5,
+                    ),
+                ),
+            ),
+            receivable=FeeCustomizationDetailRequest(
+                source=FeeCustomizationRailRequest(
+                    ach_standard=PaymentMethodFee_Flat(
+                        amount=2.5,
+                    ),
+                    ach_same_day=PaymentMethodFee_Percentage(
+                        amount=2.5,
+                    ),
+                    check_print=PaymentMethodFee_Flat(
+                        amount=2.5,
+                    ),
+                    check_mail=PaymentMethodFee_Flat(
+                        amount=2.5,
+                    ),
+                ),
+                destination=FeeCustomizationRailRequest(
+                    ach_standard=PaymentMethodFee_Flat(
+                        amount=2.5,
+                    ),
+                    ach_same_day=PaymentMethodFee_Percentage(
+                        amount=2.5,
+                    ),
+                    check_print=PaymentMethodFee_Flat(
+                        amount=2.5,
+                    ),
+                    check_mail=PaymentMethodFee_Flat(
+                        amount=2.5,
+                    ),
+                ),
+            ),
+        ),
     )
     """
 
@@ -98,6 +166,7 @@ class EntityCustomizationRequest(UniversalBaseModel):
     ocr: typing.Optional[OcrCustomizationRequest] = None
     notifications: typing.Optional[NotificationCustomizationRequest] = None
     workflow: typing.Optional[WorkflowCustomizationRequest] = None
+    fees: typing.Optional[FeeCustomizationRequest] = None
     role_permissions: typing.Optional[RolePermissionRequest] = pydantic.Field(alias="rolePermissions", default=None)
 
     if IS_PYDANTIC_V2:

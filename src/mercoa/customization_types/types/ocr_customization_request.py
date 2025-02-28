@@ -10,7 +10,7 @@ class OcrCustomizationRequest(UniversalBaseModel):
     """
     Examples
     --------
-    from mercoa.entity_types import OcrCustomizationRequest
+    from mercoa.customization_types import OcrCustomizationRequest
 
     OcrCustomizationRequest(
         line_items=True,
