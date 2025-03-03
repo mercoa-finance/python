@@ -4,10 +4,12 @@ from __future__ import annotations
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
 from .action_id import ActionId
+import typing_extensions
 import datetime as dt
-import pydantic
+from ...core.serialization import FieldMetadata
 from .action_status import ActionStatus
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
+import pydantic
 
 
 class ActionResponse_Email(UniversalBaseModel):
@@ -33,7 +35,7 @@ class ActionResponse_Email(UniversalBaseModel):
     subject: str
     body: str
     id: ActionId
-    scheduled_execution_time: dt.datetime = pydantic.Field(alias="scheduledExecutionTime")
+    scheduled_execution_time: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="scheduledExecutionTime")]
     status: ActionStatus
 
     if IS_PYDANTIC_V2:

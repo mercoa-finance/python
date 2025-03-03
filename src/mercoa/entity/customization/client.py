@@ -17,6 +17,7 @@ from ...commons.errors.conflict import Conflict
 from ...commons.errors.internal_server_error import InternalServerError
 from ...commons.errors.unimplemented import Unimplemented
 from ...entity_types.types.entity_customization_request import EntityCustomizationRequest
+from ...core.serialization import convert_and_respect_annotation_metadata
 from ...core.client_wrapper import AsyncClientWrapper
 
 # this is used as the default value for optional parameters
@@ -317,7 +318,9 @@ class CustomizationClient:
         _response = self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/customization",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=EntityCustomizationRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -717,7 +720,9 @@ class AsyncCustomizationClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/customization",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=EntityCustomizationRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )

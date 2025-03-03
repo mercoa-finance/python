@@ -20,7 +20,7 @@ from ..invoice_types.types.payment_type import PaymentType
 from ..core.request_options import RequestOptions
 from ..invoice_types.types.find_invoice_template_response import FindInvoiceTemplateResponse
 from ..core.datetime_utils import serialize_datetime
-from ..core.jsonable_encoder import jsonable_encoder
+from ..core.serialization import convert_and_respect_annotation_metadata
 from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
 from ..core.pydantic_utilities import parse_obj_as
@@ -33,6 +33,7 @@ from ..commons.errors.internal_server_error import InternalServerError
 from ..commons.errors.unimplemented import Unimplemented
 from ..invoice_types.types.invoice_template_creation_request import InvoiceTemplateCreationRequest
 from ..invoice_types.types.invoice_template_response import InvoiceTemplateResponse
+from ..core.jsonable_encoder import jsonable_encoder
 from ..invoice_types.types.invoice_template_update_request import InvoiceTemplateUpdateRequest
 from ..core.client_wrapper import AsyncClientWrapper
 from .line_item.client import AsyncLineItemClient
@@ -171,8 +172,12 @@ class InvoiceTemplateClient:
                 "limit": limit,
                 "startingAfter": starting_after,
                 "search": search,
-                "metadata": jsonable_encoder(metadata),
-                "lineItemMetadata": jsonable_encoder(line_item_metadata),
+                "metadata": convert_and_respect_annotation_metadata(
+                    object_=metadata, annotation=MetadataFilter, direction="write"
+                ),
+                "lineItemMetadata": convert_and_respect_annotation_metadata(
+                    object_=line_item_metadata, annotation=MetadataFilter, direction="write"
+                ),
                 "lineItemGlAccountId": line_item_gl_account_id,
                 "payerId": payer_id,
                 "vendorId": vendor_id,
@@ -181,7 +186,7 @@ class InvoiceTemplateClient:
                 "approverAction": approver_action,
                 "invoiceId": invoice_id,
                 "status": status,
-                "paymentType": jsonable_encoder(payment_type),
+                "paymentType": payment_type,
             },
             request_options=request_options,
         )
@@ -357,7 +362,9 @@ class InvoiceTemplateClient:
         _response = self._client_wrapper.httpx_client.request(
             "invoice-template",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=InvoiceTemplateCreationRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -649,7 +656,9 @@ class InvoiceTemplateClient:
         _response = self._client_wrapper.httpx_client.request(
             f"invoice-template/{jsonable_encoder(invoice_template_id)}",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=InvoiceTemplateUpdateRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -988,8 +997,12 @@ class AsyncInvoiceTemplateClient:
                 "limit": limit,
                 "startingAfter": starting_after,
                 "search": search,
-                "metadata": jsonable_encoder(metadata),
-                "lineItemMetadata": jsonable_encoder(line_item_metadata),
+                "metadata": convert_and_respect_annotation_metadata(
+                    object_=metadata, annotation=MetadataFilter, direction="write"
+                ),
+                "lineItemMetadata": convert_and_respect_annotation_metadata(
+                    object_=line_item_metadata, annotation=MetadataFilter, direction="write"
+                ),
                 "lineItemGlAccountId": line_item_gl_account_id,
                 "payerId": payer_id,
                 "vendorId": vendor_id,
@@ -998,7 +1011,7 @@ class AsyncInvoiceTemplateClient:
                 "approverAction": approver_action,
                 "invoiceId": invoice_id,
                 "status": status,
-                "paymentType": jsonable_encoder(payment_type),
+                "paymentType": payment_type,
             },
             request_options=request_options,
         )
@@ -1181,7 +1194,9 @@ class AsyncInvoiceTemplateClient:
         _response = await self._client_wrapper.httpx_client.request(
             "invoice-template",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=InvoiceTemplateCreationRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -1488,7 +1503,9 @@ class AsyncInvoiceTemplateClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"invoice-template/{jsonable_encoder(invoice_template_id)}",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=InvoiceTemplateUpdateRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )

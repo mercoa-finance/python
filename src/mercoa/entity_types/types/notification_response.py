@@ -2,8 +2,10 @@
 
 from ...core.pydantic_utilities import UniversalBaseModel
 from .notification_id import NotificationId
+import typing_extensions
 import typing
 from ...invoice_types.types.invoice_id import InvoiceId
+from ...core.serialization import FieldMetadata
 import pydantic
 from .notification_type import NotificationType
 from .notification_status import NotificationStatus
@@ -31,14 +33,16 @@ class NotificationResponse(UniversalBaseModel):
     """
 
     id: NotificationId
-    invoice_id: typing.Optional[InvoiceId] = pydantic.Field(alias="invoiceId", default=None)
+    invoice_id: typing_extensions.Annotated[typing.Optional[InvoiceId], FieldMetadata(alias="invoiceId")] = (
+        pydantic.Field(default=None)
+    )
     """
     The invoice ID that this notification is related to. This field is only present for notifications related to invoices.
     """
 
     type: NotificationType
     status: NotificationStatus
-    created_at: dt.datetime = pydantic.Field(alias="createdAt")
+    created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

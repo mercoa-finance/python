@@ -6,7 +6,9 @@ import typing
 from ...payment_method_types.types.currency_code import CurrencyCode
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 import pydantic
+import typing_extensions
 from .entity_id import EntityId
+from ...core.serialization import FieldMetadata
 
 
 class Trigger_Amount(UniversalBaseModel):
@@ -48,7 +50,7 @@ class Trigger_Vendor(UniversalBaseModel):
     """
 
     type: typing.Literal["vendor"] = "vendor"
-    vendor_ids: typing.List[EntityId] = pydantic.Field(alias="vendorIds")
+    vendor_ids: typing_extensions.Annotated[typing.List[EntityId], FieldMetadata(alias="vendorIds")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

@@ -4,7 +4,9 @@ from .entity_response import EntityResponse
 import typing
 from .counterparty_customization_account import CounterpartyCustomizationAccount
 import pydantic
+import typing_extensions
 from ...payment_method_types.types.payment_method_response import PaymentMethodResponse
+from ...core.serialization import FieldMetadata
 from .counterparty_network_type import CounterpartyNetworkType
 from .counterparty_invoice_metrics_response import CounterpartyInvoiceMetricsResponse
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
@@ -110,15 +112,15 @@ class CounterpartyResponse(EntityResponse):
     If the entity searching for counterparties has any accounts configured in the Payee/Payor relationship, they will be returned
     """
 
-    payment_methods: typing.Optional[typing.List[PaymentMethodResponse]] = pydantic.Field(
-        alias="paymentMethods", default=None
-    )
-    counterparty_type: typing.Optional[typing.List[CounterpartyNetworkType]] = pydantic.Field(
-        alias="counterpartyType", default=None
-    )
-    invoice_metrics: typing.Optional[CounterpartyInvoiceMetricsResponse] = pydantic.Field(
-        alias="invoiceMetrics", default=None
-    )
+    payment_methods: typing_extensions.Annotated[
+        typing.Optional[typing.List[PaymentMethodResponse]], FieldMetadata(alias="paymentMethods")
+    ] = None
+    counterparty_type: typing_extensions.Annotated[
+        typing.Optional[typing.List[CounterpartyNetworkType]], FieldMetadata(alias="counterpartyType")
+    ] = None
+    invoice_metrics: typing_extensions.Annotated[
+        typing.Optional[CounterpartyInvoiceMetricsResponse], FieldMetadata(alias="invoiceMetrics")
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

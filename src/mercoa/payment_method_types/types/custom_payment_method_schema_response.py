@@ -2,6 +2,8 @@
 
 from ...core.pydantic_utilities import UniversalBaseModel
 from .custom_payment_method_schema_id import CustomPaymentMethodSchemaId
+import typing_extensions
+from ...core.serialization import FieldMetadata
 import pydantic
 import typing
 from .currency_code import CurrencyCode
@@ -68,39 +70,47 @@ class CustomPaymentMethodSchemaResponse(UniversalBaseModel):
 
     id: CustomPaymentMethodSchemaId
     name: str
-    is_source: bool = pydantic.Field(alias="isSource")
+    is_source: typing_extensions.Annotated[bool, FieldMetadata(alias="isSource")] = pydantic.Field()
     """
     This payment method can be used as a payment source for an invoice
     """
 
-    is_destination: bool = pydantic.Field(alias="isDestination")
+    is_destination: typing_extensions.Annotated[bool, FieldMetadata(alias="isDestination")] = pydantic.Field()
     """
     This payment method can be used as a payment destination for an invoice
     """
 
-    supported_currencies: typing.List[CurrencyCode] = pydantic.Field(alias="supportedCurrencies")
+    supported_currencies: typing_extensions.Annotated[
+        typing.List[CurrencyCode], FieldMetadata(alias="supportedCurrencies")
+    ] = pydantic.Field()
     """
     List of currencies that this payment method supports.
     """
 
     fields: typing.List[CustomPaymentMethodSchemaField]
-    estimated_processing_time: int = pydantic.Field(alias="estimatedProcessingTime")
+    estimated_processing_time: typing_extensions.Annotated[int, FieldMetadata(alias="estimatedProcessingTime")] = (
+        pydantic.Field()
+    )
     """
     Estimated time in days for this payment method to process a payments. 0 is an same-day payment methods, -1 is unknown processing time.
     """
 
-    max_amount: typing.Optional[float] = pydantic.Field(alias="maxAmount", default=None)
+    max_amount: typing_extensions.Annotated[typing.Optional[float], FieldMetadata(alias="maxAmount")] = pydantic.Field(
+        default=None
+    )
     """
     The maximum amount that can be transferred from this payment method in a single transaction.
     """
 
-    min_amount: typing.Optional[float] = pydantic.Field(alias="minAmount", default=None)
+    min_amount: typing_extensions.Annotated[typing.Optional[float], FieldMetadata(alias="minAmount")] = pydantic.Field(
+        default=None
+    )
     """
     The minimum amount that can be transferred from this payment method in a single transaction. Default is 1.
     """
 
-    created_at: dt.datetime = pydantic.Field(alias="createdAt")
-    updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
+    created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
+    updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

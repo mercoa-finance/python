@@ -17,6 +17,7 @@ from ...commons.errors.conflict import Conflict
 from ...commons.errors.internal_server_error import InternalServerError
 from ...commons.errors.unimplemented import Unimplemented
 from ...collection_types.types.update_next_action_request import UpdateNextActionRequest
+from ...core.serialization import convert_and_respect_annotation_metadata
 from ...core.client_wrapper import AsyncClientWrapper
 
 # this is used as the default value for optional parameters
@@ -188,7 +189,9 @@ class CollectionClient:
         _response = self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/collection/next-action",
             method="PATCH",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=UpdateNextActionRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -578,7 +581,9 @@ class AsyncCollectionClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/collection/next-action",
             method="PATCH",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=UpdateNextActionRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )

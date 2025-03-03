@@ -2,16 +2,18 @@
 
 from ...core.pydantic_utilities import UniversalBaseModel
 from .email_sender_provider import EmailSenderProvider
-import pydantic
+import typing_extensions
+from ...core.serialization import FieldMetadata
 import typing
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
+import pydantic
 
 
 class EmailSenderRequest(UniversalBaseModel):
     provider: EmailSenderProvider
-    from_email: str = pydantic.Field(alias="fromEmail")
-    from_name: str = pydantic.Field(alias="fromName")
-    api_key: typing.Optional[str] = pydantic.Field(alias="apiKey", default=None)
+    from_email: typing_extensions.Annotated[str, FieldMetadata(alias="fromEmail")]
+    from_name: typing_extensions.Annotated[str, FieldMetadata(alias="fromName")]
+    api_key: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="apiKey")] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

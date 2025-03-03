@@ -2,7 +2,9 @@
 
 from ...core.pydantic_utilities import UniversalBaseModel
 import pydantic
+import typing_extensions
 from ...entity_types.types.entity_id import EntityId
+from ...core.serialization import FieldMetadata
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 import typing
 
@@ -24,7 +26,7 @@ class GenerateContractRequest(UniversalBaseModel):
     Base64 encoded PDF of contract document.
     """
 
-    creator_entity_id: EntityId = pydantic.Field(alias="creatorEntityId")
+    creator_entity_id: typing_extensions.Annotated[EntityId, FieldMetadata(alias="creatorEntityId")] = pydantic.Field()
     """
     ID of the entity that created the contract
     """

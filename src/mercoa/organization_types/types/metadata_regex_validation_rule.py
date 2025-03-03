@@ -2,6 +2,8 @@
 
 from ...core.pydantic_utilities import UniversalBaseModel
 import pydantic
+import typing_extensions
+from ...core.serialization import FieldMetadata
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 import typing
 
@@ -12,7 +14,7 @@ class MetadataRegexValidationRule(UniversalBaseModel):
     A regular expression that the value must match.
     """
 
-    error_message: str = pydantic.Field(alias="errorMessage")
+    error_message: typing_extensions.Annotated[str, FieldMetadata(alias="errorMessage")] = pydantic.Field()
     """
     The error message to display if the value does not match the regular expression.
     """

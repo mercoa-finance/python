@@ -2,6 +2,8 @@
 
 from ...core.pydantic_utilities import UniversalBaseModel
 import pydantic
+import typing_extensions
+from ...core.serialization import FieldMetadata
 from .contract_invoice_schema import ContractInvoiceSchema
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 import typing
@@ -44,12 +46,16 @@ class ContractRecurrenceCreateRequest(UniversalBaseModel):
     Natural language justification for the recurrence
     """
 
-    filtered_contract_summary: str = pydantic.Field(alias="filteredContractSummary")
+    filtered_contract_summary: typing_extensions.Annotated[str, FieldMetadata(alias="filteredContractSummary")] = (
+        pydantic.Field()
+    )
     """
     Natural language summary of the contract, filtered to only include information relevant to the recurrence
     """
 
-    invoice_schema: ContractInvoiceSchema = pydantic.Field(alias="invoiceSchema")
+    invoice_schema: typing_extensions.Annotated[ContractInvoiceSchema, FieldMetadata(alias="invoiceSchema")] = (
+        pydantic.Field()
+    )
     """
     Schema of the invoices to be created by this recurrence
     """

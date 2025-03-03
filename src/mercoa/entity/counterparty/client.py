@@ -9,6 +9,7 @@ from ...invoice_types.types.metadata_filter import MetadataFilter
 from ...core.request_options import RequestOptions
 from ...entity_types.types.find_counterparties_response import FindCounterpartiesResponse
 from ...core.jsonable_encoder import jsonable_encoder
+from ...core.serialization import convert_and_respect_annotation_metadata
 from json.decoder import JSONDecodeError
 from ...core.api_error import ApiError
 from ...core.pydantic_utilities import parse_obj_as
@@ -122,7 +123,9 @@ class CounterpartyClient:
                 "paymentMethods": payment_methods,
                 "invoiceMetrics": invoice_metrics,
                 "counterpartyId": counterparty_id,
-                "metadata": jsonable_encoder(metadata),
+                "metadata": convert_and_respect_annotation_metadata(
+                    object_=metadata, annotation=MetadataFilter, direction="write"
+                ),
                 "returnMetadata": return_metadata,
                 "limit": limit,
                 "startingAfter": starting_after,
@@ -301,7 +304,9 @@ class CounterpartyClient:
                 "paymentMethods": payment_methods,
                 "invoiceMetrics": invoice_metrics,
                 "counterpartyId": counterparty_id,
-                "metadata": jsonable_encoder(metadata),
+                "metadata": convert_and_respect_annotation_metadata(
+                    object_=metadata, annotation=MetadataFilter, direction="write"
+                ),
                 "returnMetadata": return_metadata,
                 "limit": limit,
                 "startingAfter": starting_after,
@@ -451,7 +456,9 @@ class CounterpartyClient:
         _response = self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/addPayees",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=EntityAddPayeesRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -576,7 +583,9 @@ class CounterpartyClient:
         _response = self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/hidePayees",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=EntityHidePayeesRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -717,7 +726,9 @@ class CounterpartyClient:
         _response = self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/addPayors",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=EntityAddPayorsRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -842,7 +853,9 @@ class CounterpartyClient:
         _response = self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/hidePayors",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=EntityHidePayorsRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -1026,7 +1039,9 @@ class AsyncCounterpartyClient:
                 "paymentMethods": payment_methods,
                 "invoiceMetrics": invoice_metrics,
                 "counterpartyId": counterparty_id,
-                "metadata": jsonable_encoder(metadata),
+                "metadata": convert_and_respect_annotation_metadata(
+                    object_=metadata, annotation=MetadataFilter, direction="write"
+                ),
                 "returnMetadata": return_metadata,
                 "limit": limit,
                 "startingAfter": starting_after,
@@ -1213,7 +1228,9 @@ class AsyncCounterpartyClient:
                 "paymentMethods": payment_methods,
                 "invoiceMetrics": invoice_metrics,
                 "counterpartyId": counterparty_id,
-                "metadata": jsonable_encoder(metadata),
+                "metadata": convert_and_respect_annotation_metadata(
+                    object_=metadata, annotation=MetadataFilter, direction="write"
+                ),
                 "returnMetadata": return_metadata,
                 "limit": limit,
                 "startingAfter": starting_after,
@@ -1371,7 +1388,9 @@ class AsyncCounterpartyClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/addPayees",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=EntityAddPayeesRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -1504,7 +1523,9 @@ class AsyncCounterpartyClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/hidePayees",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=EntityHidePayeesRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -1653,7 +1674,9 @@ class AsyncCounterpartyClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/addPayors",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=EntityAddPayorsRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -1786,7 +1809,9 @@ class AsyncCounterpartyClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/hidePayors",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=EntityHidePayorsRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )

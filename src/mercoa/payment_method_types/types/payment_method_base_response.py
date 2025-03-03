@@ -2,6 +2,8 @@
 
 from ...core.pydantic_utilities import UniversalBaseModel
 from .payment_method_id import PaymentMethodId
+import typing_extensions
+from ...core.serialization import FieldMetadata
 import pydantic
 import typing
 from .currency_code import CurrencyCode
@@ -11,20 +13,24 @@ from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 class PaymentMethodBaseResponse(UniversalBaseModel):
     id: PaymentMethodId
-    is_default_source: bool = pydantic.Field(alias="isDefaultSource")
+    is_default_source: typing_extensions.Annotated[bool, FieldMetadata(alias="isDefaultSource")] = pydantic.Field()
     """
     Indicates whether this payment method is the default source for the entity
     """
 
-    is_default_destination: bool = pydantic.Field(alias="isDefaultDestination")
+    is_default_destination: typing_extensions.Annotated[bool, FieldMetadata(alias="isDefaultDestination")] = (
+        pydantic.Field()
+    )
     """
     Indicates whether this payment method is the default destination for the entity
     """
 
-    supported_currencies: typing.List[CurrencyCode] = pydantic.Field(alias="supportedCurrencies")
-    external_accounting_system_id: typing.Optional[str] = pydantic.Field(
-        alias="externalAccountingSystemId", default=None
-    )
+    supported_currencies: typing_extensions.Annotated[
+        typing.List[CurrencyCode], FieldMetadata(alias="supportedCurrencies")
+    ]
+    external_accounting_system_id: typing_extensions.Annotated[
+        typing.Optional[str], FieldMetadata(alias="externalAccountingSystemId")
+    ] = pydantic.Field(default=None)
     """
     ID for this payment method in the external accounting system (e.g Rutter or Codat)
     """
@@ -39,8 +45,8 @@ class PaymentMethodBaseResponse(UniversalBaseModel):
     Metadata associated with this payment method.
     """
 
-    created_at: dt.datetime = pydantic.Field(alias="createdAt")
-    updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
+    created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
+    updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

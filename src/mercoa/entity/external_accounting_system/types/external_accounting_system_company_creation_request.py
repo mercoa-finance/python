@@ -3,13 +3,15 @@
 from __future__ import annotations
 from ....core.pydantic_utilities import UniversalBaseModel
 import typing
-import pydantic
+import typing_extensions
+from ....core.serialization import FieldMetadata
 from ....core.pydantic_utilities import IS_PYDANTIC_V2
+import pydantic
 
 
 class ExternalAccountingSystemCompanyCreationRequest_Codat(UniversalBaseModel):
     type: typing.Literal["codat"] = "codat"
-    company_id: typing.Optional[str] = pydantic.Field(alias="companyId", default=None)
+    company_id: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="companyId")] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -23,7 +25,7 @@ class ExternalAccountingSystemCompanyCreationRequest_Codat(UniversalBaseModel):
 
 class ExternalAccountingSystemCompanyCreationRequest_Rutter(UniversalBaseModel):
     type: typing.Literal["rutter"] = "rutter"
-    access_token: typing.Optional[str] = pydantic.Field(alias="accessToken", default=None)
+    access_token: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="accessToken")] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

@@ -19,6 +19,7 @@ from ...commons.errors.conflict import Conflict
 from ...commons.errors.internal_server_error import InternalServerError
 from ...commons.errors.unimplemented import Unimplemented
 from ...payment_method_types.types.payment_method_request import PaymentMethodRequest
+from ...core.serialization import convert_and_respect_annotation_metadata
 from ...payment_method_types.types.payment_method_id import PaymentMethodId
 from ...payment_method_types.types.payment_method_update_request import PaymentMethodUpdateRequest
 from ...entity_types.types.card_link_token_response import CardLinkTokenResponse
@@ -203,7 +204,9 @@ class PaymentMethodClient:
         _response = self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/paymentMethod",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=PaymentMethodRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -465,7 +468,9 @@ class PaymentMethodClient:
         _response = self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}",
             method="PUT",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=PaymentMethodUpdateRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -1115,7 +1120,9 @@ class AsyncPaymentMethodClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/paymentMethod",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=PaymentMethodRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -1393,7 +1400,9 @@ class AsyncPaymentMethodClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}",
             method="PUT",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=PaymentMethodUpdateRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )

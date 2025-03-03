@@ -3,11 +3,13 @@
 from __future__ import annotations
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
-import pydantic
+import typing_extensions
+from ...core.serialization import FieldMetadata
 from .bank_type import BankType
 from .plaid_link_request import PlaidLinkRequest
 from .bank_account_check_options import BankAccountCheckOptions
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
+import pydantic
 from .card_type import CardType
 from .card_brand import CardBrand
 from .custom_payment_method_schema_id import CustomPaymentMethodSchemaId
@@ -27,18 +29,22 @@ class PaymentMethodRequest_BankAccount(UniversalBaseModel):
     """
 
     type: typing.Literal["bankAccount"] = "bankAccount"
-    account_name: typing.Optional[str] = pydantic.Field(alias="accountName", default=None)
-    bank_name: typing.Optional[str] = pydantic.Field(alias="bankName", default=None)
-    routing_number: str = pydantic.Field(alias="routingNumber")
-    account_number: str = pydantic.Field(alias="accountNumber")
-    account_type: BankType = pydantic.Field(alias="accountType")
+    account_name: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="accountName")] = None
+    bank_name: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="bankName")] = None
+    routing_number: typing_extensions.Annotated[str, FieldMetadata(alias="routingNumber")]
+    account_number: typing_extensions.Annotated[str, FieldMetadata(alias="accountNumber")]
+    account_type: typing_extensions.Annotated[BankType, FieldMetadata(alias="accountType")]
     plaid: typing.Optional[PlaidLinkRequest] = None
-    check_options: typing.Optional[BankAccountCheckOptions] = pydantic.Field(alias="checkOptions", default=None)
-    default_source: typing.Optional[bool] = pydantic.Field(alias="defaultSource", default=None)
-    default_destination: typing.Optional[bool] = pydantic.Field(alias="defaultDestination", default=None)
-    external_accounting_system_id: typing.Optional[str] = pydantic.Field(
-        alias="externalAccountingSystemId", default=None
-    )
+    check_options: typing_extensions.Annotated[
+        typing.Optional[BankAccountCheckOptions], FieldMetadata(alias="checkOptions")
+    ] = None
+    default_source: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="defaultSource")] = None
+    default_destination: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="defaultDestination")
+    ] = None
+    external_accounting_system_id: typing_extensions.Annotated[
+        typing.Optional[str], FieldMetadata(alias="externalAccountingSystemId")
+    ] = None
     frozen: typing.Optional[bool] = None
     metadata: typing.Optional[typing.Dict[str, str]] = None
 
@@ -66,17 +72,19 @@ class PaymentMethodRequest_Card(UniversalBaseModel):
     """
 
     type: typing.Literal["card"] = "card"
-    card_type: CardType = pydantic.Field(alias="cardType")
-    card_brand: CardBrand = pydantic.Field(alias="cardBrand")
-    last_four: str = pydantic.Field(alias="lastFour")
-    exp_month: str = pydantic.Field(alias="expMonth")
-    exp_year: str = pydantic.Field(alias="expYear")
+    card_type: typing_extensions.Annotated[CardType, FieldMetadata(alias="cardType")]
+    card_brand: typing_extensions.Annotated[CardBrand, FieldMetadata(alias="cardBrand")]
+    last_four: typing_extensions.Annotated[str, FieldMetadata(alias="lastFour")]
+    exp_month: typing_extensions.Annotated[str, FieldMetadata(alias="expMonth")]
+    exp_year: typing_extensions.Annotated[str, FieldMetadata(alias="expYear")]
     token: str
-    default_source: typing.Optional[bool] = pydantic.Field(alias="defaultSource", default=None)
-    default_destination: typing.Optional[bool] = pydantic.Field(alias="defaultDestination", default=None)
-    external_accounting_system_id: typing.Optional[str] = pydantic.Field(
-        alias="externalAccountingSystemId", default=None
-    )
+    default_source: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="defaultSource")] = None
+    default_destination: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="defaultDestination")
+    ] = None
+    external_accounting_system_id: typing_extensions.Annotated[
+        typing.Optional[str], FieldMetadata(alias="externalAccountingSystemId")
+    ] = None
     frozen: typing.Optional[bool] = None
     metadata: typing.Optional[typing.Dict[str, str]] = None
 
@@ -104,18 +112,20 @@ class PaymentMethodRequest_Check(UniversalBaseModel):
     """
 
     type: typing.Literal["check"] = "check"
-    pay_to_the_order_of: str = pydantic.Field(alias="payToTheOrderOf")
-    address_line_1: str = pydantic.Field(alias="addressLine1")
-    address_line_2: typing.Optional[str] = pydantic.Field(alias="addressLine2", default=None)
+    pay_to_the_order_of: typing_extensions.Annotated[str, FieldMetadata(alias="payToTheOrderOf")]
+    address_line_1: typing_extensions.Annotated[str, FieldMetadata(alias="addressLine1")]
+    address_line_2: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="addressLine2")] = None
     city: str
-    state_or_province: str = pydantic.Field(alias="stateOrProvince")
-    postal_code: str = pydantic.Field(alias="postalCode")
+    state_or_province: typing_extensions.Annotated[str, FieldMetadata(alias="stateOrProvince")]
+    postal_code: typing_extensions.Annotated[str, FieldMetadata(alias="postalCode")]
     country: str
-    default_source: typing.Optional[bool] = pydantic.Field(alias="defaultSource", default=None)
-    default_destination: typing.Optional[bool] = pydantic.Field(alias="defaultDestination", default=None)
-    external_accounting_system_id: typing.Optional[str] = pydantic.Field(
-        alias="externalAccountingSystemId", default=None
-    )
+    default_source: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="defaultSource")] = None
+    default_destination: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="defaultDestination")
+    ] = None
+    external_accounting_system_id: typing_extensions.Annotated[
+        typing.Optional[str], FieldMetadata(alias="externalAccountingSystemId")
+    ] = None
     frozen: typing.Optional[bool] = None
     metadata: typing.Optional[typing.Dict[str, str]] = None
 
@@ -143,17 +153,21 @@ class PaymentMethodRequest_Custom(UniversalBaseModel):
     """
 
     type: typing.Literal["custom"] = "custom"
-    foreign_id: typing.Optional[str] = pydantic.Field(alias="foreignId", default=None)
-    account_name: typing.Optional[str] = pydantic.Field(alias="accountName", default=None)
-    account_number: typing.Optional[str] = pydantic.Field(alias="accountNumber", default=None)
-    available_balance: typing.Optional[float] = pydantic.Field(alias="availableBalance", default=None)
-    schema_id: CustomPaymentMethodSchemaId = pydantic.Field(alias="schemaId")
-    data: typing.Dict[str, str]
-    default_source: typing.Optional[bool] = pydantic.Field(alias="defaultSource", default=None)
-    default_destination: typing.Optional[bool] = pydantic.Field(alias="defaultDestination", default=None)
-    external_accounting_system_id: typing.Optional[str] = pydantic.Field(
-        alias="externalAccountingSystemId", default=None
+    foreign_id: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="foreignId")] = None
+    account_name: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="accountName")] = None
+    account_number: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="accountNumber")] = None
+    available_balance: typing_extensions.Annotated[typing.Optional[float], FieldMetadata(alias="availableBalance")] = (
+        None
     )
+    schema_id: typing_extensions.Annotated[CustomPaymentMethodSchemaId, FieldMetadata(alias="schemaId")]
+    data: typing.Dict[str, str]
+    default_source: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="defaultSource")] = None
+    default_destination: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="defaultDestination")
+    ] = None
+    external_accounting_system_id: typing_extensions.Annotated[
+        typing.Optional[str], FieldMetadata(alias="externalAccountingSystemId")
+    ] = None
     frozen: typing.Optional[bool] = None
     metadata: typing.Optional[typing.Dict[str, str]] = None
 
@@ -181,11 +195,13 @@ class PaymentMethodRequest_OffPlatform(UniversalBaseModel):
     """
 
     type: typing.Literal["offPlatform"] = "offPlatform"
-    default_source: typing.Optional[bool] = pydantic.Field(alias="defaultSource", default=None)
-    default_destination: typing.Optional[bool] = pydantic.Field(alias="defaultDestination", default=None)
-    external_accounting_system_id: typing.Optional[str] = pydantic.Field(
-        alias="externalAccountingSystemId", default=None
-    )
+    default_source: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="defaultSource")] = None
+    default_destination: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="defaultDestination")
+    ] = None
+    external_accounting_system_id: typing_extensions.Annotated[
+        typing.Optional[str], FieldMetadata(alias="externalAccountingSystemId")
+    ] = None
     frozen: typing.Optional[bool] = None
     metadata: typing.Optional[typing.Dict[str, str]] = None
 
@@ -213,12 +229,14 @@ class PaymentMethodRequest_Utility(UniversalBaseModel):
     """
 
     type: typing.Literal["utility"] = "utility"
-    utility_id: str = pydantic.Field(alias="utilityId")
-    default_source: typing.Optional[bool] = pydantic.Field(alias="defaultSource", default=None)
-    default_destination: typing.Optional[bool] = pydantic.Field(alias="defaultDestination", default=None)
-    external_accounting_system_id: typing.Optional[str] = pydantic.Field(
-        alias="externalAccountingSystemId", default=None
-    )
+    utility_id: typing_extensions.Annotated[str, FieldMetadata(alias="utilityId")]
+    default_source: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="defaultSource")] = None
+    default_destination: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="defaultDestination")
+    ] = None
+    external_accounting_system_id: typing_extensions.Annotated[
+        typing.Optional[str], FieldMetadata(alias="externalAccountingSystemId")
+    ] = None
     frozen: typing.Optional[bool] = None
     metadata: typing.Optional[typing.Dict[str, str]] = None
 

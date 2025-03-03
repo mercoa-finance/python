@@ -3,7 +3,9 @@
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
 import pydantic
+import typing_extensions
 import datetime as dt
+from ...core.serialization import FieldMetadata
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -36,10 +38,16 @@ class InvoiceLineItemIndividualUpdateRequest(UniversalBaseModel):
     Category of the line item.
     """
 
-    service_start_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceStartDate", default=None)
-    service_end_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceEndDate", default=None)
+    service_start_date: typing_extensions.Annotated[
+        typing.Optional[dt.datetime], FieldMetadata(alias="serviceStartDate")
+    ] = None
+    service_end_date: typing_extensions.Annotated[
+        typing.Optional[dt.datetime], FieldMetadata(alias="serviceEndDate")
+    ] = None
     metadata: typing.Optional[typing.Dict[str, str]] = None
-    gl_account_id: typing.Optional[str] = pydantic.Field(alias="glAccountId", default=None)
+    gl_account_id: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="glAccountId")] = (
+        pydantic.Field(default=None)
+    )
     """
     ID of general ledger account associated with this line item.
     """

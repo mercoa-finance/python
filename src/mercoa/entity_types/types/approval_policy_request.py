@@ -5,7 +5,9 @@ import typing
 from .trigger import Trigger
 import pydantic
 from .rule import Rule
+import typing_extensions
 from .approval_policy_id import ApprovalPolicyId
+from ...core.serialization import FieldMetadata
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -41,7 +43,9 @@ class ApprovalPolicyRequest(UniversalBaseModel):
     """
 
     rule: Rule
-    upstream_policy_id: ApprovalPolicyId = pydantic.Field(alias="upstreamPolicyId")
+    upstream_policy_id: typing_extensions.Annotated[ApprovalPolicyId, FieldMetadata(alias="upstreamPolicyId")] = (
+        pydantic.Field()
+    )
     """
     The policy ID of the previous approval policy in the chain of policies. Use 'root' if no upstreamPolicyId is intended to be set.
     """

@@ -2,7 +2,9 @@
 
 from ...core.pydantic_utilities import UniversalBaseModel
 from .entity_id import EntityId
+import typing_extensions
 import typing
+from ...core.serialization import FieldMetadata
 import pydantic
 from .account_type import AccountType
 from .profile_response import ProfileResponse
@@ -77,27 +79,33 @@ class EntityResponse(UniversalBaseModel):
     id: EntityId
     name: str
     email: str
-    foreign_id: typing.Optional[str] = pydantic.Field(alias="foreignId", default=None)
+    foreign_id: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="foreignId")] = pydantic.Field(
+        default=None
+    )
     """
     The ID used to identify this entity in your system
     """
 
-    email_to: typing.Optional[str] = pydantic.Field(alias="emailTo", default=None)
+    email_to: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="emailTo")] = pydantic.Field(
+        default=None
+    )
     """
     Local-part/username of the email address to which to send invoices to be added to the Invoice Inbox.
     """
 
-    email_to_alias: typing.Optional[typing.List[str]] = pydantic.Field(alias="emailToAlias", default=None)
+    email_to_alias: typing_extensions.Annotated[
+        typing.Optional[typing.List[str]], FieldMetadata(alias="emailToAlias")
+    ] = pydantic.Field(default=None)
     """
     Email inbox alias addresses. Used when forwarding emails to the emailTo address from an alias.
     """
 
-    is_customer: bool = pydantic.Field(alias="isCustomer")
+    is_customer: typing_extensions.Annotated[bool, FieldMetadata(alias="isCustomer")] = pydantic.Field()
     """
     True if this entity has a direct relationship with your organization.
     """
 
-    account_type: AccountType = pydantic.Field(alias="accountType")
+    account_type: typing_extensions.Annotated[AccountType, FieldMetadata(alias="accountType")]
     profile: ProfileResponse
     logo: typing.Optional[str] = pydantic.Field(default=None)
     """
@@ -105,27 +113,27 @@ class EntityResponse(UniversalBaseModel):
     """
 
     status: EntityStatus
-    accepted_tos: bool = pydantic.Field(alias="acceptedTos")
+    accepted_tos: typing_extensions.Annotated[bool, FieldMetadata(alias="acceptedTos")] = pydantic.Field()
     """
     True if this entity has accepted the terms of service.
     """
 
-    is_payor: bool = pydantic.Field(alias="isPayor")
+    is_payor: typing_extensions.Annotated[bool, FieldMetadata(alias="isPayor")] = pydantic.Field()
     """
     True if this entity can pay invoices.
     """
 
-    is_payee: bool = pydantic.Field(alias="isPayee")
+    is_payee: typing_extensions.Annotated[bool, FieldMetadata(alias="isPayee")] = pydantic.Field()
     """
     True if this entity can receive payments.
     """
 
-    is_network_payor: bool = pydantic.Field(alias="isNetworkPayor")
+    is_network_payor: typing_extensions.Annotated[bool, FieldMetadata(alias="isNetworkPayor")] = pydantic.Field()
     """
     True if this entity is available as a payor to any entity on your platform. Otherwise this entity will only be available as a payor to entities that have a direct relationship with this entity.
     """
 
-    is_network_payee: bool = pydantic.Field(alias="isNetworkPayee")
+    is_network_payee: typing_extensions.Annotated[bool, FieldMetadata(alias="isNetworkPayee")] = pydantic.Field()
     """
     True if this entity is available as a payee to any entity on your platform. Otherwise this entity will only be available as a payee to entities that have a direct relationship with this entity.
     """
@@ -135,8 +143,8 @@ class EntityResponse(UniversalBaseModel):
     Simple key/value metadata associated with this entity. For more complex metadata, use the Metadata API.
     """
 
-    created_at: dt.datetime = pydantic.Field(alias="createdAt")
-    updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
+    created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
+    updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

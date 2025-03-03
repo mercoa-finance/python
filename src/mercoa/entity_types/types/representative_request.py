@@ -6,7 +6,9 @@ import typing
 from ...commons.types.phone_number import PhoneNumber
 import pydantic
 from ...commons.types.address import Address
+import typing_extensions
 from ...commons.types.birth_date import BirthDate
+from ...core.serialization import FieldMetadata
 from ...commons.types.individual_government_id import IndividualGovernmentId
 from .responsibilities import Responsibilities
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
@@ -73,8 +75,8 @@ class RepresentativeRequest(UniversalBaseModel):
     """
 
     address: Address
-    birth_date: BirthDate = pydantic.Field(alias="birthDate")
-    government_id: IndividualGovernmentId = pydantic.Field(alias="governmentID")
+    birth_date: typing_extensions.Annotated[BirthDate, FieldMetadata(alias="birthDate")]
+    government_id: typing_extensions.Annotated[IndividualGovernmentId, FieldMetadata(alias="governmentID")]
     responsibilities: Responsibilities
 
     if IS_PYDANTIC_V2:

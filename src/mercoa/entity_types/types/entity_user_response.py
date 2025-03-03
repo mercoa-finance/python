@@ -2,7 +2,9 @@
 
 from ...core.pydantic_utilities import UniversalBaseModel
 from .entity_user_id import EntityUserId
+import typing_extensions
 import typing
+from ...core.serialization import FieldMetadata
 import pydantic
 import datetime as dt
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
@@ -32,7 +34,9 @@ class EntityUserResponse(UniversalBaseModel):
     """
 
     id: EntityUserId
-    foreign_id: typing.Optional[str] = pydantic.Field(alias="foreignId", default=None)
+    foreign_id: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="foreignId")] = pydantic.Field(
+        default=None
+    )
     """
     The ID used to identify this user in your system.
     """
@@ -40,8 +44,8 @@ class EntityUserResponse(UniversalBaseModel):
     email: typing.Optional[str] = None
     name: typing.Optional[str] = None
     roles: typing.List[str]
-    created_at: dt.datetime = pydantic.Field(alias="createdAt")
-    updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
+    created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
+    updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

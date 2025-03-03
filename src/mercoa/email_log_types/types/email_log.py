@@ -2,11 +2,13 @@
 
 from ...core.pydantic_utilities import UniversalBaseModel
 from .email_log_id import EmailLogId
-import pydantic
+import typing_extensions
+from ...core.serialization import FieldMetadata
 import datetime as dt
 import typing
 from ...invoice_types.types.invoice_id import InvoiceId
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
+import pydantic
 
 
 class EmailLog(UniversalBaseModel):
@@ -32,12 +34,12 @@ class EmailLog(UniversalBaseModel):
 
     id: EmailLogId
     subject: str
-    from_: str = pydantic.Field(alias="from")
+    from_: typing_extensions.Annotated[str, FieldMetadata(alias="from")]
     to: str
-    html_body: str = pydantic.Field(alias="htmlBody")
-    text_body: str = pydantic.Field(alias="textBody")
-    created_at: dt.datetime = pydantic.Field(alias="createdAt")
-    invoice_id: typing.Optional[InvoiceId] = pydantic.Field(alias="invoiceId", default=None)
+    html_body: typing_extensions.Annotated[str, FieldMetadata(alias="htmlBody")]
+    text_body: typing_extensions.Annotated[str, FieldMetadata(alias="textBody")]
+    created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
+    invoice_id: typing_extensions.Annotated[typing.Optional[InvoiceId], FieldMetadata(alias="invoiceId")] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

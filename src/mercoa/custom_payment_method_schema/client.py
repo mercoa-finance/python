@@ -15,6 +15,7 @@ from ..commons.errors.conflict import Conflict
 from ..commons.errors.internal_server_error import InternalServerError
 from ..commons.errors.unimplemented import Unimplemented
 from ..payment_method_types.types.custom_payment_method_schema_request import CustomPaymentMethodSchemaRequest
+from ..core.serialization import convert_and_respect_annotation_metadata
 from ..payment_method_types.types.custom_payment_method_schema_id import CustomPaymentMethodSchemaId
 from ..core.jsonable_encoder import jsonable_encoder
 from ..core.client_wrapper import AsyncClientWrapper
@@ -211,7 +212,9 @@ class CustomPaymentMethodSchemaClient:
         _response = self._client_wrapper.httpx_client.request(
             "paymentMethod/schema",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=CustomPaymentMethodSchemaRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -377,7 +380,9 @@ class CustomPaymentMethodSchemaClient:
         _response = self._client_wrapper.httpx_client.request(
             f"paymentMethod/schema/{jsonable_encoder(schema_id)}",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=CustomPaymentMethodSchemaRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -901,7 +906,9 @@ class AsyncCustomPaymentMethodSchemaClient:
         _response = await self._client_wrapper.httpx_client.request(
             "paymentMethod/schema",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=CustomPaymentMethodSchemaRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -1075,7 +1082,9 @@ class AsyncCustomPaymentMethodSchemaClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"paymentMethod/schema/{jsonable_encoder(schema_id)}",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=CustomPaymentMethodSchemaRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )

@@ -5,6 +5,7 @@ from ..core.client_wrapper import SyncClientWrapper
 from .types.ocr_request import OcrRequest
 from ..core.request_options import RequestOptions
 from .types.ocr_response import OcrResponse
+from ..core.serialization import convert_and_respect_annotation_metadata
 from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
 from ..core.pydantic_utilities import parse_obj_as
@@ -63,7 +64,7 @@ class OcrClient:
         _response = self._client_wrapper.httpx_client.request(
             "ocr",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(object_=request, annotation=OcrRequest, direction="write"),
             request_options=request_options,
             omit=OMIT,
         )
@@ -189,7 +190,7 @@ class OcrClient:
         _response = self._client_wrapper.httpx_client.request(
             "ocr-async",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(object_=request, annotation=OcrRequest, direction="write"),
             request_options=request_options,
             omit=OMIT,
         )
@@ -442,7 +443,7 @@ class AsyncOcrClient:
         _response = await self._client_wrapper.httpx_client.request(
             "ocr",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(object_=request, annotation=OcrRequest, direction="write"),
             request_options=request_options,
             omit=OMIT,
         )
@@ -576,7 +577,7 @@ class AsyncOcrClient:
         _response = await self._client_wrapper.httpx_client.request(
             "ocr-async",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(object_=request, annotation=OcrRequest, direction="write"),
             request_options=request_options,
             omit=OMIT,
         )

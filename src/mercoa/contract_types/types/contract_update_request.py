@@ -4,7 +4,9 @@ from ...core.pydantic_utilities import UniversalBaseModel
 import typing
 import pydantic
 from .contract_recurrence_create_request import ContractRecurrenceCreateRequest
+import typing_extensions
 from ...entity_types.types.entity_id import EntityId
+from ...core.serialization import FieldMetadata
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -51,17 +53,23 @@ class ContractUpdateRequest(UniversalBaseModel):
     Recurrences defining the contract's fee schedule. Please note that setting this will overwrite all existing recurrences.
     """
 
-    creator_entity_id: typing.Optional[EntityId] = pydantic.Field(alias="creatorEntityId", default=None)
+    creator_entity_id: typing_extensions.Annotated[
+        typing.Optional[EntityId], FieldMetadata(alias="creatorEntityId")
+    ] = pydantic.Field(default=None)
     """
     ID of the entity that created the contract
     """
 
-    payer_id: typing.Optional[EntityId] = pydantic.Field(alias="payerId", default=None)
+    payer_id: typing_extensions.Annotated[typing.Optional[EntityId], FieldMetadata(alias="payerId")] = pydantic.Field(
+        default=None
+    )
     """
     ID of the payer entity for this contract
     """
 
-    vendor_id: typing.Optional[EntityId] = pydantic.Field(alias="vendorId", default=None)
+    vendor_id: typing_extensions.Annotated[typing.Optional[EntityId], FieldMetadata(alias="vendorId")] = pydantic.Field(
+        default=None
+    )
     """
     ID of the vendor entity for this contract
     """

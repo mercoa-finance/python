@@ -2,7 +2,9 @@
 
 from ...core.pydantic_utilities import UniversalBaseModel
 from .vendor_credit_id import VendorCreditId
+import typing_extensions
 import typing
+from ...core.serialization import FieldMetadata
 import pydantic
 from ...payment_method_types.types.currency_code import CurrencyCode
 from ...entity_types.types.entity_id import EntityId
@@ -39,12 +41,16 @@ class VendorCreditResponse(UniversalBaseModel):
     """
 
     id: VendorCreditId
-    total_amount: typing.Optional[float] = pydantic.Field(alias="totalAmount", default=None)
+    total_amount: typing_extensions.Annotated[typing.Optional[float], FieldMetadata(alias="totalAmount")] = (
+        pydantic.Field(default=None)
+    )
     """
     Total issued amount of the vendor credit in major units
     """
 
-    remaining_amount: typing.Optional[float] = pydantic.Field(alias="remainingAmount", default=None)
+    remaining_amount: typing_extensions.Annotated[typing.Optional[float], FieldMetadata(alias="remainingAmount")] = (
+        pydantic.Field(default=None)
+    )
     """
     Remaining usable amount in the vendor credit in major units
     """
@@ -54,17 +60,19 @@ class VendorCreditResponse(UniversalBaseModel):
     Currency code for the amount. Defaults to USD.
     """
 
-    vendor_id: EntityId = pydantic.Field(alias="vendorId")
+    vendor_id: typing_extensions.Annotated[EntityId, FieldMetadata(alias="vendorId")] = pydantic.Field()
     """
     ID of the vendor the vendor credit may be used for
     """
 
-    payer_id: EntityId = pydantic.Field(alias="payerId")
+    payer_id: typing_extensions.Annotated[EntityId, FieldMetadata(alias="payerId")] = pydantic.Field()
     """
     ID of the payer who may use the vendor credit
     """
 
-    creator_entity_id: typing.Optional[EntityId] = pydantic.Field(alias="creatorEntityId", default=None)
+    creator_entity_id: typing_extensions.Annotated[
+        typing.Optional[EntityId], FieldMetadata(alias="creatorEntityId")
+    ] = pydantic.Field(default=None)
     """
     ID of the entity that created this vendor credit
     """
@@ -74,13 +82,15 @@ class VendorCreditResponse(UniversalBaseModel):
     An optional note to attach to the vendor credit
     """
 
-    invoice_ids: typing.Optional[typing.List[InvoiceId]] = pydantic.Field(alias="invoiceIds", default=None)
+    invoice_ids: typing_extensions.Annotated[
+        typing.Optional[typing.List[InvoiceId]], FieldMetadata(alias="invoiceIds")
+    ] = pydantic.Field(default=None)
     """
     The IDs of the invoices that this vendor credit has been applied to
     """
 
-    created_at: dt.datetime = pydantic.Field(alias="createdAt")
-    updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
+    created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
+    updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

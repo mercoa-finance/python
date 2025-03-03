@@ -3,13 +3,15 @@
 from __future__ import annotations
 from ....core.pydantic_utilities import UniversalBaseModel
 import typing
-import pydantic
+import typing_extensions
+from ....core.serialization import FieldMetadata
 from ....core.pydantic_utilities import IS_PYDANTIC_V2
+import pydantic
 
 
 class ExternalAccountingSystemCompanyResponse_Codat(UniversalBaseModel):
     type: typing.Literal["codat"] = "codat"
-    company_id: str = pydantic.Field(alias="companyId")
+    company_id: typing_extensions.Annotated[str, FieldMetadata(alias="companyId")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -23,7 +25,7 @@ class ExternalAccountingSystemCompanyResponse_Codat(UniversalBaseModel):
 
 class ExternalAccountingSystemCompanyResponse_Rutter(UniversalBaseModel):
     type: typing.Literal["rutter"] = "rutter"
-    access_token: str = pydantic.Field(alias="accessToken")
+    access_token: typing_extensions.Annotated[str, FieldMetadata(alias="accessToken")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -37,7 +39,7 @@ class ExternalAccountingSystemCompanyResponse_Rutter(UniversalBaseModel):
 
 class ExternalAccountingSystemCompanyResponse_None(UniversalBaseModel):
     type: typing.Literal["none"] = "none"
-    company_id: str = pydantic.Field(alias="companyId")
+    company_id: typing_extensions.Annotated[str, FieldMetadata(alias="companyId")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

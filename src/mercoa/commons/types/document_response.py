@@ -3,6 +3,8 @@
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
 import pydantic
+import typing_extensions
+from ...core.serialization import FieldMetadata
 from .document_type import DocumentType
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
@@ -26,7 +28,7 @@ class DocumentResponse(UniversalBaseModel):
     ID of the document. If not provided, this is a dynamic document that is generated on the fly.
     """
 
-    mime_type: str = pydantic.Field(alias="mimeType")
+    mime_type: typing_extensions.Annotated[str, FieldMetadata(alias="mimeType")]
     type: DocumentType
     uri: str
 

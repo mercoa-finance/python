@@ -3,6 +3,8 @@
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
 import pydantic
+import typing_extensions
+from ...core.serialization import FieldMetadata
 from ...payment_method_types.types.currency_code import CurrencyCode
 from .invoice_metrics_per_date_response import InvoiceMetricsPerDateResponse
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
@@ -61,9 +63,9 @@ class InvoiceMetricsResponse(UniversalBaseModel):
     If groupBy is provided, this will be the group by value.
     """
 
-    total_amount: float = pydantic.Field(alias="totalAmount")
-    total_count: int = pydantic.Field(alias="totalCount")
-    average_amount: float = pydantic.Field(alias="averageAmount")
+    total_amount: typing_extensions.Annotated[float, FieldMetadata(alias="totalAmount")]
+    total_count: typing_extensions.Annotated[int, FieldMetadata(alias="totalCount")]
+    average_amount: typing_extensions.Annotated[float, FieldMetadata(alias="averageAmount")]
     currency: CurrencyCode
     dates: typing.Optional[typing.Dict[str, InvoiceMetricsPerDateResponse]] = None
 

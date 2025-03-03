@@ -5,6 +5,7 @@ from ..core.client_wrapper import SyncClientWrapper
 from .types.calculate_fees_request import CalculateFeesRequest
 from ..core.request_options import RequestOptions
 from ..invoice_types.types.invoice_fees_response import InvoiceFeesResponse
+from ..core.serialization import convert_and_respect_annotation_metadata
 from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
 from ..core.pydantic_utilities import parse_obj_as
@@ -63,7 +64,9 @@ class CalculateClient:
         _response = self._client_wrapper.httpx_client.request(
             "fees",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=CalculateFeesRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -192,7 +195,9 @@ class CalculateClient:
         _response = self._client_wrapper.httpx_client.request(
             "paymentTiming",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=CalculatePaymentTimingRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -330,7 +335,9 @@ class AsyncCalculateClient:
         _response = await self._client_wrapper.httpx_client.request(
             "fees",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=CalculateFeesRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -466,7 +473,9 @@ class AsyncCalculateClient:
         _response = await self._client_wrapper.httpx_client.request(
             "paymentTiming",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=CalculatePaymentTimingRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )

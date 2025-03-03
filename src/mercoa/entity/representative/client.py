@@ -17,6 +17,7 @@ from ...commons.errors.conflict import Conflict
 from ...commons.errors.internal_server_error import InternalServerError
 from ...commons.errors.unimplemented import Unimplemented
 from ...entity_types.types.representative_request import RepresentativeRequest
+from ...core.serialization import convert_and_respect_annotation_metadata
 from ...entity_types.types.representative_id import RepresentativeId
 from ...entity_types.types.representative_update_request import RepresentativeUpdateRequest
 from ...core.client_wrapper import AsyncClientWrapper
@@ -226,7 +227,9 @@ class RepresentativeClient:
         _response = self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/representative",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=RepresentativeRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -521,7 +524,9 @@ class RepresentativeClient:
         _response = self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/representative/{jsonable_encoder(representative_id)}",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=RepresentativeUpdateRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -946,7 +951,9 @@ class AsyncRepresentativeClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/representative",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=RepresentativeRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -1257,7 +1264,9 @@ class AsyncRepresentativeClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/representative/{jsonable_encoder(representative_id)}",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=RepresentativeUpdateRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )

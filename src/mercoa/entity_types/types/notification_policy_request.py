@@ -3,6 +3,8 @@
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
 import pydantic
+import typing_extensions
+from ...core.serialization import FieldMetadata
 from .entity_user_id import EntityUserId
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
@@ -24,22 +26,30 @@ class NotificationPolicyRequest(UniversalBaseModel):
     Set to true if the selected notification type should be disabled for this entity
     """
 
-    additional_roles: typing.Optional[typing.List[str]] = pydantic.Field(alias="additionalRoles", default=None)
+    additional_roles: typing_extensions.Annotated[
+        typing.Optional[typing.List[str]], FieldMetadata(alias="additionalRoles")
+    ] = pydantic.Field(default=None)
     """
     List of user roles that should receive notifications in addition to the default users for this notification type
     """
 
-    additional_users: typing.Optional[typing.List[EntityUserId]] = pydantic.Field(alias="additionalUsers", default=None)
+    additional_users: typing_extensions.Annotated[
+        typing.Optional[typing.List[EntityUserId]], FieldMetadata(alias="additionalUsers")
+    ] = pydantic.Field(default=None)
     """
     List of user IDs that should receive notifications in addition to the default users for this notification type
     """
 
-    notify_payee_counterparty: typing.Optional[bool] = pydantic.Field(alias="notifyPayeeCounterparty", default=None)
+    notify_payee_counterparty: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="notifyPayeeCounterparty")
+    ] = pydantic.Field(default=None)
     """
     Set to true if the selected notification type should be sent to the counterparty if this is a payable invoice.
     """
 
-    notify_payor_counterparty: typing.Optional[bool] = pydantic.Field(alias="notifyPayorCounterparty", default=None)
+    notify_payor_counterparty: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="notifyPayorCounterparty")
+    ] = pydantic.Field(default=None)
     """
     Set to true if the selected notification type should be sent to the counterparty if this is a receivable invoice.
     """

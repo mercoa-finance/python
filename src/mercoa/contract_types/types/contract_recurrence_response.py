@@ -2,7 +2,9 @@
 
 from ...core.pydantic_utilities import UniversalBaseModel
 from .contract_recurrence_id import ContractRecurrenceId
+import typing_extensions
 from .contract_id import ContractId
+from ...core.serialization import FieldMetadata
 import pydantic
 from .contract_invoice_schema import ContractInvoiceSchema
 import typing
@@ -50,7 +52,7 @@ class ContractRecurrenceResponse(UniversalBaseModel):
     """
 
     id: ContractRecurrenceId
-    contract_id: ContractId = pydantic.Field(alias="contractId")
+    contract_id: typing_extensions.Annotated[ContractId, FieldMetadata(alias="contractId")]
     rrule: str = pydantic.Field()
     """
     RFC 5545 RRULE string
@@ -61,23 +63,29 @@ class ContractRecurrenceResponse(UniversalBaseModel):
     Natural language justification for the recurrence
     """
 
-    filtered_contract_summary: str = pydantic.Field(alias="filteredContractSummary")
+    filtered_contract_summary: typing_extensions.Annotated[str, FieldMetadata(alias="filteredContractSummary")] = (
+        pydantic.Field()
+    )
     """
     Natural language summary of the contract, filtered to only include information relevant to the recurrence
     """
 
-    invoice_schema: ContractInvoiceSchema = pydantic.Field(alias="invoiceSchema")
+    invoice_schema: typing_extensions.Annotated[ContractInvoiceSchema, FieldMetadata(alias="invoiceSchema")] = (
+        pydantic.Field()
+    )
     """
     Schema of the invoices to be created by this recurrence
     """
 
-    created_invoice_ids: typing.List[InvoiceId] = pydantic.Field(alias="createdInvoiceIds")
+    created_invoice_ids: typing_extensions.Annotated[
+        typing.List[InvoiceId], FieldMetadata(alias="createdInvoiceIds")
+    ] = pydantic.Field()
     """
     IDs of invoices created by the recurrence
     """
 
-    created_at: dt.datetime = pydantic.Field(alias="createdAt")
-    updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
+    created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
+    updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

@@ -3,9 +3,11 @@
 from __future__ import annotations
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
-import pydantic
+import typing_extensions
+from ...core.serialization import FieldMetadata
 from .payment_schedule_end_condition import PaymentScheduleEndCondition
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
+import pydantic
 from .day_of_week import DayOfWeek
 
 
@@ -19,7 +21,7 @@ class PaymentSchedule_OneTime(UniversalBaseModel):
     """
 
     type: typing.Literal["oneTime"] = "oneTime"
-    repeat_every: typing.Optional[int] = pydantic.Field(alias="repeatEvery", default=None)
+    repeat_every: typing_extensions.Annotated[typing.Optional[int], FieldMetadata(alias="repeatEvery")] = None
     ends: typing.Optional[PaymentScheduleEndCondition] = None
 
     if IS_PYDANTIC_V2:
@@ -42,7 +44,7 @@ class PaymentSchedule_Daily(UniversalBaseModel):
     """
 
     type: typing.Literal["daily"] = "daily"
-    repeat_every: typing.Optional[int] = pydantic.Field(alias="repeatEvery", default=None)
+    repeat_every: typing_extensions.Annotated[typing.Optional[int], FieldMetadata(alias="repeatEvery")] = None
     ends: typing.Optional[PaymentScheduleEndCondition] = None
 
     if IS_PYDANTIC_V2:
@@ -65,8 +67,8 @@ class PaymentSchedule_Weekly(UniversalBaseModel):
     """
 
     type: typing.Literal["weekly"] = "weekly"
-    repeat_on: typing.List[DayOfWeek] = pydantic.Field(alias="repeatOn")
-    repeat_every: typing.Optional[int] = pydantic.Field(alias="repeatEvery", default=None)
+    repeat_on: typing_extensions.Annotated[typing.List[DayOfWeek], FieldMetadata(alias="repeatOn")]
+    repeat_every: typing_extensions.Annotated[typing.Optional[int], FieldMetadata(alias="repeatEvery")] = None
     ends: typing.Optional[PaymentScheduleEndCondition] = None
 
     if IS_PYDANTIC_V2:
@@ -89,9 +91,9 @@ class PaymentSchedule_Monthly(UniversalBaseModel):
     """
 
     type: typing.Literal["monthly"] = "monthly"
-    day_offset: typing.Optional[int] = pydantic.Field(alias="dayOffset", default=None)
-    repeat_on_day: int = pydantic.Field(alias="repeatOnDay")
-    repeat_every: typing.Optional[int] = pydantic.Field(alias="repeatEvery", default=None)
+    day_offset: typing_extensions.Annotated[typing.Optional[int], FieldMetadata(alias="dayOffset")] = None
+    repeat_on_day: typing_extensions.Annotated[int, FieldMetadata(alias="repeatOnDay")]
+    repeat_every: typing_extensions.Annotated[typing.Optional[int], FieldMetadata(alias="repeatEvery")] = None
     ends: typing.Optional[PaymentScheduleEndCondition] = None
 
     if IS_PYDANTIC_V2:
@@ -114,9 +116,9 @@ class PaymentSchedule_Yearly(UniversalBaseModel):
     """
 
     type: typing.Literal["yearly"] = "yearly"
-    repeat_on_day: int = pydantic.Field(alias="repeatOnDay")
-    repeat_on_month: int = pydantic.Field(alias="repeatOnMonth")
-    repeat_every: typing.Optional[int] = pydantic.Field(alias="repeatEvery", default=None)
+    repeat_on_day: typing_extensions.Annotated[int, FieldMetadata(alias="repeatOnDay")]
+    repeat_on_month: typing_extensions.Annotated[int, FieldMetadata(alias="repeatOnMonth")]
+    repeat_every: typing_extensions.Annotated[typing.Optional[int], FieldMetadata(alias="repeatEvery")] = None
     ends: typing.Optional[PaymentScheduleEndCondition] = None
 
     if IS_PYDANTIC_V2:

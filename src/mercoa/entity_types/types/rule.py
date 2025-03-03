@@ -3,9 +3,11 @@
 from __future__ import annotations
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
-import pydantic
+import typing_extensions
+from ...core.serialization import FieldMetadata
 from .identifier_list import IdentifierList
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
+import pydantic
 
 
 class Rule_Approver(UniversalBaseModel):
@@ -21,9 +23,9 @@ class Rule_Approver(UniversalBaseModel):
     """
 
     type: typing.Literal["approver"] = "approver"
-    num_approvers: int = pydantic.Field(alias="numApprovers")
-    identifier_list: IdentifierList = pydantic.Field(alias="identifierList")
-    auto_assign: typing.Optional[bool] = pydantic.Field(alias="autoAssign", default=None)
+    num_approvers: typing_extensions.Annotated[int, FieldMetadata(alias="numApprovers")]
+    identifier_list: typing_extensions.Annotated[IdentifierList, FieldMetadata(alias="identifierList")]
+    auto_assign: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="autoAssign")] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

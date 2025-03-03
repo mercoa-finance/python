@@ -17,6 +17,7 @@ from ...core.request_options import RequestOptions
 from ...invoice_types.types.find_invoice_response import FindInvoiceResponse
 from ...core.jsonable_encoder import jsonable_encoder
 from ...core.datetime_utils import serialize_datetime
+from ...core.serialization import convert_and_respect_annotation_metadata
 from json.decoder import JSONDecodeError
 from ...core.api_error import ApiError
 from ...core.pydantic_utilities import parse_obj_as
@@ -180,8 +181,12 @@ class InvoiceClient:
                 "orderDirection": order_direction,
                 "limit": limit,
                 "startingAfter": starting_after,
-                "metadata": jsonable_encoder(metadata),
-                "lineItemMetadata": jsonable_encoder(line_item_metadata),
+                "metadata": convert_and_respect_annotation_metadata(
+                    object_=metadata, annotation=MetadataFilter, direction="write"
+                ),
+                "lineItemMetadata": convert_and_respect_annotation_metadata(
+                    object_=line_item_metadata, annotation=MetadataFilter, direction="write"
+                ),
                 "lineItemGlAccountId": line_item_gl_account_id,
                 "search": search,
                 "payerId": payer_id,
@@ -191,7 +196,7 @@ class InvoiceClient:
                 "approverAction": approver_action,
                 "invoiceId": invoice_id,
                 "status": status,
-                "paymentType": jsonable_encoder(payment_type),
+                "paymentType": payment_type,
                 "returnPayerMetadata": return_payer_metadata,
                 "returnVendorMetadata": return_vendor_metadata,
             },
@@ -647,8 +652,12 @@ class AsyncInvoiceClient:
                 "orderDirection": order_direction,
                 "limit": limit,
                 "startingAfter": starting_after,
-                "metadata": jsonable_encoder(metadata),
-                "lineItemMetadata": jsonable_encoder(line_item_metadata),
+                "metadata": convert_and_respect_annotation_metadata(
+                    object_=metadata, annotation=MetadataFilter, direction="write"
+                ),
+                "lineItemMetadata": convert_and_respect_annotation_metadata(
+                    object_=line_item_metadata, annotation=MetadataFilter, direction="write"
+                ),
                 "lineItemGlAccountId": line_item_gl_account_id,
                 "search": search,
                 "payerId": payer_id,
@@ -658,7 +667,7 @@ class AsyncInvoiceClient:
                 "approverAction": approver_action,
                 "invoiceId": invoice_id,
                 "status": status,
-                "paymentType": jsonable_encoder(payment_type),
+                "paymentType": payment_type,
                 "returnPayerMetadata": return_payer_metadata,
                 "returnVendorMetadata": return_vendor_metadata,
             },

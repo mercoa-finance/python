@@ -2,9 +2,11 @@
 
 from ...core.pydantic_utilities import UniversalBaseModel
 from ...invoice_types.types.invoice_status import InvoiceStatus
-import pydantic
+import typing_extensions
+from ...core.serialization import FieldMetadata
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 import typing
+import pydantic
 
 
 class CounterpartyInvoiceMetricsStatusResponse(UniversalBaseModel):
@@ -21,8 +23,8 @@ class CounterpartyInvoiceMetricsStatusResponse(UniversalBaseModel):
     """
 
     status: InvoiceStatus
-    total_count: int = pydantic.Field(alias="totalCount")
-    total_amount: float = pydantic.Field(alias="totalAmount")
+    total_count: typing_extensions.Annotated[int, FieldMetadata(alias="totalCount")]
+    total_amount: typing_extensions.Annotated[float, FieldMetadata(alias="totalAmount")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

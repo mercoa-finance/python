@@ -2,7 +2,9 @@
 
 from ...core.pydantic_utilities import UniversalBaseModel
 from .email_template_id import EmailTemplateId
+import typing_extensions
 from .entity_id import EntityId
+from ...core.serialization import FieldMetadata
 import pydantic
 from .email_template_type import EmailTemplateType
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
@@ -27,12 +29,12 @@ class EmailTemplateResponse(UniversalBaseModel):
     """
 
     id: EmailTemplateId
-    entity_id: EntityId = pydantic.Field(alias="entityId")
+    entity_id: typing_extensions.Annotated[EntityId, FieldMetadata(alias="entityId")] = pydantic.Field()
     """
     The ID of the entity that this email template is associated with.
     """
 
-    template_type: EmailTemplateType = pydantic.Field(alias="templateType")
+    template_type: typing_extensions.Annotated[EmailTemplateType, FieldMetadata(alias="templateType")]
     name: str = pydantic.Field()
     """
     The name of the email template.
@@ -48,7 +50,7 @@ class EmailTemplateResponse(UniversalBaseModel):
     The HTML content of the email template.
     """
 
-    is_default: bool = pydantic.Field(alias="isDefault")
+    is_default: typing_extensions.Annotated[bool, FieldMetadata(alias="isDefault")] = pydantic.Field()
     """
     True if this email template is the default template for new invoices.
     """

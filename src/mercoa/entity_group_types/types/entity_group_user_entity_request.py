@@ -3,7 +3,9 @@
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
 import pydantic
+import typing_extensions
 from ...entity_types.types.entity_id import EntityId
+from ...core.serialization import FieldMetadata
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -24,7 +26,7 @@ class EntityGroupUserEntityRequest(UniversalBaseModel):
     List of roles. A role can be any string. For example: "payer", "approver", "viewer"
     """
 
-    entity_id: EntityId = pydantic.Field(alias="entityId")
+    entity_id: typing_extensions.Annotated[EntityId, FieldMetadata(alias="entityId")] = pydantic.Field()
     """
     The IDs of the entities that these roles applies to.
     """

@@ -3,13 +3,15 @@
 from __future__ import annotations
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
-import pydantic
+import typing_extensions
+from ...core.serialization import FieldMetadata
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
+import pydantic
 
 
 class ExternalAccountingSystemProviderRequest_None(UniversalBaseModel):
     type: typing.Literal["none"] = "none"
-    api_key: str = pydantic.Field(alias="apiKey")
+    api_key: typing_extensions.Annotated[str, FieldMetadata(alias="apiKey")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -23,7 +25,7 @@ class ExternalAccountingSystemProviderRequest_None(UniversalBaseModel):
 
 class ExternalAccountingSystemProviderRequest_Codat(UniversalBaseModel):
     type: typing.Literal["codat"] = "codat"
-    api_key: str = pydantic.Field(alias="apiKey")
+    api_key: typing_extensions.Annotated[str, FieldMetadata(alias="apiKey")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -37,8 +39,8 @@ class ExternalAccountingSystemProviderRequest_Codat(UniversalBaseModel):
 
 class ExternalAccountingSystemProviderRequest_Rutter(UniversalBaseModel):
     type: typing.Literal["rutter"] = "rutter"
-    client_id: str = pydantic.Field(alias="clientId")
-    client_secret: str = pydantic.Field(alias="clientSecret")
+    client_id: typing_extensions.Annotated[str, FieldMetadata(alias="clientId")]
+    client_secret: typing_extensions.Annotated[str, FieldMetadata(alias="clientSecret")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

@@ -3,7 +3,9 @@
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
 from ...entity_types.types.entity_user_response import EntityUserResponse
+import typing_extensions
 from .associated_approval_action import AssociatedApprovalAction
+from ...core.serialization import FieldMetadata
 import pydantic
 import datetime as dt
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
@@ -46,15 +48,15 @@ class CommentResponse(UniversalBaseModel):
     id: str
     text: str
     user: typing.Optional[EntityUserResponse] = None
-    associated_approval_action: typing.Optional[AssociatedApprovalAction] = pydantic.Field(
-        alias="associatedApprovalAction", default=None
-    )
+    associated_approval_action: typing_extensions.Annotated[
+        typing.Optional[AssociatedApprovalAction], FieldMetadata(alias="associatedApprovalAction")
+    ] = pydantic.Field(default=None)
     """
     If an approval action has triggered the generation of this comment, returns the associated approval action and actor
     """
 
-    created_at: dt.datetime = pydantic.Field(alias="createdAt")
-    updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
+    created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
+    updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

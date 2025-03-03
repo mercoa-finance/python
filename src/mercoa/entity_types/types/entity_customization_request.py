@@ -3,14 +3,16 @@
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
 from ...customization_types.types.metadata_customization_request import MetadataCustomizationRequest
+import typing_extensions
 from ...customization_types.types.payment_method_customization_request import PaymentMethodCustomizationRequest
-import pydantic
+from ...core.serialization import FieldMetadata
 from ...customization_types.types.ocr_customization_request import OcrCustomizationRequest
 from ...customization_types.types.notification_customization_request import NotificationCustomizationRequest
 from ...customization_types.types.workflow_customization_request import WorkflowCustomizationRequest
 from ...customization_types.types.fee_customization_request import FeeCustomizationRequest
 from ...organization_types.types.role_permission_request import RolePermissionRequest
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
+import pydantic
 
 
 class EntityCustomizationRequest(UniversalBaseModel):
@@ -154,20 +156,22 @@ class EntityCustomizationRequest(UniversalBaseModel):
     """
 
     metadata: typing.Optional[typing.List[MetadataCustomizationRequest]] = None
-    payment_source: typing.Optional[typing.List[PaymentMethodCustomizationRequest]] = pydantic.Field(
-        alias="paymentSource", default=None
-    )
-    backup_disbursement: typing.Optional[typing.List[PaymentMethodCustomizationRequest]] = pydantic.Field(
-        alias="backupDisbursement", default=None
-    )
-    payment_destination: typing.Optional[typing.List[PaymentMethodCustomizationRequest]] = pydantic.Field(
-        alias="paymentDestination", default=None
-    )
+    payment_source: typing_extensions.Annotated[
+        typing.Optional[typing.List[PaymentMethodCustomizationRequest]], FieldMetadata(alias="paymentSource")
+    ] = None
+    backup_disbursement: typing_extensions.Annotated[
+        typing.Optional[typing.List[PaymentMethodCustomizationRequest]], FieldMetadata(alias="backupDisbursement")
+    ] = None
+    payment_destination: typing_extensions.Annotated[
+        typing.Optional[typing.List[PaymentMethodCustomizationRequest]], FieldMetadata(alias="paymentDestination")
+    ] = None
     ocr: typing.Optional[OcrCustomizationRequest] = None
     notifications: typing.Optional[NotificationCustomizationRequest] = None
     workflow: typing.Optional[WorkflowCustomizationRequest] = None
     fees: typing.Optional[FeeCustomizationRequest] = None
-    role_permissions: typing.Optional[RolePermissionRequest] = pydantic.Field(alias="rolePermissions", default=None)
+    role_permissions: typing_extensions.Annotated[
+        typing.Optional[RolePermissionRequest], FieldMetadata(alias="rolePermissions")
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

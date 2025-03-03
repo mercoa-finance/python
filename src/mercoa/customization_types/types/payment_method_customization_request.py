@@ -3,9 +3,11 @@
 from __future__ import annotations
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
+import typing_extensions
 from ...invoice_types.types.bank_delivery_method import BankDeliveryMethod
-import pydantic
+from ...core.serialization import FieldMetadata
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
+import pydantic
 from ...invoice_types.types.check_delivery_method import CheckDeliveryMethod
 
 
@@ -24,9 +26,9 @@ class PaymentMethodCustomizationRequest_BankAccount(UniversalBaseModel):
     """
 
     type: typing.Literal["bankAccount"] = "bankAccount"
-    default_delivery_method: typing.Optional[BankDeliveryMethod] = pydantic.Field(
-        alias="defaultDeliveryMethod", default=None
-    )
+    default_delivery_method: typing_extensions.Annotated[
+        typing.Optional[BankDeliveryMethod], FieldMetadata(alias="defaultDeliveryMethod")
+    ] = None
     disabled: bool
 
     if IS_PYDANTIC_V2:
@@ -108,10 +110,12 @@ class PaymentMethodCustomizationRequest_Check(UniversalBaseModel):
     """
 
     type: typing.Literal["check"] = "check"
-    default_delivery_method: typing.Optional[CheckDeliveryMethod] = pydantic.Field(
-        alias="defaultDeliveryMethod", default=None
+    default_delivery_method: typing_extensions.Annotated[
+        typing.Optional[CheckDeliveryMethod], FieldMetadata(alias="defaultDeliveryMethod")
+    ] = None
+    print_description: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="printDescription")] = (
+        None
     )
-    print_description: typing.Optional[bool] = pydantic.Field(alias="printDescription", default=None)
     disabled: bool
 
     if IS_PYDANTIC_V2:
@@ -139,7 +143,7 @@ class PaymentMethodCustomizationRequest_Custom(UniversalBaseModel):
     """
 
     type: typing.Literal["custom"] = "custom"
-    schema_id: str = pydantic.Field(alias="schemaId")
+    schema_id: typing_extensions.Annotated[str, FieldMetadata(alias="schemaId")]
     disabled: bool
 
     if IS_PYDANTIC_V2:

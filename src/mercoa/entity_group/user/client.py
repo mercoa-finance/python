@@ -19,6 +19,7 @@ from ...commons.errors.internal_server_error import InternalServerError
 from ...commons.errors.unimplemented import Unimplemented
 from ...entity_group_types.types.entity_group_user_request import EntityGroupUserRequest
 from ...entity_group_types.types.entity_group_user_response import EntityGroupUserResponse
+from ...core.serialization import convert_and_respect_annotation_metadata
 from ...entity_types.types.token_generation_options import TokenGenerationOptions
 from ...core.client_wrapper import AsyncClientWrapper
 
@@ -242,7 +243,9 @@ class UserClient:
         _response = self._client_wrapper.httpx_client.request(
             f"entityGroup/{jsonable_encoder(entity_group_id)}/user",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=EntityGroupUserRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -520,7 +523,9 @@ class UserClient:
         _response = self._client_wrapper.httpx_client.request(
             f"entityGroup/{jsonable_encoder(entity_group_id)}/user/{jsonable_encoder(foreign_id)}",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=EntityGroupUserRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -777,7 +782,9 @@ class UserClient:
         _response = self._client_wrapper.httpx_client.request(
             f"entityGroup/{jsonable_encoder(entity_group_id)}/user/{jsonable_encoder(foreign_id)}/token",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=TokenGenerationOptions, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -1099,7 +1106,9 @@ class AsyncUserClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"entityGroup/{jsonable_encoder(entity_group_id)}/user",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=EntityGroupUserRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -1393,7 +1402,9 @@ class AsyncUserClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"entityGroup/{jsonable_encoder(entity_group_id)}/user/{jsonable_encoder(foreign_id)}",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=EntityGroupUserRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -1666,7 +1677,9 @@ class AsyncUserClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"entityGroup/{jsonable_encoder(entity_group_id)}/user/{jsonable_encoder(foreign_id)}/token",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=TokenGenerationOptions, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )

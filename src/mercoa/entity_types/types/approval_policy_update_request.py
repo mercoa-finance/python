@@ -4,9 +4,11 @@ from ...core.pydantic_utilities import UniversalBaseModel
 import typing
 from .trigger import Trigger
 from .rule import Rule
+import typing_extensions
 from .approval_policy_id import ApprovalPolicyId
-import pydantic
+from ...core.serialization import FieldMetadata
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
+import pydantic
 
 
 class ApprovalPolicyUpdateRequest(UniversalBaseModel):
@@ -37,7 +39,9 @@ class ApprovalPolicyUpdateRequest(UniversalBaseModel):
 
     trigger: typing.Optional[typing.List[Trigger]] = None
     rule: typing.Optional[Rule] = None
-    upstream_policy_id: typing.Optional[ApprovalPolicyId] = pydantic.Field(alias="upstreamPolicyId", default=None)
+    upstream_policy_id: typing_extensions.Annotated[
+        typing.Optional[ApprovalPolicyId], FieldMetadata(alias="upstreamPolicyId")
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

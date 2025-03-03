@@ -2,10 +2,12 @@
 
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
-import pydantic
+import typing_extensions
+from ...core.serialization import FieldMetadata
 from .business_type import BusinessType
 from ...commons.types.phone_number import PhoneNumber
 from ...commons.types.address import Address
+import pydantic
 from .tax_id import TaxId
 import datetime as dt
 from .industry_codes import IndustryCodes
@@ -46,27 +48,39 @@ class BusinessProfileResponse(UniversalBaseModel):
     """
 
     email: typing.Optional[str] = None
-    legal_business_name: str = pydantic.Field(alias="legalBusinessName")
-    business_type: typing.Optional[BusinessType] = pydantic.Field(alias="businessType", default=None)
+    legal_business_name: typing_extensions.Annotated[str, FieldMetadata(alias="legalBusinessName")]
+    business_type: typing_extensions.Annotated[typing.Optional[BusinessType], FieldMetadata(alias="businessType")] = (
+        None
+    )
     phone: typing.Optional[PhoneNumber] = None
-    doing_business_as: typing.Optional[str] = pydantic.Field(alias="doingBusinessAs", default=None)
+    doing_business_as: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="doingBusinessAs")] = None
     website: typing.Optional[str] = None
     description: typing.Optional[str] = None
     address: typing.Optional[Address] = None
-    owners_provided: typing.Optional[bool] = pydantic.Field(alias="ownersProvided", default=None)
+    owners_provided: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="ownersProvided")] = (
+        pydantic.Field(default=None)
+    )
     """
     True if all representatives have been provided for this business.
     """
 
-    tax_id_provided: bool = pydantic.Field(alias="taxIDProvided")
-    tax_id: typing.Optional[TaxId] = pydantic.Field(alias="taxId", default=None)
-    formation_date: typing.Optional[dt.datetime] = pydantic.Field(alias="formationDate", default=None)
-    industry_codes: typing.Optional[IndustryCodes] = pydantic.Field(alias="industryCodes", default=None)
-    average_monthly_transaction_volume: typing.Optional[float] = pydantic.Field(
-        alias="averageMonthlyTransactionVolume", default=None
+    tax_id_provided: typing_extensions.Annotated[bool, FieldMetadata(alias="taxIDProvided")]
+    tax_id: typing_extensions.Annotated[typing.Optional[TaxId], FieldMetadata(alias="taxId")] = None
+    formation_date: typing_extensions.Annotated[typing.Optional[dt.datetime], FieldMetadata(alias="formationDate")] = (
+        None
     )
-    average_transaction_size: typing.Optional[float] = pydantic.Field(alias="averageTransactionSize", default=None)
-    max_transaction_size: typing.Optional[float] = pydantic.Field(alias="maxTransactionSize", default=None)
+    industry_codes: typing_extensions.Annotated[
+        typing.Optional[IndustryCodes], FieldMetadata(alias="industryCodes")
+    ] = None
+    average_monthly_transaction_volume: typing_extensions.Annotated[
+        typing.Optional[float], FieldMetadata(alias="averageMonthlyTransactionVolume")
+    ] = None
+    average_transaction_size: typing_extensions.Annotated[
+        typing.Optional[float], FieldMetadata(alias="averageTransactionSize")
+    ] = None
+    max_transaction_size: typing_extensions.Annotated[
+        typing.Optional[float], FieldMetadata(alias="maxTransactionSize")
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

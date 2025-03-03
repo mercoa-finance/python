@@ -5,9 +5,11 @@ from .approval_policy_id import ApprovalPolicyId
 import typing
 from .trigger import Trigger
 from .rule import Rule
-import pydantic
+import typing_extensions
+from ...core.serialization import FieldMetadata
 import datetime as dt
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
+import pydantic
 
 
 class ApprovalPolicyResponse(UniversalBaseModel):
@@ -48,9 +50,9 @@ class ApprovalPolicyResponse(UniversalBaseModel):
     id: ApprovalPolicyId
     trigger: typing.List[Trigger]
     rule: Rule
-    upstream_policy_id: ApprovalPolicyId = pydantic.Field(alias="upstreamPolicyId")
-    created_at: dt.datetime = pydantic.Field(alias="createdAt")
-    updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
+    upstream_policy_id: typing_extensions.Annotated[ApprovalPolicyId, FieldMetadata(alias="upstreamPolicyId")]
+    created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
+    updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

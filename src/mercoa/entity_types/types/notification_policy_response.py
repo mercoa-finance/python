@@ -2,7 +2,9 @@
 
 from ...core.pydantic_utilities import UniversalBaseModel
 import pydantic
+import typing_extensions
 import typing
+from ...core.serialization import FieldMetadata
 from .entity_user_id import EntityUserId
 from .notification_type import NotificationType
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
@@ -29,22 +31,30 @@ class NotificationPolicyResponse(UniversalBaseModel):
     True if the selected notification type is disabled for this entity
     """
 
-    additional_roles: typing.List[str] = pydantic.Field(alias="additionalRoles")
+    additional_roles: typing_extensions.Annotated[typing.List[str], FieldMetadata(alias="additionalRoles")] = (
+        pydantic.Field()
+    )
     """
     List of user roles that should receive notifications in addition to the default users for this notification type
     """
 
-    additional_users: typing.List[EntityUserId] = pydantic.Field(alias="additionalUsers")
+    additional_users: typing_extensions.Annotated[typing.List[EntityUserId], FieldMetadata(alias="additionalUsers")] = (
+        pydantic.Field()
+    )
     """
     List of user IDs that should receive notifications in addition to the default users for this notification type
     """
 
-    notify_payee_counterparty: bool = pydantic.Field(alias="notifyPayeeCounterparty")
+    notify_payee_counterparty: typing_extensions.Annotated[bool, FieldMetadata(alias="notifyPayeeCounterparty")] = (
+        pydantic.Field()
+    )
     """
     True if the selected notification type should be sent to the counterparty if this is a payable invoice.
     """
 
-    notify_payor_counterparty: bool = pydantic.Field(alias="notifyPayorCounterparty")
+    notify_payor_counterparty: typing_extensions.Annotated[bool, FieldMetadata(alias="notifyPayorCounterparty")] = (
+        pydantic.Field()
+    )
     """
     True if the selected notification type should be sent to the counterparty if this is a receivable invoice.
     """

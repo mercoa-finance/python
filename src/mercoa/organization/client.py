@@ -16,6 +16,7 @@ from ..commons.errors.conflict import Conflict
 from ..commons.errors.internal_server_error import InternalServerError
 from ..commons.errors.unimplemented import Unimplemented
 from ..organization_types.types.organization_request import OrganizationRequest
+from ..core.serialization import convert_and_respect_annotation_metadata
 import datetime as dt
 from ..email_log_types.types.email_log_response import EmailLogResponse
 from ..core.datetime_utils import serialize_datetime
@@ -231,7 +232,9 @@ class OrganizationClient:
         _response = self._client_wrapper.httpx_client.request(
             "organization",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=OrganizationRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -678,7 +681,9 @@ class AsyncOrganizationClient:
         _response = await self._client_wrapper.httpx_client.request(
             "organization",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=OrganizationRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )

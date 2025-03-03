@@ -3,6 +3,8 @@
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
 import pydantic
+import typing_extensions
+from ...core.serialization import FieldMetadata
 from .business_type import BusinessType
 from ...commons.types.phone_number import PhoneNumber
 from ...commons.types.address import Address
@@ -49,14 +51,16 @@ class BusinessProfileRequest(UniversalBaseModel):
     Email address for the business. Required for KYB.
     """
 
-    legal_business_name: str = pydantic.Field(alias="legalBusinessName")
-    business_type: typing.Optional[BusinessType] = pydantic.Field(alias="businessType", default=None)
+    legal_business_name: typing_extensions.Annotated[str, FieldMetadata(alias="legalBusinessName")]
+    business_type: typing_extensions.Annotated[typing.Optional[BusinessType], FieldMetadata(alias="businessType")] = (
+        None
+    )
     phone: typing.Optional[PhoneNumber] = pydantic.Field(default=None)
     """
     Phone number for the business. Required for KYB.
     """
 
-    doing_business_as: typing.Optional[str] = pydantic.Field(alias="doingBusinessAs", default=None)
+    doing_business_as: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="doingBusinessAs")] = None
     website: typing.Optional[str] = pydantic.Field(default=None)
     """
     Website URL for the business. Must be in the format http://www.example.com. Required for KYB if description is not provided.
@@ -72,34 +76,44 @@ class BusinessProfileRequest(UniversalBaseModel):
     Address for the business. Required for KYB.
     """
 
-    tax_id: typing.Optional[TaxId] = pydantic.Field(alias="taxId", default=None)
+    tax_id: typing_extensions.Annotated[typing.Optional[TaxId], FieldMetadata(alias="taxId")] = pydantic.Field(
+        default=None
+    )
     """
     Tax ID for the business. Currently only EIN is supported. Required for KYB.
     """
 
-    formation_date: typing.Optional[dt.datetime] = pydantic.Field(alias="formationDate", default=None)
+    formation_date: typing_extensions.Annotated[typing.Optional[dt.datetime], FieldMetadata(alias="formationDate")] = (
+        pydantic.Field(default=None)
+    )
     """
     Date of business formation
     """
 
-    industry_codes: typing.Optional[IndustryCodes] = pydantic.Field(alias="industryCodes", default=None)
+    industry_codes: typing_extensions.Annotated[
+        typing.Optional[IndustryCodes], FieldMetadata(alias="industryCodes")
+    ] = pydantic.Field(default=None)
     """
     Industry code for the business. Required to collect funds.
     """
 
-    average_monthly_transaction_volume: typing.Optional[float] = pydantic.Field(
-        alias="averageMonthlyTransactionVolume", default=None
-    )
+    average_monthly_transaction_volume: typing_extensions.Annotated[
+        typing.Optional[float], FieldMetadata(alias="averageMonthlyTransactionVolume")
+    ] = pydantic.Field(default=None)
     """
     Average monthly transaction volume for the business. Required to collect funds.
     """
 
-    average_transaction_size: typing.Optional[float] = pydantic.Field(alias="averageTransactionSize", default=None)
+    average_transaction_size: typing_extensions.Annotated[
+        typing.Optional[float], FieldMetadata(alias="averageTransactionSize")
+    ] = pydantic.Field(default=None)
     """
     Average transaction size for the business. Required to collect funds.
     """
 
-    max_transaction_size: typing.Optional[float] = pydantic.Field(alias="maxTransactionSize", default=None)
+    max_transaction_size: typing_extensions.Annotated[
+        typing.Optional[float], FieldMetadata(alias="maxTransactionSize")
+    ] = pydantic.Field(default=None)
     """
     Maximum transaction size for the business. Required to collect funds.
     """

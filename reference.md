@@ -306,7 +306,6 @@ client.contract.preview_invoices(
 <dd>
 
 **invoice_indexes:** `typing.Sequence[int]` — Indexes of the invoices to generate from each recurrence (e.g. [0, 1, 2] for the first three invoices).  Note that contracts with multiple recurrences will generate more preview invoices, and invalid invoice indexes will be ignored silently. For example, [0, 1, 2] on a contract with 2 recurrences will generate at most 6 invoices, and potentially fewer if some of indexes are out of bounds for a recurrence.
-
     
 </dd>
 </dl>

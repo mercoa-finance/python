@@ -17,6 +17,7 @@ from ...commons.errors.conflict import Conflict
 from ...commons.errors.internal_server_error import InternalServerError
 from ...commons.errors.unimplemented import Unimplemented
 from .types.external_accounting_system_company_creation_request import ExternalAccountingSystemCompanyCreationRequest
+from ...core.serialization import convert_and_respect_annotation_metadata
 from .types.sync_type import SyncType
 from ...core.client_wrapper import AsyncClientWrapper
 
@@ -191,7 +192,9 @@ class ExternalAccountingSystemClient:
         _response = self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/external-accounting-system/create",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=ExternalAccountingSystemCompanyCreationRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -717,7 +720,9 @@ class AsyncExternalAccountingSystemClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/external-accounting-system/create",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=ExternalAccountingSystemCompanyCreationRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )

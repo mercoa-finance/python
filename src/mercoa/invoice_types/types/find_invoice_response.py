@@ -2,6 +2,8 @@
 
 from ...core.pydantic_utilities import UniversalBaseModel
 import pydantic
+import typing_extensions
+from ...core.serialization import FieldMetadata
 import typing
 from .invoice_response import InvoiceResponse
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
@@ -567,7 +569,7 @@ class FindInvoiceResponse(UniversalBaseModel):
     Total number of notifications for the given start and end date filters. This value is not limited by the limit parameter. It is provided so that you can determine how many pages of results are available.
     """
 
-    has_more: bool = pydantic.Field(alias="hasMore")
+    has_more: typing_extensions.Annotated[bool, FieldMetadata(alias="hasMore")] = pydantic.Field()
     """
     True if there are more notifications available for the given start and end date filters.
     """

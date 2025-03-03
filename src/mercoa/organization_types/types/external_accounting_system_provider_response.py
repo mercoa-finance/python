@@ -3,13 +3,15 @@
 from __future__ import annotations
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
-import pydantic
+import typing_extensions
+from ...core.serialization import FieldMetadata
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
+import pydantic
 
 
 class ExternalAccountingSystemProviderResponse_None(UniversalBaseModel):
     type: typing.Literal["none"] = "none"
-    has_api_key: bool = pydantic.Field(alias="hasApiKey")
+    has_api_key: typing_extensions.Annotated[bool, FieldMetadata(alias="hasApiKey")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -23,7 +25,7 @@ class ExternalAccountingSystemProviderResponse_None(UniversalBaseModel):
 
 class ExternalAccountingSystemProviderResponse_Codat(UniversalBaseModel):
     type: typing.Literal["codat"] = "codat"
-    has_api_key: bool = pydantic.Field(alias="hasApiKey")
+    has_api_key: typing_extensions.Annotated[bool, FieldMetadata(alias="hasApiKey")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -37,8 +39,8 @@ class ExternalAccountingSystemProviderResponse_Codat(UniversalBaseModel):
 
 class ExternalAccountingSystemProviderResponse_Rutter(UniversalBaseModel):
     type: typing.Literal["rutter"] = "rutter"
-    has_client_id: bool = pydantic.Field(alias="hasClientId")
-    has_client_secret: bool = pydantic.Field(alias="hasClientSecret")
+    has_client_id: typing_extensions.Annotated[bool, FieldMetadata(alias="hasClientId")]
+    has_client_secret: typing_extensions.Annotated[bool, FieldMetadata(alias="hasClientSecret")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

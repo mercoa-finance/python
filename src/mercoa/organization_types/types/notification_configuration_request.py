@@ -2,13 +2,17 @@
 
 from __future__ import annotations
 from ...core.pydantic_utilities import UniversalBaseModel
+import typing_extensions
 import typing
-import pydantic
+from ...core.serialization import FieldMetadata
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
+import pydantic
 
 
 class NotificationConfigurationRequest_Invoice(UniversalBaseModel):
-    notification_type: typing.Literal["invoice"] = pydantic.Field(alias="notificationType", default="invoice")
+    notification_type: typing_extensions.Annotated[
+        typing.Literal["invoice"], FieldMetadata(alias="notificationType")
+    ] = "invoice"
     url: str
 
     if IS_PYDANTIC_V2:

@@ -6,10 +6,12 @@ from ...commons.types.full_name import FullName
 import typing
 from ...commons.types.phone_number import PhoneNumber
 from ...commons.types.address import Address
-import pydantic
+import typing_extensions
+from ...core.serialization import FieldMetadata
 from .responsibilities import Responsibilities
 import datetime as dt
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
+import pydantic
 
 
 class RepresentativeResponse(UniversalBaseModel):
@@ -63,12 +65,12 @@ class RepresentativeResponse(UniversalBaseModel):
     phone: typing.Optional[PhoneNumber] = None
     email: typing.Optional[str] = None
     address: Address
-    birth_date_provided: bool = pydantic.Field(alias="birthDateProvided")
-    government_id_provided: bool = pydantic.Field(alias="governmentIDProvided")
+    birth_date_provided: typing_extensions.Annotated[bool, FieldMetadata(alias="birthDateProvided")]
+    government_id_provided: typing_extensions.Annotated[bool, FieldMetadata(alias="governmentIDProvided")]
     responsibilities: Responsibilities
-    created_on: dt.datetime = pydantic.Field(alias="createdOn")
-    updated_on: dt.datetime = pydantic.Field(alias="updatedOn")
-    disabled_on: typing.Optional[dt.datetime] = pydantic.Field(alias="disabledOn", default=None)
+    created_on: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdOn")]
+    updated_on: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedOn")]
+    disabled_on: typing_extensions.Annotated[typing.Optional[dt.datetime], FieldMetadata(alias="disabledOn")] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

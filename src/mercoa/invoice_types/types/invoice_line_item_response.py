@@ -5,6 +5,8 @@ from .invoice_line_item_id import InvoiceLineItemId
 import typing
 import pydantic
 from ...payment_method_types.types.currency_code import CurrencyCode
+import typing_extensions
+from ...core.serialization import FieldMetadata
 import datetime as dt
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
@@ -53,7 +55,9 @@ class InvoiceLineItemResponse(UniversalBaseModel):
     description: typing.Optional[str] = None
     name: typing.Optional[str] = None
     quantity: typing.Optional[float] = None
-    unit_price: typing.Optional[float] = pydantic.Field(alias="unitPrice", default=None)
+    unit_price: typing_extensions.Annotated[typing.Optional[float], FieldMetadata(alias="unitPrice")] = pydantic.Field(
+        default=None
+    )
     """
     Unit price of line item in major units.
     """
@@ -63,16 +67,22 @@ class InvoiceLineItemResponse(UniversalBaseModel):
     Category of the line item. Defaults to 'EXPENSE'.
     """
 
-    service_start_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceStartDate", default=None)
-    service_end_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceEndDate", default=None)
+    service_start_date: typing_extensions.Annotated[
+        typing.Optional[dt.datetime], FieldMetadata(alias="serviceStartDate")
+    ] = None
+    service_end_date: typing_extensions.Annotated[
+        typing.Optional[dt.datetime], FieldMetadata(alias="serviceEndDate")
+    ] = None
     metadata: typing.Optional[typing.Dict[str, str]] = None
-    gl_account_id: typing.Optional[str] = pydantic.Field(alias="glAccountId", default=None)
+    gl_account_id: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="glAccountId")] = (
+        pydantic.Field(default=None)
+    )
     """
     ID of general ledger account associated with this line item.
     """
 
-    created_at: dt.datetime = pydantic.Field(alias="createdAt")
-    updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
+    created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
+    updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

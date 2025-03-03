@@ -3,16 +3,22 @@
 from __future__ import annotations
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
+import typing_extensions
 from ...invoice_types.types.bank_delivery_method import BankDeliveryMethod
-import pydantic
+from ...core.serialization import FieldMetadata
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
+import pydantic
 from ...invoice_types.types.check_delivery_method import CheckDeliveryMethod
 
 
 class PaymentRailResponse_BankAccount(UniversalBaseModel):
     type: typing.Literal["bankAccount"] = "bankAccount"
-    available_delivery_methods: typing.List[BankDeliveryMethod] = pydantic.Field(alias="availableDeliveryMethods")
-    default_delivery_method: BankDeliveryMethod = pydantic.Field(alias="defaultDeliveryMethod")
+    available_delivery_methods: typing_extensions.Annotated[
+        typing.List[BankDeliveryMethod], FieldMetadata(alias="availableDeliveryMethods")
+    ]
+    default_delivery_method: typing_extensions.Annotated[
+        BankDeliveryMethod, FieldMetadata(alias="defaultDeliveryMethod")
+    ]
     name: str
     active: bool
 
@@ -58,9 +64,13 @@ class PaymentRailResponse_VirtualCard(UniversalBaseModel):
 
 class PaymentRailResponse_Check(UniversalBaseModel):
     type: typing.Literal["check"] = "check"
-    available_delivery_methods: typing.List[CheckDeliveryMethod] = pydantic.Field(alias="availableDeliveryMethods")
-    default_delivery_method: CheckDeliveryMethod = pydantic.Field(alias="defaultDeliveryMethod")
-    print_description: bool = pydantic.Field(alias="printDescription")
+    available_delivery_methods: typing_extensions.Annotated[
+        typing.List[CheckDeliveryMethod], FieldMetadata(alias="availableDeliveryMethods")
+    ]
+    default_delivery_method: typing_extensions.Annotated[
+        CheckDeliveryMethod, FieldMetadata(alias="defaultDeliveryMethod")
+    ]
+    print_description: typing_extensions.Annotated[bool, FieldMetadata(alias="printDescription")]
     name: str
     active: bool
 
@@ -76,7 +86,7 @@ class PaymentRailResponse_Check(UniversalBaseModel):
 
 class PaymentRailResponse_Custom(UniversalBaseModel):
     type: typing.Literal["custom"] = "custom"
-    schema_id: str = pydantic.Field(alias="schemaId")
+    schema_id: typing_extensions.Annotated[str, FieldMetadata(alias="schemaId")]
     name: str
     active: bool
 

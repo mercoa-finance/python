@@ -25,6 +25,7 @@ from ....commons.errors.internal_server_error import InternalServerError
 from ....commons.errors.unimplemented import Unimplemented
 from ....entity_types.types.notification_response import NotificationResponse
 from ....entity_types.types.notification_update_request import NotificationUpdateRequest
+from ....core.serialization import convert_and_respect_annotation_metadata
 from ....core.client_wrapper import AsyncClientWrapper
 
 # this is used as the default value for optional parameters
@@ -377,7 +378,9 @@ class NotificationsClient:
         _response = self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/user/{jsonable_encoder(user_id)}/notification/{jsonable_encoder(notification_id)}",
             method="PUT",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=NotificationUpdateRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -837,7 +840,9 @@ class AsyncNotificationsClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/user/{jsonable_encoder(user_id)}/notification/{jsonable_encoder(notification_id)}",
             method="PUT",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=NotificationUpdateRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )

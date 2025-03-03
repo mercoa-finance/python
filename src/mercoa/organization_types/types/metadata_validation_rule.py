@@ -3,14 +3,16 @@
 from __future__ import annotations
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
-import pydantic
+import typing_extensions
+from ...core.serialization import FieldMetadata
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
+import pydantic
 
 
 class MetadataValidationRule_Regex(UniversalBaseModel):
     type: typing.Literal["regex"] = "regex"
     regex: str
-    error_message: str = pydantic.Field(alias="errorMessage")
+    error_message: typing_extensions.Annotated[str, FieldMetadata(alias="errorMessage")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

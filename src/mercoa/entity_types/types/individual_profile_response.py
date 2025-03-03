@@ -5,8 +5,10 @@ import typing
 from ...commons.types.full_name import FullName
 from ...commons.types.phone_number import PhoneNumber
 from ...commons.types.address import Address
-import pydantic
+import typing_extensions
+from ...core.serialization import FieldMetadata
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
+import pydantic
 
 
 class IndividualProfileResponse(UniversalBaseModel):
@@ -14,8 +16,8 @@ class IndividualProfileResponse(UniversalBaseModel):
     name: FullName
     phone: typing.Optional[PhoneNumber] = None
     address: typing.Optional[Address] = None
-    birth_date_provided: bool = pydantic.Field(alias="birthDateProvided")
-    government_id_provided: bool = pydantic.Field(alias="governmentIDProvided")
+    birth_date_provided: typing_extensions.Annotated[bool, FieldMetadata(alias="birthDateProvided")]
+    government_id_provided: typing_extensions.Annotated[bool, FieldMetadata(alias="governmentIDProvided")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

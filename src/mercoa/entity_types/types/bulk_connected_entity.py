@@ -3,6 +3,8 @@
 from ...core.pydantic_utilities import UniversalBaseModel
 from .entity_id import EntityId
 import pydantic
+import typing_extensions
+from ...core.serialization import FieldMetadata
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 import typing
 
@@ -25,12 +27,16 @@ class BulkConnectedEntity(UniversalBaseModel):
     The ID of the entity to connect to.
     """
 
-    link_created_as_payor: bool = pydantic.Field(alias="linkCreatedAsPayor")
+    link_created_as_payor: typing_extensions.Annotated[bool, FieldMetadata(alias="linkCreatedAsPayor")] = (
+        pydantic.Field()
+    )
     """
     If true, the created entities will be linked to the connected entity as a payor (customer).
     """
 
-    link_created_as_payee: bool = pydantic.Field(alias="linkCreatedAsPayee")
+    link_created_as_payee: typing_extensions.Annotated[bool, FieldMetadata(alias="linkCreatedAsPayee")] = (
+        pydantic.Field()
+    )
     """
     If true, the created entities will be linked to the connected entity as a payee (vendor).
     """

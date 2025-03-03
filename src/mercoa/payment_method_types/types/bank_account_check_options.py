@@ -3,6 +3,8 @@
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
 import pydantic
+import typing_extensions
+from ...core.serialization import FieldMetadata
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -12,32 +14,42 @@ class BankAccountCheckOptions(UniversalBaseModel):
     If true, will allow the user to print checks from this bank account
     """
 
-    initial_check_number: typing.Optional[int] = pydantic.Field(alias="initialCheckNumber", default=None)
+    initial_check_number: typing_extensions.Annotated[
+        typing.Optional[int], FieldMetadata(alias="initialCheckNumber")
+    ] = pydantic.Field(default=None)
     """
     If provided, will start the check number sequence at the provided number. If not provided, will start at 5000.
     """
 
-    routing_number_override: typing.Optional[str] = pydantic.Field(alias="routingNumberOverride", default=None)
+    routing_number_override: typing_extensions.Annotated[
+        typing.Optional[str], FieldMetadata(alias="routingNumberOverride")
+    ] = pydantic.Field(default=None)
     """
     If provided, will print a check with the provided routing number instead of the one from the bank account
     """
 
-    account_number_override: typing.Optional[str] = pydantic.Field(alias="accountNumberOverride", default=None)
+    account_number_override: typing_extensions.Annotated[
+        typing.Optional[str], FieldMetadata(alias="accountNumberOverride")
+    ] = pydantic.Field(default=None)
     """
     If provided, will print a check with the provided account number instead of the one from the bank account
     """
 
-    signatory_name: str = pydantic.Field(alias="signatoryName")
+    signatory_name: typing_extensions.Annotated[str, FieldMetadata(alias="signatoryName")] = pydantic.Field()
     """
     Name of the person who's signature will be printed on the check.
     """
 
-    signature_image: typing.Optional[str] = pydantic.Field(alias="signatureImage", default=None)
+    signature_image: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="signatureImage")] = (
+        pydantic.Field(default=None)
+    )
     """
     Base64 encoded image of the signature. If not provided, will use the signatoryName to generate a signature. Mercoa will automatically grayscale, resize, and convert the image to a PNG the image to fit on the check.
     """
 
-    use_signature_image: typing.Optional[bool] = pydantic.Field(alias="useSignatureImage", default=None)
+    use_signature_image: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="useSignatureImage")
+    ] = pydantic.Field(default=None)
     """
     If true, will print checks with the provided signatureImage. If false, will print checks with a generated signature from the signatoryName. If this parameter is not set the default behavior is to use the signatureImage if provided.
     """

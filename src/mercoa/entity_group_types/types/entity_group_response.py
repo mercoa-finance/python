@@ -2,10 +2,12 @@
 
 from ...core.pydantic_utilities import UniversalBaseModel
 from .entity_group_id import EntityGroupId
+import typing_extensions
 import typing
-import pydantic
+from ...core.serialization import FieldMetadata
 from ...entity_types.types.entity_response import EntityResponse
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
+import pydantic
 
 
 class EntityGroupResponse(UniversalBaseModel):
@@ -111,9 +113,9 @@ class EntityGroupResponse(UniversalBaseModel):
     """
 
     id: EntityGroupId
-    foreign_id: typing.Optional[str] = pydantic.Field(alias="foreignId", default=None)
+    foreign_id: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="foreignId")] = None
     name: typing.Optional[str] = None
-    email_to_name: typing.Optional[str] = pydantic.Field(alias="emailToName", default=None)
+    email_to_name: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="emailToName")] = None
     entities: typing.List[EntityResponse]
     metadata: typing.Dict[str, str]
 

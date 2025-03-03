@@ -17,6 +17,7 @@ from ...commons.errors.conflict import Conflict
 from ...commons.errors.internal_server_error import InternalServerError
 from ...commons.errors.unimplemented import Unimplemented
 from ...invoice_types.types.comment_request import CommentRequest
+from ...core.serialization import convert_and_respect_annotation_metadata
 from ...invoice_types.types.comment_id import CommentId
 from ...core.client_wrapper import AsyncClientWrapper
 
@@ -186,7 +187,7 @@ class CommentClient:
         _response = self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/comment",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(object_=request, annotation=CommentRequest, direction="write"),
             request_options=request_options,
             omit=OMIT,
         )
@@ -442,7 +443,7 @@ class CommentClient:
         _response = self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/comment/{jsonable_encoder(comment_id)}",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(object_=request, annotation=CommentRequest, direction="write"),
             request_options=request_options,
             omit=OMIT,
         )
@@ -826,7 +827,7 @@ class AsyncCommentClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/comment",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(object_=request, annotation=CommentRequest, direction="write"),
             request_options=request_options,
             omit=OMIT,
         )
@@ -1098,7 +1099,7 @@ class AsyncCommentClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/comment/{jsonable_encoder(comment_id)}",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(object_=request, annotation=CommentRequest, direction="write"),
             request_options=request_options,
             omit=OMIT,
         )

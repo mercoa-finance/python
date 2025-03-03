@@ -5,6 +5,7 @@ from ..core.client_wrapper import SyncClientWrapper
 from ..contract_types.types.generate_contract_request import GenerateContractRequest
 from ..core.request_options import RequestOptions
 from ..contract_types.types.generate_contract_response import GenerateContractResponse
+from ..core.serialization import convert_and_respect_annotation_metadata
 from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
 from ..core.pydantic_utilities import parse_obj_as
@@ -72,7 +73,9 @@ class ContractClient:
         _response = self._client_wrapper.httpx_client.request(
             "contract/generate",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=GenerateContractRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -196,7 +199,9 @@ class ContractClient:
         _response = self._client_wrapper.httpx_client.request(
             "contract/generate-async",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=GenerateContractRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -422,7 +427,6 @@ class ContractClient:
         invoice_indexes : typing.Sequence[int]
             Indexes of the invoices to generate from each recurrence (e.g. [0, 1, 2] for the first three invoices).  Note that contracts with multiple recurrences will generate more preview invoices, and invalid invoice indexes will be ignored silently. For example, [0, 1, 2] on a contract with 2 recurrences will generate at most 6 invoices, and potentially fewer if some of indexes are out of bounds for a recurrence.
 
-
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -474,7 +478,9 @@ class ContractClient:
             "contract/preview-invoices",
             method="POST",
             json={
-                "contract": contract,
+                "contract": convert_and_respect_annotation_metadata(
+                    object_=contract, annotation=ContractCreateRequest, direction="write"
+                ),
                 "invoiceIndexes": invoice_indexes,
             },
             request_options=request_options,
@@ -1011,7 +1017,9 @@ class ContractClient:
         _response = self._client_wrapper.httpx_client.request(
             "contract",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=ContractCreateRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -1279,7 +1287,9 @@ class ContractClient:
         _response = self._client_wrapper.httpx_client.request(
             f"contract/{jsonable_encoder(contract_id)}",
             method="PUT",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=ContractUpdateRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -1525,7 +1535,9 @@ class AsyncContractClient:
         _response = await self._client_wrapper.httpx_client.request(
             "contract/generate",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=GenerateContractRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -1657,7 +1669,9 @@ class AsyncContractClient:
         _response = await self._client_wrapper.httpx_client.request(
             "contract/generate-async",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=GenerateContractRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -1891,7 +1905,6 @@ class AsyncContractClient:
         invoice_indexes : typing.Sequence[int]
             Indexes of the invoices to generate from each recurrence (e.g. [0, 1, 2] for the first three invoices).  Note that contracts with multiple recurrences will generate more preview invoices, and invalid invoice indexes will be ignored silently. For example, [0, 1, 2] on a contract with 2 recurrences will generate at most 6 invoices, and potentially fewer if some of indexes are out of bounds for a recurrence.
 
-
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -1951,7 +1964,9 @@ class AsyncContractClient:
             "contract/preview-invoices",
             method="POST",
             json={
-                "contract": contract,
+                "contract": convert_and_respect_annotation_metadata(
+                    object_=contract, annotation=ContractCreateRequest, direction="write"
+                ),
                 "invoiceIndexes": invoice_indexes,
             },
             request_options=request_options,
@@ -2520,7 +2535,9 @@ class AsyncContractClient:
         _response = await self._client_wrapper.httpx_client.request(
             "contract",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=ContractCreateRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -2804,7 +2821,9 @@ class AsyncContractClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"contract/{jsonable_encoder(contract_id)}",
             method="PUT",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=ContractUpdateRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )

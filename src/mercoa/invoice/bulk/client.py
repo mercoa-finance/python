@@ -5,6 +5,7 @@ from ...core.client_wrapper import SyncClientWrapper
 from ...invoice_types.types.bulk_invoice_creation_request import BulkInvoiceCreationRequest
 from ...core.request_options import RequestOptions
 from ...invoice_types.types.bulk_invoice_creation_response import BulkInvoiceCreationResponse
+from ...core.serialization import convert_and_respect_annotation_metadata
 from json.decoder import JSONDecodeError
 from ...core.api_error import ApiError
 from ...core.pydantic_utilities import parse_obj_as
@@ -119,7 +120,9 @@ class BulkClient:
             params={
                 "emitWebhooks": emit_webhooks,
             },
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=BulkInvoiceCreationRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -314,7 +317,9 @@ class AsyncBulkClient:
             params={
                 "emitWebhooks": emit_webhooks,
             },
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=BulkInvoiceCreationRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )

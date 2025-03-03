@@ -6,6 +6,7 @@ from ...invoice_types.types.invoice_id import InvoiceId
 from ...invoice_types.types.add_approver_request import AddApproverRequest
 from ...core.request_options import RequestOptions
 from ...core.jsonable_encoder import jsonable_encoder
+from ...core.serialization import convert_and_respect_annotation_metadata
 from json.decoder import JSONDecodeError
 from ...core.api_error import ApiError
 from ...commons.errors.bad_request import BadRequest
@@ -70,7 +71,9 @@ class ApprovalClient:
         _response = self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/add-approver",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=AddApproverRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -194,7 +197,9 @@ class ApprovalClient:
         _response = self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/approve",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=ApprovalRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -318,7 +323,9 @@ class ApprovalClient:
         _response = self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/reject",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=ApprovalRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -457,7 +464,9 @@ class AsyncApprovalClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/add-approver",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=AddApproverRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -589,7 +598,9 @@ class AsyncApprovalClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/approve",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=ApprovalRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -721,7 +732,9 @@ class AsyncApprovalClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/reject",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=ApprovalRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )

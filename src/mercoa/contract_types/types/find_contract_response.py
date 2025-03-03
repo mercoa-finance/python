@@ -2,6 +2,8 @@
 
 from ...core.pydantic_utilities import UniversalBaseModel
 import pydantic
+import typing_extensions
+from ...core.serialization import FieldMetadata
 import typing
 from .contract_response import ContractResponse
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
@@ -216,7 +218,7 @@ class FindContractResponse(UniversalBaseModel):
     Total number of contracts found
     """
 
-    has_more: bool = pydantic.Field(alias="hasMore")
+    has_more: typing_extensions.Annotated[bool, FieldMetadata(alias="hasMore")] = pydantic.Field()
     """
     True if there are more contracts available for the given filters
     """

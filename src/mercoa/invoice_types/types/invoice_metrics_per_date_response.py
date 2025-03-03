@@ -4,6 +4,8 @@ from ...core.pydantic_utilities import UniversalBaseModel
 import typing
 import pydantic
 import datetime as dt
+import typing_extensions
+from ...core.serialization import FieldMetadata
 from ...payment_method_types.types.currency_code import CurrencyCode
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
@@ -33,9 +35,9 @@ class InvoiceMetricsPerDateResponse(UniversalBaseModel):
     """
 
     date: dt.datetime
-    total_amount: float = pydantic.Field(alias="totalAmount")
-    total_count: int = pydantic.Field(alias="totalCount")
-    average_amount: float = pydantic.Field(alias="averageAmount")
+    total_amount: typing_extensions.Annotated[float, FieldMetadata(alias="totalAmount")]
+    total_count: typing_extensions.Annotated[int, FieldMetadata(alias="totalCount")]
+    average_amount: typing_extensions.Annotated[float, FieldMetadata(alias="averageAmount")]
     currency: CurrencyCode
 
     if IS_PYDANTIC_V2:

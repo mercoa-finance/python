@@ -4,6 +4,8 @@ from ...core.pydantic_utilities import UniversalBaseModel
 import typing
 from .check_delivery_method import CheckDeliveryMethod
 import pydantic
+import typing_extensions
+from ...core.serialization import FieldMetadata
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -24,7 +26,9 @@ class CheckPaymentDestinationOptions(UniversalBaseModel):
     Delivery method for check disbursements. Defaults to MAIL.
     """
 
-    print_description: typing.Optional[bool] = pydantic.Field(alias="printDescription", default=None)
+    print_description: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="printDescription")] = (
+        pydantic.Field(default=None)
+    )
     """
     If true, prints the invoice description (noteToSelf) on the check note. Defaults to false.
     """

@@ -3,7 +3,9 @@
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
 import pydantic
+import typing_extensions
 from ...entity_types.types.entity_user_id import EntityUserId
+from ...core.serialization import FieldMetadata
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -24,7 +26,7 @@ class ApprovalRequest(UniversalBaseModel):
     Comment associated with this approval action.
     """
 
-    user_id: EntityUserId = pydantic.Field(alias="userId")
+    user_id: typing_extensions.Annotated[EntityUserId, FieldMetadata(alias="userId")] = pydantic.Field()
     """
     The ID or the Foreign ID of the user
     """

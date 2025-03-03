@@ -17,6 +17,7 @@ from ...commons.errors.conflict import Conflict
 from ...commons.errors.internal_server_error import InternalServerError
 from ...commons.errors.unimplemented import Unimplemented
 from ...entity_types.types.approval_policy_request import ApprovalPolicyRequest
+from ...core.serialization import convert_and_respect_annotation_metadata
 from ...entity_types.types.approval_policy_id import ApprovalPolicyId
 from ...entity_types.types.approval_policy_update_request import ApprovalPolicyUpdateRequest
 from ...core.client_wrapper import AsyncClientWrapper
@@ -207,7 +208,9 @@ class ApprovalPolicyClient:
         _response = self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/approval-policy",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=ApprovalPolicyRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -485,7 +488,9 @@ class ApprovalPolicyClient:
         _response = self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/approval-policy/{jsonable_encoder(policy_id)}",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=ApprovalPolicyUpdateRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -893,7 +898,9 @@ class AsyncApprovalPolicyClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/approval-policy",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=ApprovalPolicyRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -1187,7 +1194,9 @@ class AsyncApprovalPolicyClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/approval-policy/{jsonable_encoder(policy_id)}",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=ApprovalPolicyUpdateRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )

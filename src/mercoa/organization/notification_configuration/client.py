@@ -17,6 +17,7 @@ from ...commons.errors.unimplemented import Unimplemented
 from ...entity_types.types.notification_type import NotificationType
 from ...core.jsonable_encoder import jsonable_encoder
 from ...organization_types.types.notification_configuration_request import NotificationConfigurationRequest
+from ...core.serialization import convert_and_respect_annotation_metadata
 from ...core.client_wrapper import AsyncClientWrapper
 
 # this is used as the default value for optional parameters
@@ -300,7 +301,9 @@ class NotificationConfigurationClient:
         _response = self._client_wrapper.httpx_client.request(
             f"organization/notification-configuration/{jsonable_encoder(notification_type)}",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=NotificationConfigurationRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -803,7 +806,9 @@ class AsyncNotificationConfigurationClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"organization/notification-configuration/{jsonable_encoder(notification_type)}",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=NotificationConfigurationRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )

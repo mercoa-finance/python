@@ -21,7 +21,7 @@ from ..invoice_types.types.metadata_filter import MetadataFilter
 from ..entity_types.types.entity_id import EntityId
 from ..core.request_options import RequestOptions
 from ..entity_types.types.find_entity_response import FindEntityResponse
-from ..core.jsonable_encoder import jsonable_encoder
+from ..core.serialization import convert_and_respect_annotation_metadata
 from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
 from ..core.pydantic_utilities import parse_obj_as
@@ -34,6 +34,7 @@ from ..commons.errors.internal_server_error import InternalServerError
 from ..commons.errors.unimplemented import Unimplemented
 from ..entity_types.types.entity_request import EntityRequest
 from ..entity_types.types.entity_response import EntityResponse
+from ..core.jsonable_encoder import jsonable_encoder
 from ..entity_types.types.entity_update_request import EntityUpdateRequest
 from ..entity_types.types.token_generation_options import TokenGenerationOptions
 from ..entity_types.types.entity_onboarding_link_type import EntityOnboardingLinkType
@@ -169,7 +170,9 @@ class EntityClient:
                 "isPayor": is_payor,
                 "name": name,
                 "search": search,
-                "metadata": jsonable_encoder(metadata),
+                "metadata": convert_and_respect_annotation_metadata(
+                    object_=metadata, annotation=MetadataFilter, direction="write"
+                ),
                 "returnMetadata": return_metadata,
                 "limit": limit,
                 "startingAfter": starting_after,
@@ -329,7 +332,7 @@ class EntityClient:
         _response = self._client_wrapper.httpx_client.request(
             "entity",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(object_=request, annotation=EntityRequest, direction="write"),
             request_options=request_options,
             omit=OMIT,
         )
@@ -621,7 +624,9 @@ class EntityClient:
         _response = self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=EntityUpdateRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -1091,7 +1096,9 @@ class EntityClient:
         _response = self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/token",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=TokenGenerationOptions, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -1707,7 +1714,9 @@ class AsyncEntityClient:
                 "isPayor": is_payor,
                 "name": name,
                 "search": search,
-                "metadata": jsonable_encoder(metadata),
+                "metadata": convert_and_respect_annotation_metadata(
+                    object_=metadata, annotation=MetadataFilter, direction="write"
+                ),
                 "returnMetadata": return_metadata,
                 "limit": limit,
                 "startingAfter": starting_after,
@@ -1875,7 +1884,7 @@ class AsyncEntityClient:
         _response = await self._client_wrapper.httpx_client.request(
             "entity",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(object_=request, annotation=EntityRequest, direction="write"),
             request_options=request_options,
             omit=OMIT,
         )
@@ -2183,7 +2192,9 @@ class AsyncEntityClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=EntityUpdateRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -2687,7 +2698,9 @@ class AsyncEntityClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/token",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=TokenGenerationOptions, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )

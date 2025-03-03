@@ -19,6 +19,7 @@ from ..commons.errors.internal_server_error import InternalServerError
 from ..commons.errors.unimplemented import Unimplemented
 from ..entity_group_types.types.entity_group_create_request import EntityGroupCreateRequest
 from ..entity_group_types.types.entity_group_response import EntityGroupResponse
+from ..core.serialization import convert_and_respect_annotation_metadata
 from ..core.jsonable_encoder import jsonable_encoder
 from ..entity_group_types.types.entity_group_update_request import EntityGroupUpdateRequest
 from ..entity_types.types.token_generation_options import TokenGenerationOptions
@@ -205,7 +206,9 @@ class EntityGroupClient:
         _response = self._client_wrapper.httpx_client.request(
             "entityGroup",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=EntityGroupCreateRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -467,7 +470,9 @@ class EntityGroupClient:
         _response = self._client_wrapper.httpx_client.request(
             f"entityGroup/{jsonable_encoder(entity_group_id)}",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=EntityGroupUpdateRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -713,7 +718,9 @@ class EntityGroupClient:
         _response = self._client_wrapper.httpx_client.request(
             f"entityGroup/{jsonable_encoder(entity_group_id)}/token",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=TokenGenerationOptions, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -847,7 +854,9 @@ class EntityGroupClient:
         _response = self._client_wrapper.httpx_client.request(
             f"entityGroup/{jsonable_encoder(entity_group_id)}/addEntities",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=EntityGroupAddEntitiesRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -981,7 +990,9 @@ class EntityGroupClient:
         _response = self._client_wrapper.httpx_client.request(
             f"entityGroup/{jsonable_encoder(entity_group_id)}/removeEntities",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=EntityGroupRemoveEntitiesRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -1260,7 +1271,9 @@ class AsyncEntityGroupClient:
         _response = await self._client_wrapper.httpx_client.request(
             "entityGroup",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=EntityGroupCreateRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -1538,7 +1551,9 @@ class AsyncEntityGroupClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"entityGroup/{jsonable_encoder(entity_group_id)}",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=EntityGroupUpdateRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -1800,7 +1815,9 @@ class AsyncEntityGroupClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"entityGroup/{jsonable_encoder(entity_group_id)}/token",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=TokenGenerationOptions, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -1942,7 +1959,9 @@ class AsyncEntityGroupClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"entityGroup/{jsonable_encoder(entity_group_id)}/addEntities",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=EntityGroupAddEntitiesRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -2084,7 +2103,9 @@ class AsyncEntityGroupClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"entityGroup/{jsonable_encoder(entity_group_id)}/removeEntities",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=EntityGroupRemoveEntitiesRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )

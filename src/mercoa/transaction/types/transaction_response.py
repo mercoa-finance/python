@@ -4,8 +4,9 @@ from __future__ import annotations
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
 from ...invoice_types.types.invoice_response import InvoiceResponse
+import typing_extensions
 from .transaction_failure_reason import TransactionFailureReason
-import pydantic
+from ...core.serialization import FieldMetadata
 from .transaction_id import TransactionId
 from .transaction_status import TransactionStatus
 from ...entity_types.types.entity_id import EntityId
@@ -16,6 +17,7 @@ from ...invoice_types.types.payment_destination_options import PaymentDestinatio
 from ...invoice_types.types.invoice_fees_response import InvoiceFeesResponse
 import datetime as dt
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
+import pydantic
 
 
 class TransactionResponse_BankAccountToBankAccount(UniversalBaseModel):
@@ -755,25 +757,27 @@ class TransactionResponse_BankAccountToBankAccount(UniversalBaseModel):
 
     type: typing.Literal["bankAccountToBankAccount"] = "bankAccountToBankAccount"
     invoices: typing.List[InvoiceResponse]
-    failure_reason: typing.Optional[TransactionFailureReason] = pydantic.Field(alias="failureReason", default=None)
+    failure_reason: typing_extensions.Annotated[
+        typing.Optional[TransactionFailureReason], FieldMetadata(alias="failureReason")
+    ] = None
     id: TransactionId
     status: TransactionStatus
     amount: int
     currency: str
-    payer_id: EntityId = pydantic.Field(alias="payerId")
+    payer_id: typing_extensions.Annotated[EntityId, FieldMetadata(alias="payerId")]
     payer: CounterpartyResponse
-    payment_source: PaymentMethodResponse = pydantic.Field(alias="paymentSource")
-    payment_source_id: PaymentMethodId = pydantic.Field(alias="paymentSourceId")
-    vendor_id: EntityId = pydantic.Field(alias="vendorId")
+    payment_source: typing_extensions.Annotated[PaymentMethodResponse, FieldMetadata(alias="paymentSource")]
+    payment_source_id: typing_extensions.Annotated[PaymentMethodId, FieldMetadata(alias="paymentSourceId")]
+    vendor_id: typing_extensions.Annotated[EntityId, FieldMetadata(alias="vendorId")]
     vendor: CounterpartyResponse
-    payment_destination: PaymentMethodResponse = pydantic.Field(alias="paymentDestination")
-    payment_destination_id: PaymentMethodId = pydantic.Field(alias="paymentDestinationId")
-    payment_destination_options: typing.Optional[PaymentDestinationOptions] = pydantic.Field(
-        alias="paymentDestinationOptions", default=None
-    )
+    payment_destination: typing_extensions.Annotated[PaymentMethodResponse, FieldMetadata(alias="paymentDestination")]
+    payment_destination_id: typing_extensions.Annotated[PaymentMethodId, FieldMetadata(alias="paymentDestinationId")]
+    payment_destination_options: typing_extensions.Annotated[
+        typing.Optional[PaymentDestinationOptions], FieldMetadata(alias="paymentDestinationOptions")
+    ] = None
     fees: typing.Optional[InvoiceFeesResponse] = None
-    created_at: dt.datetime = pydantic.Field(alias="createdAt")
-    updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
+    created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
+    updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -1522,25 +1526,25 @@ class TransactionResponse_BankAccountToMailedCheck(UniversalBaseModel):
 
     type: typing.Literal["bankAccountToMailedCheck"] = "bankAccountToMailedCheck"
     invoices: typing.List[InvoiceResponse]
-    check_number: int = pydantic.Field(alias="checkNumber")
+    check_number: typing_extensions.Annotated[int, FieldMetadata(alias="checkNumber")]
     id: TransactionId
     status: TransactionStatus
     amount: int
     currency: str
-    payer_id: EntityId = pydantic.Field(alias="payerId")
+    payer_id: typing_extensions.Annotated[EntityId, FieldMetadata(alias="payerId")]
     payer: CounterpartyResponse
-    payment_source: PaymentMethodResponse = pydantic.Field(alias="paymentSource")
-    payment_source_id: PaymentMethodId = pydantic.Field(alias="paymentSourceId")
-    vendor_id: EntityId = pydantic.Field(alias="vendorId")
+    payment_source: typing_extensions.Annotated[PaymentMethodResponse, FieldMetadata(alias="paymentSource")]
+    payment_source_id: typing_extensions.Annotated[PaymentMethodId, FieldMetadata(alias="paymentSourceId")]
+    vendor_id: typing_extensions.Annotated[EntityId, FieldMetadata(alias="vendorId")]
     vendor: CounterpartyResponse
-    payment_destination: PaymentMethodResponse = pydantic.Field(alias="paymentDestination")
-    payment_destination_id: PaymentMethodId = pydantic.Field(alias="paymentDestinationId")
-    payment_destination_options: typing.Optional[PaymentDestinationOptions] = pydantic.Field(
-        alias="paymentDestinationOptions", default=None
-    )
+    payment_destination: typing_extensions.Annotated[PaymentMethodResponse, FieldMetadata(alias="paymentDestination")]
+    payment_destination_id: typing_extensions.Annotated[PaymentMethodId, FieldMetadata(alias="paymentDestinationId")]
+    payment_destination_options: typing_extensions.Annotated[
+        typing.Optional[PaymentDestinationOptions], FieldMetadata(alias="paymentDestinationOptions")
+    ] = None
     fees: typing.Optional[InvoiceFeesResponse] = None
-    created_at: dt.datetime = pydantic.Field(alias="createdAt")
-    updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
+    created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
+    updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -2289,25 +2293,27 @@ class TransactionResponse_BankAccountToWallet(UniversalBaseModel):
 
     type: typing.Literal["bankAccountToWallet"] = "bankAccountToWallet"
     invoices: typing.List[InvoiceResponse]
-    failure_reason: typing.Optional[TransactionFailureReason] = pydantic.Field(alias="failureReason", default=None)
+    failure_reason: typing_extensions.Annotated[
+        typing.Optional[TransactionFailureReason], FieldMetadata(alias="failureReason")
+    ] = None
     id: TransactionId
     status: TransactionStatus
     amount: int
     currency: str
-    payer_id: EntityId = pydantic.Field(alias="payerId")
+    payer_id: typing_extensions.Annotated[EntityId, FieldMetadata(alias="payerId")]
     payer: CounterpartyResponse
-    payment_source: PaymentMethodResponse = pydantic.Field(alias="paymentSource")
-    payment_source_id: PaymentMethodId = pydantic.Field(alias="paymentSourceId")
-    vendor_id: EntityId = pydantic.Field(alias="vendorId")
+    payment_source: typing_extensions.Annotated[PaymentMethodResponse, FieldMetadata(alias="paymentSource")]
+    payment_source_id: typing_extensions.Annotated[PaymentMethodId, FieldMetadata(alias="paymentSourceId")]
+    vendor_id: typing_extensions.Annotated[EntityId, FieldMetadata(alias="vendorId")]
     vendor: CounterpartyResponse
-    payment_destination: PaymentMethodResponse = pydantic.Field(alias="paymentDestination")
-    payment_destination_id: PaymentMethodId = pydantic.Field(alias="paymentDestinationId")
-    payment_destination_options: typing.Optional[PaymentDestinationOptions] = pydantic.Field(
-        alias="paymentDestinationOptions", default=None
-    )
+    payment_destination: typing_extensions.Annotated[PaymentMethodResponse, FieldMetadata(alias="paymentDestination")]
+    payment_destination_id: typing_extensions.Annotated[PaymentMethodId, FieldMetadata(alias="paymentDestinationId")]
+    payment_destination_options: typing_extensions.Annotated[
+        typing.Optional[PaymentDestinationOptions], FieldMetadata(alias="paymentDestinationOptions")
+    ] = None
     fees: typing.Optional[InvoiceFeesResponse] = None
-    created_at: dt.datetime = pydantic.Field(alias="createdAt")
-    updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
+    created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
+    updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -3060,20 +3066,20 @@ class TransactionResponse_CardToWallet(UniversalBaseModel):
     status: TransactionStatus
     amount: int
     currency: str
-    payer_id: EntityId = pydantic.Field(alias="payerId")
+    payer_id: typing_extensions.Annotated[EntityId, FieldMetadata(alias="payerId")]
     payer: CounterpartyResponse
-    payment_source: PaymentMethodResponse = pydantic.Field(alias="paymentSource")
-    payment_source_id: PaymentMethodId = pydantic.Field(alias="paymentSourceId")
-    vendor_id: EntityId = pydantic.Field(alias="vendorId")
+    payment_source: typing_extensions.Annotated[PaymentMethodResponse, FieldMetadata(alias="paymentSource")]
+    payment_source_id: typing_extensions.Annotated[PaymentMethodId, FieldMetadata(alias="paymentSourceId")]
+    vendor_id: typing_extensions.Annotated[EntityId, FieldMetadata(alias="vendorId")]
     vendor: CounterpartyResponse
-    payment_destination: PaymentMethodResponse = pydantic.Field(alias="paymentDestination")
-    payment_destination_id: PaymentMethodId = pydantic.Field(alias="paymentDestinationId")
-    payment_destination_options: typing.Optional[PaymentDestinationOptions] = pydantic.Field(
-        alias="paymentDestinationOptions", default=None
-    )
+    payment_destination: typing_extensions.Annotated[PaymentMethodResponse, FieldMetadata(alias="paymentDestination")]
+    payment_destination_id: typing_extensions.Annotated[PaymentMethodId, FieldMetadata(alias="paymentDestinationId")]
+    payment_destination_options: typing_extensions.Annotated[
+        typing.Optional[PaymentDestinationOptions], FieldMetadata(alias="paymentDestinationOptions")
+    ] = None
     fees: typing.Optional[InvoiceFeesResponse] = None
-    created_at: dt.datetime = pydantic.Field(alias="createdAt")
-    updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
+    created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
+    updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -3822,25 +3828,27 @@ class TransactionResponse_WalletToBankAccount(UniversalBaseModel):
 
     type: typing.Literal["walletToBankAccount"] = "walletToBankAccount"
     invoices: typing.List[InvoiceResponse]
-    failure_reason: typing.Optional[TransactionFailureReason] = pydantic.Field(alias="failureReason", default=None)
+    failure_reason: typing_extensions.Annotated[
+        typing.Optional[TransactionFailureReason], FieldMetadata(alias="failureReason")
+    ] = None
     id: TransactionId
     status: TransactionStatus
     amount: int
     currency: str
-    payer_id: EntityId = pydantic.Field(alias="payerId")
+    payer_id: typing_extensions.Annotated[EntityId, FieldMetadata(alias="payerId")]
     payer: CounterpartyResponse
-    payment_source: PaymentMethodResponse = pydantic.Field(alias="paymentSource")
-    payment_source_id: PaymentMethodId = pydantic.Field(alias="paymentSourceId")
-    vendor_id: EntityId = pydantic.Field(alias="vendorId")
+    payment_source: typing_extensions.Annotated[PaymentMethodResponse, FieldMetadata(alias="paymentSource")]
+    payment_source_id: typing_extensions.Annotated[PaymentMethodId, FieldMetadata(alias="paymentSourceId")]
+    vendor_id: typing_extensions.Annotated[EntityId, FieldMetadata(alias="vendorId")]
     vendor: CounterpartyResponse
-    payment_destination: PaymentMethodResponse = pydantic.Field(alias="paymentDestination")
-    payment_destination_id: PaymentMethodId = pydantic.Field(alias="paymentDestinationId")
-    payment_destination_options: typing.Optional[PaymentDestinationOptions] = pydantic.Field(
-        alias="paymentDestinationOptions", default=None
-    )
+    payment_destination: typing_extensions.Annotated[PaymentMethodResponse, FieldMetadata(alias="paymentDestination")]
+    payment_destination_id: typing_extensions.Annotated[PaymentMethodId, FieldMetadata(alias="paymentDestinationId")]
+    payment_destination_options: typing_extensions.Annotated[
+        typing.Optional[PaymentDestinationOptions], FieldMetadata(alias="paymentDestinationOptions")
+    ] = None
     fees: typing.Optional[InvoiceFeesResponse] = None
-    created_at: dt.datetime = pydantic.Field(alias="createdAt")
-    updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
+    created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
+    updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -4593,20 +4601,20 @@ class TransactionResponse_Custom(UniversalBaseModel):
     status: TransactionStatus
     amount: int
     currency: str
-    payer_id: EntityId = pydantic.Field(alias="payerId")
+    payer_id: typing_extensions.Annotated[EntityId, FieldMetadata(alias="payerId")]
     payer: CounterpartyResponse
-    payment_source: PaymentMethodResponse = pydantic.Field(alias="paymentSource")
-    payment_source_id: PaymentMethodId = pydantic.Field(alias="paymentSourceId")
-    vendor_id: EntityId = pydantic.Field(alias="vendorId")
+    payment_source: typing_extensions.Annotated[PaymentMethodResponse, FieldMetadata(alias="paymentSource")]
+    payment_source_id: typing_extensions.Annotated[PaymentMethodId, FieldMetadata(alias="paymentSourceId")]
+    vendor_id: typing_extensions.Annotated[EntityId, FieldMetadata(alias="vendorId")]
     vendor: CounterpartyResponse
-    payment_destination: PaymentMethodResponse = pydantic.Field(alias="paymentDestination")
-    payment_destination_id: PaymentMethodId = pydantic.Field(alias="paymentDestinationId")
-    payment_destination_options: typing.Optional[PaymentDestinationOptions] = pydantic.Field(
-        alias="paymentDestinationOptions", default=None
-    )
+    payment_destination: typing_extensions.Annotated[PaymentMethodResponse, FieldMetadata(alias="paymentDestination")]
+    payment_destination_id: typing_extensions.Annotated[PaymentMethodId, FieldMetadata(alias="paymentDestinationId")]
+    payment_destination_options: typing_extensions.Annotated[
+        typing.Optional[PaymentDestinationOptions], FieldMetadata(alias="paymentDestinationOptions")
+    ] = None
     fees: typing.Optional[InvoiceFeesResponse] = None
-    created_at: dt.datetime = pydantic.Field(alias="createdAt")
-    updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
+    created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
+    updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -5359,20 +5367,20 @@ class TransactionResponse_OffPlatform(UniversalBaseModel):
     status: TransactionStatus
     amount: int
     currency: str
-    payer_id: EntityId = pydantic.Field(alias="payerId")
+    payer_id: typing_extensions.Annotated[EntityId, FieldMetadata(alias="payerId")]
     payer: CounterpartyResponse
-    payment_source: PaymentMethodResponse = pydantic.Field(alias="paymentSource")
-    payment_source_id: PaymentMethodId = pydantic.Field(alias="paymentSourceId")
-    vendor_id: EntityId = pydantic.Field(alias="vendorId")
+    payment_source: typing_extensions.Annotated[PaymentMethodResponse, FieldMetadata(alias="paymentSource")]
+    payment_source_id: typing_extensions.Annotated[PaymentMethodId, FieldMetadata(alias="paymentSourceId")]
+    vendor_id: typing_extensions.Annotated[EntityId, FieldMetadata(alias="vendorId")]
     vendor: CounterpartyResponse
-    payment_destination: PaymentMethodResponse = pydantic.Field(alias="paymentDestination")
-    payment_destination_id: PaymentMethodId = pydantic.Field(alias="paymentDestinationId")
-    payment_destination_options: typing.Optional[PaymentDestinationOptions] = pydantic.Field(
-        alias="paymentDestinationOptions", default=None
-    )
+    payment_destination: typing_extensions.Annotated[PaymentMethodResponse, FieldMetadata(alias="paymentDestination")]
+    payment_destination_id: typing_extensions.Annotated[PaymentMethodId, FieldMetadata(alias="paymentDestinationId")]
+    payment_destination_options: typing_extensions.Annotated[
+        typing.Optional[PaymentDestinationOptions], FieldMetadata(alias="paymentDestinationOptions")
+    ] = None
     fees: typing.Optional[InvoiceFeesResponse] = None
-    created_at: dt.datetime = pydantic.Field(alias="createdAt")
-    updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
+    created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
+    updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

@@ -4,8 +4,10 @@ from __future__ import annotations
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
 from .check_delivery_method import CheckDeliveryMethod
-import pydantic
+import typing_extensions
+from ...core.serialization import FieldMetadata
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
+import pydantic
 from .bank_delivery_method import BankDeliveryMethod
 
 
@@ -23,7 +25,9 @@ class PaymentDestinationOptions_Check(UniversalBaseModel):
 
     type: typing.Literal["check"] = "check"
     delivery: typing.Optional[CheckDeliveryMethod] = None
-    print_description: typing.Optional[bool] = pydantic.Field(alias="printDescription", default=None)
+    print_description: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="printDescription")] = (
+        None
+    )
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -74,7 +78,7 @@ class PaymentDestinationOptions_Utility(UniversalBaseModel):
     """
 
     type: typing.Literal["utility"] = "utility"
-    account_id: str = pydantic.Field(alias="accountId")
+    account_id: typing_extensions.Annotated[str, FieldMetadata(alias="accountId")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

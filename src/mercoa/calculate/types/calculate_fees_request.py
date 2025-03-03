@@ -4,7 +4,9 @@ from ...core.pydantic_utilities import UniversalBaseModel
 import pydantic
 import typing
 from ...payment_method_types.types.currency_code import CurrencyCode
+import typing_extensions
 from ...entity_types.types.entity_id import EntityId
+from ...core.serialization import FieldMetadata
 from ...payment_method_types.types.payment_method_id import PaymentMethodId
 from ...invoice_types.types.payment_destination_options import PaymentDestinationOptions
 from .fee_calculation_type import FeeCalculationType
@@ -34,24 +36,30 @@ class CalculateFeesRequest(UniversalBaseModel):
     Currency code for the amount. Defaults to USD.
     """
 
-    creator_entity_id: typing.Optional[EntityId] = pydantic.Field(alias="creatorEntityId", default=None)
+    creator_entity_id: typing_extensions.Annotated[
+        typing.Optional[EntityId], FieldMetadata(alias="creatorEntityId")
+    ] = pydantic.Field(default=None)
     """
     ID of the entity creating the invoice. If not provided, the fees will be calculated with the default pricing for the organization.
     """
 
-    payment_source_id: PaymentMethodId = pydantic.Field(alias="paymentSourceId")
+    payment_source_id: typing_extensions.Annotated[PaymentMethodId, FieldMetadata(alias="paymentSourceId")] = (
+        pydantic.Field()
+    )
     """
     ID of payment source.
     """
 
-    payment_destination_id: PaymentMethodId = pydantic.Field(alias="paymentDestinationId")
+    payment_destination_id: typing_extensions.Annotated[
+        PaymentMethodId, FieldMetadata(alias="paymentDestinationId")
+    ] = pydantic.Field()
     """
     ID of payment destination.
     """
 
-    payment_destination_options: typing.Optional[PaymentDestinationOptions] = pydantic.Field(
-        alias="paymentDestinationOptions", default=None
-    )
+    payment_destination_options: typing_extensions.Annotated[
+        typing.Optional[PaymentDestinationOptions], FieldMetadata(alias="paymentDestinationOptions")
+    ] = pydantic.Field(default=None)
     """
     Options for the payment destination. Depending on the payment destination, this may include things such as check delivery method.
     """

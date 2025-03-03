@@ -2,6 +2,8 @@
 
 from ...core.pydantic_utilities import UniversalBaseModel
 import pydantic
+import typing_extensions
+from ...core.serialization import FieldMetadata
 import typing
 from .invoice_template_response import InvoiceTemplateResponse
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
@@ -337,7 +339,7 @@ class FindInvoiceTemplateResponse(UniversalBaseModel):
     Total number of invoice templates for the given filters. This value is not limited by the limit parameter. It is provided so that you can determine how many pages of results are available.
     """
 
-    has_more: bool = pydantic.Field(alias="hasMore")
+    has_more: typing_extensions.Annotated[bool, FieldMetadata(alias="hasMore")] = pydantic.Field()
     """
     True if there are more invoice templates available for the given filters.
     """

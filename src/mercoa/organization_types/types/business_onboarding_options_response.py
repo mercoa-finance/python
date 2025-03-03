@@ -2,26 +2,32 @@
 
 from .common_onboarding_options_response import CommonOnboardingOptionsResponse
 from .onboarding_option_response import OnboardingOptionResponse
-import pydantic
+import typing_extensions
+from ...core.serialization import FieldMetadata
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 import typing
+import pydantic
 
 
 class BusinessOnboardingOptionsResponse(CommonOnboardingOptionsResponse):
     type: OnboardingOptionResponse
-    doing_business_as: OnboardingOptionResponse = pydantic.Field(alias="doingBusinessAs")
+    doing_business_as: typing_extensions.Annotated[OnboardingOptionResponse, FieldMetadata(alias="doingBusinessAs")]
     ein: OnboardingOptionResponse
     mcc: OnboardingOptionResponse
-    formation_date: OnboardingOptionResponse = pydantic.Field(alias="formationDate")
+    formation_date: typing_extensions.Annotated[OnboardingOptionResponse, FieldMetadata(alias="formationDate")]
     website: OnboardingOptionResponse
     description: OnboardingOptionResponse
     representatives: OnboardingOptionResponse
     logo: OnboardingOptionResponse
-    average_transaction_size: OnboardingOptionResponse = pydantic.Field(alias="averageTransactionSize")
-    average_monthly_transaction_volume: OnboardingOptionResponse = pydantic.Field(
-        alias="averageMonthlyTransactionVolume"
-    )
-    max_transaction_size: OnboardingOptionResponse = pydantic.Field(alias="maxTransactionSize")
+    average_transaction_size: typing_extensions.Annotated[
+        OnboardingOptionResponse, FieldMetadata(alias="averageTransactionSize")
+    ]
+    average_monthly_transaction_volume: typing_extensions.Annotated[
+        OnboardingOptionResponse, FieldMetadata(alias="averageMonthlyTransactionVolume")
+    ]
+    max_transaction_size: typing_extensions.Annotated[
+        OnboardingOptionResponse, FieldMetadata(alias="maxTransactionSize")
+    ]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

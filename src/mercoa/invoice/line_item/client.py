@@ -8,6 +8,7 @@ from ...invoice_types.types.invoice_line_item_individual_update_request import I
 from ...core.request_options import RequestOptions
 from ...invoice_types.types.invoice_response import InvoiceResponse
 from ...core.jsonable_encoder import jsonable_encoder
+from ...core.serialization import convert_and_respect_annotation_metadata
 from json.decoder import JSONDecodeError
 from ...core.api_error import ApiError
 from ...core.pydantic_utilities import parse_obj_as
@@ -86,7 +87,9 @@ class LineItemClient:
         _response = self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/line-item/{jsonable_encoder(line_item_id)}",
             method="PUT",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=InvoiceLineItemIndividualUpdateRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -245,7 +248,9 @@ class AsyncLineItemClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"invoice/{jsonable_encoder(invoice_id)}/line-item/{jsonable_encoder(line_item_id)}",
             method="PUT",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=InvoiceLineItemIndividualUpdateRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )

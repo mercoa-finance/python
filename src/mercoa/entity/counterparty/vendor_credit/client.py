@@ -19,6 +19,7 @@ from ....commons.errors.unimplemented import Unimplemented
 from ....vendor_credit_types.types.vendor_credit_id import VendorCreditId
 from ....vendor_credit_types.types.vendor_credit_response import VendorCreditResponse
 from ....vendor_credit_types.types.vendor_credit_request import VendorCreditRequest
+from ....core.serialization import convert_and_respect_annotation_metadata
 from ....payment_method_types.types.currency_code import CurrencyCode
 from ....invoice_types.types.invoice_id import InvoiceId
 from ....vendor_credit_types.types.calculate_vendor_credit_usage_response import CalculateVendorCreditUsageResponse
@@ -330,7 +331,9 @@ class VendorCreditClient:
         _response = self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/counterparty/{jsonable_encoder(counterparty_id)}/vendor-credit",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=VendorCreditRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -605,8 +608,8 @@ class VendorCreditClient:
             params={
                 "amount": amount,
                 "currency": currency,
-                "excludedInvoiceIds": jsonable_encoder(excluded_invoice_ids),
-                "includedVendorCreditIds": jsonable_encoder(included_vendor_credit_ids),
+                "excludedInvoiceIds": excluded_invoice_ids,
+                "includedVendorCreditIds": included_vendor_credit_ids,
             },
             request_options=request_options,
         )
@@ -1022,7 +1025,9 @@ class AsyncVendorCreditClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"entity/{jsonable_encoder(entity_id)}/counterparty/{jsonable_encoder(counterparty_id)}/vendor-credit",
             method="POST",
-            json=request,
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=VendorCreditRequest, direction="write"
+            ),
             request_options=request_options,
             omit=OMIT,
         )
@@ -1313,8 +1318,8 @@ class AsyncVendorCreditClient:
             params={
                 "amount": amount,
                 "currency": currency,
-                "excludedInvoiceIds": jsonable_encoder(excluded_invoice_ids),
-                "includedVendorCreditIds": jsonable_encoder(included_vendor_credit_ids),
+                "excludedInvoiceIds": excluded_invoice_ids,
+                "includedVendorCreditIds": included_vendor_credit_ids,
             },
             request_options=request_options,
         )

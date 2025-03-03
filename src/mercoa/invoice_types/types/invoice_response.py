@@ -2,8 +2,10 @@
 
 from .invoice_response_base import InvoiceResponseBase
 from .invoice_id import InvoiceId
+import typing_extensions
 import typing
 import datetime as dt
+from ...core.serialization import FieldMetadata
 import pydantic
 from .invoice_failure_type import InvoiceFailureType
 from ...transaction.types.transaction_response_without_invoices import TransactionResponseWithoutInvoices
@@ -558,22 +560,30 @@ class InvoiceResponse(InvoiceResponseBase):
     """
 
     id: InvoiceId
-    processed_at: typing.Optional[dt.datetime] = pydantic.Field(alias="processedAt", default=None)
+    processed_at: typing_extensions.Annotated[typing.Optional[dt.datetime], FieldMetadata(alias="processedAt")] = (
+        pydantic.Field(default=None)
+    )
     """
     Date when the invoice payment was processed.
     """
 
-    settlement_date: typing.Optional[dt.datetime] = pydantic.Field(alias="settlementDate", default=None)
+    settlement_date: typing_extensions.Annotated[
+        typing.Optional[dt.datetime], FieldMetadata(alias="settlementDate")
+    ] = pydantic.Field(default=None)
     """
     Date of funds settlement.
     """
 
-    foreign_id: typing.Optional[str] = pydantic.Field(alias="foreignId", default=None)
+    foreign_id: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="foreignId")] = pydantic.Field(
+        default=None
+    )
     """
     The ID used to identify this invoice in your system. This ID must be unique within each creatorEntity in your system, e.g. two invoices with the same creatorEntity may not have the same foreign ID.
     """
 
-    failure_type: typing.Optional[InvoiceFailureType] = pydantic.Field(alias="failureType", default=None)
+    failure_type: typing_extensions.Annotated[
+        typing.Optional[InvoiceFailureType], FieldMetadata(alias="failureType")
+    ] = pydantic.Field(default=None)
     """
     If the invoice failed to be paid, this field will be populated with the type of failure.
     """
@@ -583,9 +593,9 @@ class InvoiceResponse(InvoiceResponseBase):
     Transactions associated with this invoice.
     """
 
-    vendor_credit_ids: typing.Optional[typing.List[VendorCreditId]] = pydantic.Field(
-        alias="vendorCreditIds", default=None
-    )
+    vendor_credit_ids: typing_extensions.Annotated[
+        typing.Optional[typing.List[VendorCreditId]], FieldMetadata(alias="vendorCreditIds")
+    ] = pydantic.Field(default=None)
     """
     The IDs of the vendor credits that are currently applied to this invoice.
     """

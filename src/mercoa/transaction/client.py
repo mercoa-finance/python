@@ -13,7 +13,7 @@ from .types.transaction_type import TransactionType
 from ..core.request_options import RequestOptions
 from .types.find_transactions_response import FindTransactionsResponse
 from ..core.datetime_utils import serialize_datetime
-from ..core.jsonable_encoder import jsonable_encoder
+from ..core.serialization import convert_and_respect_annotation_metadata
 from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
 from ..core.pydantic_utilities import parse_obj_as
@@ -25,6 +25,7 @@ from ..commons.errors.conflict import Conflict
 from ..commons.errors.internal_server_error import InternalServerError
 from ..commons.errors.unimplemented import Unimplemented
 from .types.transaction_response import TransactionResponse
+from ..core.jsonable_encoder import jsonable_encoder
 from ..core.client_wrapper import AsyncClientWrapper
 
 
@@ -142,8 +143,12 @@ class TransactionClient:
                 "limit": limit,
                 "startingAfter": starting_after,
                 "search": search,
-                "metadata": jsonable_encoder(metadata),
-                "lineItemMetadata": jsonable_encoder(line_item_metadata),
+                "metadata": convert_and_respect_annotation_metadata(
+                    object_=metadata, annotation=MetadataFilter, direction="write"
+                ),
+                "lineItemMetadata": convert_and_respect_annotation_metadata(
+                    object_=line_item_metadata, annotation=MetadataFilter, direction="write"
+                ),
                 "lineItemGlAccountId": line_item_gl_account_id,
                 "payerId": payer_id,
                 "vendorId": vendor_id,
@@ -480,8 +485,12 @@ class AsyncTransactionClient:
                 "limit": limit,
                 "startingAfter": starting_after,
                 "search": search,
-                "metadata": jsonable_encoder(metadata),
-                "lineItemMetadata": jsonable_encoder(line_item_metadata),
+                "metadata": convert_and_respect_annotation_metadata(
+                    object_=metadata, annotation=MetadataFilter, direction="write"
+                ),
+                "lineItemMetadata": convert_and_respect_annotation_metadata(
+                    object_=line_item_metadata, annotation=MetadataFilter, direction="write"
+                ),
                 "lineItemGlAccountId": line_item_gl_account_id,
                 "payerId": payer_id,
                 "vendorId": vendor_id,

@@ -3,7 +3,8 @@
 from __future__ import annotations
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
-import pydantic
+import typing_extensions
+from ...core.serialization import FieldMetadata
 from .bank_type import BankType
 from .bank_status import BankStatus
 from .bank_account_check_options import BankAccountCheckOptions
@@ -11,6 +12,7 @@ from .payment_method_id import PaymentMethodId
 from .currency_code import CurrencyCode
 import datetime as dt
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
+import pydantic
 from .card_type import CardType
 from .card_brand import CardBrand
 from .custom_payment_method_schema_id import CustomPaymentMethodSchemaId
@@ -48,24 +50,28 @@ class PaymentMethodResponse_BankAccount(UniversalBaseModel):
     """
 
     type: typing.Literal["bankAccount"] = "bankAccount"
-    account_name: str = pydantic.Field(alias="accountName")
-    bank_name: str = pydantic.Field(alias="bankName")
-    routing_number: str = pydantic.Field(alias="routingNumber")
-    account_number: str = pydantic.Field(alias="accountNumber")
-    account_type: BankType = pydantic.Field(alias="accountType")
+    account_name: typing_extensions.Annotated[str, FieldMetadata(alias="accountName")]
+    bank_name: typing_extensions.Annotated[str, FieldMetadata(alias="bankName")]
+    routing_number: typing_extensions.Annotated[str, FieldMetadata(alias="routingNumber")]
+    account_number: typing_extensions.Annotated[str, FieldMetadata(alias="accountNumber")]
+    account_type: typing_extensions.Annotated[BankType, FieldMetadata(alias="accountType")]
     status: BankStatus
-    check_options: typing.Optional[BankAccountCheckOptions] = pydantic.Field(alias="checkOptions", default=None)
+    check_options: typing_extensions.Annotated[
+        typing.Optional[BankAccountCheckOptions], FieldMetadata(alias="checkOptions")
+    ] = None
     id: PaymentMethodId
-    is_default_source: bool = pydantic.Field(alias="isDefaultSource")
-    is_default_destination: bool = pydantic.Field(alias="isDefaultDestination")
-    supported_currencies: typing.List[CurrencyCode] = pydantic.Field(alias="supportedCurrencies")
-    external_accounting_system_id: typing.Optional[str] = pydantic.Field(
-        alias="externalAccountingSystemId", default=None
-    )
+    is_default_source: typing_extensions.Annotated[bool, FieldMetadata(alias="isDefaultSource")]
+    is_default_destination: typing_extensions.Annotated[bool, FieldMetadata(alias="isDefaultDestination")]
+    supported_currencies: typing_extensions.Annotated[
+        typing.List[CurrencyCode], FieldMetadata(alias="supportedCurrencies")
+    ]
+    external_accounting_system_id: typing_extensions.Annotated[
+        typing.Optional[str], FieldMetadata(alias="externalAccountingSystemId")
+    ] = None
     frozen: bool
     metadata: typing.Dict[str, str]
-    created_at: dt.datetime = pydantic.Field(alias="createdAt")
-    updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
+    created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
+    updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -108,22 +114,24 @@ class PaymentMethodResponse_Card(UniversalBaseModel):
     """
 
     type: typing.Literal["card"] = "card"
-    card_type: CardType = pydantic.Field(alias="cardType")
-    card_brand: CardBrand = pydantic.Field(alias="cardBrand")
-    last_four: str = pydantic.Field(alias="lastFour")
-    exp_month: str = pydantic.Field(alias="expMonth")
-    exp_year: str = pydantic.Field(alias="expYear")
+    card_type: typing_extensions.Annotated[CardType, FieldMetadata(alias="cardType")]
+    card_brand: typing_extensions.Annotated[CardBrand, FieldMetadata(alias="cardBrand")]
+    last_four: typing_extensions.Annotated[str, FieldMetadata(alias="lastFour")]
+    exp_month: typing_extensions.Annotated[str, FieldMetadata(alias="expMonth")]
+    exp_year: typing_extensions.Annotated[str, FieldMetadata(alias="expYear")]
     id: PaymentMethodId
-    is_default_source: bool = pydantic.Field(alias="isDefaultSource")
-    is_default_destination: bool = pydantic.Field(alias="isDefaultDestination")
-    supported_currencies: typing.List[CurrencyCode] = pydantic.Field(alias="supportedCurrencies")
-    external_accounting_system_id: typing.Optional[str] = pydantic.Field(
-        alias="externalAccountingSystemId", default=None
-    )
+    is_default_source: typing_extensions.Annotated[bool, FieldMetadata(alias="isDefaultSource")]
+    is_default_destination: typing_extensions.Annotated[bool, FieldMetadata(alias="isDefaultDestination")]
+    supported_currencies: typing_extensions.Annotated[
+        typing.List[CurrencyCode], FieldMetadata(alias="supportedCurrencies")
+    ]
+    external_accounting_system_id: typing_extensions.Annotated[
+        typing.Optional[str], FieldMetadata(alias="externalAccountingSystemId")
+    ] = None
     frozen: bool
     metadata: typing.Dict[str, str]
-    created_at: dt.datetime = pydantic.Field(alias="createdAt")
-    updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
+    created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
+    updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -166,24 +174,26 @@ class PaymentMethodResponse_Check(UniversalBaseModel):
     """
 
     type: typing.Literal["check"] = "check"
-    pay_to_the_order_of: str = pydantic.Field(alias="payToTheOrderOf")
-    address_line_1: str = pydantic.Field(alias="addressLine1")
-    address_line_2: typing.Optional[str] = pydantic.Field(alias="addressLine2", default=None)
+    pay_to_the_order_of: typing_extensions.Annotated[str, FieldMetadata(alias="payToTheOrderOf")]
+    address_line_1: typing_extensions.Annotated[str, FieldMetadata(alias="addressLine1")]
+    address_line_2: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="addressLine2")] = None
     city: str
-    state_or_province: str = pydantic.Field(alias="stateOrProvince")
-    postal_code: str = pydantic.Field(alias="postalCode")
+    state_or_province: typing_extensions.Annotated[str, FieldMetadata(alias="stateOrProvince")]
+    postal_code: typing_extensions.Annotated[str, FieldMetadata(alias="postalCode")]
     country: str
     id: PaymentMethodId
-    is_default_source: bool = pydantic.Field(alias="isDefaultSource")
-    is_default_destination: bool = pydantic.Field(alias="isDefaultDestination")
-    supported_currencies: typing.List[CurrencyCode] = pydantic.Field(alias="supportedCurrencies")
-    external_accounting_system_id: typing.Optional[str] = pydantic.Field(
-        alias="externalAccountingSystemId", default=None
-    )
+    is_default_source: typing_extensions.Annotated[bool, FieldMetadata(alias="isDefaultSource")]
+    is_default_destination: typing_extensions.Annotated[bool, FieldMetadata(alias="isDefaultDestination")]
+    supported_currencies: typing_extensions.Annotated[
+        typing.List[CurrencyCode], FieldMetadata(alias="supportedCurrencies")
+    ]
+    external_accounting_system_id: typing_extensions.Annotated[
+        typing.Optional[str], FieldMetadata(alias="externalAccountingSystemId")
+    ] = None
     frozen: bool
     metadata: typing.Dict[str, str]
-    created_at: dt.datetime = pydantic.Field(alias="createdAt")
-    updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
+    created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
+    updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -226,24 +236,28 @@ class PaymentMethodResponse_Custom(UniversalBaseModel):
     """
 
     type: typing.Literal["custom"] = "custom"
-    foreign_id: typing.Optional[str] = pydantic.Field(alias="foreignId", default=None)
-    account_name: typing.Optional[str] = pydantic.Field(alias="accountName", default=None)
-    account_number: typing.Optional[str] = pydantic.Field(alias="accountNumber", default=None)
-    available_balance: typing.Optional[float] = pydantic.Field(alias="availableBalance", default=None)
-    schema_id: CustomPaymentMethodSchemaId = pydantic.Field(alias="schemaId")
-    schema_: CustomPaymentMethodSchemaResponse = pydantic.Field(alias="schema")
+    foreign_id: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="foreignId")] = None
+    account_name: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="accountName")] = None
+    account_number: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="accountNumber")] = None
+    available_balance: typing_extensions.Annotated[typing.Optional[float], FieldMetadata(alias="availableBalance")] = (
+        None
+    )
+    schema_id: typing_extensions.Annotated[CustomPaymentMethodSchemaId, FieldMetadata(alias="schemaId")]
+    schema_: typing_extensions.Annotated[CustomPaymentMethodSchemaResponse, FieldMetadata(alias="schema")]
     data: typing.Dict[str, str]
     id: PaymentMethodId
-    is_default_source: bool = pydantic.Field(alias="isDefaultSource")
-    is_default_destination: bool = pydantic.Field(alias="isDefaultDestination")
-    supported_currencies: typing.List[CurrencyCode] = pydantic.Field(alias="supportedCurrencies")
-    external_accounting_system_id: typing.Optional[str] = pydantic.Field(
-        alias="externalAccountingSystemId", default=None
-    )
+    is_default_source: typing_extensions.Annotated[bool, FieldMetadata(alias="isDefaultSource")]
+    is_default_destination: typing_extensions.Annotated[bool, FieldMetadata(alias="isDefaultDestination")]
+    supported_currencies: typing_extensions.Annotated[
+        typing.List[CurrencyCode], FieldMetadata(alias="supportedCurrencies")
+    ]
+    external_accounting_system_id: typing_extensions.Annotated[
+        typing.Optional[str], FieldMetadata(alias="externalAccountingSystemId")
+    ] = None
     frozen: bool
     metadata: typing.Dict[str, str]
-    created_at: dt.datetime = pydantic.Field(alias="createdAt")
-    updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
+    created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
+    updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -287,16 +301,18 @@ class PaymentMethodResponse_OffPlatform(UniversalBaseModel):
 
     type: typing.Literal["offPlatform"] = "offPlatform"
     id: PaymentMethodId
-    is_default_source: bool = pydantic.Field(alias="isDefaultSource")
-    is_default_destination: bool = pydantic.Field(alias="isDefaultDestination")
-    supported_currencies: typing.List[CurrencyCode] = pydantic.Field(alias="supportedCurrencies")
-    external_accounting_system_id: typing.Optional[str] = pydantic.Field(
-        alias="externalAccountingSystemId", default=None
-    )
+    is_default_source: typing_extensions.Annotated[bool, FieldMetadata(alias="isDefaultSource")]
+    is_default_destination: typing_extensions.Annotated[bool, FieldMetadata(alias="isDefaultDestination")]
+    supported_currencies: typing_extensions.Annotated[
+        typing.List[CurrencyCode], FieldMetadata(alias="supportedCurrencies")
+    ]
+    external_accounting_system_id: typing_extensions.Annotated[
+        typing.Optional[str], FieldMetadata(alias="externalAccountingSystemId")
+    ] = None
     frozen: bool
     metadata: typing.Dict[str, str]
-    created_at: dt.datetime = pydantic.Field(alias="createdAt")
-    updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
+    created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
+    updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -339,18 +355,20 @@ class PaymentMethodResponse_Utility(UniversalBaseModel):
     """
 
     type: typing.Literal["utility"] = "utility"
-    utility_id: str = pydantic.Field(alias="utilityId")
+    utility_id: typing_extensions.Annotated[str, FieldMetadata(alias="utilityId")]
     id: PaymentMethodId
-    is_default_source: bool = pydantic.Field(alias="isDefaultSource")
-    is_default_destination: bool = pydantic.Field(alias="isDefaultDestination")
-    supported_currencies: typing.List[CurrencyCode] = pydantic.Field(alias="supportedCurrencies")
-    external_accounting_system_id: typing.Optional[str] = pydantic.Field(
-        alias="externalAccountingSystemId", default=None
-    )
+    is_default_source: typing_extensions.Annotated[bool, FieldMetadata(alias="isDefaultSource")]
+    is_default_destination: typing_extensions.Annotated[bool, FieldMetadata(alias="isDefaultDestination")]
+    supported_currencies: typing_extensions.Annotated[
+        typing.List[CurrencyCode], FieldMetadata(alias="supportedCurrencies")
+    ]
+    external_accounting_system_id: typing_extensions.Annotated[
+        typing.Optional[str], FieldMetadata(alias="externalAccountingSystemId")
+    ] = None
     frozen: bool
     metadata: typing.Dict[str, str]
-    created_at: dt.datetime = pydantic.Field(alias="createdAt")
-    updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
+    created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
+    updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

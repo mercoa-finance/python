@@ -5,7 +5,9 @@ from .contract_id import ContractId
 import pydantic
 import typing
 from .contract_recurrence_response import ContractRecurrenceResponse
+import typing_extensions
 import datetime as dt
+from ...core.serialization import FieldMetadata
 from ...entity_types.types.entity_id import EntityId
 from ...entity_types.types.counterparty_response import CounterpartyResponse
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
@@ -217,17 +219,21 @@ class ContractResponse(UniversalBaseModel):
     Recurrences defining the contract's fee schedule
     """
 
-    next_invoice_date: typing.Optional[dt.date] = pydantic.Field(alias="nextInvoiceDate", default=None)
+    next_invoice_date: typing_extensions.Annotated[typing.Optional[dt.date], FieldMetadata(alias="nextInvoiceDate")] = (
+        pydantic.Field(default=None)
+    )
     """
     Date of the next invoice to be created from the contract
     """
 
-    creator_entity_id: EntityId = pydantic.Field(alias="creatorEntityId")
+    creator_entity_id: typing_extensions.Annotated[EntityId, FieldMetadata(alias="creatorEntityId")] = pydantic.Field()
     """
     The ID of the entity who created this contract
     """
 
-    payer_id: typing.Optional[EntityId] = pydantic.Field(alias="payerId", default=None)
+    payer_id: typing_extensions.Annotated[typing.Optional[EntityId], FieldMetadata(alias="payerId")] = pydantic.Field(
+        default=None
+    )
     """
     The ID of the payer entity for this contract
     """
@@ -237,7 +243,9 @@ class ContractResponse(UniversalBaseModel):
     The payer entity for this contract
     """
 
-    vendor_id: typing.Optional[EntityId] = pydantic.Field(alias="vendorId", default=None)
+    vendor_id: typing_extensions.Annotated[typing.Optional[EntityId], FieldMetadata(alias="vendorId")] = pydantic.Field(
+        default=None
+    )
     """
     The ID of the vendor entity for this contract
     """
@@ -247,8 +255,8 @@ class ContractResponse(UniversalBaseModel):
     The vendor entity for this contract
     """
 
-    created_at: dt.datetime = pydantic.Field(alias="createdAt")
-    updated_at: dt.datetime = pydantic.Field(alias="updatedAt")
+    created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
+    updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

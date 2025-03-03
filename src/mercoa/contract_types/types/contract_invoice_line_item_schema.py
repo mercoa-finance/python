@@ -2,7 +2,9 @@
 
 from ...core.pydantic_utilities import UniversalBaseModel
 import pydantic
+import typing_extensions
 import typing
+from ...core.serialization import FieldMetadata
 from ...payment_method_types.types.currency_code import CurrencyCode
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
@@ -26,7 +28,9 @@ class ContractInvoiceLineItemSchema(UniversalBaseModel):
     Name of the line item
     """
 
-    unit_price: typing.Optional[float] = pydantic.Field(alias="unitPrice", default=None)
+    unit_price: typing_extensions.Annotated[typing.Optional[float], FieldMetadata(alias="unitPrice")] = pydantic.Field(
+        default=None
+    )
     """
     Unit price of the line item
     """

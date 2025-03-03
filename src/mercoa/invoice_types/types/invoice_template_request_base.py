@@ -5,7 +5,9 @@ import typing
 from .invoice_status import InvoiceStatus
 import pydantic
 from ...payment_method_types.types.currency_code import CurrencyCode
+import typing_extensions
 import datetime as dt
+from ...core.serialization import FieldMetadata
 from ...entity_types.types.entity_id import EntityId
 from ...payment_method_types.types.payment_method_id import PaymentMethodId
 from .payment_destination_options import PaymentDestinationOptions
@@ -28,54 +30,72 @@ class InvoiceTemplateRequestBase(UniversalBaseModel):
     Currency code for the amount. Defaults to USD.
     """
 
-    invoice_date: typing.Optional[dt.datetime] = pydantic.Field(alias="invoiceDate", default=None)
+    invoice_date: typing_extensions.Annotated[typing.Optional[dt.datetime], FieldMetadata(alias="invoiceDate")] = (
+        pydantic.Field(default=None)
+    )
     """
     Date the invoice was issued.
     """
 
-    deduction_date: typing.Optional[dt.datetime] = pydantic.Field(alias="deductionDate", default=None)
+    deduction_date: typing_extensions.Annotated[typing.Optional[dt.datetime], FieldMetadata(alias="deductionDate")] = (
+        pydantic.Field(default=None)
+    )
     """
     Initial date when funds are scheduled to be deducted from payer's account.
     """
 
-    due_date: typing.Optional[dt.datetime] = pydantic.Field(alias="dueDate", default=None)
+    due_date: typing_extensions.Annotated[typing.Optional[dt.datetime], FieldMetadata(alias="dueDate")] = (
+        pydantic.Field(default=None)
+    )
     """
     Due date of invoice.
     """
 
-    invoice_number: typing.Optional[str] = pydantic.Field(alias="invoiceNumber", default=None)
-    note_to_self: typing.Optional[str] = pydantic.Field(alias="noteToSelf", default=None)
+    invoice_number: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="invoiceNumber")] = None
+    note_to_self: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="noteToSelf")] = pydantic.Field(
+        default=None
+    )
     """
     Note to self or memo on invoice.
     """
 
-    service_start_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceStartDate", default=None)
-    service_end_date: typing.Optional[dt.datetime] = pydantic.Field(alias="serviceEndDate", default=None)
-    payer_id: typing.Optional[EntityId] = pydantic.Field(alias="payerId", default=None)
+    service_start_date: typing_extensions.Annotated[
+        typing.Optional[dt.datetime], FieldMetadata(alias="serviceStartDate")
+    ] = None
+    service_end_date: typing_extensions.Annotated[
+        typing.Optional[dt.datetime], FieldMetadata(alias="serviceEndDate")
+    ] = None
+    payer_id: typing_extensions.Annotated[typing.Optional[EntityId], FieldMetadata(alias="payerId")] = pydantic.Field(
+        default=None
+    )
     """
     ID or foreign ID of the payer of this invoice.
     """
 
-    payment_source_id: typing.Optional[PaymentMethodId] = pydantic.Field(alias="paymentSourceId", default=None)
+    payment_source_id: typing_extensions.Annotated[
+        typing.Optional[PaymentMethodId], FieldMetadata(alias="paymentSourceId")
+    ] = pydantic.Field(default=None)
     """
     ID of payment source for this invoice. If not provided, will attempt to use the default payment source for the payer when creating an invoice if a default payment source exists for the payer.
     """
 
-    vendor_id: typing.Optional[EntityId] = pydantic.Field(alias="vendorId", default=None)
+    vendor_id: typing_extensions.Annotated[typing.Optional[EntityId], FieldMetadata(alias="vendorId")] = pydantic.Field(
+        default=None
+    )
     """
     ID or foreign ID of the vendor of this invoice.
     """
 
-    payment_destination_id: typing.Optional[PaymentMethodId] = pydantic.Field(
-        alias="paymentDestinationId", default=None
-    )
+    payment_destination_id: typing_extensions.Annotated[
+        typing.Optional[PaymentMethodId], FieldMetadata(alias="paymentDestinationId")
+    ] = pydantic.Field(default=None)
     """
     ID of payment destination for this invoice. If not provided, will attempt to use the default payment destination for the vendor when creating an invoice if a default payment destination exists for the vendor.
     """
 
-    payment_destination_options: typing.Optional[PaymentDestinationOptions] = pydantic.Field(
-        alias="paymentDestinationOptions", default=None
-    )
+    payment_destination_options: typing_extensions.Annotated[
+        typing.Optional[PaymentDestinationOptions], FieldMetadata(alias="paymentDestinationOptions")
+    ] = pydantic.Field(default=None)
     """
     Options for the payment destination. Depending on the payment destination, this may include things such as check delivery method.
     """
@@ -95,7 +115,9 @@ class InvoiceTemplateRequestBase(UniversalBaseModel):
     Base64-encoded string. Supported file types include PNG, JPG, WEBP, PDF, and all Microsoft Office formats (automatically converted to PDF). Max file size 10MB.
     """
 
-    creator_user_id: typing.Optional[EntityUserId] = pydantic.Field(alias="creatorUserId", default=None)
+    creator_user_id: typing_extensions.Annotated[
+        typing.Optional[EntityUserId], FieldMetadata(alias="creatorUserId")
+    ] = pydantic.Field(default=None)
     """
     User ID or Foreign ID of entity user who created this invoice.
     """
@@ -105,22 +127,30 @@ class InvoiceTemplateRequestBase(UniversalBaseModel):
     If using a custom payment method, you can override the default fees for this invoice. If not provided, the default fees for the custom payment method will be used.
     """
 
-    batch_payment: typing.Optional[bool] = pydantic.Field(alias="batchPayment", default=None)
+    batch_payment: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="batchPayment")] = (
+        pydantic.Field(default=None)
+    )
     """
     If true, this invoice will be paid as a batch payment. Batches are automatically determined by Mercoa based on the payment source, destination, and scheduled payment date.
     """
 
-    payment_schedule: typing.Optional[PaymentSchedule] = pydantic.Field(alias="paymentSchedule", default=None)
+    payment_schedule: typing_extensions.Annotated[
+        typing.Optional[PaymentSchedule], FieldMetadata(alias="paymentSchedule")
+    ] = pydantic.Field(default=None)
     """
     If this is a recurring invoice, this will be the payment schedule for the invoice. If not provided, this will be a one-time invoice.
     """
 
-    tax_amount: typing.Optional[float] = pydantic.Field(alias="taxAmount", default=None)
+    tax_amount: typing_extensions.Annotated[typing.Optional[float], FieldMetadata(alias="taxAmount")] = pydantic.Field(
+        default=None
+    )
     """
     Tax amount for this invoice.
     """
 
-    shipping_amount: typing.Optional[float] = pydantic.Field(alias="shippingAmount", default=None)
+    shipping_amount: typing_extensions.Annotated[typing.Optional[float], FieldMetadata(alias="shippingAmount")] = (
+        pydantic.Field(default=None)
+    )
     """
     Shipping amount for this invoice.
     """
