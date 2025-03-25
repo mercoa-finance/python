@@ -38,5 +38,6 @@ class ExternalAccountingSystemCompanyCreationRequest_Rutter(UniversalBaseModel):
 
 
 ExternalAccountingSystemCompanyCreationRequest = typing.Union[
-    ExternalAccountingSystemCompanyCreationRequest_Codat, ExternalAccountingSystemCompanyCreationRequest_Rutter
+    ExternalAccountingSystemCompanyCreationRequest_Codat,
+    ExternalAccountingSystemCompanyCreationRequest_Rutter,
 ]

@@ -84,6 +84,7 @@ class EntityWithPaymentMethodResponse(EntityResponse):
                 supported_currencies=["USD"],
                 metadata={},
                 frozen=False,
+                confirmed_by_entity=True,
                 created_at=datetime.datetime.fromisoformat(
                     "2021-01-01 00:00:00+00:00",
                 ),
@@ -96,7 +97,8 @@ class EntityWithPaymentMethodResponse(EntityResponse):
     """
 
     payment_methods: typing_extensions.Annotated[
-        typing.Optional[typing.List[PaymentMethodResponse]], FieldMetadata(alias="paymentMethods")
+        typing.Optional[typing.List[PaymentMethodResponse]],
+        FieldMetadata(alias="paymentMethods"),
     ] = None
 
     if IS_PYDANTIC_V2:

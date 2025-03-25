@@ -4,7 +4,9 @@ import typing
 from ....core.client_wrapper import SyncClientWrapper
 from ....entity_types.types.entity_id import EntityId
 from ....core.request_options import RequestOptions
-from ....vendor_credit_types.types.find_vendor_credit_response import FindVendorCreditResponse
+from ....vendor_credit_types.types.find_vendor_credit_response import (
+    FindVendorCreditResponse,
+)
 from ....core.jsonable_encoder import jsonable_encoder
 from json.decoder import JSONDecodeError
 from ....core.api_error import ApiError
@@ -22,7 +24,9 @@ from ....vendor_credit_types.types.vendor_credit_request import VendorCreditRequ
 from ....core.serialization import convert_and_respect_annotation_metadata
 from ....payment_method_types.types.currency_code import CurrencyCode
 from ....invoice_types.types.invoice_id import InvoiceId
-from ....vendor_credit_types.types.calculate_vendor_credit_usage_response import CalculateVendorCreditUsageResponse
+from ....vendor_credit_types.types.calculate_vendor_credit_usage_response import (
+    CalculateVendorCreditUsageResponse,
+)
 from ....core.client_wrapper import AsyncClientWrapper
 
 # this is used as the default value for optional parameters
@@ -34,7 +38,11 @@ class VendorCreditClient:
         self._client_wrapper = client_wrapper
 
     def get_all(
-        self, entity_id: EntityId, counterparty_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_id: EntityId,
+        counterparty_id: EntityId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> FindVendorCreditResponse:
         """
         Parameters
@@ -704,7 +712,11 @@ class AsyncVendorCreditClient:
         self._client_wrapper = client_wrapper
 
     async def get_all(
-        self, entity_id: EntityId, counterparty_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_id: EntityId,
+        counterparty_id: EntityId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> FindVendorCreditResponse:
         """
         Parameters

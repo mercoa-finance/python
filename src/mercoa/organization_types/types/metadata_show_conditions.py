@@ -39,28 +39,32 @@ class MetadataShowConditions(UniversalBaseModel):
     """
 
     payment_source_types: typing_extensions.Annotated[
-        typing.Optional[typing.List[PaymentMethodType]], FieldMetadata(alias="paymentSourceTypes")
+        typing.Optional[typing.List[PaymentMethodType]],
+        FieldMetadata(alias="paymentSourceTypes"),
     ] = pydantic.Field(default=None)
     """
     Show this field only if the payment source type is in this list.
     """
 
     payment_source_custom_schema_ids: typing_extensions.Annotated[
-        typing.Optional[typing.List[str]], FieldMetadata(alias="paymentSourceCustomSchemaIds")
+        typing.Optional[typing.List[str]],
+        FieldMetadata(alias="paymentSourceCustomSchemaIds"),
     ] = pydantic.Field(default=None)
     """
     Show this field only if the payment source schema ID is in this list of payment source schema IDs. This is only applicable if paymentSourceTypes contains CUSTOM.
     """
 
     payment_destination_types: typing_extensions.Annotated[
-        typing.Optional[typing.List[PaymentMethodType]], FieldMetadata(alias="paymentDestinationTypes")
+        typing.Optional[typing.List[PaymentMethodType]],
+        FieldMetadata(alias="paymentDestinationTypes"),
     ] = pydantic.Field(default=None)
     """
     Show this field only if the payment destination type is in this list.
     """
 
     payment_destination_custom_schema_ids: typing_extensions.Annotated[
-        typing.Optional[typing.List[str]], FieldMetadata(alias="paymentDestinationCustomSchemaIds")
+        typing.Optional[typing.List[str]],
+        FieldMetadata(alias="paymentDestinationCustomSchemaIds"),
     ] = pydantic.Field(default=None)
     """
     Show this field only if the payment destination schema ID is in this list of payment destination schema IDs. This is only applicable if paymentDestinationTypes contains CUSTOM.

@@ -124,6 +124,7 @@ class FindTransactionsResponse(UniversalBaseModel):
                             supported_currencies=["USD"],
                             metadata={},
                             frozen=False,
+                            confirmed_by_entity=True,
                             created_at=datetime.datetime.fromisoformat(
                                 "2021-01-01 00:00:00+00:00",
                             ),
@@ -147,6 +148,7 @@ class FindTransactionsResponse(UniversalBaseModel):
                     supported_currencies=["USD"],
                     metadata={},
                     frozen=False,
+                    confirmed_by_entity=True,
                     created_at=datetime.datetime.fromisoformat(
                         "2021-01-01 00:00:00+00:00",
                     ),
@@ -198,6 +200,7 @@ class FindTransactionsResponse(UniversalBaseModel):
                             supported_currencies=["USD"],
                             metadata={},
                             frozen=False,
+                            confirmed_by_entity=False,
                             created_at=datetime.datetime.fromisoformat(
                                 "2021-01-01 00:00:00+00:00",
                             ),
@@ -221,6 +224,7 @@ class FindTransactionsResponse(UniversalBaseModel):
                     supported_currencies=["USD"],
                     metadata={},
                     frozen=False,
+                    confirmed_by_entity=True,
                     created_at=datetime.datetime.fromisoformat(
                         "2021-01-01 00:00:00+00:00",
                     ),
@@ -322,6 +326,7 @@ class FindTransactionsResponse(UniversalBaseModel):
                                     supported_currencies=["USD"],
                                     metadata={},
                                     frozen=False,
+                                    confirmed_by_entity=True,
                                     created_at=datetime.datetime.fromisoformat(
                                         "2021-01-01 00:00:00+00:00",
                                     ),
@@ -345,6 +350,7 @@ class FindTransactionsResponse(UniversalBaseModel):
                             supported_currencies=["USD"],
                             metadata={},
                             frozen=False,
+                            confirmed_by_entity=True,
                             created_at=datetime.datetime.fromisoformat(
                                 "2021-01-01 00:00:00+00:00",
                             ),
@@ -396,6 +402,7 @@ class FindTransactionsResponse(UniversalBaseModel):
                                     supported_currencies=["USD"],
                                     metadata={},
                                     frozen=False,
+                                    confirmed_by_entity=False,
                                     created_at=datetime.datetime.fromisoformat(
                                         "2021-01-01 00:00:00+00:00",
                                     ),
@@ -420,6 +427,7 @@ class FindTransactionsResponse(UniversalBaseModel):
                             supported_currencies=["USD"],
                             metadata={},
                             frozen=False,
+                            confirmed_by_entity=True,
                             created_at=datetime.datetime.fromisoformat(
                                 "2021-01-01 00:00:00+00:00",
                             ),
@@ -506,6 +514,7 @@ class FindTransactionsResponse(UniversalBaseModel):
                                             supported_currencies=["USD"],
                                             metadata={},
                                             frozen=False,
+                                            confirmed_by_entity=True,
                                             created_at=datetime.datetime.fromisoformat(
                                                 "2021-01-01 00:00:00+00:00",
                                             ),
@@ -529,6 +538,7 @@ class FindTransactionsResponse(UniversalBaseModel):
                                     supported_currencies=["USD"],
                                     metadata={},
                                     frozen=False,
+                                    confirmed_by_entity=True,
                                     created_at=datetime.datetime.fromisoformat(
                                         "2021-01-01 00:00:00+00:00",
                                     ),
@@ -580,6 +590,7 @@ class FindTransactionsResponse(UniversalBaseModel):
                                             supported_currencies=["USD"],
                                             metadata={},
                                             frozen=False,
+                                            confirmed_by_entity=False,
                                             created_at=datetime.datetime.fromisoformat(
                                                 "2021-01-01 00:00:00+00:00",
                                             ),
@@ -603,6 +614,7 @@ class FindTransactionsResponse(UniversalBaseModel):
                                     supported_currencies=["USD"],
                                     metadata={},
                                     frozen=False,
+                                    confirmed_by_entity=True,
                                     created_at=datetime.datetime.fromisoformat(
                                         "2021-01-01 00:00:00+00:00",
                                     ),
@@ -821,6 +833,7 @@ class FindTransactionsResponse(UniversalBaseModel):
                             supported_currencies=["USD"],
                             metadata={},
                             frozen=False,
+                            confirmed_by_entity=True,
                             created_at=datetime.datetime.fromisoformat(
                                 "2021-01-01 00:00:00+00:00",
                             ),
@@ -844,6 +857,7 @@ class FindTransactionsResponse(UniversalBaseModel):
                     supported_currencies=["USD"],
                     metadata={},
                     frozen=False,
+                    confirmed_by_entity=True,
                     created_at=datetime.datetime.fromisoformat(
                         "2021-01-01 00:00:00+00:00",
                     ),
@@ -895,6 +909,7 @@ class FindTransactionsResponse(UniversalBaseModel):
                             supported_currencies=["USD"],
                             metadata={},
                             frozen=False,
+                            confirmed_by_entity=False,
                             created_at=datetime.datetime.fromisoformat(
                                 "2021-01-01 00:00:00+00:00",
                             ),
@@ -919,6 +934,7 @@ class FindTransactionsResponse(UniversalBaseModel):
                     supported_currencies=["USD"],
                     metadata={},
                     frozen=False,
+                    confirmed_by_entity=True,
                     created_at=datetime.datetime.fromisoformat(
                         "2021-01-01 00:00:00+00:00",
                     ),
@@ -1020,6 +1036,7 @@ class FindTransactionsResponse(UniversalBaseModel):
                                     supported_currencies=["USD"],
                                     metadata={},
                                     frozen=False,
+                                    confirmed_by_entity=True,
                                     created_at=datetime.datetime.fromisoformat(
                                         "2021-01-01 00:00:00+00:00",
                                     ),
@@ -1043,6 +1060,7 @@ class FindTransactionsResponse(UniversalBaseModel):
                             supported_currencies=["USD"],
                             metadata={},
                             frozen=False,
+                            confirmed_by_entity=True,
                             created_at=datetime.datetime.fromisoformat(
                                 "2021-01-01 00:00:00+00:00",
                             ),
@@ -1094,6 +1112,7 @@ class FindTransactionsResponse(UniversalBaseModel):
                                     supported_currencies=["USD"],
                                     metadata={},
                                     frozen=False,
+                                    confirmed_by_entity=False,
                                     created_at=datetime.datetime.fromisoformat(
                                         "2021-01-01 00:00:00+00:00",
                                     ),
@@ -1118,6 +1137,7 @@ class FindTransactionsResponse(UniversalBaseModel):
                             supported_currencies=["USD"],
                             metadata={},
                             frozen=False,
+                            confirmed_by_entity=True,
                             created_at=datetime.datetime.fromisoformat(
                                 "2021-01-01 00:00:00+00:00",
                             ),
@@ -1204,6 +1224,7 @@ class FindTransactionsResponse(UniversalBaseModel):
                                             supported_currencies=["USD"],
                                             metadata={},
                                             frozen=False,
+                                            confirmed_by_entity=True,
                                             created_at=datetime.datetime.fromisoformat(
                                                 "2021-01-01 00:00:00+00:00",
                                             ),
@@ -1227,6 +1248,7 @@ class FindTransactionsResponse(UniversalBaseModel):
                                     supported_currencies=["USD"],
                                     metadata={},
                                     frozen=False,
+                                    confirmed_by_entity=True,
                                     created_at=datetime.datetime.fromisoformat(
                                         "2021-01-01 00:00:00+00:00",
                                     ),
@@ -1278,6 +1300,7 @@ class FindTransactionsResponse(UniversalBaseModel):
                                             supported_currencies=["USD"],
                                             metadata={},
                                             frozen=False,
+                                            confirmed_by_entity=False,
                                             created_at=datetime.datetime.fromisoformat(
                                                 "2021-01-01 00:00:00+00:00",
                                             ),
@@ -1301,6 +1324,7 @@ class FindTransactionsResponse(UniversalBaseModel):
                                     supported_currencies=["USD"],
                                     metadata={},
                                     frozen=False,
+                                    confirmed_by_entity=True,
                                     created_at=datetime.datetime.fromisoformat(
                                         "2021-01-01 00:00:00+00:00",
                                     ),
@@ -1518,6 +1542,7 @@ class FindTransactionsResponse(UniversalBaseModel):
                             supported_currencies=["USD"],
                             metadata={},
                             frozen=False,
+                            confirmed_by_entity=True,
                             created_at=datetime.datetime.fromisoformat(
                                 "2021-01-01 00:00:00+00:00",
                             ),
@@ -1541,6 +1566,7 @@ class FindTransactionsResponse(UniversalBaseModel):
                     supported_currencies=["USD"],
                     metadata={},
                     frozen=False,
+                    confirmed_by_entity=True,
                     created_at=datetime.datetime.fromisoformat(
                         "2021-01-01 00:00:00+00:00",
                     ),
@@ -1592,6 +1618,7 @@ class FindTransactionsResponse(UniversalBaseModel):
                             supported_currencies=["USD"],
                             metadata={},
                             frozen=False,
+                            confirmed_by_entity=False,
                             created_at=datetime.datetime.fromisoformat(
                                 "2021-01-01 00:00:00+00:00",
                             ),
@@ -1615,6 +1642,7 @@ class FindTransactionsResponse(UniversalBaseModel):
                     supported_currencies=["USD"],
                     metadata={},
                     frozen=False,
+                    confirmed_by_entity=True,
                     created_at=datetime.datetime.fromisoformat(
                         "2021-01-01 00:00:00+00:00",
                     ),
@@ -1694,6 +1722,7 @@ class FindTransactionsResponse(UniversalBaseModel):
                                     supported_currencies=["USD"],
                                     metadata={},
                                     frozen=False,
+                                    confirmed_by_entity=True,
                                     created_at=datetime.datetime.fromisoformat(
                                         "2021-01-01 00:00:00+00:00",
                                     ),
@@ -1747,6 +1776,7 @@ class FindTransactionsResponse(UniversalBaseModel):
                                     supported_currencies=["USD"],
                                     metadata={},
                                     frozen=False,
+                                    confirmed_by_entity=False,
                                     created_at=datetime.datetime.fromisoformat(
                                         "2021-01-01 00:00:00+00:00",
                                     ),
@@ -1780,6 +1810,7 @@ class FindTransactionsResponse(UniversalBaseModel):
                             supported_currencies=["USD"],
                             metadata={},
                             frozen=False,
+                            confirmed_by_entity=True,
                             created_at=datetime.datetime.fromisoformat(
                                 "2021-01-01 00:00:00+00:00",
                             ),
@@ -1802,6 +1833,7 @@ class FindTransactionsResponse(UniversalBaseModel):
                             supported_currencies=["USD"],
                             metadata={},
                             frozen=False,
+                            confirmed_by_entity=True,
                             created_at=datetime.datetime.fromisoformat(
                                 "2021-01-01 00:00:00+00:00",
                             ),
@@ -1891,6 +1923,7 @@ class FindTransactionsResponse(UniversalBaseModel):
                                             supported_currencies=["USD"],
                                             metadata={},
                                             frozen=False,
+                                            confirmed_by_entity=True,
                                             created_at=datetime.datetime.fromisoformat(
                                                 "2021-01-01 00:00:00+00:00",
                                             ),
@@ -1914,6 +1947,7 @@ class FindTransactionsResponse(UniversalBaseModel):
                                     supported_currencies=["USD"],
                                     metadata={},
                                     frozen=False,
+                                    confirmed_by_entity=True,
                                     created_at=datetime.datetime.fromisoformat(
                                         "2021-01-01 00:00:00+00:00",
                                     ),
@@ -1965,6 +1999,7 @@ class FindTransactionsResponse(UniversalBaseModel):
                                             supported_currencies=["USD"],
                                             metadata={},
                                             frozen=False,
+                                            confirmed_by_entity=False,
                                             created_at=datetime.datetime.fromisoformat(
                                                 "2021-01-01 00:00:00+00:00",
                                             ),
@@ -1988,6 +2023,7 @@ class FindTransactionsResponse(UniversalBaseModel):
                                     supported_currencies=["USD"],
                                     metadata={},
                                     frozen=False,
+                                    confirmed_by_entity=True,
                                     created_at=datetime.datetime.fromisoformat(
                                         "2021-01-01 00:00:00+00:00",
                                     ),

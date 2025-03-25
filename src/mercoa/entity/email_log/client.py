@@ -175,7 +175,11 @@ class EmailLogClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get(
-        self, entity_id: EntityId, log_id: EmailLogId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_id: EntityId,
+        log_id: EmailLogId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> EmailLog:
         """
         Get an email log by ID
@@ -457,7 +461,11 @@ class AsyncEmailLogClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get(
-        self, entity_id: EntityId, log_id: EmailLogId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_id: EntityId,
+        log_id: EmailLogId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> EmailLog:
         """
         Get an email log by ID

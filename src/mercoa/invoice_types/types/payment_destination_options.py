@@ -99,5 +99,7 @@ PaymentDestinationOptions_Check(
 )
 """
 PaymentDestinationOptions = typing.Union[
-    PaymentDestinationOptions_Check, PaymentDestinationOptions_BankAccount, PaymentDestinationOptions_Utility
+    PaymentDestinationOptions_Check,
+    PaymentDestinationOptions_BankAccount,
+    PaymentDestinationOptions_Utility,
 ]

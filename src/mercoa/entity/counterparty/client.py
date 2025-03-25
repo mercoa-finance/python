@@ -7,7 +7,9 @@ from ...entity_types.types.entity_id import EntityId
 from ...entity_types.types.counterparty_network_type import CounterpartyNetworkType
 from ...invoice_types.types.metadata_filter import MetadataFilter
 from ...core.request_options import RequestOptions
-from ...entity_types.types.find_counterparties_response import FindCounterpartiesResponse
+from ...entity_types.types.find_counterparties_response import (
+    FindCounterpartiesResponse,
+)
 from ...core.jsonable_encoder import jsonable_encoder
 from ...core.serialization import convert_and_respect_annotation_metadata
 from json.decoder import JSONDecodeError

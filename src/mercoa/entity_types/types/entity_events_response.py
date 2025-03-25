@@ -3,6 +3,8 @@
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
 from .entity_event import EntityEvent
+import typing_extensions
+from ...core.serialization import FieldMetadata
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 import pydantic
 
@@ -27,6 +29,7 @@ class EntityEventsResponse(UniversalBaseModel):
     EntityEventsResponse(
         data=[
             EntityEvent(
+                id="evt_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
                 webhook_ids=["webhook_12345"],
                 user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
                 data=EntityResponse(
@@ -81,11 +84,13 @@ class EntityEventsResponse(UniversalBaseModel):
             )
         ],
         count=1,
+        has_more=False,
     )
     """
 
     data: typing.List[EntityEvent]
     count: int
+    has_more: typing_extensions.Annotated[bool, FieldMetadata(alias="hasMore")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

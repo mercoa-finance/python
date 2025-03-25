@@ -3,10 +3,12 @@
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing_extensions
 from ...core.serialization import FieldMetadata
-import typing
-from ...invoice_types.types.bulk_invoice_creation_from_object_response import BulkInvoiceCreationFromObjectResponse
-from ...core.pydantic_utilities import IS_PYDANTIC_V2
 import pydantic
+import typing
+from ...invoice_types.types.bulk_invoice_creation_from_object_response import (
+    BulkInvoiceCreationFromObjectResponse,
+)
+from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
 class BulkInvoiceCreationWebhook(UniversalBaseModel):
@@ -31,8 +33,15 @@ class BulkInvoiceCreationWebhook(UniversalBaseModel):
     )
     """
 
-    event_type: typing_extensions.Annotated[str, FieldMetadata(alias="eventType")]
-    data: typing.List[BulkInvoiceCreationFromObjectResponse]
+    event_type: typing_extensions.Annotated[str, FieldMetadata(alias="eventType")] = pydantic.Field()
+    """
+    The type of the event.
+    """
+
+    data: typing.List[BulkInvoiceCreationFromObjectResponse] = pydantic.Field()
+    """
+    A list of bulk invoice creation responses.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

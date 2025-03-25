@@ -68,7 +68,8 @@ class InvoiceTemplateUpdateRequest(InvoiceTemplateRequestBase):
     """
 
     line_items: typing_extensions.Annotated[
-        typing.Optional[typing.List[InvoiceLineItemUpdateRequest]], FieldMetadata(alias="lineItems")
+        typing.Optional[typing.List[InvoiceLineItemUpdateRequest]],
+        FieldMetadata(alias="lineItems"),
     ] = None
     creator_entity_id: typing_extensions.Annotated[
         typing.Optional[EntityId], FieldMetadata(alias="creatorEntityId")

@@ -83,13 +83,15 @@ class InvoiceResponseBase(UniversalBaseModel):
     vendor_id: typing_extensions.Annotated[typing.Optional[EntityId], FieldMetadata(alias="vendorId")] = None
     vendor: typing.Optional[CounterpartyResponse] = None
     payment_destination: typing_extensions.Annotated[
-        typing.Optional[PaymentMethodResponse], FieldMetadata(alias="paymentDestination")
+        typing.Optional[PaymentMethodResponse],
+        FieldMetadata(alias="paymentDestination"),
     ] = None
     payment_destination_id: typing_extensions.Annotated[
         typing.Optional[PaymentMethodId], FieldMetadata(alias="paymentDestinationId")
     ] = None
     payment_destination_options: typing_extensions.Annotated[
-        typing.Optional[PaymentDestinationOptions], FieldMetadata(alias="paymentDestinationOptions")
+        typing.Optional[PaymentDestinationOptions],
+        FieldMetadata(alias="paymentDestinationOptions"),
     ] = None
     payment_destination_confirmed: typing_extensions.Annotated[
         bool, FieldMetadata(alias="paymentDestinationConfirmed")
@@ -116,7 +118,8 @@ class InvoiceResponseBase(UniversalBaseModel):
     """
 
     line_items: typing_extensions.Annotated[
-        typing.Optional[typing.List[InvoiceLineItemResponse]], FieldMetadata(alias="lineItems")
+        typing.Optional[typing.List[InvoiceLineItemResponse]],
+        FieldMetadata(alias="lineItems"),
     ] = None
     tax_amount: typing_extensions.Annotated[typing.Optional[float], FieldMetadata(alias="taxAmount")] = pydantic.Field(
         default=None

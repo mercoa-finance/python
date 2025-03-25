@@ -27,7 +27,8 @@ class PaymentMethodCustomizationRequest_BankAccount(UniversalBaseModel):
 
     type: typing.Literal["bankAccount"] = "bankAccount"
     default_delivery_method: typing_extensions.Annotated[
-        typing.Optional[BankDeliveryMethod], FieldMetadata(alias="defaultDeliveryMethod")
+        typing.Optional[BankDeliveryMethod],
+        FieldMetadata(alias="defaultDeliveryMethod"),
     ] = None
     disabled: bool
 
@@ -111,7 +112,8 @@ class PaymentMethodCustomizationRequest_Check(UniversalBaseModel):
 
     type: typing.Literal["check"] = "check"
     default_delivery_method: typing_extensions.Annotated[
-        typing.Optional[CheckDeliveryMethod], FieldMetadata(alias="defaultDeliveryMethod")
+        typing.Optional[CheckDeliveryMethod],
+        FieldMetadata(alias="defaultDeliveryMethod"),
     ] = None
     print_description: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="printDescription")] = (
         None

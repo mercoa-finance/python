@@ -3,9 +3,9 @@
 from .invoice_webhook import InvoiceWebhook
 import typing_extensions
 from ...core.serialization import FieldMetadata
+import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 import typing
-import pydantic
 
 
 class InvoiceStatusChangedWebhook(InvoiceWebhook):
@@ -100,6 +100,7 @@ class InvoiceStatusChangedWebhook(InvoiceWebhook):
                         supported_currencies=["USD"],
                         metadata={},
                         frozen=False,
+                        confirmed_by_entity=True,
                         created_at=datetime.datetime.fromisoformat(
                             "2021-01-01 00:00:00+00:00",
                         ),
@@ -153,6 +154,7 @@ class InvoiceStatusChangedWebhook(InvoiceWebhook):
                         supported_currencies=["USD"],
                         metadata={},
                         frozen=False,
+                        confirmed_by_entity=False,
                         created_at=datetime.datetime.fromisoformat(
                             "2021-01-01 00:00:00+00:00",
                         ),
@@ -186,6 +188,7 @@ class InvoiceStatusChangedWebhook(InvoiceWebhook):
                 supported_currencies=["USD"],
                 metadata={},
                 frozen=False,
+                confirmed_by_entity=True,
                 created_at=datetime.datetime.fromisoformat(
                     "2021-01-01 00:00:00+00:00",
                 ),
@@ -224,8 +227,15 @@ class InvoiceStatusChangedWebhook(InvoiceWebhook):
     )
     """
 
-    new_status: typing_extensions.Annotated[str, FieldMetadata(alias="newStatus")]
-    previous_status: typing_extensions.Annotated[str, FieldMetadata(alias="previousStatus")]
+    new_status: typing_extensions.Annotated[str, FieldMetadata(alias="newStatus")] = pydantic.Field()
+    """
+    The new status of the invoice.
+    """
+
+    previous_status: typing_extensions.Annotated[str, FieldMetadata(alias="previousStatus")] = pydantic.Field()
+    """
+    The previous status of the invoice.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

@@ -95,6 +95,7 @@ class CounterpartyResponse(EntityResponse):
                 supported_currencies=["USD"],
                 metadata={},
                 frozen=False,
+                confirmed_by_entity=True,
                 created_at=datetime.datetime.fromisoformat(
                     "2021-01-01 00:00:00+00:00",
                 ),
@@ -113,13 +114,16 @@ class CounterpartyResponse(EntityResponse):
     """
 
     payment_methods: typing_extensions.Annotated[
-        typing.Optional[typing.List[PaymentMethodResponse]], FieldMetadata(alias="paymentMethods")
+        typing.Optional[typing.List[PaymentMethodResponse]],
+        FieldMetadata(alias="paymentMethods"),
     ] = None
     counterparty_type: typing_extensions.Annotated[
-        typing.Optional[typing.List[CounterpartyNetworkType]], FieldMetadata(alias="counterpartyType")
+        typing.Optional[typing.List[CounterpartyNetworkType]],
+        FieldMetadata(alias="counterpartyType"),
     ] = None
     invoice_metrics: typing_extensions.Annotated[
-        typing.Optional[CounterpartyInvoiceMetricsResponse], FieldMetadata(alias="invoiceMetrics")
+        typing.Optional[CounterpartyInvoiceMetricsResponse],
+        FieldMetadata(alias="invoiceMetrics"),
     ] = None
 
     if IS_PYDANTIC_V2:

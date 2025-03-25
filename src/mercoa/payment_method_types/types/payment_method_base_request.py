@@ -40,6 +40,13 @@ class PaymentMethodBaseRequest(UniversalBaseModel):
     Metadata associated with this payment method.
     """
 
+    confirmed_by_entity: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="confirmedByEntity")
+    ] = pydantic.Field(default=None)
+    """
+    (ALPHA, MAY BE REMOVED) Indicate whether the payment method has been verified by the entity. This is useful if another entity has added this payment method to this entity, and you want the owner of the payment method to verify it is correct.
+    """
+
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
     else:

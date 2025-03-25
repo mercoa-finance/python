@@ -32,6 +32,12 @@ class FeeCustomizationRailRequest(UniversalBaseModel):
         check_mail=PaymentMethodFee_Flat(
             amount=2.5,
         ),
+        check_mail_priority=PaymentMethodFee_Flat(
+            amount=2.5,
+        ),
+        check_mail_ups_next_day=PaymentMethodFee_Flat(
+            amount=2.5,
+        ),
     )
     """
 
@@ -61,6 +67,21 @@ class FeeCustomizationRailRequest(UniversalBaseModel):
     )
     """
     The fee for the check mail rail.
+    """
+
+    check_mail_priority: typing_extensions.Annotated[
+        typing.Optional[PaymentMethodFee], FieldMetadata(alias="CHECK_MAIL_PRIORITY")
+    ] = pydantic.Field(default=None)
+    """
+    The fee for the check mail priority rail.
+    """
+
+    check_mail_ups_next_day: typing_extensions.Annotated[
+        typing.Optional[PaymentMethodFee],
+        FieldMetadata(alias="CHECK_MAIL_UPS_NEXT_DAY"),
+    ] = pydantic.Field(default=None)
+    """
+    The fee for the check mail UPS next day rail.
     """
 
     if IS_PYDANTIC_V2:

@@ -30,6 +30,7 @@ class CheckResponse(PaymentMethodBaseResponse):
         supported_currencies=["USD"],
         metadata={},
         frozen=False,
+        confirmed_by_entity=True,
         created_at=datetime.datetime.fromisoformat(
             "2021-01-01 00:00:00+00:00",
         ),

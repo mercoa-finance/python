@@ -21,8 +21,16 @@ from ...commons.errors.unimplemented import Unimplemented
 from ...payment_method_types.types.payment_method_request import PaymentMethodRequest
 from ...core.serialization import convert_and_respect_annotation_metadata
 from ...payment_method_types.types.payment_method_id import PaymentMethodId
-from ...payment_method_types.types.payment_method_update_request import PaymentMethodUpdateRequest
+from ...payment_method_types.types.payment_method_update_request import (
+    PaymentMethodUpdateRequest,
+)
 from ...entity_types.types.card_link_token_response import CardLinkTokenResponse
+import datetime as dt
+from ...payment_method_types.types.payment_method_event_id import PaymentMethodEventId
+from ...payment_method_types.types.payment_method_events_response import (
+    PaymentMethodEventsResponse,
+)
+from ...core.datetime_utils import serialize_datetime
 from ...core.client_wrapper import AsyncClientWrapper
 from .bank_account.client import AsyncBankAccountClient
 
@@ -469,7 +477,9 @@ class PaymentMethodClient:
             f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}",
             method="PUT",
             json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=PaymentMethodUpdateRequest, direction="write"
+                object_=request,
+                annotation=PaymentMethodUpdateRequest,
+                direction="write",
             ),
             request_options=request_options,
             omit=OMIT,
@@ -811,7 +821,10 @@ class PaymentMethodClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def card_link_token(
-        self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_id: EntityId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> CardLinkTokenResponse:
         """
         Get a card link token for an entity. This token is used by the frontend components to generate a PCI compliant form to add a card to the entity.
@@ -853,6 +866,153 @@ class PaymentMethodClient:
                 CardLinkTokenResponse,
                 parse_obj_as(
                     type_=CardLinkTokenResponse,  # type: ignore
+                    object_=_response_json,
+                ),
+            )
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def events(
+        self,
+        entity_id: EntityId,
+        payment_method_id: PaymentMethodId,
+        *,
+        start_date: typing.Optional[dt.datetime] = None,
+        end_date: typing.Optional[dt.datetime] = None,
+        limit: typing.Optional[int] = None,
+        starting_after: typing.Optional[PaymentMethodEventId] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> PaymentMethodEventsResponse:
+        """
+        Parameters
+        ----------
+        entity_id : EntityId
+            Entity ID or Entity ForeignID
+
+        payment_method_id : PaymentMethodId
+            Payment Method ID or Payment Method ForeignID
+
+        start_date : typing.Optional[dt.datetime]
+            Start date filter. If not provided, events from the start of time will be returned.
+
+        end_date : typing.Optional[dt.datetime]
+            End date filter. If not provided, events to the end of time will be returned.
+
+        limit : typing.Optional[int]
+            Limit the number of events returned. Limit can range between 1 and 100, and the default is 50.
+
+        starting_after : typing.Optional[PaymentMethodEventId]
+            The ID of the event to start after.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        PaymentMethodEventsResponse
+
+        Examples
+        --------
+        from mercoa import Mercoa
+
+        client = Mercoa(
+            token="YOUR_TOKEN",
+        )
+        client.entity.payment_method.events(
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}/events",
+            method="GET",
+            params={
+                "startDate": serialize_datetime(start_date) if start_date is not None else None,
+                "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                "limit": limit,
+                "startingAfter": starting_after,
+            },
+            request_options=request_options,
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return typing.cast(
+                PaymentMethodEventsResponse,
+                parse_obj_as(
+                    type_=PaymentMethodEventsResponse,  # type: ignore
                     object_=_response_json,
                 ),
             )
@@ -1401,7 +1561,9 @@ class AsyncPaymentMethodClient:
             f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}",
             method="PUT",
             json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=PaymentMethodUpdateRequest, direction="write"
+                object_=request,
+                annotation=PaymentMethodUpdateRequest,
+                direction="write",
             ),
             request_options=request_options,
             omit=OMIT,
@@ -1759,7 +1921,10 @@ class AsyncPaymentMethodClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def card_link_token(
-        self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_id: EntityId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> CardLinkTokenResponse:
         """
         Get a card link token for an entity. This token is used by the frontend components to generate a PCI compliant form to add a card to the entity.
@@ -1809,6 +1974,161 @@ class AsyncPaymentMethodClient:
                 CardLinkTokenResponse,
                 parse_obj_as(
                     type_=CardLinkTokenResponse,  # type: ignore
+                    object_=_response_json,
+                ),
+            )
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def events(
+        self,
+        entity_id: EntityId,
+        payment_method_id: PaymentMethodId,
+        *,
+        start_date: typing.Optional[dt.datetime] = None,
+        end_date: typing.Optional[dt.datetime] = None,
+        limit: typing.Optional[int] = None,
+        starting_after: typing.Optional[PaymentMethodEventId] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> PaymentMethodEventsResponse:
+        """
+        Parameters
+        ----------
+        entity_id : EntityId
+            Entity ID or Entity ForeignID
+
+        payment_method_id : PaymentMethodId
+            Payment Method ID or Payment Method ForeignID
+
+        start_date : typing.Optional[dt.datetime]
+            Start date filter. If not provided, events from the start of time will be returned.
+
+        end_date : typing.Optional[dt.datetime]
+            End date filter. If not provided, events to the end of time will be returned.
+
+        limit : typing.Optional[int]
+            Limit the number of events returned. Limit can range between 1 and 100, and the default is 50.
+
+        starting_after : typing.Optional[PaymentMethodEventId]
+            The ID of the event to start after.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        PaymentMethodEventsResponse
+
+        Examples
+        --------
+        import asyncio
+
+        from mercoa import AsyncMercoa
+
+        client = AsyncMercoa(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.entity.payment_method.events(
+                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}/events",
+            method="GET",
+            params={
+                "startDate": serialize_datetime(start_date) if start_date is not None else None,
+                "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                "limit": limit,
+                "startingAfter": starting_after,
+            },
+            request_options=request_options,
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return typing.cast(
+                PaymentMethodEventsResponse,
+                parse_obj_as(
+                    type_=PaymentMethodEventsResponse,  # type: ignore
                     object_=_response_json,
                 ),
             )

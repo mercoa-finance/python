@@ -147,7 +147,9 @@ class TransactionClient:
                     object_=metadata, annotation=MetadataFilter, direction="write"
                 ),
                 "lineItemMetadata": convert_and_respect_annotation_metadata(
-                    object_=line_item_metadata, annotation=MetadataFilter, direction="write"
+                    object_=line_item_metadata,
+                    annotation=MetadataFilter,
+                    direction="write",
                 ),
                 "lineItemGlAccountId": line_item_gl_account_id,
                 "payerId": payer_id,
@@ -246,7 +248,10 @@ class TransactionClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get(
-        self, transaction_id: TransactionId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        transaction_id: TransactionId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> TransactionResponse:
         """
         Get Transaction
@@ -489,7 +494,9 @@ class AsyncTransactionClient:
                     object_=metadata, annotation=MetadataFilter, direction="write"
                 ),
                 "lineItemMetadata": convert_and_respect_annotation_metadata(
-                    object_=line_item_metadata, annotation=MetadataFilter, direction="write"
+                    object_=line_item_metadata,
+                    annotation=MetadataFilter,
+                    direction="write",
                 ),
                 "lineItemGlAccountId": line_item_gl_account_id,
                 "payerId": payer_id,
@@ -588,7 +595,10 @@ class AsyncTransactionClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get(
-        self, transaction_id: TransactionId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        transaction_id: TransactionId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> TransactionResponse:
         """
         Get Transaction

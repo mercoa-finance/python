@@ -4,7 +4,9 @@ import typing
 from ...core.client_wrapper import SyncClientWrapper
 from ...invoice_types.types.invoice_template_id import InvoiceTemplateId
 from ...invoice_types.types.invoice_line_item_id import InvoiceLineItemId
-from ...invoice_types.types.invoice_line_item_individual_update_request import InvoiceLineItemIndividualUpdateRequest
+from ...invoice_types.types.invoice_line_item_individual_update_request import (
+    InvoiceLineItemIndividualUpdateRequest,
+)
 from ...core.request_options import RequestOptions
 from ...invoice_types.types.invoice_template_response import InvoiceTemplateResponse
 from ...core.jsonable_encoder import jsonable_encoder
@@ -88,7 +90,9 @@ class LineItemClient:
             f"invoice-template/{jsonable_encoder(invoice_template_id)}/line-item/{jsonable_encoder(line_item_id)}",
             method="PUT",
             json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=InvoiceLineItemIndividualUpdateRequest, direction="write"
+                object_=request,
+                annotation=InvoiceLineItemIndividualUpdateRequest,
+                direction="write",
             ),
             request_options=request_options,
             omit=OMIT,
@@ -249,7 +253,9 @@ class AsyncLineItemClient:
             f"invoice-template/{jsonable_encoder(invoice_template_id)}/line-item/{jsonable_encoder(line_item_id)}",
             method="PUT",
             json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=InvoiceLineItemIndividualUpdateRequest, direction="write"
+                object_=request,
+                annotation=InvoiceLineItemIndividualUpdateRequest,
+                direction="write",
             ),
             request_options=request_options,
             omit=OMIT,

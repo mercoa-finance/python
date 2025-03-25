@@ -6,7 +6,9 @@ from .user.client import UserClient
 from .invoice.client import InvoiceClient
 from ..entity_group_types.types.entity_group_id import EntityGroupId
 from ..core.request_options import RequestOptions
-from ..entity_group_types.types.entity_group_find_response import EntityGroupFindResponse
+from ..entity_group_types.types.entity_group_find_response import (
+    EntityGroupFindResponse,
+)
 from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
 from ..core.pydantic_utilities import parse_obj_as
@@ -17,14 +19,22 @@ from ..commons.errors.not_found import NotFound
 from ..commons.errors.conflict import Conflict
 from ..commons.errors.internal_server_error import InternalServerError
 from ..commons.errors.unimplemented import Unimplemented
-from ..entity_group_types.types.entity_group_create_request import EntityGroupCreateRequest
+from ..entity_group_types.types.entity_group_create_request import (
+    EntityGroupCreateRequest,
+)
 from ..entity_group_types.types.entity_group_response import EntityGroupResponse
 from ..core.serialization import convert_and_respect_annotation_metadata
 from ..core.jsonable_encoder import jsonable_encoder
-from ..entity_group_types.types.entity_group_update_request import EntityGroupUpdateRequest
+from ..entity_group_types.types.entity_group_update_request import (
+    EntityGroupUpdateRequest,
+)
 from ..entity_types.types.token_generation_options import TokenGenerationOptions
-from ..entity_group_types.types.entity_group_add_entities_request import EntityGroupAddEntitiesRequest
-from ..entity_group_types.types.entity_group_remove_entities_request import EntityGroupRemoveEntitiesRequest
+from ..entity_group_types.types.entity_group_add_entities_request import (
+    EntityGroupAddEntitiesRequest,
+)
+from ..entity_group_types.types.entity_group_remove_entities_request import (
+    EntityGroupRemoveEntitiesRequest,
+)
 from ..core.client_wrapper import AsyncClientWrapper
 from .user.client import AsyncUserClient
 from .invoice.client import AsyncInvoiceClient
@@ -167,7 +177,10 @@ class EntityGroupClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def create(
-        self, *, request: EntityGroupCreateRequest, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        request: EntityGroupCreateRequest,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityGroupResponse:
         """
         Create an entity group
@@ -562,7 +575,10 @@ class EntityGroupClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def delete(
-        self, entity_group_id: EntityGroupId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_group_id: EntityGroupId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
         Delete an entity group
@@ -855,7 +871,9 @@ class EntityGroupClient:
             f"entityGroup/{jsonable_encoder(entity_group_id)}/addEntities",
             method="POST",
             json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=EntityGroupAddEntitiesRequest, direction="write"
+                object_=request,
+                annotation=EntityGroupAddEntitiesRequest,
+                direction="write",
             ),
             request_options=request_options,
             omit=OMIT,
@@ -991,7 +1009,9 @@ class EntityGroupClient:
             f"entityGroup/{jsonable_encoder(entity_group_id)}/removeEntities",
             method="POST",
             json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=EntityGroupRemoveEntitiesRequest, direction="write"
+                object_=request,
+                annotation=EntityGroupRemoveEntitiesRequest,
+                direction="write",
             ),
             request_options=request_options,
             omit=OMIT,
@@ -1224,7 +1244,10 @@ class AsyncEntityGroupClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def create(
-        self, *, request: EntityGroupCreateRequest, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        request: EntityGroupCreateRequest,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityGroupResponse:
         """
         Create an entity group
@@ -1643,7 +1666,10 @@ class AsyncEntityGroupClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def delete(
-        self, entity_group_id: EntityGroupId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_group_id: EntityGroupId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
         Delete an entity group
@@ -1960,7 +1986,9 @@ class AsyncEntityGroupClient:
             f"entityGroup/{jsonable_encoder(entity_group_id)}/addEntities",
             method="POST",
             json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=EntityGroupAddEntitiesRequest, direction="write"
+                object_=request,
+                annotation=EntityGroupAddEntitiesRequest,
+                direction="write",
             ),
             request_options=request_options,
             omit=OMIT,
@@ -2104,7 +2132,9 @@ class AsyncEntityGroupClient:
             f"entityGroup/{jsonable_encoder(entity_group_id)}/removeEntities",
             method="POST",
             json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=EntityGroupRemoveEntitiesRequest, direction="write"
+                object_=request,
+                annotation=EntityGroupRemoveEntitiesRequest,
+                direction="write",
             ),
             request_options=request_options,
             omit=OMIT,

@@ -43,6 +43,7 @@ from .collection_types import (
     ActionResponse_Email,
     ActionStatus,
     EmailCollectionActionResponse,
+    EmailMessageResponse,
     UpdateNextActionRequest,
 )
 from .commons import (
@@ -112,7 +113,7 @@ from .customization_types import (
     PercentageFee,
     WorkflowCustomizationRequest,
 )
-from .email_log_types import EmailLog, EmailLogId, EmailLogResponse
+from .email_log_types import EmailLog, EmailLogAttachment, EmailLogId, EmailLogResponse
 from .entity_group_types import (
     EntityGroupAddEntitiesRequest,
     EntityGroupCreateRequest,
@@ -165,6 +166,7 @@ from .entity_types import (
     EntityCustomizationRequest,
     EntityCustomizationResponse,
     EntityEvent,
+    EntityEventId,
     EntityEventsResponse,
     EntityHidePayeesRequest,
     EntityHidePayorsRequest,
@@ -250,6 +252,7 @@ from .invoice_types import (
     InvoiceCreationWithEntityRequest,
     InvoiceDateFilter,
     InvoiceEvent,
+    InvoiceEventId,
     InvoiceEventsResponse,
     InvoiceFailureType,
     InvoiceFeesRequest,
@@ -296,7 +299,7 @@ from .invoice_types import (
     PaymentYearSchedule,
     UtilityPaymentDestinationOptions,
 )
-from .ocr import OcrAsyncResponse, OcrJobId, OcrJobResponse, OcrJobStatus, OcrRequest, OcrResponse
+from .ocr import OcrAsyncResponse, OcrJobId, OcrJobResponse, OcrJobStatus, OcrPageRange, OcrRequest, OcrResponse
 from .organization_types import (
     BankPaymentRailRequest,
     BankPaymentRailResponse,
@@ -402,6 +405,9 @@ from .payment_method_types import (
     CustomPaymentMethodUpdateRequest,
     PaymentMethodBaseRequest,
     PaymentMethodBaseResponse,
+    PaymentMethodEvent,
+    PaymentMethodEventId,
+    PaymentMethodEventsResponse,
     PaymentMethodId,
     PaymentMethodRequest,
     PaymentMethodRequest_BankAccount,
@@ -481,6 +487,7 @@ from .webhooks import (
     CounterpartyWebhook,
     EntityMetadataUpdatedWebhook,
     EntityWebhook,
+    InvoiceCollectionEventWebhook,
     InvoiceEmailWebhook,
     InvoiceStatusChangedWebhook,
     InvoiceWebhook,
@@ -606,8 +613,10 @@ __all__ = [
     "Ein",
     "EmailCollectionActionResponse",
     "EmailLog",
+    "EmailLogAttachment",
     "EmailLogId",
     "EmailLogResponse",
+    "EmailMessageResponse",
     "EmailProviderRequest",
     "EmailProviderResponse",
     "EmailSenderProvider",
@@ -624,6 +633,7 @@ __all__ = [
     "EntityCustomizationRequest",
     "EntityCustomizationResponse",
     "EntityEvent",
+    "EntityEventId",
     "EntityEventsResponse",
     "EntityGroupAddEntitiesRequest",
     "EntityGroupCreateRequest",
@@ -695,12 +705,14 @@ __all__ = [
     "IndividualProfileResponse",
     "IndustryCodes",
     "InternalServerError",
+    "InvoiceCollectionEventWebhook",
     "InvoiceCreationRequest",
     "InvoiceCreationWithEntityGroupRequest",
     "InvoiceCreationWithEntityRequest",
     "InvoiceDateFilter",
     "InvoiceEmailWebhook",
     "InvoiceEvent",
+    "InvoiceEventId",
     "InvoiceEventsResponse",
     "InvoiceFailureType",
     "InvoiceFeesRequest",
@@ -766,6 +778,7 @@ __all__ = [
     "OcrJobId",
     "OcrJobResponse",
     "OcrJobStatus",
+    "OcrPageRange",
     "OcrRequest",
     "OcrResponse",
     "OnboardingOptionRequest",
@@ -792,6 +805,9 @@ __all__ = [
     "PaymentMethodCustomizationRequest_OffPlatform",
     "PaymentMethodCustomizationRequest_Utility",
     "PaymentMethodCustomizationRequest_VirtualCard",
+    "PaymentMethodEvent",
+    "PaymentMethodEventId",
+    "PaymentMethodEventsResponse",
     "PaymentMethodFee",
     "PaymentMethodFee_Default",
     "PaymentMethodFee_Flat",

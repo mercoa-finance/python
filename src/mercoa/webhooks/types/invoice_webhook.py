@@ -3,10 +3,10 @@
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing_extensions
 from ...core.serialization import FieldMetadata
+import pydantic
 from ...invoice_types.types.invoice_response import InvoiceResponse
 import typing
 from ...entity_types.types.entity_user_response import EntityUserResponse
-import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -141,6 +141,7 @@ class InvoiceWebhook(UniversalBaseModel):
                         supported_currencies=["USD"],
                         metadata={},
                         frozen=False,
+                        confirmed_by_entity=True,
                         created_at=datetime.datetime.fromisoformat(
                             "2021-01-01 00:00:00+00:00",
                         ),
@@ -164,6 +165,7 @@ class InvoiceWebhook(UniversalBaseModel):
                 supported_currencies=["USD"],
                 metadata={},
                 frozen=False,
+                confirmed_by_entity=True,
                 created_at=datetime.datetime.fromisoformat(
                     "2021-01-01 00:00:00+00:00",
                 ),
@@ -215,6 +217,7 @@ class InvoiceWebhook(UniversalBaseModel):
                         supported_currencies=["USD"],
                         metadata={},
                         frozen=False,
+                        confirmed_by_entity=False,
                         created_at=datetime.datetime.fromisoformat(
                             "2021-01-01 00:00:00+00:00",
                         ),
@@ -239,6 +242,7 @@ class InvoiceWebhook(UniversalBaseModel):
                 supported_currencies=["USD"],
                 metadata={},
                 frozen=False,
+                confirmed_by_entity=True,
                 created_at=datetime.datetime.fromisoformat(
                     "2021-01-01 00:00:00+00:00",
                 ),
@@ -325,6 +329,7 @@ class InvoiceWebhook(UniversalBaseModel):
                                 supported_currencies=["USD"],
                                 metadata={},
                                 frozen=False,
+                                confirmed_by_entity=True,
                                 created_at=datetime.datetime.fromisoformat(
                                     "2021-01-01 00:00:00+00:00",
                                 ),
@@ -348,6 +353,7 @@ class InvoiceWebhook(UniversalBaseModel):
                         supported_currencies=["USD"],
                         metadata={},
                         frozen=False,
+                        confirmed_by_entity=True,
                         created_at=datetime.datetime.fromisoformat(
                             "2021-01-01 00:00:00+00:00",
                         ),
@@ -399,6 +405,7 @@ class InvoiceWebhook(UniversalBaseModel):
                                 supported_currencies=["USD"],
                                 metadata={},
                                 frozen=False,
+                                confirmed_by_entity=False,
                                 created_at=datetime.datetime.fromisoformat(
                                     "2021-01-01 00:00:00+00:00",
                                 ),
@@ -422,6 +429,7 @@ class InvoiceWebhook(UniversalBaseModel):
                         supported_currencies=["USD"],
                         metadata={},
                         frozen=False,
+                        confirmed_by_entity=True,
                         created_at=datetime.datetime.fromisoformat(
                             "2021-01-01 00:00:00+00:00",
                         ),
@@ -573,8 +581,16 @@ class InvoiceWebhook(UniversalBaseModel):
     )
     """
 
-    event_type: typing_extensions.Annotated[str, FieldMetadata(alias="eventType")]
-    invoice: InvoiceResponse
+    event_type: typing_extensions.Annotated[str, FieldMetadata(alias="eventType")] = pydantic.Field()
+    """
+    The type of the event.
+    """
+
+    invoice: InvoiceResponse = pydantic.Field()
+    """
+    The invoice involved in the event.
+    """
+
     user: typing.Optional[EntityUserResponse] = pydantic.Field(default=None)
     """
     User who initiated the change.

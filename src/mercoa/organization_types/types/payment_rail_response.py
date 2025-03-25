@@ -65,7 +65,8 @@ class PaymentRailResponse_VirtualCard(UniversalBaseModel):
 class PaymentRailResponse_Check(UniversalBaseModel):
     type: typing.Literal["check"] = "check"
     available_delivery_methods: typing_extensions.Annotated[
-        typing.List[CheckDeliveryMethod], FieldMetadata(alias="availableDeliveryMethods")
+        typing.List[CheckDeliveryMethod],
+        FieldMetadata(alias="availableDeliveryMethods"),
     ]
     default_delivery_method: typing_extensions.Annotated[
         CheckDeliveryMethod, FieldMetadata(alias="defaultDeliveryMethod")

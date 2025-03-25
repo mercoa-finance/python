@@ -29,7 +29,10 @@ class CalculateClient:
         self._client_wrapper = client_wrapper
 
     def fee(
-        self, *, request: CalculateFeesRequest, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        request: CalculateFeesRequest,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> InvoiceFeesResponse:
         """
         Calculate the estimated fees associated with an payment given the amount, payment source, and disbursement method. Can be used to calculate fees for a payment before creating an invoice.
@@ -156,7 +159,10 @@ class CalculateClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def payment_timing(
-        self, *, request: CalculatePaymentTimingRequest, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        request: CalculatePaymentTimingRequest,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> CalculatePaymentTimingResponse:
         """
         Calculate the estimated payment timing given the deduction date, payment source, and disbursement method. Can be used to calculate timing for a payment.
@@ -196,7 +202,9 @@ class CalculateClient:
             "paymentTiming",
             method="POST",
             json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=CalculatePaymentTimingRequest, direction="write"
+                object_=request,
+                annotation=CalculatePaymentTimingRequest,
+                direction="write",
             ),
             request_options=request_options,
             omit=OMIT,
@@ -292,7 +300,10 @@ class AsyncCalculateClient:
         self._client_wrapper = client_wrapper
 
     async def fee(
-        self, *, request: CalculateFeesRequest, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        request: CalculateFeesRequest,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> InvoiceFeesResponse:
         """
         Calculate the estimated fees associated with an payment given the amount, payment source, and disbursement method. Can be used to calculate fees for a payment before creating an invoice.
@@ -427,7 +438,10 @@ class AsyncCalculateClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def payment_timing(
-        self, *, request: CalculatePaymentTimingRequest, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        request: CalculatePaymentTimingRequest,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> CalculatePaymentTimingResponse:
         """
         Calculate the estimated payment timing given the deduction date, payment source, and disbursement method. Can be used to calculate timing for a payment.
@@ -474,7 +488,9 @@ class AsyncCalculateClient:
             "paymentTiming",
             method="POST",
             json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=CalculatePaymentTimingRequest, direction="write"
+                object_=request,
+                annotation=CalculatePaymentTimingRequest,
+                direction="write",
             ),
             request_options=request_options,
             omit=OMIT,

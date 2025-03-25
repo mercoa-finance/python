@@ -2,6 +2,8 @@
 
 import typing
 from .invoice_creation_with_entity_request import InvoiceCreationWithEntityRequest
-from .invoice_creation_with_entity_group_request import InvoiceCreationWithEntityGroupRequest
+from .invoice_creation_with_entity_group_request import (
+    InvoiceCreationWithEntityGroupRequest,
+)
 
 InvoiceCreationRequest = typing.Union[InvoiceCreationWithEntityRequest, InvoiceCreationWithEntityGroupRequest]

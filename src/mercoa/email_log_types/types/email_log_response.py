@@ -15,7 +15,11 @@ class EmailLogResponse(UniversalBaseModel):
     --------
     import datetime
 
-    from mercoa.email_log_types import EmailLog, EmailLogResponse
+    from mercoa.email_log_types import (
+        EmailLog,
+        EmailLogAttachment,
+        EmailLogResponse,
+    )
 
     EmailLogResponse(
         count=1,
@@ -30,6 +34,10 @@ class EmailLogResponse(UniversalBaseModel):
                 text_body="Hi Jane,\n\nPlease find attached the invoice for your recent purchase.\n\nThanks,\nJohn",
                 created_at=datetime.datetime.fromisoformat(
                     "2021-01-01 00:00:00+00:00",
+                ),
+                attachment=EmailLogAttachment(
+                    filename="invoice.pdf",
+                    content_type="application/pdf",
                 ),
             )
         ],

@@ -3,7 +3,9 @@
 import typing
 from ..core.client_wrapper import SyncClientWrapper
 from ..core.request_options import RequestOptions
-from ..payment_method_types.types.custom_payment_method_schema_response import CustomPaymentMethodSchemaResponse
+from ..payment_method_types.types.custom_payment_method_schema_response import (
+    CustomPaymentMethodSchemaResponse,
+)
 from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
 from ..core.pydantic_utilities import parse_obj_as
@@ -14,9 +16,13 @@ from ..commons.errors.not_found import NotFound
 from ..commons.errors.conflict import Conflict
 from ..commons.errors.internal_server_error import InternalServerError
 from ..commons.errors.unimplemented import Unimplemented
-from ..payment_method_types.types.custom_payment_method_schema_request import CustomPaymentMethodSchemaRequest
+from ..payment_method_types.types.custom_payment_method_schema_request import (
+    CustomPaymentMethodSchemaRequest,
+)
 from ..core.serialization import convert_and_respect_annotation_metadata
-from ..payment_method_types.types.custom_payment_method_schema_id import CustomPaymentMethodSchemaId
+from ..payment_method_types.types.custom_payment_method_schema_id import (
+    CustomPaymentMethodSchemaId,
+)
 from ..core.jsonable_encoder import jsonable_encoder
 from ..core.client_wrapper import AsyncClientWrapper
 
@@ -143,7 +149,10 @@ class CustomPaymentMethodSchemaClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def create(
-        self, *, request: CustomPaymentMethodSchemaRequest, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        request: CustomPaymentMethodSchemaRequest,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> CustomPaymentMethodSchemaResponse:
         """
         Create custom payment method schema
@@ -213,7 +222,9 @@ class CustomPaymentMethodSchemaClient:
             "paymentMethod/schema",
             method="POST",
             json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=CustomPaymentMethodSchemaRequest, direction="write"
+                object_=request,
+                annotation=CustomPaymentMethodSchemaRequest,
+                direction="write",
             ),
             request_options=request_options,
             omit=OMIT,
@@ -381,7 +392,9 @@ class CustomPaymentMethodSchemaClient:
             f"paymentMethod/schema/{jsonable_encoder(schema_id)}",
             method="POST",
             json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=CustomPaymentMethodSchemaRequest, direction="write"
+                object_=request,
+                annotation=CustomPaymentMethodSchemaRequest,
+                direction="write",
             ),
             request_options=request_options,
             omit=OMIT,
@@ -472,7 +485,10 @@ class CustomPaymentMethodSchemaClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get(
-        self, schema_id: CustomPaymentMethodSchemaId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        schema_id: CustomPaymentMethodSchemaId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> CustomPaymentMethodSchemaResponse:
         """
         Get custom payment method schema
@@ -590,7 +606,10 @@ class CustomPaymentMethodSchemaClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def delete(
-        self, schema_id: CustomPaymentMethodSchemaId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        schema_id: CustomPaymentMethodSchemaId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
         Delete custom payment method schema. Schema that have been used in an invoice cannot be deleted.
@@ -829,7 +848,10 @@ class AsyncCustomPaymentMethodSchemaClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def create(
-        self, *, request: CustomPaymentMethodSchemaRequest, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        request: CustomPaymentMethodSchemaRequest,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> CustomPaymentMethodSchemaResponse:
         """
         Create custom payment method schema
@@ -907,7 +929,9 @@ class AsyncCustomPaymentMethodSchemaClient:
             "paymentMethod/schema",
             method="POST",
             json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=CustomPaymentMethodSchemaRequest, direction="write"
+                object_=request,
+                annotation=CustomPaymentMethodSchemaRequest,
+                direction="write",
             ),
             request_options=request_options,
             omit=OMIT,
@@ -1083,7 +1107,9 @@ class AsyncCustomPaymentMethodSchemaClient:
             f"paymentMethod/schema/{jsonable_encoder(schema_id)}",
             method="POST",
             json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=CustomPaymentMethodSchemaRequest, direction="write"
+                object_=request,
+                annotation=CustomPaymentMethodSchemaRequest,
+                direction="write",
             ),
             request_options=request_options,
             omit=OMIT,
@@ -1174,7 +1200,10 @@ class AsyncCustomPaymentMethodSchemaClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get(
-        self, schema_id: CustomPaymentMethodSchemaId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        schema_id: CustomPaymentMethodSchemaId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> CustomPaymentMethodSchemaResponse:
         """
         Get custom payment method schema
@@ -1300,7 +1329,10 @@ class AsyncCustomPaymentMethodSchemaClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def delete(
-        self, schema_id: CustomPaymentMethodSchemaId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        schema_id: CustomPaymentMethodSchemaId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
         Delete custom payment method schema. Schema that have been used in an invoice cannot be deleted.

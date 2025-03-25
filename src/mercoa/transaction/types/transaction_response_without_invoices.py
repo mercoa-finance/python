@@ -111,6 +111,7 @@ class TransactionResponseWithoutInvoices_BankAccountToBankAccount(UniversalBaseM
                     supported_currencies=["USD"],
                     metadata={},
                     frozen=False,
+                    confirmed_by_entity=True,
                     created_at=datetime.datetime.fromisoformat(
                         "2021-01-01 00:00:00+00:00",
                     ),
@@ -134,6 +135,7 @@ class TransactionResponseWithoutInvoices_BankAccountToBankAccount(UniversalBaseM
             supported_currencies=["USD"],
             metadata={},
             frozen=False,
+            confirmed_by_entity=True,
             created_at=datetime.datetime.fromisoformat(
                 "2021-01-01 00:00:00+00:00",
             ),
@@ -185,6 +187,7 @@ class TransactionResponseWithoutInvoices_BankAccountToBankAccount(UniversalBaseM
                     supported_currencies=["USD"],
                     metadata={},
                     frozen=False,
+                    confirmed_by_entity=False,
                     created_at=datetime.datetime.fromisoformat(
                         "2021-01-01 00:00:00+00:00",
                     ),
@@ -208,6 +211,7 @@ class TransactionResponseWithoutInvoices_BankAccountToBankAccount(UniversalBaseM
             supported_currencies=["USD"],
             metadata={},
             frozen=False,
+            confirmed_by_entity=True,
             created_at=datetime.datetime.fromisoformat(
                 "2021-01-01 00:00:00+00:00",
             ),
@@ -242,7 +246,8 @@ class TransactionResponseWithoutInvoices_BankAccountToBankAccount(UniversalBaseM
     payment_destination: typing_extensions.Annotated[PaymentMethodResponse, FieldMetadata(alias="paymentDestination")]
     payment_destination_id: typing_extensions.Annotated[PaymentMethodId, FieldMetadata(alias="paymentDestinationId")]
     payment_destination_options: typing_extensions.Annotated[
-        typing.Optional[PaymentDestinationOptions], FieldMetadata(alias="paymentDestinationOptions")
+        typing.Optional[PaymentDestinationOptions],
+        FieldMetadata(alias="paymentDestinationOptions"),
     ] = None
     fees: typing.Optional[InvoiceFeesResponse] = None
     created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
@@ -350,6 +355,7 @@ class TransactionResponseWithoutInvoices_BankAccountToMailedCheck(UniversalBaseM
                     supported_currencies=["USD"],
                     metadata={},
                     frozen=False,
+                    confirmed_by_entity=True,
                     created_at=datetime.datetime.fromisoformat(
                         "2021-01-01 00:00:00+00:00",
                     ),
@@ -373,6 +379,7 @@ class TransactionResponseWithoutInvoices_BankAccountToMailedCheck(UniversalBaseM
             supported_currencies=["USD"],
             metadata={},
             frozen=False,
+            confirmed_by_entity=True,
             created_at=datetime.datetime.fromisoformat(
                 "2021-01-01 00:00:00+00:00",
             ),
@@ -424,6 +431,7 @@ class TransactionResponseWithoutInvoices_BankAccountToMailedCheck(UniversalBaseM
                     supported_currencies=["USD"],
                     metadata={},
                     frozen=False,
+                    confirmed_by_entity=False,
                     created_at=datetime.datetime.fromisoformat(
                         "2021-01-01 00:00:00+00:00",
                     ),
@@ -447,6 +455,7 @@ class TransactionResponseWithoutInvoices_BankAccountToMailedCheck(UniversalBaseM
             supported_currencies=["USD"],
             metadata={},
             frozen=False,
+            confirmed_by_entity=True,
             created_at=datetime.datetime.fromisoformat(
                 "2021-01-01 00:00:00+00:00",
             ),
@@ -479,7 +488,8 @@ class TransactionResponseWithoutInvoices_BankAccountToMailedCheck(UniversalBaseM
     payment_destination: typing_extensions.Annotated[PaymentMethodResponse, FieldMetadata(alias="paymentDestination")]
     payment_destination_id: typing_extensions.Annotated[PaymentMethodId, FieldMetadata(alias="paymentDestinationId")]
     payment_destination_options: typing_extensions.Annotated[
-        typing.Optional[PaymentDestinationOptions], FieldMetadata(alias="paymentDestinationOptions")
+        typing.Optional[PaymentDestinationOptions],
+        FieldMetadata(alias="paymentDestinationOptions"),
     ] = None
     fees: typing.Optional[InvoiceFeesResponse] = None
     created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
@@ -587,6 +597,7 @@ class TransactionResponseWithoutInvoices_BankAccountToWallet(UniversalBaseModel)
                     supported_currencies=["USD"],
                     metadata={},
                     frozen=False,
+                    confirmed_by_entity=True,
                     created_at=datetime.datetime.fromisoformat(
                         "2021-01-01 00:00:00+00:00",
                     ),
@@ -610,6 +621,7 @@ class TransactionResponseWithoutInvoices_BankAccountToWallet(UniversalBaseModel)
             supported_currencies=["USD"],
             metadata={},
             frozen=False,
+            confirmed_by_entity=True,
             created_at=datetime.datetime.fromisoformat(
                 "2021-01-01 00:00:00+00:00",
             ),
@@ -661,6 +673,7 @@ class TransactionResponseWithoutInvoices_BankAccountToWallet(UniversalBaseModel)
                     supported_currencies=["USD"],
                     metadata={},
                     frozen=False,
+                    confirmed_by_entity=False,
                     created_at=datetime.datetime.fromisoformat(
                         "2021-01-01 00:00:00+00:00",
                     ),
@@ -684,6 +697,7 @@ class TransactionResponseWithoutInvoices_BankAccountToWallet(UniversalBaseModel)
             supported_currencies=["USD"],
             metadata={},
             frozen=False,
+            confirmed_by_entity=True,
             created_at=datetime.datetime.fromisoformat(
                 "2021-01-01 00:00:00+00:00",
             ),
@@ -718,7 +732,8 @@ class TransactionResponseWithoutInvoices_BankAccountToWallet(UniversalBaseModel)
     payment_destination: typing_extensions.Annotated[PaymentMethodResponse, FieldMetadata(alias="paymentDestination")]
     payment_destination_id: typing_extensions.Annotated[PaymentMethodId, FieldMetadata(alias="paymentDestinationId")]
     payment_destination_options: typing_extensions.Annotated[
-        typing.Optional[PaymentDestinationOptions], FieldMetadata(alias="paymentDestinationOptions")
+        typing.Optional[PaymentDestinationOptions],
+        FieldMetadata(alias="paymentDestinationOptions"),
     ] = None
     fees: typing.Optional[InvoiceFeesResponse] = None
     created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
@@ -826,6 +841,7 @@ class TransactionResponseWithoutInvoices_CardToWallet(UniversalBaseModel):
                     supported_currencies=["USD"],
                     metadata={},
                     frozen=False,
+                    confirmed_by_entity=True,
                     created_at=datetime.datetime.fromisoformat(
                         "2021-01-01 00:00:00+00:00",
                     ),
@@ -849,6 +865,7 @@ class TransactionResponseWithoutInvoices_CardToWallet(UniversalBaseModel):
             supported_currencies=["USD"],
             metadata={},
             frozen=False,
+            confirmed_by_entity=True,
             created_at=datetime.datetime.fromisoformat(
                 "2021-01-01 00:00:00+00:00",
             ),
@@ -900,6 +917,7 @@ class TransactionResponseWithoutInvoices_CardToWallet(UniversalBaseModel):
                     supported_currencies=["USD"],
                     metadata={},
                     frozen=False,
+                    confirmed_by_entity=False,
                     created_at=datetime.datetime.fromisoformat(
                         "2021-01-01 00:00:00+00:00",
                     ),
@@ -923,6 +941,7 @@ class TransactionResponseWithoutInvoices_CardToWallet(UniversalBaseModel):
             supported_currencies=["USD"],
             metadata={},
             frozen=False,
+            confirmed_by_entity=True,
             created_at=datetime.datetime.fromisoformat(
                 "2021-01-01 00:00:00+00:00",
             ),
@@ -954,7 +973,8 @@ class TransactionResponseWithoutInvoices_CardToWallet(UniversalBaseModel):
     payment_destination: typing_extensions.Annotated[PaymentMethodResponse, FieldMetadata(alias="paymentDestination")]
     payment_destination_id: typing_extensions.Annotated[PaymentMethodId, FieldMetadata(alias="paymentDestinationId")]
     payment_destination_options: typing_extensions.Annotated[
-        typing.Optional[PaymentDestinationOptions], FieldMetadata(alias="paymentDestinationOptions")
+        typing.Optional[PaymentDestinationOptions],
+        FieldMetadata(alias="paymentDestinationOptions"),
     ] = None
     fees: typing.Optional[InvoiceFeesResponse] = None
     created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
@@ -1062,6 +1082,7 @@ class TransactionResponseWithoutInvoices_WalletToBankAccount(UniversalBaseModel)
                     supported_currencies=["USD"],
                     metadata={},
                     frozen=False,
+                    confirmed_by_entity=True,
                     created_at=datetime.datetime.fromisoformat(
                         "2021-01-01 00:00:00+00:00",
                     ),
@@ -1085,6 +1106,7 @@ class TransactionResponseWithoutInvoices_WalletToBankAccount(UniversalBaseModel)
             supported_currencies=["USD"],
             metadata={},
             frozen=False,
+            confirmed_by_entity=True,
             created_at=datetime.datetime.fromisoformat(
                 "2021-01-01 00:00:00+00:00",
             ),
@@ -1136,6 +1158,7 @@ class TransactionResponseWithoutInvoices_WalletToBankAccount(UniversalBaseModel)
                     supported_currencies=["USD"],
                     metadata={},
                     frozen=False,
+                    confirmed_by_entity=False,
                     created_at=datetime.datetime.fromisoformat(
                         "2021-01-01 00:00:00+00:00",
                     ),
@@ -1159,6 +1182,7 @@ class TransactionResponseWithoutInvoices_WalletToBankAccount(UniversalBaseModel)
             supported_currencies=["USD"],
             metadata={},
             frozen=False,
+            confirmed_by_entity=True,
             created_at=datetime.datetime.fromisoformat(
                 "2021-01-01 00:00:00+00:00",
             ),
@@ -1193,7 +1217,8 @@ class TransactionResponseWithoutInvoices_WalletToBankAccount(UniversalBaseModel)
     payment_destination: typing_extensions.Annotated[PaymentMethodResponse, FieldMetadata(alias="paymentDestination")]
     payment_destination_id: typing_extensions.Annotated[PaymentMethodId, FieldMetadata(alias="paymentDestinationId")]
     payment_destination_options: typing_extensions.Annotated[
-        typing.Optional[PaymentDestinationOptions], FieldMetadata(alias="paymentDestinationOptions")
+        typing.Optional[PaymentDestinationOptions],
+        FieldMetadata(alias="paymentDestinationOptions"),
     ] = None
     fees: typing.Optional[InvoiceFeesResponse] = None
     created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
@@ -1301,6 +1326,7 @@ class TransactionResponseWithoutInvoices_Custom(UniversalBaseModel):
                     supported_currencies=["USD"],
                     metadata={},
                     frozen=False,
+                    confirmed_by_entity=True,
                     created_at=datetime.datetime.fromisoformat(
                         "2021-01-01 00:00:00+00:00",
                     ),
@@ -1324,6 +1350,7 @@ class TransactionResponseWithoutInvoices_Custom(UniversalBaseModel):
             supported_currencies=["USD"],
             metadata={},
             frozen=False,
+            confirmed_by_entity=True,
             created_at=datetime.datetime.fromisoformat(
                 "2021-01-01 00:00:00+00:00",
             ),
@@ -1375,6 +1402,7 @@ class TransactionResponseWithoutInvoices_Custom(UniversalBaseModel):
                     supported_currencies=["USD"],
                     metadata={},
                     frozen=False,
+                    confirmed_by_entity=False,
                     created_at=datetime.datetime.fromisoformat(
                         "2021-01-01 00:00:00+00:00",
                     ),
@@ -1398,6 +1426,7 @@ class TransactionResponseWithoutInvoices_Custom(UniversalBaseModel):
             supported_currencies=["USD"],
             metadata={},
             frozen=False,
+            confirmed_by_entity=True,
             created_at=datetime.datetime.fromisoformat(
                 "2021-01-01 00:00:00+00:00",
             ),
@@ -1429,7 +1458,8 @@ class TransactionResponseWithoutInvoices_Custom(UniversalBaseModel):
     payment_destination: typing_extensions.Annotated[PaymentMethodResponse, FieldMetadata(alias="paymentDestination")]
     payment_destination_id: typing_extensions.Annotated[PaymentMethodId, FieldMetadata(alias="paymentDestinationId")]
     payment_destination_options: typing_extensions.Annotated[
-        typing.Optional[PaymentDestinationOptions], FieldMetadata(alias="paymentDestinationOptions")
+        typing.Optional[PaymentDestinationOptions],
+        FieldMetadata(alias="paymentDestinationOptions"),
     ] = None
     fees: typing.Optional[InvoiceFeesResponse] = None
     created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
@@ -1537,6 +1567,7 @@ class TransactionResponseWithoutInvoices_OffPlatform(UniversalBaseModel):
                     supported_currencies=["USD"],
                     metadata={},
                     frozen=False,
+                    confirmed_by_entity=True,
                     created_at=datetime.datetime.fromisoformat(
                         "2021-01-01 00:00:00+00:00",
                     ),
@@ -1560,6 +1591,7 @@ class TransactionResponseWithoutInvoices_OffPlatform(UniversalBaseModel):
             supported_currencies=["USD"],
             metadata={},
             frozen=False,
+            confirmed_by_entity=True,
             created_at=datetime.datetime.fromisoformat(
                 "2021-01-01 00:00:00+00:00",
             ),
@@ -1611,6 +1643,7 @@ class TransactionResponseWithoutInvoices_OffPlatform(UniversalBaseModel):
                     supported_currencies=["USD"],
                     metadata={},
                     frozen=False,
+                    confirmed_by_entity=False,
                     created_at=datetime.datetime.fromisoformat(
                         "2021-01-01 00:00:00+00:00",
                     ),
@@ -1634,6 +1667,7 @@ class TransactionResponseWithoutInvoices_OffPlatform(UniversalBaseModel):
             supported_currencies=["USD"],
             metadata={},
             frozen=False,
+            confirmed_by_entity=True,
             created_at=datetime.datetime.fromisoformat(
                 "2021-01-01 00:00:00+00:00",
             ),
@@ -1665,7 +1699,8 @@ class TransactionResponseWithoutInvoices_OffPlatform(UniversalBaseModel):
     payment_destination: typing_extensions.Annotated[PaymentMethodResponse, FieldMetadata(alias="paymentDestination")]
     payment_destination_id: typing_extensions.Annotated[PaymentMethodId, FieldMetadata(alias="paymentDestinationId")]
     payment_destination_options: typing_extensions.Annotated[
-        typing.Optional[PaymentDestinationOptions], FieldMetadata(alias="paymentDestinationOptions")
+        typing.Optional[PaymentDestinationOptions],
+        FieldMetadata(alias="paymentDestinationOptions"),
     ] = None
     fees: typing.Optional[InvoiceFeesResponse] = None
     created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
@@ -1770,6 +1805,7 @@ TransactionResponseWithoutInvoices_BankAccountToBankAccount(
                 supported_currencies=["USD"],
                 metadata={},
                 frozen=False,
+                confirmed_by_entity=True,
                 created_at=datetime.datetime.fromisoformat(
                     "2021-01-01 00:00:00+00:00",
                 ),
@@ -1793,6 +1829,7 @@ TransactionResponseWithoutInvoices_BankAccountToBankAccount(
         supported_currencies=["USD"],
         metadata={},
         frozen=False,
+        confirmed_by_entity=True,
         created_at=datetime.datetime.fromisoformat(
             "2021-01-01 00:00:00+00:00",
         ),
@@ -1844,6 +1881,7 @@ TransactionResponseWithoutInvoices_BankAccountToBankAccount(
                 supported_currencies=["USD"],
                 metadata={},
                 frozen=False,
+                confirmed_by_entity=False,
                 created_at=datetime.datetime.fromisoformat(
                     "2021-01-01 00:00:00+00:00",
                 ),
@@ -1867,6 +1905,7 @@ TransactionResponseWithoutInvoices_BankAccountToBankAccount(
         supported_currencies=["USD"],
         metadata={},
         frozen=False,
+        confirmed_by_entity=True,
         created_at=datetime.datetime.fromisoformat(
             "2021-01-01 00:00:00+00:00",
         ),

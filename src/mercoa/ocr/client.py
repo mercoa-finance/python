@@ -29,7 +29,12 @@ class OcrClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    def ocr(self, *, request: OcrRequest, request_options: typing.Optional[RequestOptions] = None) -> OcrResponse:
+    def ocr(
+        self,
+        *,
+        request: OcrRequest,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> OcrResponse:
         """
         Run OCR on an Base64 encoded image or PDF. This endpoint will block until the OCR is complete.
 
@@ -55,7 +60,7 @@ class OcrClient:
         client.ocr.ocr(
             request=OcrRequest(
                 vendor_network="entity",
-                entity_id="entity_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
+                entity_id="ent_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
                 mime_type="image/png",
                 image="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII",
             ),
@@ -154,7 +159,10 @@ class OcrClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def run_async_ocr(
-        self, *, request: OcrRequest, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        request: OcrRequest,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> OcrAsyncResponse:
         """
         Run OCR on an Base64 encoded image or PDF. This endpoint will return immediately and the OCR will be processed asynchronously.
@@ -181,7 +189,7 @@ class OcrClient:
         client.ocr.run_async_ocr(
             request=OcrRequest(
                 vendor_network="entity",
-                entity_id="entity_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
+                entity_id="ent_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
                 mime_type="image/png",
                 image="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII",
             ),
@@ -400,7 +408,12 @@ class AsyncOcrClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    async def ocr(self, *, request: OcrRequest, request_options: typing.Optional[RequestOptions] = None) -> OcrResponse:
+    async def ocr(
+        self,
+        *,
+        request: OcrRequest,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> OcrResponse:
         """
         Run OCR on an Base64 encoded image or PDF. This endpoint will block until the OCR is complete.
 
@@ -431,7 +444,7 @@ class AsyncOcrClient:
             await client.ocr.ocr(
                 request=OcrRequest(
                     vendor_network="entity",
-                    entity_id="entity_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
+                    entity_id="ent_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
                     mime_type="image/png",
                     image="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII",
                 ),
@@ -533,7 +546,10 @@ class AsyncOcrClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def run_async_ocr(
-        self, *, request: OcrRequest, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        request: OcrRequest,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> OcrAsyncResponse:
         """
         Run OCR on an Base64 encoded image or PDF. This endpoint will return immediately and the OCR will be processed asynchronously.
@@ -565,7 +581,7 @@ class AsyncOcrClient:
             await client.ocr.run_async_ocr(
                 request=OcrRequest(
                     vendor_network="entity",
-                    entity_id="entity_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
+                    entity_id="ent_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
                     mime_type="image/png",
                     image="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII",
                 ),

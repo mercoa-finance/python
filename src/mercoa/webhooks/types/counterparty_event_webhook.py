@@ -3,8 +3,8 @@
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing_extensions
 from ...core.serialization import FieldMetadata
-from ...entity_types.types.entity_id import EntityId
 import pydantic
+from ...entity_types.types.entity_id import EntityId
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 import typing
 
@@ -22,7 +22,11 @@ class CounterpartyEventWebhook(UniversalBaseModel):
     )
     """
 
-    event_type: typing_extensions.Annotated[str, FieldMetadata(alias="eventType")]
+    event_type: typing_extensions.Annotated[str, FieldMetadata(alias="eventType")] = pydantic.Field()
+    """
+    The type of the event.
+    """
+
     entity_id: typing_extensions.Annotated[EntityId, FieldMetadata(alias="entityId")] = pydantic.Field()
     """
     The ID of the entity that owns the counterparty relationship

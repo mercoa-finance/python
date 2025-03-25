@@ -39,6 +39,7 @@ from ..entity_types.types.entity_update_request import EntityUpdateRequest
 from ..entity_types.types.token_generation_options import TokenGenerationOptions
 from ..entity_types.types.entity_onboarding_link_type import EntityOnboardingLinkType
 import datetime as dt
+from ..entity_types.types.entity_event_id import EntityEventId
 from ..entity_types.types.entity_events_response import EntityEventsResponse
 from ..core.datetime_utils import serialize_datetime
 from ..core.client_wrapper import AsyncClientWrapper
@@ -265,7 +266,10 @@ class EntityClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def create(
-        self, *, request: EntityRequest, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        request: EntityRequest,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityResponse:
         """
         Parameters
@@ -715,7 +719,12 @@ class EntityClient:
                 )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def delete(self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+    def delete(
+        self,
+        entity_id: EntityId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
         """
         Will archive the entity. This action cannot be undone, and the entity will no longer be available for use. The foreignId on the entity will be cleared as well.
 
@@ -827,7 +836,10 @@ class EntityClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def accept_terms_of_service(
-        self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_id: EntityId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
         This endpoint is used to indicate acceptance of Mercoa's terms of service for an entity. Send a request to this endpoint only after the entity has accepted the Mercoa ToS. Entities must accept Mercoa ToS before they can be send or pay invoices using Mercoa's payment rails.
@@ -939,7 +951,12 @@ class EntityClient:
                 )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def initiate_kyb(self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+    def initiate_kyb(
+        self,
+        entity_id: EntityId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
         """
         This endpoint is used to initiate KYB for an entity.
         Send a request to this endpoint only after the entity has accepted the Mercoa ToS,
@@ -1194,6 +1211,7 @@ class EntityClient:
         type: EntityOnboardingLinkType,
         expires_in: typing.Optional[str] = None,
         connected_entity_id: typing.Optional[EntityId] = None,
+        redirect_to_portal: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> str:
         """
@@ -1212,6 +1230,9 @@ class EntityClient:
 
         connected_entity_id : typing.Optional[EntityId]
             The ID of the entity to connect to. If onboarding a payee, this should be the payor entity ID. If onboarding a payor, this should be the payee entity ID. If no connected entity ID is provided, the onboarding link will be for a standalone entity.
+
+        redirect_to_portal : typing.Optional[bool]
+            If true, the onboarding link will redirect to the vendor/customer portal if the entity is already onboarded. If false, the onboarding link will not redirect to the portal. The default is false.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1240,6 +1261,7 @@ class EntityClient:
                 "type": type,
                 "expiresIn": expires_in,
                 "connectedEntityId": connected_entity_id,
+                "redirectToPortal": redirect_to_portal,
             },
             request_options=request_options,
         )
@@ -1468,6 +1490,8 @@ class EntityClient:
         *,
         start_date: typing.Optional[dt.datetime] = None,
         end_date: typing.Optional[dt.datetime] = None,
+        limit: typing.Optional[int] = None,
+        starting_after: typing.Optional[EntityEventId] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityEventsResponse:
         """
@@ -1483,6 +1507,12 @@ class EntityClient:
 
         end_date : typing.Optional[dt.datetime]
             End date filter. If not provided, events to the end of time will be returned.
+
+        limit : typing.Optional[int]
+            Number of events to return. Limit can range between 1 and 100, and the default is 50.
+
+        starting_after : typing.Optional[EntityEventId]
+            The ID of the event to start after. If not provided, the first page of events will be returned.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1508,6 +1538,8 @@ class EntityClient:
             params={
                 "startDate": serialize_datetime(start_date) if start_date is not None else None,
                 "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                "limit": limit,
+                "startingAfter": starting_after,
             },
             request_options=request_options,
         )
@@ -1809,7 +1841,10 @@ class AsyncEntityClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def create(
-        self, *, request: EntityRequest, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        request: EntityRequest,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityResponse:
         """
         Parameters
@@ -2283,7 +2318,12 @@ class AsyncEntityClient:
                 )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def delete(self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+    async def delete(
+        self,
+        entity_id: EntityId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
         """
         Will archive the entity. This action cannot be undone, and the entity will no longer be available for use. The foreignId on the entity will be cleared as well.
 
@@ -2403,7 +2443,10 @@ class AsyncEntityClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def accept_terms_of_service(
-        self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_id: EntityId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
         This endpoint is used to indicate acceptance of Mercoa's terms of service for an entity. Send a request to this endpoint only after the entity has accepted the Mercoa ToS. Entities must accept Mercoa ToS before they can be send or pay invoices using Mercoa's payment rails.
@@ -2524,7 +2567,10 @@ class AsyncEntityClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def initiate_kyb(
-        self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_id: EntityId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
         This endpoint is used to initiate KYB for an entity.
@@ -2796,6 +2842,7 @@ class AsyncEntityClient:
         type: EntityOnboardingLinkType,
         expires_in: typing.Optional[str] = None,
         connected_entity_id: typing.Optional[EntityId] = None,
+        redirect_to_portal: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> str:
         """
@@ -2814,6 +2861,9 @@ class AsyncEntityClient:
 
         connected_entity_id : typing.Optional[EntityId]
             The ID of the entity to connect to. If onboarding a payee, this should be the payor entity ID. If onboarding a payor, this should be the payee entity ID. If no connected entity ID is provided, the onboarding link will be for a standalone entity.
+
+        redirect_to_portal : typing.Optional[bool]
+            If true, the onboarding link will redirect to the vendor/customer portal if the entity is already onboarded. If false, the onboarding link will not redirect to the portal. The default is false.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -2850,6 +2900,7 @@ class AsyncEntityClient:
                 "type": type,
                 "expiresIn": expires_in,
                 "connectedEntityId": connected_entity_id,
+                "redirectToPortal": redirect_to_portal,
             },
             request_options=request_options,
         )
@@ -3086,6 +3137,8 @@ class AsyncEntityClient:
         *,
         start_date: typing.Optional[dt.datetime] = None,
         end_date: typing.Optional[dt.datetime] = None,
+        limit: typing.Optional[int] = None,
+        starting_after: typing.Optional[EntityEventId] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityEventsResponse:
         """
@@ -3101,6 +3154,12 @@ class AsyncEntityClient:
 
         end_date : typing.Optional[dt.datetime]
             End date filter. If not provided, events to the end of time will be returned.
+
+        limit : typing.Optional[int]
+            Number of events to return. Limit can range between 1 and 100, and the default is 50.
+
+        starting_after : typing.Optional[EntityEventId]
+            The ID of the event to start after. If not provided, the first page of events will be returned.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -3134,6 +3193,8 @@ class AsyncEntityClient:
             params={
                 "startDate": serialize_datetime(start_date) if start_date is not None else None,
                 "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                "limit": limit,
+                "startingAfter": starting_after,
             },
             request_options=request_options,
         )

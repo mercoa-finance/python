@@ -36,6 +36,7 @@ from .entity_creation_request import EntityCreationRequest
 from .entity_customization_request import EntityCustomizationRequest
 from .entity_customization_response import EntityCustomizationResponse
 from .entity_event import EntityEvent
+from .entity_event_id import EntityEventId
 from .entity_events_response import EntityEventsResponse
 from .entity_hide_payees_request import EntityHidePayeesRequest
 from .entity_hide_payors_request import EntityHidePayorsRequest
@@ -125,6 +126,7 @@ __all__ = [
     "EntityCustomizationRequest",
     "EntityCustomizationResponse",
     "EntityEvent",
+    "EntityEventId",
     "EntityEventsResponse",
     "EntityHidePayeesRequest",
     "EntityHidePayorsRequest",

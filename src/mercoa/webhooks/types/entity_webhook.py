@@ -3,10 +3,11 @@
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing_extensions
 from ...core.serialization import FieldMetadata
+import pydantic
 from ...entity_types.types.entity_response import EntityResponse
+from ...entity_types.types.entity_id import EntityId
 import typing
 from ...entity_types.types.entity_user_response import EntityUserResponse
-import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -75,6 +76,7 @@ class EntityWebhook(UniversalBaseModel):
                 ),
             ),
         ),
+        updated_by_entity_id="admin",
         user=EntityUserResponse(
             id="user_ec3aafc8-ea86-408a-a6c1-545497badbbb",
             foreign_id="MY-DB-ID-12345",
@@ -91,8 +93,24 @@ class EntityWebhook(UniversalBaseModel):
     )
     """
 
-    event_type: typing_extensions.Annotated[str, FieldMetadata(alias="eventType")]
-    entity: EntityResponse
+    event_type: typing_extensions.Annotated[str, FieldMetadata(alias="eventType")] = pydantic.Field()
+    """
+    The type of the event.
+    """
+
+    entity: EntityResponse = pydantic.Field()
+    """
+    The entity involved in the event.
+    """
+
+    updated_by_entity_id: typing_extensions.Annotated[EntityId, FieldMetadata(alias="updatedByEntityId")] = (
+        pydantic.Field()
+    )
+    """
+    The ID of the entity that updated the entity. This will be different from the entityId if the entity was updated by a different entity (e.g. a C2 updating a C3).
+    If the entity was created or updated by an admin, this will be 'admin'.
+    """
+
     user: typing.Optional[EntityUserResponse] = pydantic.Field(default=None)
     """
     User who initiated the change.

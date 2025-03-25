@@ -4,7 +4,9 @@ import typing
 from ...core.client_wrapper import SyncClientWrapper
 from ...entity_types.types.entity_id import EntityId
 from ...core.request_options import RequestOptions
-from ...entity_types.types.notification_policy_response import NotificationPolicyResponse
+from ...entity_types.types.notification_policy_response import (
+    NotificationPolicyResponse,
+)
 from ...core.jsonable_encoder import jsonable_encoder
 from json.decoder import JSONDecodeError
 from ...core.api_error import ApiError
@@ -30,7 +32,10 @@ class NotificationPolicyClient:
         self._client_wrapper = client_wrapper
 
     def get_all(
-        self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_id: EntityId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.List[NotificationPolicyResponse]:
         """
         Retrieve all notification policies associated with this entity
@@ -418,7 +423,10 @@ class AsyncNotificationPolicyClient:
         self._client_wrapper = client_wrapper
 
     async def get_all(
-        self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_id: EntityId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.List[NotificationPolicyResponse]:
         """
         Retrieve all notification policies associated with this entity

@@ -27,7 +27,10 @@ class MetadataClient:
         self._client_wrapper = client_wrapper
 
     def get_all(
-        self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_id: EntityId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.List[EntityMetadataResponse]:
         """
         Retrieve all metadata options associated with this entity
@@ -146,7 +149,11 @@ class MetadataClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get(
-        self, entity_id: EntityId, key: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_id: EntityId,
+        key: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.List[str]:
         """
         Retrieve metadata associated with a specific key
@@ -402,7 +409,13 @@ class MetadataClient:
                 )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def delete(self, entity_id: EntityId, key: str, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+    def delete(
+        self,
+        entity_id: EntityId,
+        key: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
         """
         Delete all metadata associated with a specific key
 
@@ -522,7 +535,10 @@ class AsyncMetadataClient:
         self._client_wrapper = client_wrapper
 
     async def get_all(
-        self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_id: EntityId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.List[EntityMetadataResponse]:
         """
         Retrieve all metadata options associated with this entity
@@ -649,7 +665,11 @@ class AsyncMetadataClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get(
-        self, entity_id: EntityId, key: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_id: EntityId,
+        key: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.List[str]:
         """
         Retrieve metadata associated with a specific key
@@ -922,7 +942,11 @@ class AsyncMetadataClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def delete(
-        self, entity_id: EntityId, key: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_id: EntityId,
+        key: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
         Delete all metadata associated with a specific key

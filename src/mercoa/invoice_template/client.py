@@ -18,7 +18,9 @@ from ..invoice_types.types.invoice_id import InvoiceId
 from ..invoice_types.types.invoice_status import InvoiceStatus
 from ..invoice_types.types.payment_type import PaymentType
 from ..core.request_options import RequestOptions
-from ..invoice_types.types.find_invoice_template_response import FindInvoiceTemplateResponse
+from ..invoice_types.types.find_invoice_template_response import (
+    FindInvoiceTemplateResponse,
+)
 from ..core.datetime_utils import serialize_datetime
 from ..core.serialization import convert_and_respect_annotation_metadata
 from json.decoder import JSONDecodeError
@@ -31,10 +33,14 @@ from ..commons.errors.not_found import NotFound
 from ..commons.errors.conflict import Conflict
 from ..commons.errors.internal_server_error import InternalServerError
 from ..commons.errors.unimplemented import Unimplemented
-from ..invoice_types.types.invoice_template_creation_request import InvoiceTemplateCreationRequest
+from ..invoice_types.types.invoice_template_creation_request import (
+    InvoiceTemplateCreationRequest,
+)
 from ..invoice_types.types.invoice_template_response import InvoiceTemplateResponse
 from ..core.jsonable_encoder import jsonable_encoder
-from ..invoice_types.types.invoice_template_update_request import InvoiceTemplateUpdateRequest
+from ..invoice_types.types.invoice_template_update_request import (
+    InvoiceTemplateUpdateRequest,
+)
 from ..core.client_wrapper import AsyncClientWrapper
 from .line_item.client import AsyncLineItemClient
 from .approval.client import AsyncApprovalClient
@@ -176,7 +182,9 @@ class InvoiceTemplateClient:
                     object_=metadata, annotation=MetadataFilter, direction="write"
                 ),
                 "lineItemMetadata": convert_and_respect_annotation_metadata(
-                    object_=line_item_metadata, annotation=MetadataFilter, direction="write"
+                    object_=line_item_metadata,
+                    annotation=MetadataFilter,
+                    direction="write",
                 ),
                 "lineItemGlAccountId": line_item_gl_account_id,
                 "payerId": payer_id,
@@ -276,7 +284,10 @@ class InvoiceTemplateClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def create(
-        self, *, request: InvoiceTemplateCreationRequest, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        request: InvoiceTemplateCreationRequest,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> InvoiceTemplateResponse:
         """
         Parameters
@@ -363,7 +374,9 @@ class InvoiceTemplateClient:
             "invoice-template",
             method="POST",
             json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=InvoiceTemplateCreationRequest, direction="write"
+                object_=request,
+                annotation=InvoiceTemplateCreationRequest,
+                direction="write",
             ),
             request_options=request_options,
             omit=OMIT,
@@ -454,7 +467,10 @@ class InvoiceTemplateClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get(
-        self, invoice_template_id: InvoiceTemplateId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        invoice_template_id: InvoiceTemplateId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> InvoiceTemplateResponse:
         """
         Parameters
@@ -657,7 +673,9 @@ class InvoiceTemplateClient:
             f"invoice-template/{jsonable_encoder(invoice_template_id)}",
             method="POST",
             json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=InvoiceTemplateUpdateRequest, direction="write"
+                object_=request,
+                annotation=InvoiceTemplateUpdateRequest,
+                direction="write",
             ),
             request_options=request_options,
             omit=OMIT,
@@ -748,7 +766,10 @@ class InvoiceTemplateClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def delete(
-        self, invoice_template_id: InvoiceTemplateId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        invoice_template_id: InvoiceTemplateId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
         Only invoice templates in the UNASSIGNED and DRAFT statuses can be deleted.
@@ -1001,7 +1022,9 @@ class AsyncInvoiceTemplateClient:
                     object_=metadata, annotation=MetadataFilter, direction="write"
                 ),
                 "lineItemMetadata": convert_and_respect_annotation_metadata(
-                    object_=line_item_metadata, annotation=MetadataFilter, direction="write"
+                    object_=line_item_metadata,
+                    annotation=MetadataFilter,
+                    direction="write",
                 ),
                 "lineItemGlAccountId": line_item_gl_account_id,
                 "payerId": payer_id,
@@ -1101,7 +1124,10 @@ class AsyncInvoiceTemplateClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def create(
-        self, *, request: InvoiceTemplateCreationRequest, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        request: InvoiceTemplateCreationRequest,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> InvoiceTemplateResponse:
         """
         Parameters
@@ -1195,7 +1221,9 @@ class AsyncInvoiceTemplateClient:
             "invoice-template",
             method="POST",
             json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=InvoiceTemplateCreationRequest, direction="write"
+                object_=request,
+                annotation=InvoiceTemplateCreationRequest,
+                direction="write",
             ),
             request_options=request_options,
             omit=OMIT,
@@ -1286,7 +1314,10 @@ class AsyncInvoiceTemplateClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get(
-        self, invoice_template_id: InvoiceTemplateId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        invoice_template_id: InvoiceTemplateId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> InvoiceTemplateResponse:
         """
         Parameters
@@ -1504,7 +1535,9 @@ class AsyncInvoiceTemplateClient:
             f"invoice-template/{jsonable_encoder(invoice_template_id)}",
             method="POST",
             json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=InvoiceTemplateUpdateRequest, direction="write"
+                object_=request,
+                annotation=InvoiceTemplateUpdateRequest,
+                direction="write",
             ),
             request_options=request_options,
             omit=OMIT,
@@ -1595,7 +1628,10 @@ class AsyncInvoiceTemplateClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def delete(
-        self, invoice_template_id: InvoiceTemplateId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        invoice_template_id: InvoiceTemplateId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
         Only invoice templates in the UNASSIGNED and DRAFT statuses can be deleted.

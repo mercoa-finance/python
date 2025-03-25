@@ -4,7 +4,9 @@ import typing
 from ...core.client_wrapper import SyncClientWrapper
 from ...entity_types.types.entity_id import EntityId
 from ...core.request_options import RequestOptions
-from .types.external_accounting_system_company_response import ExternalAccountingSystemCompanyResponse
+from .types.external_accounting_system_company_response import (
+    ExternalAccountingSystemCompanyResponse,
+)
 from ...core.jsonable_encoder import jsonable_encoder
 from json.decoder import JSONDecodeError
 from ...core.api_error import ApiError
@@ -16,7 +18,9 @@ from ...commons.errors.not_found import NotFound
 from ...commons.errors.conflict import Conflict
 from ...commons.errors.internal_server_error import InternalServerError
 from ...commons.errors.unimplemented import Unimplemented
-from .types.external_accounting_system_company_creation_request import ExternalAccountingSystemCompanyCreationRequest
+from .types.external_accounting_system_company_creation_request import (
+    ExternalAccountingSystemCompanyCreationRequest,
+)
 from ...core.serialization import convert_and_respect_annotation_metadata
 from .types.sync_type import SyncType
 from ...core.client_wrapper import AsyncClientWrapper
@@ -30,7 +34,10 @@ class ExternalAccountingSystemClient:
         self._client_wrapper = client_wrapper
 
     def get(
-        self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_id: EntityId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> ExternalAccountingSystemCompanyResponse:
         """
         Get the external accounting system connected to an entity
@@ -193,7 +200,9 @@ class ExternalAccountingSystemClient:
             f"entity/{jsonable_encoder(entity_id)}/external-accounting-system/create",
             method="POST",
             json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=ExternalAccountingSystemCompanyCreationRequest, direction="write"
+                object_=request,
+                annotation=ExternalAccountingSystemCompanyCreationRequest,
+                direction="write",
             ),
             request_options=request_options,
             omit=OMIT,
@@ -283,7 +292,12 @@ class ExternalAccountingSystemClient:
                 )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def connect(self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None) -> str:
+    def connect(
+        self,
+        entity_id: EntityId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> str:
         """
         Get a link to connect an entity to an external accounting system like Quickbooks or Xero
 
@@ -542,7 +556,10 @@ class AsyncExternalAccountingSystemClient:
         self._client_wrapper = client_wrapper
 
     async def get(
-        self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_id: EntityId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> ExternalAccountingSystemCompanyResponse:
         """
         Get the external accounting system connected to an entity
@@ -721,7 +738,9 @@ class AsyncExternalAccountingSystemClient:
             f"entity/{jsonable_encoder(entity_id)}/external-accounting-system/create",
             method="POST",
             json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=ExternalAccountingSystemCompanyCreationRequest, direction="write"
+                object_=request,
+                annotation=ExternalAccountingSystemCompanyCreationRequest,
+                direction="write",
             ),
             request_options=request_options,
             omit=OMIT,
@@ -811,7 +830,12 @@ class AsyncExternalAccountingSystemClient:
                 )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def connect(self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None) -> str:
+    async def connect(
+        self,
+        entity_id: EntityId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> str:
         """
         Get a link to connect an entity to an external accounting system like Quickbooks or Xero
 

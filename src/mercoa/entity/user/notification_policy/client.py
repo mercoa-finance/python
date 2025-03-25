@@ -5,7 +5,9 @@ from ....core.client_wrapper import SyncClientWrapper
 from ....entity_types.types.entity_id import EntityId
 from ....entity_types.types.entity_user_id import EntityUserId
 from ....core.request_options import RequestOptions
-from ....entity_types.types.user_notification_policy_response import UserNotificationPolicyResponse
+from ....entity_types.types.user_notification_policy_response import (
+    UserNotificationPolicyResponse,
+)
 from ....core.jsonable_encoder import jsonable_encoder
 from json.decoder import JSONDecodeError
 from ....core.api_error import ApiError
@@ -18,7 +20,9 @@ from ....commons.errors.conflict import Conflict
 from ....commons.errors.internal_server_error import InternalServerError
 from ....commons.errors.unimplemented import Unimplemented
 from ....entity_types.types.notification_type import NotificationType
-from ....entity_types.types.user_notification_policy_request import UserNotificationPolicyRequest
+from ....entity_types.types.user_notification_policy_request import (
+    UserNotificationPolicyRequest,
+)
 from ....core.serialization import convert_and_respect_annotation_metadata
 from ....core.client_wrapper import AsyncClientWrapper
 
@@ -31,7 +35,11 @@ class NotificationPolicyClient:
         self._client_wrapper = client_wrapper
 
     def get_all(
-        self, entity_id: EntityId, user_id: EntityUserId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_id: EntityId,
+        user_id: EntityUserId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.List[UserNotificationPolicyResponse]:
         """
         Retrieve all notification policies associated with this entity user
@@ -336,7 +344,9 @@ class NotificationPolicyClient:
             f"entity/{jsonable_encoder(entity_id)}/user/{jsonable_encoder(user_id)}/notification-policy/{jsonable_encoder(notification_type)}",
             method="POST",
             json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=UserNotificationPolicyRequest, direction="write"
+                object_=request,
+                annotation=UserNotificationPolicyRequest,
+                direction="write",
             ),
             request_options=request_options,
             omit=OMIT,
@@ -432,7 +442,11 @@ class AsyncNotificationPolicyClient:
         self._client_wrapper = client_wrapper
 
     async def get_all(
-        self, entity_id: EntityId, user_id: EntityUserId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_id: EntityId,
+        user_id: EntityUserId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.List[UserNotificationPolicyResponse]:
         """
         Retrieve all notification policies associated with this entity user
@@ -761,7 +775,9 @@ class AsyncNotificationPolicyClient:
             f"entity/{jsonable_encoder(entity_id)}/user/{jsonable_encoder(user_id)}/notification-policy/{jsonable_encoder(notification_type)}",
             method="POST",
             json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=UserNotificationPolicyRequest, direction="write"
+                object_=request,
+                annotation=UserNotificationPolicyRequest,
+                direction="write",
             ),
             request_options=request_options,
             omit=OMIT,

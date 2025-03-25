@@ -2,9 +2,13 @@
 
 import typing
 from ...core.client_wrapper import SyncClientWrapper
-from ...invoice_types.types.bulk_invoice_creation_request import BulkInvoiceCreationRequest
+from ...invoice_types.types.bulk_invoice_creation_request import (
+    BulkInvoiceCreationRequest,
+)
 from ...core.request_options import RequestOptions
-from ...invoice_types.types.bulk_invoice_creation_response import BulkInvoiceCreationResponse
+from ...invoice_types.types.bulk_invoice_creation_response import (
+    BulkInvoiceCreationResponse,
+)
 from ...core.serialization import convert_and_respect_annotation_metadata
 from json.decoder import JSONDecodeError
 from ...core.api_error import ApiError
@@ -121,7 +125,9 @@ class BulkClient:
                 "emitWebhooks": emit_webhooks,
             },
             json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=BulkInvoiceCreationRequest, direction="write"
+                object_=request,
+                annotation=BulkInvoiceCreationRequest,
+                direction="write",
             ),
             request_options=request_options,
             omit=OMIT,
@@ -318,7 +324,9 @@ class AsyncBulkClient:
                 "emitWebhooks": emit_webhooks,
             },
             json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=BulkInvoiceCreationRequest, direction="write"
+                object_=request,
+                annotation=BulkInvoiceCreationRequest,
+                direction="write",
             ),
             request_options=request_options,
             omit=OMIT,

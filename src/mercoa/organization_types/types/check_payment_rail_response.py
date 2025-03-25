@@ -11,7 +11,8 @@ import pydantic
 
 class CheckPaymentRailResponse(GenericPaymentRailResponse):
     available_delivery_methods: typing_extensions.Annotated[
-        typing.List[CheckDeliveryMethod], FieldMetadata(alias="availableDeliveryMethods")
+        typing.List[CheckDeliveryMethod],
+        FieldMetadata(alias="availableDeliveryMethods"),
     ]
     default_delivery_method: typing_extensions.Annotated[
         CheckDeliveryMethod, FieldMetadata(alias="defaultDeliveryMethod")

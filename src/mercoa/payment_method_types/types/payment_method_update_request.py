@@ -46,6 +46,9 @@ class PaymentMethodUpdateRequest_Custom(UniversalBaseModel):
     ] = None
     frozen: typing.Optional[bool] = None
     metadata: typing.Optional[typing.Dict[str, str]] = None
+    confirmed_by_entity: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="confirmedByEntity")
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -86,6 +89,9 @@ class PaymentMethodUpdateRequest_BankAccount(UniversalBaseModel):
     ] = None
     frozen: typing.Optional[bool] = None
     metadata: typing.Optional[typing.Dict[str, str]] = None
+    confirmed_by_entity: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="confirmedByEntity")
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -121,6 +127,9 @@ class PaymentMethodUpdateRequest_Card(UniversalBaseModel):
     ] = None
     frozen: typing.Optional[bool] = None
     metadata: typing.Optional[typing.Dict[str, str]] = None
+    confirmed_by_entity: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="confirmedByEntity")
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -156,6 +165,9 @@ class PaymentMethodUpdateRequest_Check(UniversalBaseModel):
     ] = None
     frozen: typing.Optional[bool] = None
     metadata: typing.Optional[typing.Dict[str, str]] = None
+    confirmed_by_entity: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="confirmedByEntity")
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -191,6 +203,9 @@ class PaymentMethodUpdateRequest_OffPlatform(UniversalBaseModel):
     ] = None
     frozen: typing.Optional[bool] = None
     metadata: typing.Optional[typing.Dict[str, str]] = None
+    confirmed_by_entity: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="confirmedByEntity")
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -226,6 +241,9 @@ class PaymentMethodUpdateRequest_Utility(UniversalBaseModel):
     ] = None
     frozen: typing.Optional[bool] = None
     metadata: typing.Optional[typing.Dict[str, str]] = None
+    confirmed_by_entity: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="confirmedByEntity")
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

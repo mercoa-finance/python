@@ -30,7 +30,10 @@ class EmailTemplateClient:
         self._client_wrapper = client_wrapper
 
     def get_all(
-        self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_id: EntityId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.List[EmailTemplateResponse]:
         """
         Get all email templates for the entity
@@ -679,7 +682,10 @@ class AsyncEmailTemplateClient:
         self._client_wrapper = client_wrapper
 
     async def get_all(
-        self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_id: EntityId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.List[EmailTemplateResponse]:
         """
         Get all email templates for the entity

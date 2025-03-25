@@ -69,7 +69,8 @@ class CustomPaymentMethodSchemaRequest(UniversalBaseModel):
     """
 
     supported_currencies: typing_extensions.Annotated[
-        typing.Optional[typing.List[CurrencyCode]], FieldMetadata(alias="supportedCurrencies")
+        typing.Optional[typing.List[CurrencyCode]],
+        FieldMetadata(alias="supportedCurrencies"),
     ] = pydantic.Field(default=None)
     """
     List of currencies that this payment method supports. If not provided, the payment method will support only USD.

@@ -2,14 +2,26 @@
 
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
-from ...customization_types.types.metadata_customization_request import MetadataCustomizationRequest
+from ...customization_types.types.metadata_customization_request import (
+    MetadataCustomizationRequest,
+)
 import typing_extensions
-from ...customization_types.types.payment_method_customization_request import PaymentMethodCustomizationRequest
+from ...customization_types.types.payment_method_customization_request import (
+    PaymentMethodCustomizationRequest,
+)
 from ...core.serialization import FieldMetadata
-from ...customization_types.types.ocr_customization_response import OcrCustomizationResponse
-from ...customization_types.types.notification_customization_request import NotificationCustomizationRequest
-from ...customization_types.types.workflow_customization_request import WorkflowCustomizationRequest
-from ...customization_types.types.fee_customization_request import FeeCustomizationRequest
+from ...customization_types.types.ocr_customization_response import (
+    OcrCustomizationResponse,
+)
+from ...customization_types.types.notification_customization_request import (
+    NotificationCustomizationRequest,
+)
+from ...customization_types.types.workflow_customization_request import (
+    WorkflowCustomizationRequest,
+)
+from ...customization_types.types.fee_customization_request import (
+    FeeCustomizationRequest,
+)
 from ...organization_types.types.role_permission_request import RolePermissionRequest
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 import pydantic
@@ -105,6 +117,12 @@ class EntityCustomizationResponse(UniversalBaseModel):
                     check_mail=PaymentMethodFee_Flat(
                         amount=2.5,
                     ),
+                    check_mail_priority=PaymentMethodFee_Flat(
+                        amount=2.5,
+                    ),
+                    check_mail_ups_next_day=PaymentMethodFee_Flat(
+                        amount=2.5,
+                    ),
                 ),
                 destination=FeeCustomizationRailRequest(
                     ach_standard=PaymentMethodFee_Flat(
@@ -117,6 +135,12 @@ class EntityCustomizationResponse(UniversalBaseModel):
                         amount=2.5,
                     ),
                     check_mail=PaymentMethodFee_Flat(
+                        amount=2.5,
+                    ),
+                    check_mail_priority=PaymentMethodFee_Flat(
+                        amount=2.5,
+                    ),
+                    check_mail_ups_next_day=PaymentMethodFee_Flat(
                         amount=2.5,
                     ),
                 ),
@@ -135,6 +159,12 @@ class EntityCustomizationResponse(UniversalBaseModel):
                     check_mail=PaymentMethodFee_Flat(
                         amount=2.5,
                     ),
+                    check_mail_priority=PaymentMethodFee_Flat(
+                        amount=2.5,
+                    ),
+                    check_mail_ups_next_day=PaymentMethodFee_Flat(
+                        amount=2.5,
+                    ),
                 ),
                 destination=FeeCustomizationRailRequest(
                     ach_standard=PaymentMethodFee_Flat(
@@ -149,6 +179,12 @@ class EntityCustomizationResponse(UniversalBaseModel):
                     check_mail=PaymentMethodFee_Flat(
                         amount=2.5,
                     ),
+                    check_mail_priority=PaymentMethodFee_Flat(
+                        amount=2.5,
+                    ),
+                    check_mail_ups_next_day=PaymentMethodFee_Flat(
+                        amount=2.5,
+                    ),
                 ),
             ),
         ),
@@ -157,13 +193,16 @@ class EntityCustomizationResponse(UniversalBaseModel):
 
     metadata: typing.List[MetadataCustomizationRequest]
     payment_source: typing_extensions.Annotated[
-        typing.List[PaymentMethodCustomizationRequest], FieldMetadata(alias="paymentSource")
+        typing.List[PaymentMethodCustomizationRequest],
+        FieldMetadata(alias="paymentSource"),
     ]
     backup_disbursement: typing_extensions.Annotated[
-        typing.List[PaymentMethodCustomizationRequest], FieldMetadata(alias="backupDisbursement")
+        typing.List[PaymentMethodCustomizationRequest],
+        FieldMetadata(alias="backupDisbursement"),
     ]
     payment_destination: typing_extensions.Annotated[
-        typing.List[PaymentMethodCustomizationRequest], FieldMetadata(alias="paymentDestination")
+        typing.List[PaymentMethodCustomizationRequest],
+        FieldMetadata(alias="paymentDestination"),
     ]
     ocr: OcrCustomizationResponse
     notifications: NotificationCustomizationRequest

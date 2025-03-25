@@ -3,12 +3,12 @@
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing_extensions
 from ...core.serialization import FieldMetadata
+import pydantic
 from ...entity_types.types.entity_id import EntityId
 from ...payment_method_types.types.payment_method_response import PaymentMethodResponse
 from ...entity_types.types.entity_response import EntityResponse
 import typing
 from ...entity_types.types.entity_user_response import EntityUserResponse
-import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -33,6 +33,7 @@ class PaymentMethodWebhook(UniversalBaseModel):
     PaymentMethodWebhook(
         event_type="paymentMethod.created",
         entity_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+        updated_by_entity_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
         payment_method=PaymentMethodResponse_BankAccount(
             id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
             account_name="My Checking Account",
@@ -46,6 +47,7 @@ class PaymentMethodWebhook(UniversalBaseModel):
             supported_currencies=["USD"],
             metadata={},
             frozen=False,
+            confirmed_by_entity=True,
             created_at=datetime.datetime.fromisoformat(
                 "2021-01-01 00:00:00+00:00",
             ),
@@ -115,10 +117,37 @@ class PaymentMethodWebhook(UniversalBaseModel):
     )
     """
 
-    event_type: typing_extensions.Annotated[str, FieldMetadata(alias="eventType")]
-    entity_id: typing_extensions.Annotated[EntityId, FieldMetadata(alias="entityId")]
-    payment_method: typing_extensions.Annotated[PaymentMethodResponse, FieldMetadata(alias="paymentMethod")]
-    entity: EntityResponse
+    event_type: typing_extensions.Annotated[str, FieldMetadata(alias="eventType")] = pydantic.Field()
+    """
+    The type of the event.
+    """
+
+    entity_id: typing_extensions.Annotated[EntityId, FieldMetadata(alias="entityId")] = pydantic.Field()
+    """
+    ID of the entity that the payment method belongs to.
+    """
+
+    updated_by_entity_id: typing_extensions.Annotated[EntityId, FieldMetadata(alias="updatedByEntityId")] = (
+        pydantic.Field()
+    )
+    """
+    ID of the entity that created or updated the payment method.
+    This will be different from the entityId if the payment method was added by a different entity (e.g. a C2 creating a payment method for a C3).
+    If the payment method was created or updated by an admin, this will be 'admin'.
+    """
+
+    payment_method: typing_extensions.Annotated[PaymentMethodResponse, FieldMetadata(alias="paymentMethod")] = (
+        pydantic.Field()
+    )
+    """
+    The payment method details.
+    """
+
+    entity: EntityResponse = pydantic.Field()
+    """
+    Entity that the payment method belongs to.
+    """
+
     user: typing.Optional[EntityUserResponse] = pydantic.Field(default=None)
     """
     User who initiated the change.

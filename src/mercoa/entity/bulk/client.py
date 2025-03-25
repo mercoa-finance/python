@@ -4,7 +4,9 @@ import typing
 from ...core.client_wrapper import SyncClientWrapper
 from ...entity_types.types.bulk_entity_creation_request import BulkEntityCreationRequest
 from ...core.request_options import RequestOptions
-from ...entity_types.types.bulk_entity_creation_response import BulkEntityCreationResponse
+from ...entity_types.types.bulk_entity_creation_response import (
+    BulkEntityCreationResponse,
+)
 from ...core.serialization import convert_and_respect_annotation_metadata
 from json.decoder import JSONDecodeError
 from ...core.api_error import ApiError

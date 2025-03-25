@@ -30,7 +30,10 @@ class CommentClient:
         self._client_wrapper = client_wrapper
 
     def get_all(
-        self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        invoice_id: InvoiceId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.List[CommentResponse]:
         """
         Get all comments associated with this invoice
@@ -149,7 +152,11 @@ class CommentClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def create(
-        self, invoice_id: InvoiceId, *, request: CommentRequest, request_options: typing.Optional[RequestOptions] = None
+        self,
+        invoice_id: InvoiceId,
+        *,
+        request: CommentRequest,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> CommentResponse:
         """
         Add a comment to this invoice
@@ -277,7 +284,11 @@ class CommentClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get(
-        self, invoice_id: InvoiceId, comment_id: CommentId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        invoice_id: InvoiceId,
+        comment_id: CommentId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> CommentResponse:
         """
         Parameters
@@ -533,7 +544,11 @@ class CommentClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def delete(
-        self, invoice_id: InvoiceId, comment_id: CommentId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        invoice_id: InvoiceId,
+        comment_id: CommentId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
         Delete a comment on this invoice
@@ -654,7 +669,10 @@ class AsyncCommentClient:
         self._client_wrapper = client_wrapper
 
     async def get_all(
-        self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        invoice_id: InvoiceId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.List[CommentResponse]:
         """
         Get all comments associated with this invoice
@@ -781,7 +799,11 @@ class AsyncCommentClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def create(
-        self, invoice_id: InvoiceId, *, request: CommentRequest, request_options: typing.Optional[RequestOptions] = None
+        self,
+        invoice_id: InvoiceId,
+        *,
+        request: CommentRequest,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> CommentResponse:
         """
         Add a comment to this invoice
@@ -917,7 +939,11 @@ class AsyncCommentClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get(
-        self, invoice_id: InvoiceId, comment_id: CommentId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        invoice_id: InvoiceId,
+        comment_id: CommentId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> CommentResponse:
         """
         Parameters
@@ -1189,7 +1215,11 @@ class AsyncCommentClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def delete(
-        self, invoice_id: InvoiceId, comment_id: CommentId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        invoice_id: InvoiceId,
+        comment_id: CommentId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
         Delete a comment on this invoice

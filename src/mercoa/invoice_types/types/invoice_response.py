@@ -8,7 +8,9 @@ import datetime as dt
 from ...core.serialization import FieldMetadata
 import pydantic
 from .invoice_failure_type import InvoiceFailureType
-from ...transaction.types.transaction_response_without_invoices import TransactionResponseWithoutInvoices
+from ...transaction.types.transaction_response_without_invoices import (
+    TransactionResponseWithoutInvoices,
+)
 from ...vendor_credit_types.types.vendor_credit_id import VendorCreditId
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
@@ -141,6 +143,7 @@ class InvoiceResponse(InvoiceResponseBase):
                     supported_currencies=["USD"],
                     metadata={},
                     frozen=False,
+                    confirmed_by_entity=True,
                     created_at=datetime.datetime.fromisoformat(
                         "2021-01-01 00:00:00+00:00",
                     ),
@@ -164,6 +167,7 @@ class InvoiceResponse(InvoiceResponseBase):
             supported_currencies=["USD"],
             metadata={},
             frozen=False,
+            confirmed_by_entity=True,
             created_at=datetime.datetime.fromisoformat(
                 "2021-01-01 00:00:00+00:00",
             ),
@@ -215,6 +219,7 @@ class InvoiceResponse(InvoiceResponseBase):
                     supported_currencies=["USD"],
                     metadata={},
                     frozen=False,
+                    confirmed_by_entity=False,
                     created_at=datetime.datetime.fromisoformat(
                         "2021-01-01 00:00:00+00:00",
                     ),
@@ -239,6 +244,7 @@ class InvoiceResponse(InvoiceResponseBase):
             supported_currencies=["USD"],
             metadata={},
             frozen=False,
+            confirmed_by_entity=True,
             created_at=datetime.datetime.fromisoformat(
                 "2021-01-01 00:00:00+00:00",
             ),
@@ -325,6 +331,7 @@ class InvoiceResponse(InvoiceResponseBase):
                             supported_currencies=["USD"],
                             metadata={},
                             frozen=False,
+                            confirmed_by_entity=True,
                             created_at=datetime.datetime.fromisoformat(
                                 "2021-01-01 00:00:00+00:00",
                             ),
@@ -348,6 +355,7 @@ class InvoiceResponse(InvoiceResponseBase):
                     supported_currencies=["USD"],
                     metadata={},
                     frozen=False,
+                    confirmed_by_entity=True,
                     created_at=datetime.datetime.fromisoformat(
                         "2021-01-01 00:00:00+00:00",
                     ),
@@ -399,6 +407,7 @@ class InvoiceResponse(InvoiceResponseBase):
                             supported_currencies=["USD"],
                             metadata={},
                             frozen=False,
+                            confirmed_by_entity=False,
                             created_at=datetime.datetime.fromisoformat(
                                 "2021-01-01 00:00:00+00:00",
                             ),
@@ -422,6 +431,7 @@ class InvoiceResponse(InvoiceResponseBase):
                     supported_currencies=["USD"],
                     metadata={},
                     frozen=False,
+                    confirmed_by_entity=True,
                     created_at=datetime.datetime.fromisoformat(
                         "2021-01-01 00:00:00+00:00",
                     ),
@@ -594,7 +604,8 @@ class InvoiceResponse(InvoiceResponseBase):
     """
 
     vendor_credit_ids: typing_extensions.Annotated[
-        typing.Optional[typing.List[VendorCreditId]], FieldMetadata(alias="vendorCreditIds")
+        typing.Optional[typing.List[VendorCreditId]],
+        FieldMetadata(alias="vendorCreditIds"),
     ] = pydantic.Field(default=None)
     """
     The IDs of the vendor credits that are currently applied to this invoice.

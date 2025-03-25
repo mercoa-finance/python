@@ -288,7 +288,11 @@ class DocumentClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def delete(
-        self, invoice_id: InvoiceId, document_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        invoice_id: InvoiceId,
+        document_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
         Delete an attachment (scanned/uploaded PDFs and images) associated with this invoice
@@ -404,7 +408,10 @@ class DocumentClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def generate_invoice_pdf(
-        self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        invoice_id: InvoiceId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> DocumentResponse:
         """
         Generate a PDF of the invoice. This PDF is generated from the data in the invoice, not from the uploaded documents.
@@ -524,7 +531,10 @@ class DocumentClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def generate_check_pdf(
-        self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        invoice_id: InvoiceId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> DocumentResponse:
         """
         Get a PDF of the check for the invoice. If the invoice does not have check as the disbursement method, an error will be returned. If the disbursement option for the check is set to 'MAIL', a void copy of the check will be returned. If the disbursement option for the check is set to 'PRINT', a printable check will be returned. If the invoice is NOT marked as PAID, the check will be a void copy.
@@ -644,7 +654,10 @@ class DocumentClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get_source_email(
-        self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        invoice_id: InvoiceId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> EmailLogResponse:
         """
         Get the email subject and body that was used to create this invoice.
@@ -1043,7 +1056,11 @@ class AsyncDocumentClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def delete(
-        self, invoice_id: InvoiceId, document_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        invoice_id: InvoiceId,
+        document_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
         Delete an attachment (scanned/uploaded PDFs and images) associated with this invoice
@@ -1167,7 +1184,10 @@ class AsyncDocumentClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def generate_invoice_pdf(
-        self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        invoice_id: InvoiceId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> DocumentResponse:
         """
         Generate a PDF of the invoice. This PDF is generated from the data in the invoice, not from the uploaded documents.
@@ -1295,7 +1315,10 @@ class AsyncDocumentClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def generate_check_pdf(
-        self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        invoice_id: InvoiceId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> DocumentResponse:
         """
         Get a PDF of the check for the invoice. If the invoice does not have check as the disbursement method, an error will be returned. If the disbursement option for the check is set to 'MAIL', a void copy of the check will be returned. If the disbursement option for the check is set to 'PRINT', a printable check will be returned. If the invoice is NOT marked as PAID, the check will be a void copy.
@@ -1423,7 +1446,10 @@ class AsyncDocumentClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get_source_email(
-        self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        invoice_id: InvoiceId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> EmailLogResponse:
         """
         Get the email subject and body that was used to create this invoice.

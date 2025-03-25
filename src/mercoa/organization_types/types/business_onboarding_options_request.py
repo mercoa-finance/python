@@ -24,13 +24,16 @@ class BusinessOnboardingOptionsRequest(CommonOnboardingOptionsRequest):
     representatives: typing.Optional[OnboardingOptionRequest] = None
     logo: typing.Optional[OnboardingOptionRequest] = None
     average_transaction_size: typing_extensions.Annotated[
-        typing.Optional[OnboardingOptionRequest], FieldMetadata(alias="averageTransactionSize")
+        typing.Optional[OnboardingOptionRequest],
+        FieldMetadata(alias="averageTransactionSize"),
     ] = None
     average_monthly_transaction_volume: typing_extensions.Annotated[
-        typing.Optional[OnboardingOptionRequest], FieldMetadata(alias="averageMonthlyTransactionVolume")
+        typing.Optional[OnboardingOptionRequest],
+        FieldMetadata(alias="averageMonthlyTransactionVolume"),
     ] = None
     max_transaction_size: typing_extensions.Annotated[
-        typing.Optional[OnboardingOptionRequest], FieldMetadata(alias="maxTransactionSize")
+        typing.Optional[OnboardingOptionRequest],
+        FieldMetadata(alias="maxTransactionSize"),
     ] = None
 
     if IS_PYDANTIC_V2:

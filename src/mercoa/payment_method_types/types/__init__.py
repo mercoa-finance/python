@@ -23,6 +23,9 @@ from .custom_payment_method_schema_response import CustomPaymentMethodSchemaResp
 from .custom_payment_method_update_request import CustomPaymentMethodUpdateRequest
 from .payment_method_base_request import PaymentMethodBaseRequest
 from .payment_method_base_response import PaymentMethodBaseResponse
+from .payment_method_event import PaymentMethodEvent
+from .payment_method_event_id import PaymentMethodEventId
+from .payment_method_events_response import PaymentMethodEventsResponse
 from .payment_method_id import PaymentMethodId
 from .payment_method_request import (
     PaymentMethodRequest,
@@ -85,6 +88,9 @@ __all__ = [
     "CustomPaymentMethodUpdateRequest",
     "PaymentMethodBaseRequest",
     "PaymentMethodBaseResponse",
+    "PaymentMethodEvent",
+    "PaymentMethodEventId",
+    "PaymentMethodEventsResponse",
     "PaymentMethodId",
     "PaymentMethodRequest",
     "PaymentMethodRequest_BankAccount",

@@ -7,7 +7,9 @@ import typing
 from ...core.serialization import FieldMetadata
 from .payment_methods_response import PaymentMethodsResponse
 from .email_provider_response import EmailProviderResponse
-from .external_accounting_system_provider_response import ExternalAccountingSystemProviderResponse
+from .external_accounting_system_provider_response import (
+    ExternalAccountingSystemProviderResponse,
+)
 from .color_scheme_response import ColorSchemeResponse
 from .onboarding_options_response import OnboardingOptionsResponse
 from .metadata_schema import MetadataSchema
@@ -39,16 +41,20 @@ class OrganizationResponse(UniversalBaseModel):
         typing.Optional[ColorSchemeResponse], FieldMetadata(alias="colorScheme")
     ] = None
     payee_onboarding_options: typing_extensions.Annotated[
-        typing.Optional[OnboardingOptionsResponse], FieldMetadata(alias="payeeOnboardingOptions")
+        typing.Optional[OnboardingOptionsResponse],
+        FieldMetadata(alias="payeeOnboardingOptions"),
     ] = None
     payor_onboarding_options: typing_extensions.Annotated[
-        typing.Optional[OnboardingOptionsResponse], FieldMetadata(alias="payorOnboardingOptions")
+        typing.Optional[OnboardingOptionsResponse],
+        FieldMetadata(alias="payorOnboardingOptions"),
     ] = None
     metadata_schema: typing_extensions.Annotated[
-        typing.Optional[typing.List[MetadataSchema]], FieldMetadata(alias="metadataSchema")
+        typing.Optional[typing.List[MetadataSchema]],
+        FieldMetadata(alias="metadataSchema"),
     ] = None
     notification_email_template: typing_extensions.Annotated[
-        typing.Optional[NotificationEmailTemplateResponse], FieldMetadata(alias="notificationEmailTemplate")
+        typing.Optional[NotificationEmailTemplateResponse],
+        FieldMetadata(alias="notificationEmailTemplate"),
     ] = None
     custom_domains: typing_extensions.Annotated[
         typing.Optional[typing.List[str]], FieldMetadata(alias="customDomains")

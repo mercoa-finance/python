@@ -22,7 +22,10 @@ class BankLookupClient:
         self._client_wrapper = client_wrapper
 
     def find(
-        self, *, routing_number: str, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        routing_number: str,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> BankLookupResponse:
         """
         Find bank account details
@@ -149,7 +152,10 @@ class AsyncBankLookupClient:
         self._client_wrapper = client_wrapper
 
     async def find(
-        self, *, routing_number: str, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        routing_number: str,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> BankLookupResponse:
         """
         Find bank account details

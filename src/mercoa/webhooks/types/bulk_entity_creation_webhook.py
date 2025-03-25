@@ -3,10 +3,12 @@
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing_extensions
 from ...core.serialization import FieldMetadata
-import typing
-from ...entity_types.types.bulk_entity_creation_from_object_response import BulkEntityCreationFromObjectResponse
-from ...core.pydantic_utilities import IS_PYDANTIC_V2
 import pydantic
+import typing
+from ...entity_types.types.bulk_entity_creation_from_object_response import (
+    BulkEntityCreationFromObjectResponse,
+)
+from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
 class BulkEntityCreationWebhook(UniversalBaseModel):
@@ -31,8 +33,15 @@ class BulkEntityCreationWebhook(UniversalBaseModel):
     )
     """
 
-    event_type: typing_extensions.Annotated[str, FieldMetadata(alias="eventType")]
-    data: typing.List[BulkEntityCreationFromObjectResponse]
+    event_type: typing_extensions.Annotated[str, FieldMetadata(alias="eventType")] = pydantic.Field()
+    """
+    The type of the event.
+    """
+
+    data: typing.List[BulkEntityCreationFromObjectResponse] = pydantic.Field()
+    """
+    A list of bulk entity creation responses.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

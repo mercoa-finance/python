@@ -11,10 +11,12 @@ import pydantic
 
 class BankPaymentRailRequest(GenericPaymentRailRequest):
     available_delivery_methods: typing_extensions.Annotated[
-        typing.Optional[typing.List[BankDeliveryMethod]], FieldMetadata(alias="availableDeliveryMethods")
+        typing.Optional[typing.List[BankDeliveryMethod]],
+        FieldMetadata(alias="availableDeliveryMethods"),
     ] = None
     default_delivery_method: typing_extensions.Annotated[
-        typing.Optional[BankDeliveryMethod], FieldMetadata(alias="defaultDeliveryMethod")
+        typing.Optional[BankDeliveryMethod],
+        FieldMetadata(alias="defaultDeliveryMethod"),
     ] = None
 
     if IS_PYDANTIC_V2:

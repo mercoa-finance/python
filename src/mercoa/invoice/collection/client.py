@@ -29,7 +29,10 @@ class CollectionClient:
         self._client_wrapper = client_wrapper
 
     def get_next_action(
-        self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        invoice_id: InvoiceId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.Optional[ActionResponse]:
         """
         Get the collection agent's next action on this invoice. This endpoint will return an empty object if there is no action to return.
@@ -281,7 +284,10 @@ class CollectionClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def approve_next_action(
-        self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        invoice_id: InvoiceId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> ActionResponse:
         """
         Approve the collection agent's next action on this invoice. This endpoint will throw an error if there is no action to approve.
@@ -405,7 +411,10 @@ class AsyncCollectionClient:
         self._client_wrapper = client_wrapper
 
     async def get_next_action(
-        self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        invoice_id: InvoiceId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.Optional[ActionResponse]:
         """
         Get the collection agent's next action on this invoice. This endpoint will return an empty object if there is no action to return.
@@ -673,7 +682,10 @@ class AsyncCollectionClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def approve_next_action(
-        self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        invoice_id: InvoiceId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> ActionResponse:
         """
         Approve the collection agent's next action on this invoice. This endpoint will throw an error if there is no action to approve.

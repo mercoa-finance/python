@@ -29,8 +29,12 @@ from ...commons.errors.not_found import NotFound
 from ...commons.errors.conflict import Conflict
 from ...commons.errors.internal_server_error import InternalServerError
 from ...commons.errors.unimplemented import Unimplemented
-from ...invoice_types.types.invoice_metrics_per_date_group_by import InvoiceMetricsPerDateGroupBy
-from ...invoice_types.types.invoice_metrics_per_date_frequency import InvoiceMetricsPerDateFrequency
+from ...invoice_types.types.invoice_metrics_per_date_group_by import (
+    InvoiceMetricsPerDateGroupBy,
+)
+from ...invoice_types.types.invoice_metrics_per_date_frequency import (
+    InvoiceMetricsPerDateFrequency,
+)
 from ...invoice_types.types.invoice_metrics_group_by import InvoiceMetricsGroupBy
 from ...payment_method_types.types.currency_code import CurrencyCode
 from ...invoice_types.types.invoice_metrics_response import InvoiceMetricsResponse

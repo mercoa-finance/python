@@ -3,9 +3,9 @@
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing_extensions
 from ...core.serialization import FieldMetadata
+import pydantic
 import typing
 from ...invoice_types.types.invoice_response import InvoiceResponse
-import pydantic
 from ...invoice_types.types.invoice_id import InvoiceId
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
@@ -141,6 +141,7 @@ class InvoiceEmailWebhook(UniversalBaseModel):
                         supported_currencies=["USD"],
                         metadata={},
                         frozen=False,
+                        confirmed_by_entity=True,
                         created_at=datetime.datetime.fromisoformat(
                             "2021-01-01 00:00:00+00:00",
                         ),
@@ -164,6 +165,7 @@ class InvoiceEmailWebhook(UniversalBaseModel):
                 supported_currencies=["USD"],
                 metadata={},
                 frozen=False,
+                confirmed_by_entity=True,
                 created_at=datetime.datetime.fromisoformat(
                     "2021-01-01 00:00:00+00:00",
                 ),
@@ -215,6 +217,7 @@ class InvoiceEmailWebhook(UniversalBaseModel):
                         supported_currencies=["USD"],
                         metadata={},
                         frozen=False,
+                        confirmed_by_entity=False,
                         created_at=datetime.datetime.fromisoformat(
                             "2021-01-01 00:00:00+00:00",
                         ),
@@ -239,6 +242,7 @@ class InvoiceEmailWebhook(UniversalBaseModel):
                 supported_currencies=["USD"],
                 metadata={},
                 frozen=False,
+                confirmed_by_entity=True,
                 created_at=datetime.datetime.fromisoformat(
                     "2021-01-01 00:00:00+00:00",
                 ),
@@ -325,6 +329,7 @@ class InvoiceEmailWebhook(UniversalBaseModel):
                                 supported_currencies=["USD"],
                                 metadata={},
                                 frozen=False,
+                                confirmed_by_entity=True,
                                 created_at=datetime.datetime.fromisoformat(
                                     "2021-01-01 00:00:00+00:00",
                                 ),
@@ -348,6 +353,7 @@ class InvoiceEmailWebhook(UniversalBaseModel):
                         supported_currencies=["USD"],
                         metadata={},
                         frozen=False,
+                        confirmed_by_entity=True,
                         created_at=datetime.datetime.fromisoformat(
                             "2021-01-01 00:00:00+00:00",
                         ),
@@ -399,6 +405,7 @@ class InvoiceEmailWebhook(UniversalBaseModel):
                                 supported_currencies=["USD"],
                                 metadata={},
                                 frozen=False,
+                                confirmed_by_entity=False,
                                 created_at=datetime.datetime.fromisoformat(
                                     "2021-01-01 00:00:00+00:00",
                                 ),
@@ -422,6 +429,7 @@ class InvoiceEmailWebhook(UniversalBaseModel):
                         supported_currencies=["USD"],
                         metadata={},
                         frozen=False,
+                        confirmed_by_entity=True,
                         created_at=datetime.datetime.fromisoformat(
                             "2021-01-01 00:00:00+00:00",
                         ),
@@ -560,7 +568,11 @@ class InvoiceEmailWebhook(UniversalBaseModel):
     )
     """
 
-    event_type: typing_extensions.Annotated[str, FieldMetadata(alias="eventType")]
+    event_type: typing_extensions.Annotated[str, FieldMetadata(alias="eventType")] = pydantic.Field()
+    """
+    The type of the event.
+    """
+
     invoice: typing.Optional[InvoiceResponse] = pydantic.Field(default=None)
     """
     If an invoice was created from the email, this will be present.

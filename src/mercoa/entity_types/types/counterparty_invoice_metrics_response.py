@@ -4,7 +4,9 @@ from ...core.pydantic_utilities import UniversalBaseModel
 import typing_extensions
 from ...core.serialization import FieldMetadata
 import typing
-from .counterparty_invoice_metrics_status_response import CounterpartyInvoiceMetricsStatusResponse
+from .counterparty_invoice_metrics_status_response import (
+    CounterpartyInvoiceMetricsStatusResponse,
+)
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 import pydantic
 

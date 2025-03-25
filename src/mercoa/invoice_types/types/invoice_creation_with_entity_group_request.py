@@ -67,7 +67,8 @@ class InvoiceCreationWithEntityGroupRequest(InvoiceRequestBase):
     """
 
     line_items: typing_extensions.Annotated[
-        typing.Optional[typing.List[InvoiceLineItemCreationRequest]], FieldMetadata(alias="lineItems")
+        typing.Optional[typing.List[InvoiceLineItemCreationRequest]],
+        FieldMetadata(alias="lineItems"),
     ] = None
     creator_entity_group_id: typing_extensions.Annotated[EntityGroupId, FieldMetadata(alias="creatorEntityGroupId")] = (
         pydantic.Field()

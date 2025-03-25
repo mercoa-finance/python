@@ -5,7 +5,9 @@ from ...core.client_wrapper import SyncClientWrapper
 from ...entity_group_types.types.entity_group_id import EntityGroupId
 from ...entity_types.types.entity_user_id import EntityUserId
 from ...core.request_options import RequestOptions
-from ...entity_group_types.types.find_entity_group_user_response import FindEntityGroupUserResponse
+from ...entity_group_types.types.find_entity_group_user_response import (
+    FindEntityGroupUserResponse,
+)
 from ...core.jsonable_encoder import jsonable_encoder
 from json.decoder import JSONDecodeError
 from ...core.api_error import ApiError
@@ -18,7 +20,9 @@ from ...commons.errors.conflict import Conflict
 from ...commons.errors.internal_server_error import InternalServerError
 from ...commons.errors.unimplemented import Unimplemented
 from ...entity_group_types.types.entity_group_user_request import EntityGroupUserRequest
-from ...entity_group_types.types.entity_group_user_response import EntityGroupUserResponse
+from ...entity_group_types.types.entity_group_user_response import (
+    EntityGroupUserResponse,
+)
 from ...core.serialization import convert_and_respect_annotation_metadata
 from ...entity_types.types.token_generation_options import TokenGenerationOptions
 from ...core.client_wrapper import AsyncClientWrapper

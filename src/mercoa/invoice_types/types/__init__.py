@@ -25,6 +25,7 @@ from .invoice_creation_with_entity_group_request import InvoiceCreationWithEntit
 from .invoice_creation_with_entity_request import InvoiceCreationWithEntityRequest
 from .invoice_date_filter import InvoiceDateFilter
 from .invoice_event import InvoiceEvent
+from .invoice_event_id import InvoiceEventId
 from .invoice_events_response import InvoiceEventsResponse
 from .invoice_failure_type import InvoiceFailureType
 from .invoice_fees_request import InvoiceFeesRequest
@@ -101,6 +102,7 @@ __all__ = [
     "InvoiceCreationWithEntityRequest",
     "InvoiceDateFilter",
     "InvoiceEvent",
+    "InvoiceEventId",
     "InvoiceEventsResponse",
     "InvoiceFailureType",
     "InvoiceFeesRequest",

@@ -49,7 +49,8 @@ class CommentResponse(UniversalBaseModel):
     text: str
     user: typing.Optional[EntityUserResponse] = None
     associated_approval_action: typing_extensions.Annotated[
-        typing.Optional[AssociatedApprovalAction], FieldMetadata(alias="associatedApprovalAction")
+        typing.Optional[AssociatedApprovalAction],
+        FieldMetadata(alias="associatedApprovalAction"),
     ] = pydantic.Field(default=None)
     """
     If an approval action has triggered the generation of this comment, returns the associated approval action and actor

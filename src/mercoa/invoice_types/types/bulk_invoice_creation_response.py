@@ -2,7 +2,9 @@
 
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
-from .bulk_invoice_creation_from_object_response import BulkInvoiceCreationFromObjectResponse
+from .bulk_invoice_creation_from_object_response import (
+    BulkInvoiceCreationFromObjectResponse,
+)
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 import pydantic
 

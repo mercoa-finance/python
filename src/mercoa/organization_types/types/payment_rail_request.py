@@ -14,10 +14,12 @@ from ...invoice_types.types.check_delivery_method import CheckDeliveryMethod
 class PaymentRailRequest_BankAccount(UniversalBaseModel):
     type: typing.Literal["bankAccount"] = "bankAccount"
     available_delivery_methods: typing_extensions.Annotated[
-        typing.Optional[typing.List[BankDeliveryMethod]], FieldMetadata(alias="availableDeliveryMethods")
+        typing.Optional[typing.List[BankDeliveryMethod]],
+        FieldMetadata(alias="availableDeliveryMethods"),
     ] = None
     default_delivery_method: typing_extensions.Annotated[
-        typing.Optional[BankDeliveryMethod], FieldMetadata(alias="defaultDeliveryMethod")
+        typing.Optional[BankDeliveryMethod],
+        FieldMetadata(alias="defaultDeliveryMethod"),
     ] = None
     name: typing.Optional[str] = None
     active: bool
@@ -65,10 +67,12 @@ class PaymentRailRequest_VirtualCard(UniversalBaseModel):
 class PaymentRailRequest_Check(UniversalBaseModel):
     type: typing.Literal["check"] = "check"
     available_delivery_methods: typing_extensions.Annotated[
-        typing.Optional[typing.List[CheckDeliveryMethod]], FieldMetadata(alias="availableDeliveryMethods")
+        typing.Optional[typing.List[CheckDeliveryMethod]],
+        FieldMetadata(alias="availableDeliveryMethods"),
     ] = None
     default_delivery_method: typing_extensions.Annotated[
-        typing.Optional[CheckDeliveryMethod], FieldMetadata(alias="defaultDeliveryMethod")
+        typing.Optional[CheckDeliveryMethod],
+        FieldMetadata(alias="defaultDeliveryMethod"),
     ] = None
     print_description: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="printDescription")] = (
         None

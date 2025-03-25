@@ -19,7 +19,9 @@ from ...commons.errors.unimplemented import Unimplemented
 from ...entity_types.types.approval_policy_request import ApprovalPolicyRequest
 from ...core.serialization import convert_and_respect_annotation_metadata
 from ...entity_types.types.approval_policy_id import ApprovalPolicyId
-from ...entity_types.types.approval_policy_update_request import ApprovalPolicyUpdateRequest
+from ...entity_types.types.approval_policy_update_request import (
+    ApprovalPolicyUpdateRequest,
+)
 from ...core.client_wrapper import AsyncClientWrapper
 
 # this is used as the default value for optional parameters
@@ -31,7 +33,10 @@ class ApprovalPolicyClient:
         self._client_wrapper = client_wrapper
 
     def get_all(
-        self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_id: EntityId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.List[ApprovalPolicyResponse]:
         """
         Retrieve all invoice approval policies associated with an entity
@@ -489,7 +494,9 @@ class ApprovalPolicyClient:
             f"entity/{jsonable_encoder(entity_id)}/approval-policy/{jsonable_encoder(policy_id)}",
             method="POST",
             json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=ApprovalPolicyUpdateRequest, direction="write"
+                object_=request,
+                annotation=ApprovalPolicyUpdateRequest,
+                direction="write",
             ),
             request_options=request_options,
             omit=OMIT,
@@ -705,7 +712,10 @@ class AsyncApprovalPolicyClient:
         self._client_wrapper = client_wrapper
 
     async def get_all(
-        self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_id: EntityId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.List[ApprovalPolicyResponse]:
         """
         Retrieve all invoice approval policies associated with an entity
@@ -1195,7 +1205,9 @@ class AsyncApprovalPolicyClient:
             f"entity/{jsonable_encoder(entity_id)}/approval-policy/{jsonable_encoder(policy_id)}",
             method="POST",
             json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=ApprovalPolicyUpdateRequest, direction="write"
+                object_=request,
+                annotation=ApprovalPolicyUpdateRequest,
+                direction="write",
             ),
             request_options=request_options,
             omit=OMIT,

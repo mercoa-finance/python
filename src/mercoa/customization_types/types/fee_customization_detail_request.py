@@ -32,6 +32,12 @@ class FeeCustomizationDetailRequest(UniversalBaseModel):
             check_mail=PaymentMethodFee_Flat(
                 amount=2.5,
             ),
+            check_mail_priority=PaymentMethodFee_Flat(
+                amount=2.5,
+            ),
+            check_mail_ups_next_day=PaymentMethodFee_Flat(
+                amount=2.5,
+            ),
         ),
         destination=FeeCustomizationRailRequest(
             ach_standard=PaymentMethodFee_Flat(
@@ -44,6 +50,12 @@ class FeeCustomizationDetailRequest(UniversalBaseModel):
                 amount=2.5,
             ),
             check_mail=PaymentMethodFee_Flat(
+                amount=2.5,
+            ),
+            check_mail_priority=PaymentMethodFee_Flat(
+                amount=2.5,
+            ),
+            check_mail_ups_next_day=PaymentMethodFee_Flat(
                 amount=2.5,
             ),
         ),

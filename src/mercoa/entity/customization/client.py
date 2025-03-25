@@ -4,7 +4,9 @@ import typing
 from ...core.client_wrapper import SyncClientWrapper
 from ...entity_types.types.entity_id import EntityId
 from ...core.request_options import RequestOptions
-from ...entity_types.types.entity_customization_response import EntityCustomizationResponse
+from ...entity_types.types.entity_customization_response import (
+    EntityCustomizationResponse,
+)
 from ...core.jsonable_encoder import jsonable_encoder
 from json.decoder import JSONDecodeError
 from ...core.api_error import ApiError
@@ -16,7 +18,9 @@ from ...commons.errors.not_found import NotFound
 from ...commons.errors.conflict import Conflict
 from ...commons.errors.internal_server_error import InternalServerError
 from ...commons.errors.unimplemented import Unimplemented
-from ...entity_types.types.entity_customization_request import EntityCustomizationRequest
+from ...entity_types.types.entity_customization_request import (
+    EntityCustomizationRequest,
+)
 from ...core.serialization import convert_and_respect_annotation_metadata
 from ...core.client_wrapper import AsyncClientWrapper
 
@@ -29,7 +33,10 @@ class CustomizationClient:
         self._client_wrapper = client_wrapper
 
     def get(
-        self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_id: EntityId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityCustomizationResponse:
         """
         Get entity customization.
@@ -265,6 +272,12 @@ class CustomizationClient:
                             check_mail=PaymentMethodFee_Flat(
                                 amount=2.5,
                             ),
+                            check_mail_priority=PaymentMethodFee_Flat(
+                                amount=2.5,
+                            ),
+                            check_mail_ups_next_day=PaymentMethodFee_Flat(
+                                amount=2.5,
+                            ),
                         ),
                         destination=FeeCustomizationRailRequest(
                             ach_standard=PaymentMethodFee_Flat(
@@ -277,6 +290,12 @@ class CustomizationClient:
                                 amount=2.5,
                             ),
                             check_mail=PaymentMethodFee_Flat(
+                                amount=2.5,
+                            ),
+                            check_mail_priority=PaymentMethodFee_Flat(
+                                amount=2.5,
+                            ),
+                            check_mail_ups_next_day=PaymentMethodFee_Flat(
                                 amount=2.5,
                             ),
                         ),
@@ -295,6 +314,12 @@ class CustomizationClient:
                             check_mail=PaymentMethodFee_Flat(
                                 amount=2.5,
                             ),
+                            check_mail_priority=PaymentMethodFee_Flat(
+                                amount=2.5,
+                            ),
+                            check_mail_ups_next_day=PaymentMethodFee_Flat(
+                                amount=2.5,
+                            ),
                         ),
                         destination=FeeCustomizationRailRequest(
                             ach_standard=PaymentMethodFee_Flat(
@@ -309,6 +334,12 @@ class CustomizationClient:
                             check_mail=PaymentMethodFee_Flat(
                                 amount=2.5,
                             ),
+                            check_mail_priority=PaymentMethodFee_Flat(
+                                amount=2.5,
+                            ),
+                            check_mail_ups_next_day=PaymentMethodFee_Flat(
+                                amount=2.5,
+                            ),
                         ),
                     ),
                 ),
@@ -319,7 +350,9 @@ class CustomizationClient:
             f"entity/{jsonable_encoder(entity_id)}/customization",
             method="POST",
             json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=EntityCustomizationRequest, direction="write"
+                object_=request,
+                annotation=EntityCustomizationRequest,
+                direction="write",
             ),
             request_options=request_options,
             omit=OMIT,
@@ -415,7 +448,10 @@ class AsyncCustomizationClient:
         self._client_wrapper = client_wrapper
 
     async def get(
-        self, entity_id: EntityId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_id: EntityId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityCustomizationResponse:
         """
         Get entity customization.
@@ -664,6 +700,12 @@ class AsyncCustomizationClient:
                                 check_mail=PaymentMethodFee_Flat(
                                     amount=2.5,
                                 ),
+                                check_mail_priority=PaymentMethodFee_Flat(
+                                    amount=2.5,
+                                ),
+                                check_mail_ups_next_day=PaymentMethodFee_Flat(
+                                    amount=2.5,
+                                ),
                             ),
                             destination=FeeCustomizationRailRequest(
                                 ach_standard=PaymentMethodFee_Flat(
@@ -676,6 +718,12 @@ class AsyncCustomizationClient:
                                     amount=2.5,
                                 ),
                                 check_mail=PaymentMethodFee_Flat(
+                                    amount=2.5,
+                                ),
+                                check_mail_priority=PaymentMethodFee_Flat(
+                                    amount=2.5,
+                                ),
+                                check_mail_ups_next_day=PaymentMethodFee_Flat(
                                     amount=2.5,
                                 ),
                             ),
@@ -694,6 +742,12 @@ class AsyncCustomizationClient:
                                 check_mail=PaymentMethodFee_Flat(
                                     amount=2.5,
                                 ),
+                                check_mail_priority=PaymentMethodFee_Flat(
+                                    amount=2.5,
+                                ),
+                                check_mail_ups_next_day=PaymentMethodFee_Flat(
+                                    amount=2.5,
+                                ),
                             ),
                             destination=FeeCustomizationRailRequest(
                                 ach_standard=PaymentMethodFee_Flat(
@@ -706,6 +760,12 @@ class AsyncCustomizationClient:
                                     amount=2.5,
                                 ),
                                 check_mail=PaymentMethodFee_Flat(
+                                    amount=2.5,
+                                ),
+                                check_mail_priority=PaymentMethodFee_Flat(
+                                    amount=2.5,
+                                ),
+                                check_mail_ups_next_day=PaymentMethodFee_Flat(
                                     amount=2.5,
                                 ),
                             ),
@@ -721,7 +781,9 @@ class AsyncCustomizationClient:
             f"entity/{jsonable_encoder(entity_id)}/customization",
             method="POST",
             json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=EntityCustomizationRequest, direction="write"
+                object_=request,
+                annotation=EntityCustomizationRequest,
+                direction="write",
             ),
             request_options=request_options,
             omit=OMIT,

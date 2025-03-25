@@ -16,9 +16,13 @@ from ..commons.errors.not_found import NotFound
 from ..commons.errors.conflict import Conflict
 from ..commons.errors.internal_server_error import InternalServerError
 from ..commons.errors.unimplemented import Unimplemented
-from ..contract_types.types.generate_contract_async_response import GenerateContractAsyncResponse
+from ..contract_types.types.generate_contract_async_response import (
+    GenerateContractAsyncResponse,
+)
 from ..contract_types.types.contract_job_id import ContractJobId
-from ..contract_types.types.generate_contract_async_job_response import GenerateContractAsyncJobResponse
+from ..contract_types.types.generate_contract_async_job_response import (
+    GenerateContractAsyncJobResponse,
+)
 from ..core.jsonable_encoder import jsonable_encoder
 from ..contract_types.types.contract_create_request import ContractCreateRequest
 from ..invoice_types.types.invoice_response import InvoiceResponse
@@ -39,7 +43,10 @@ class ContractClient:
         self._client_wrapper = client_wrapper
 
     def generate_contract(
-        self, *, request: GenerateContractRequest, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        request: GenerateContractRequest,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> GenerateContractResponse:
         """
         Generate a new contract object from a Base64 encoded PDF of a contract. This endpoint will block until the contract is generated.
@@ -165,7 +172,10 @@ class ContractClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def generate_contract_run_async(
-        self, *, request: GenerateContractRequest, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        request: GenerateContractRequest,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> GenerateContractAsyncResponse:
         """
         Generate a new contract object from a Base64 encoded PDF of a contract. This endpoint will return immediately and the contract will be generated asynchronously.
@@ -291,7 +301,10 @@ class ContractClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def generate_contract_get_async(
-        self, job_id: ContractJobId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        job_id: ContractJobId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> GenerateContractAsyncJobResponse:
         """
         Get the status and results of an asynchronous contract generation job.
@@ -479,7 +492,9 @@ class ContractClient:
             method="POST",
             json={
                 "contract": convert_and_respect_annotation_metadata(
-                    object_=contract, annotation=ContractCreateRequest, direction="write"
+                    object_=contract,
+                    annotation=ContractCreateRequest,
+                    direction="write",
                 ),
                 "invoiceIndexes": invoice_indexes,
             },
@@ -572,7 +587,11 @@ class ContractClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def apply_contract_feedback(
-        self, contract_id: ContractId, *, feedback: str, request_options: typing.Optional[RequestOptions] = None
+        self,
+        contract_id: ContractId,
+        *,
+        feedback: str,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> ContractResponse:
         """
         Apply feedback to a contract, generating an updated contract object.  NOTE: This works by re-extracting the contract details with the provided feedback in mind.
@@ -961,7 +980,10 @@ class ContractClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def create(
-        self, *, request: ContractCreateRequest, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        request: ContractCreateRequest,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> ContractResponse:
         """
         Parameters
@@ -1109,7 +1131,10 @@ class ContractClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get(
-        self, contract_id: ContractId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        contract_id: ContractId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> ContractResponse:
         """
         Parameters
@@ -1378,7 +1403,12 @@ class ContractClient:
                 )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def delete(self, contract_id: ContractId, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+    def delete(
+        self,
+        contract_id: ContractId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
         """
         Parameters
         ----------
@@ -1493,7 +1523,10 @@ class AsyncContractClient:
         self._client_wrapper = client_wrapper
 
     async def generate_contract(
-        self, *, request: GenerateContractRequest, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        request: GenerateContractRequest,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> GenerateContractResponse:
         """
         Generate a new contract object from a Base64 encoded PDF of a contract. This endpoint will block until the contract is generated.
@@ -1627,7 +1660,10 @@ class AsyncContractClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def generate_contract_run_async(
-        self, *, request: GenerateContractRequest, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        request: GenerateContractRequest,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> GenerateContractAsyncResponse:
         """
         Generate a new contract object from a Base64 encoded PDF of a contract. This endpoint will return immediately and the contract will be generated asynchronously.
@@ -1761,7 +1797,10 @@ class AsyncContractClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def generate_contract_get_async(
-        self, job_id: ContractJobId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        job_id: ContractJobId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> GenerateContractAsyncJobResponse:
         """
         Get the status and results of an asynchronous contract generation job.
@@ -1965,7 +2004,9 @@ class AsyncContractClient:
             method="POST",
             json={
                 "contract": convert_and_respect_annotation_metadata(
-                    object_=contract, annotation=ContractCreateRequest, direction="write"
+                    object_=contract,
+                    annotation=ContractCreateRequest,
+                    direction="write",
                 ),
                 "invoiceIndexes": invoice_indexes,
             },
@@ -2058,7 +2099,11 @@ class AsyncContractClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def apply_contract_feedback(
-        self, contract_id: ContractId, *, feedback: str, request_options: typing.Optional[RequestOptions] = None
+        self,
+        contract_id: ContractId,
+        *,
+        feedback: str,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> ContractResponse:
         """
         Apply feedback to a contract, generating an updated contract object.  NOTE: This works by re-extracting the contract details with the provided feedback in mind.
@@ -2471,7 +2516,10 @@ class AsyncContractClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def create(
-        self, *, request: ContractCreateRequest, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        request: ContractCreateRequest,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> ContractResponse:
         """
         Parameters
@@ -2627,7 +2675,10 @@ class AsyncContractClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get(
-        self, contract_id: ContractId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        contract_id: ContractId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> ContractResponse:
         """
         Parameters
@@ -2912,7 +2963,12 @@ class AsyncContractClient:
                 )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def delete(self, contract_id: ContractId, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+    async def delete(
+        self,
+        contract_id: ContractId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
         """
         Parameters
         ----------

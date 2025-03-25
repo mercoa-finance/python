@@ -31,7 +31,8 @@ class TransactionResponseBase(UniversalBaseModel):
     payment_destination: typing_extensions.Annotated[PaymentMethodResponse, FieldMetadata(alias="paymentDestination")]
     payment_destination_id: typing_extensions.Annotated[PaymentMethodId, FieldMetadata(alias="paymentDestinationId")]
     payment_destination_options: typing_extensions.Annotated[
-        typing.Optional[PaymentDestinationOptions], FieldMetadata(alias="paymentDestinationOptions")
+        typing.Optional[PaymentDestinationOptions],
+        FieldMetadata(alias="paymentDestinationOptions"),
     ] = None
     fees: typing.Optional[InvoiceFeesResponse] = None
     created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]

@@ -6,6 +6,7 @@ from .counterparty_event_webhook import CounterpartyEventWebhook
 from .counterparty_webhook import CounterpartyWebhook
 from .entity_metadata_updated_webhook import EntityMetadataUpdatedWebhook
 from .entity_webhook import EntityWebhook
+from .invoice_collection_event_webhook import InvoiceCollectionEventWebhook
 from .invoice_email_webhook import InvoiceEmailWebhook
 from .invoice_status_changed_webhook import InvoiceStatusChangedWebhook
 from .invoice_webhook import InvoiceWebhook
@@ -19,6 +20,7 @@ __all__ = [
     "CounterpartyWebhook",
     "EntityMetadataUpdatedWebhook",
     "EntityWebhook",
+    "InvoiceCollectionEventWebhook",
     "InvoiceEmailWebhook",
     "InvoiceStatusChangedWebhook",
     "InvoiceWebhook",

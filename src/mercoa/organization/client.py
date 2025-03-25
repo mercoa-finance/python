@@ -201,7 +201,10 @@ class OrganizationClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def update(
-        self, *, request: OrganizationRequest, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        request: OrganizationRequest,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> OrganizationResponse:
         """
         Update current organization
@@ -328,6 +331,8 @@ class OrganizationClient:
         *,
         start_date: typing.Optional[dt.datetime] = None,
         end_date: typing.Optional[dt.datetime] = None,
+        from_: typing.Optional[str] = None,
+        to: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -340,6 +345,12 @@ class OrganizationClient:
         start_date : typing.Optional[dt.datetime]
 
         end_date : typing.Optional[dt.datetime]
+
+        from_ : typing.Optional[str]
+            Filter by sender email address
+
+        to : typing.Optional[str]
+            Filter by recipient email address
 
         limit : typing.Optional[int]
             Number of logs to return. Limit can range between 1 and 100, and the default is 10.
@@ -369,6 +380,8 @@ class OrganizationClient:
             params={
                 "startDate": serialize_datetime(start_date) if start_date is not None else None,
                 "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                "from": from_,
+                "to": to,
                 "limit": limit,
                 "startingAfter": starting_after,
             },
@@ -642,7 +655,10 @@ class AsyncOrganizationClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def update(
-        self, *, request: OrganizationRequest, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        request: OrganizationRequest,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> OrganizationResponse:
         """
         Update current organization
@@ -777,6 +793,8 @@ class AsyncOrganizationClient:
         *,
         start_date: typing.Optional[dt.datetime] = None,
         end_date: typing.Optional[dt.datetime] = None,
+        from_: typing.Optional[str] = None,
+        to: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -789,6 +807,12 @@ class AsyncOrganizationClient:
         start_date : typing.Optional[dt.datetime]
 
         end_date : typing.Optional[dt.datetime]
+
+        from_ : typing.Optional[str]
+            Filter by sender email address
+
+        to : typing.Optional[str]
+            Filter by recipient email address
 
         limit : typing.Optional[int]
             Number of logs to return. Limit can range between 1 and 100, and the default is 10.
@@ -826,6 +850,8 @@ class AsyncOrganizationClient:
             params={
                 "startDate": serialize_datetime(start_date) if start_date is not None else None,
                 "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                "from": from_,
+                "to": to,
                 "limit": limit,
                 "startingAfter": starting_after,
             },

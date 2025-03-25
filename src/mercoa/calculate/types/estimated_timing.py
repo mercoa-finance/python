@@ -57,7 +57,8 @@ class EstimatedTiming(UniversalBaseModel):
     """
 
     payment_destination_options: typing_extensions.Annotated[
-        typing.Optional[PaymentDestinationOptions], FieldMetadata(alias="paymentDestinationOptions")
+        typing.Optional[PaymentDestinationOptions],
+        FieldMetadata(alias="paymentDestinationOptions"),
     ] = pydantic.Field(default=None)
     """
     Options for the payment destination. Depending on the payment destination, this may include things such as check delivery method.

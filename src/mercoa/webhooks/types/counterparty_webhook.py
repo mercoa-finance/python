@@ -3,10 +3,10 @@
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing_extensions
 from ...core.serialization import FieldMetadata
+import pydantic
 import typing
 from ...entity_types.types.entity_id import EntityId
 from ...entity_types.types.entity_user_response import EntityUserResponse
-import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -39,9 +39,21 @@ class CounterpartyWebhook(UniversalBaseModel):
     )
     """
 
-    event_type: typing_extensions.Annotated[str, FieldMetadata(alias="eventType")]
-    payee_id: typing_extensions.Annotated[typing.List[EntityId], FieldMetadata(alias="payeeId")]
-    payor_id: typing_extensions.Annotated[typing.List[EntityId], FieldMetadata(alias="payorId")]
+    event_type: typing_extensions.Annotated[str, FieldMetadata(alias="eventType")] = pydantic.Field()
+    """
+    The type of the event.
+    """
+
+    payee_id: typing_extensions.Annotated[typing.List[EntityId], FieldMetadata(alias="payeeId")] = pydantic.Field()
+    """
+    A list of IDs for the payees involved.
+    """
+
+    payor_id: typing_extensions.Annotated[typing.List[EntityId], FieldMetadata(alias="payorId")] = pydantic.Field()
+    """
+    A list of IDs for the payors involved.
+    """
+
     user: typing.Optional[EntityUserResponse] = pydantic.Field(default=None)
     """
     User who initiated the change.

@@ -11,10 +11,12 @@ from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 class CheckPaymentRailRequest(GenericPaymentRailRequest):
     available_delivery_methods: typing_extensions.Annotated[
-        typing.Optional[typing.List[CheckDeliveryMethod]], FieldMetadata(alias="availableDeliveryMethods")
+        typing.Optional[typing.List[CheckDeliveryMethod]],
+        FieldMetadata(alias="availableDeliveryMethods"),
     ] = None
     default_delivery_method: typing_extensions.Annotated[
-        typing.Optional[CheckDeliveryMethod], FieldMetadata(alias="defaultDeliveryMethod")
+        typing.Optional[CheckDeliveryMethod],
+        FieldMetadata(alias="defaultDeliveryMethod"),
     ] = None
     print_description: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="printDescription")] = (
         pydantic.Field(default=None)

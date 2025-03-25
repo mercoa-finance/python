@@ -2853,6 +2853,14 @@ client.entity.get_onboarding_link(
 <dl>
 <dd>
 
+**redirect_to_portal:** `typing.Optional[bool]` — If true, the onboarding link will redirect to the vendor/customer portal if the entity is already onboarded. If false, the onboarding link will not redirect to the portal. The default is false.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -3027,6 +3035,22 @@ client.entity.events(
 <dd>
 
 **end_date:** `typing.Optional[dt.datetime]` — End date filter. If not provided, events to the end of time will be returned.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Number of events to return. Limit can range between 1 and 100, and the default is 50.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**starting_after:** `typing.Optional[EntityEventId]` — The ID of the event to start after. If not provided, the first page of events will be returned.
     
 </dd>
 </dl>
@@ -4422,6 +4446,103 @@ client.entity.payment_method.card_link_token(
 <dd>
 
 **entity_id:** `EntityId` — Entity ID or Entity ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.entity.payment_method.<a href="src/mercoa/entity/payment_method/client.py">events</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.entity.payment_method.events(
+    entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+    payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entity_id:** `EntityId` — Entity ID or Entity ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payment_method_id:** `PaymentMethodId` — Payment Method ID or Payment Method ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_date:** `typing.Optional[dt.datetime]` — Start date filter. If not provided, events from the start of time will be returned.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_date:** `typing.Optional[dt.datetime]` — End date filter. If not provided, events to the end of time will be returned.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Limit the number of events returned. Limit can range between 1 and 100, and the default is 50.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**starting_after:** `typing.Optional[PaymentMethodEventId]` — The ID of the event to start after.
     
 </dd>
 </dl>
@@ -6249,6 +6370,22 @@ client.invoice.events(
 <dl>
 <dd>
 
+**limit:** `typing.Optional[int]` — Number of events to return. Limit can range between 1 and 100, and the default is 50.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**starting_after:** `typing.Optional[InvoiceEventId]` — The ID of the event to start after. If not provided, the first page of events will be returned.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -6633,6 +6770,22 @@ client.organization.email_log()
 <dd>
 
 **end_date:** `typing.Optional[dt.datetime]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**from_:** `typing.Optional[str]` — Filter by sender email address
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**to:** `typing.Optional[str]` — Filter by recipient email address
     
 </dd>
 </dl>
@@ -8918,6 +9071,12 @@ client.entity.customization.update(
                     check_mail=PaymentMethodFee_Flat(
                         amount=2.5,
                     ),
+                    check_mail_priority=PaymentMethodFee_Flat(
+                        amount=2.5,
+                    ),
+                    check_mail_ups_next_day=PaymentMethodFee_Flat(
+                        amount=2.5,
+                    ),
                 ),
                 destination=FeeCustomizationRailRequest(
                     ach_standard=PaymentMethodFee_Flat(
@@ -8930,6 +9089,12 @@ client.entity.customization.update(
                         amount=2.5,
                     ),
                     check_mail=PaymentMethodFee_Flat(
+                        amount=2.5,
+                    ),
+                    check_mail_priority=PaymentMethodFee_Flat(
+                        amount=2.5,
+                    ),
+                    check_mail_ups_next_day=PaymentMethodFee_Flat(
                         amount=2.5,
                     ),
                 ),
@@ -8948,6 +9113,12 @@ client.entity.customization.update(
                     check_mail=PaymentMethodFee_Flat(
                         amount=2.5,
                     ),
+                    check_mail_priority=PaymentMethodFee_Flat(
+                        amount=2.5,
+                    ),
+                    check_mail_ups_next_day=PaymentMethodFee_Flat(
+                        amount=2.5,
+                    ),
                 ),
                 destination=FeeCustomizationRailRequest(
                     ach_standard=PaymentMethodFee_Flat(
@@ -8960,6 +9131,12 @@ client.entity.customization.update(
                         amount=2.5,
                     ),
                     check_mail=PaymentMethodFee_Flat(
+                        amount=2.5,
+                    ),
+                    check_mail_priority=PaymentMethodFee_Flat(
+                        amount=2.5,
+                    ),
+                    check_mail_ups_next_day=PaymentMethodFee_Flat(
                         amount=2.5,
                     ),
                 ),
@@ -14872,7 +15049,7 @@ client = Mercoa(
 client.ocr.ocr(
     request=OcrRequest(
         vendor_network="entity",
-        entity_id="entity_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
+        entity_id="ent_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
         mime_type="image/png",
         image="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII",
     ),
@@ -14948,7 +15125,7 @@ client = Mercoa(
 client.ocr.run_async_ocr(
     request=OcrRequest(
         vendor_network="entity",
-        entity_id="entity_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
+        entity_id="ent_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
         mime_type="image/png",
         image="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII",
     ),

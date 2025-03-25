@@ -3,7 +3,9 @@
 import typing
 from ...core.client_wrapper import SyncClientWrapper
 from ...core.request_options import RequestOptions
-from ...organization_types.types.notification_configuration_response import NotificationConfigurationResponse
+from ...organization_types.types.notification_configuration_response import (
+    NotificationConfigurationResponse,
+)
 from json.decoder import JSONDecodeError
 from ...core.api_error import ApiError
 from ...core.pydantic_utilities import parse_obj_as
@@ -16,7 +18,9 @@ from ...commons.errors.internal_server_error import InternalServerError
 from ...commons.errors.unimplemented import Unimplemented
 from ...entity_types.types.notification_type import NotificationType
 from ...core.jsonable_encoder import jsonable_encoder
-from ...organization_types.types.notification_configuration_request import NotificationConfigurationRequest
+from ...organization_types.types.notification_configuration_request import (
+    NotificationConfigurationRequest,
+)
 from ...core.serialization import convert_and_respect_annotation_metadata
 from ...core.client_wrapper import AsyncClientWrapper
 
@@ -143,7 +147,10 @@ class NotificationConfigurationClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get(
-        self, notification_type: NotificationType, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        notification_type: NotificationType,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> NotificationConfigurationResponse:
         """
         Retrieve notification configuration for this notification type
@@ -302,7 +309,9 @@ class NotificationConfigurationClient:
             f"organization/notification-configuration/{jsonable_encoder(notification_type)}",
             method="POST",
             json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=NotificationConfigurationRequest, direction="write"
+                object_=request,
+                annotation=NotificationConfigurationRequest,
+                direction="write",
             ),
             request_options=request_options,
             omit=OMIT,
@@ -393,7 +402,10 @@ class NotificationConfigurationClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def reset(
-        self, notification_type: NotificationType, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        notification_type: NotificationType,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
         Reset notification configuration for this notification type
@@ -632,7 +644,10 @@ class AsyncNotificationConfigurationClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get(
-        self, notification_type: NotificationType, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        notification_type: NotificationType,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> NotificationConfigurationResponse:
         """
         Retrieve notification configuration for this notification type
@@ -807,7 +822,9 @@ class AsyncNotificationConfigurationClient:
             f"organization/notification-configuration/{jsonable_encoder(notification_type)}",
             method="POST",
             json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=NotificationConfigurationRequest, direction="write"
+                object_=request,
+                annotation=NotificationConfigurationRequest,
+                direction="write",
             ),
             request_options=request_options,
             omit=OMIT,
@@ -898,7 +915,10 @@ class AsyncNotificationConfigurationClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def reset(
-        self, notification_type: NotificationType, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        notification_type: NotificationType,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
         Reset notification configuration for this notification type

@@ -327,7 +327,11 @@ class UserClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get(
-        self, entity_id: EntityId, user_id: EntityUserId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_id: EntityId,
+        user_id: EntityUserId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityUserResponse:
         """
         Get entity user
@@ -591,7 +595,11 @@ class UserClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def delete(
-        self, entity_id: EntityId, user_id: EntityUserId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_id: EntityId,
+        user_id: EntityUserId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
         Delete entity user. This will also remove the user from all approval policies. If an approval policy will break as a result of this operation, this request will fail.
@@ -1158,7 +1166,11 @@ class AsyncUserClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get(
-        self, entity_id: EntityId, user_id: EntityUserId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_id: EntityId,
+        user_id: EntityUserId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityUserResponse:
         """
         Get entity user
@@ -1438,7 +1450,11 @@ class AsyncUserClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def delete(
-        self, entity_id: EntityId, user_id: EntityUserId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_id: EntityId,
+        user_id: EntityUserId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
         Delete entity user. This will also remove the user from all approval policies. If an approval policy will break as a result of this operation, this request will fail.

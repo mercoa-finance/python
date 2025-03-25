@@ -39,6 +39,7 @@ from ..invoice_types.types.invoice_creation_request import InvoiceCreationReques
 from ..invoice_types.types.invoice_response import InvoiceResponse
 from ..core.jsonable_encoder import jsonable_encoder
 from ..invoice_types.types.invoice_update_request import InvoiceUpdateRequest
+from ..invoice_types.types.invoice_event_id import InvoiceEventId
 from ..invoice_types.types.invoice_events_response import InvoiceEventsResponse
 from ..core.client_wrapper import AsyncClientWrapper
 from .line_item.client import AsyncLineItemClient
@@ -203,7 +204,9 @@ class InvoiceClient:
                     object_=metadata, annotation=MetadataFilter, direction="write"
                 ),
                 "lineItemMetadata": convert_and_respect_annotation_metadata(
-                    object_=line_item_metadata, annotation=MetadataFilter, direction="write"
+                    object_=line_item_metadata,
+                    annotation=MetadataFilter,
+                    direction="write",
                 ),
                 "lineItemGlAccountId": line_item_gl_account_id,
                 "payerId": payer_id,
@@ -306,7 +309,10 @@ class InvoiceClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def create(
-        self, *, request: InvoiceCreationRequest, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        request: InvoiceCreationRequest,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> InvoiceResponse:
         """
         Parameters
@@ -473,7 +479,12 @@ class InvoiceClient:
                 )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def get(self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None) -> InvoiceResponse:
+    def get(
+        self,
+        invoice_id: InvoiceId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> InvoiceResponse:
         """
         Parameters
         ----------
@@ -765,7 +776,12 @@ class InvoiceClient:
                 )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def delete(self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+    def delete(
+        self,
+        invoice_id: InvoiceId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
         """
         Only invoices in the UNASSIGNED and DRAFT statuses can be deleted.
 
@@ -882,6 +898,8 @@ class InvoiceClient:
         *,
         start_date: typing.Optional[dt.datetime] = None,
         end_date: typing.Optional[dt.datetime] = None,
+        limit: typing.Optional[int] = None,
+        starting_after: typing.Optional[InvoiceEventId] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> InvoiceEventsResponse:
         """
@@ -897,6 +915,12 @@ class InvoiceClient:
 
         end_date : typing.Optional[dt.datetime]
             End date filter. If not provided, events to the end of time will be returned.
+
+        limit : typing.Optional[int]
+            Number of events to return. Limit can range between 1 and 100, and the default is 50.
+
+        starting_after : typing.Optional[InvoiceEventId]
+            The ID of the event to start after. If not provided, the first page of events will be returned.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -922,6 +946,8 @@ class InvoiceClient:
             params={
                 "startDate": serialize_datetime(start_date) if start_date is not None else None,
                 "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                "limit": limit,
+                "startingAfter": starting_after,
             },
             request_options=request_options,
         )
@@ -1169,7 +1195,9 @@ class AsyncInvoiceClient:
                     object_=metadata, annotation=MetadataFilter, direction="write"
                 ),
                 "lineItemMetadata": convert_and_respect_annotation_metadata(
-                    object_=line_item_metadata, annotation=MetadataFilter, direction="write"
+                    object_=line_item_metadata,
+                    annotation=MetadataFilter,
+                    direction="write",
                 ),
                 "lineItemGlAccountId": line_item_gl_account_id,
                 "payerId": payer_id,
@@ -1272,7 +1300,10 @@ class AsyncInvoiceClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def create(
-        self, *, request: InvoiceCreationRequest, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        request: InvoiceCreationRequest,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> InvoiceResponse:
         """
         Parameters
@@ -1447,7 +1478,10 @@ class AsyncInvoiceClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def get(
-        self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        invoice_id: InvoiceId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> InvoiceResponse:
         """
         Parameters
@@ -1755,7 +1789,12 @@ class AsyncInvoiceClient:
                 )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def delete(self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+    async def delete(
+        self,
+        invoice_id: InvoiceId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
         """
         Only invoices in the UNASSIGNED and DRAFT statuses can be deleted.
 
@@ -1880,6 +1919,8 @@ class AsyncInvoiceClient:
         *,
         start_date: typing.Optional[dt.datetime] = None,
         end_date: typing.Optional[dt.datetime] = None,
+        limit: typing.Optional[int] = None,
+        starting_after: typing.Optional[InvoiceEventId] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> InvoiceEventsResponse:
         """
@@ -1895,6 +1936,12 @@ class AsyncInvoiceClient:
 
         end_date : typing.Optional[dt.datetime]
             End date filter. If not provided, events to the end of time will be returned.
+
+        limit : typing.Optional[int]
+            Number of events to return. Limit can range between 1 and 100, and the default is 50.
+
+        starting_after : typing.Optional[InvoiceEventId]
+            The ID of the event to start after. If not provided, the first page of events will be returned.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1928,6 +1975,8 @@ class AsyncInvoiceClient:
             params={
                 "startDate": serialize_datetime(start_date) if start_date is not None else None,
                 "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                "limit": limit,
+                "startingAfter": starting_after,
             },
             request_options=request_options,
         )

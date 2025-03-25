@@ -4,16 +4,35 @@ from ...core.pydantic_utilities import UniversalBaseModel
 import typing_extensions
 from .ocr_job_id import OcrJobId
 from ...core.serialization import FieldMetadata
-from .ocr_job_status import OcrJobStatus
 import typing
+import pydantic
+from .ocr_job_status import OcrJobStatus
+from .ocr_page_range import OcrPageRange
 from .ocr_response import OcrResponse
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
-import pydantic
 
 
 class OcrJobResponse(UniversalBaseModel):
     job_id: typing_extensions.Annotated[OcrJobId, FieldMetadata(alias="jobId")]
-    status: OcrJobStatus
+    linked_job_ids: typing_extensions.Annotated[
+        typing.Optional[typing.List[OcrJobId]], FieldMetadata(alias="linkedJobIds")
+    ] = pydantic.Field(default=None)
+    """
+    The IDs of any OCR jobs that are processing other subdocuments of the same document.
+    """
+
+    status: OcrJobStatus = pydantic.Field()
+    """
+    The status of the OCR job.
+    """
+
+    page_range: typing_extensions.Annotated[typing.Optional[OcrPageRange], FieldMetadata(alias="pageRange")] = (
+        pydantic.Field(default=None)
+    )
+    """
+    The start and end page numbers of the corresponding subdocument (zero-indexed, inclusive). If not provided, the document was not split during OCR.
+    """
+
     data: typing.Optional[OcrResponse] = None
 
     if IS_PYDANTIC_V2:

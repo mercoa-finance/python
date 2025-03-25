@@ -13,7 +13,8 @@ class EmailProviderRequest(UniversalBaseModel):
     sender: EmailSenderRequest
     inbox_domain: typing_extensions.Annotated[str, FieldMetadata(alias="inboxDomain")]
     alternative_inbox_domains: typing_extensions.Annotated[
-        typing.Optional[typing.List[str]], FieldMetadata(alias="alternativeInboxDomains")
+        typing.Optional[typing.List[str]],
+        FieldMetadata(alias="alternativeInboxDomains"),
     ] = None
 
     if IS_PYDANTIC_V2:

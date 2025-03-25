@@ -7,6 +7,7 @@ from .types import (
     ActionResponse_Email,
     ActionStatus,
     EmailCollectionActionResponse,
+    EmailMessageResponse,
     UpdateNextActionRequest,
 )
 
@@ -17,5 +18,6 @@ __all__ = [
     "ActionResponse_Email",
     "ActionStatus",
     "EmailCollectionActionResponse",
+    "EmailMessageResponse",
     "UpdateNextActionRequest",
 ]

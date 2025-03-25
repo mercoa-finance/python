@@ -405,7 +405,10 @@ class PaymentLinksClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def send_vendor_email(
-        self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        invoice_id: InvoiceId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
         Trigger email to vendor inviting them into the vendor portal
@@ -929,7 +932,10 @@ class AsyncPaymentLinksClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def send_vendor_email(
-        self, invoice_id: InvoiceId, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        invoice_id: InvoiceId,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
         Trigger email to vendor inviting them into the vendor portal

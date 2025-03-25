@@ -285,7 +285,11 @@ class DocumentClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def delete(
-        self, entity_id: EntityId, document_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_id: EntityId,
+        document_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
         Delete a document associated with this entity
@@ -678,7 +682,11 @@ class AsyncDocumentClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def delete(
-        self, entity_id: EntityId, document_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        entity_id: EntityId,
+        document_id: str,
+        *,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
         Delete a document associated with this entity

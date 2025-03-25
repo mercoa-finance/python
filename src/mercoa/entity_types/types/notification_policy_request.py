@@ -34,7 +34,8 @@ class NotificationPolicyRequest(UniversalBaseModel):
     """
 
     additional_users: typing_extensions.Annotated[
-        typing.Optional[typing.List[EntityUserId]], FieldMetadata(alias="additionalUsers")
+        typing.Optional[typing.List[EntityUserId]],
+        FieldMetadata(alias="additionalUsers"),
     ] = pydantic.Field(default=None)
     """
     List of user IDs that should receive notifications in addition to the default users for this notification type

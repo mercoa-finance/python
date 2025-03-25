@@ -4,8 +4,9 @@ from ...core.pydantic_utilities import UniversalBaseModel
 from .email_log_id import EmailLogId
 import typing_extensions
 from ...core.serialization import FieldMetadata
-import datetime as dt
 import typing
+from .email_log_attachment import EmailLogAttachment
+import datetime as dt
 from ...invoice_types.types.invoice_id import InvoiceId
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 import pydantic
@@ -17,7 +18,7 @@ class EmailLog(UniversalBaseModel):
     --------
     import datetime
 
-    from mercoa.email_log_types import EmailLog
+    from mercoa.email_log_types import EmailLog, EmailLogAttachment
 
     EmailLog(
         id="1234",
@@ -29,6 +30,10 @@ class EmailLog(UniversalBaseModel):
         created_at=datetime.datetime.fromisoformat(
             "2021-01-01 00:00:00+00:00",
         ),
+        attachment=EmailLogAttachment(
+            filename="invoice.pdf",
+            content_type="application/pdf",
+        ),
     )
     """
 
@@ -38,6 +43,7 @@ class EmailLog(UniversalBaseModel):
     to: str
     html_body: typing_extensions.Annotated[str, FieldMetadata(alias="htmlBody")]
     text_body: typing_extensions.Annotated[str, FieldMetadata(alias="textBody")]
+    attachment: typing.Optional[EmailLogAttachment] = None
     created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
     invoice_id: typing_extensions.Annotated[typing.Optional[InvoiceId], FieldMetadata(alias="invoiceId")] = None
 

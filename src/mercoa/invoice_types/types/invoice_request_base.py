@@ -104,7 +104,8 @@ class InvoiceRequestBase(UniversalBaseModel):
     """
 
     payment_destination_options: typing_extensions.Annotated[
-        typing.Optional[PaymentDestinationOptions], FieldMetadata(alias="paymentDestinationOptions")
+        typing.Optional[PaymentDestinationOptions],
+        FieldMetadata(alias="paymentDestinationOptions"),
     ] = pydantic.Field(default=None)
     """
     Options for the payment destination. Depending on the payment destination, this may include things such as check delivery method.
@@ -173,7 +174,8 @@ class InvoiceRequestBase(UniversalBaseModel):
     """
 
     vendor_credit_ids: typing_extensions.Annotated[
-        typing.Optional[typing.List[VendorCreditId]], FieldMetadata(alias="vendorCreditIds")
+        typing.Optional[typing.List[VendorCreditId]],
+        FieldMetadata(alias="vendorCreditIds"),
     ] = pydantic.Field(default=None)
     """
     The IDs of the vendor credits to be applied to this invoice. Passing this field will un-apply any previously applied vendor credits.

@@ -40,6 +40,7 @@ class PaymentMethodResponse_BankAccount(UniversalBaseModel):
         supported_currencies=["USD"],
         metadata={},
         frozen=False,
+        confirmed_by_entity=True,
         created_at=datetime.datetime.fromisoformat(
             "2021-01-01 00:00:00+00:00",
         ),
@@ -70,6 +71,9 @@ class PaymentMethodResponse_BankAccount(UniversalBaseModel):
     ] = None
     frozen: bool
     metadata: typing.Dict[str, str]
+    confirmed_by_entity: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="confirmedByEntity")
+    ] = None
     created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
     updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")]
 
@@ -104,6 +108,7 @@ class PaymentMethodResponse_Card(UniversalBaseModel):
         supported_currencies=["USD"],
         metadata={},
         frozen=False,
+        confirmed_by_entity=True,
         created_at=datetime.datetime.fromisoformat(
             "2021-01-01 00:00:00+00:00",
         ),
@@ -130,6 +135,9 @@ class PaymentMethodResponse_Card(UniversalBaseModel):
     ] = None
     frozen: bool
     metadata: typing.Dict[str, str]
+    confirmed_by_entity: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="confirmedByEntity")
+    ] = None
     created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
     updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")]
 
@@ -164,6 +172,7 @@ class PaymentMethodResponse_Check(UniversalBaseModel):
         supported_currencies=["USD"],
         metadata={},
         frozen=False,
+        confirmed_by_entity=True,
         created_at=datetime.datetime.fromisoformat(
             "2021-01-01 00:00:00+00:00",
         ),
@@ -192,6 +201,9 @@ class PaymentMethodResponse_Check(UniversalBaseModel):
     ] = None
     frozen: bool
     metadata: typing.Dict[str, str]
+    confirmed_by_entity: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="confirmedByEntity")
+    ] = None
     created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
     updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")]
 
@@ -226,6 +238,7 @@ class PaymentMethodResponse_Custom(UniversalBaseModel):
         supported_currencies=["USD"],
         metadata={},
         frozen=False,
+        confirmed_by_entity=True,
         created_at=datetime.datetime.fromisoformat(
             "2021-01-01 00:00:00+00:00",
         ),
@@ -256,6 +269,9 @@ class PaymentMethodResponse_Custom(UniversalBaseModel):
     ] = None
     frozen: bool
     metadata: typing.Dict[str, str]
+    confirmed_by_entity: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="confirmedByEntity")
+    ] = None
     created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
     updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")]
 
@@ -290,6 +306,7 @@ class PaymentMethodResponse_OffPlatform(UniversalBaseModel):
         supported_currencies=["USD"],
         metadata={},
         frozen=False,
+        confirmed_by_entity=True,
         created_at=datetime.datetime.fromisoformat(
             "2021-01-01 00:00:00+00:00",
         ),
@@ -311,6 +328,9 @@ class PaymentMethodResponse_OffPlatform(UniversalBaseModel):
     ] = None
     frozen: bool
     metadata: typing.Dict[str, str]
+    confirmed_by_entity: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="confirmedByEntity")
+    ] = None
     created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
     updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")]
 
@@ -345,6 +365,7 @@ class PaymentMethodResponse_Utility(UniversalBaseModel):
         supported_currencies=["USD"],
         metadata={},
         frozen=False,
+        confirmed_by_entity=True,
         created_at=datetime.datetime.fromisoformat(
             "2021-01-01 00:00:00+00:00",
         ),
@@ -367,6 +388,9 @@ class PaymentMethodResponse_Utility(UniversalBaseModel):
     ] = None
     frozen: bool
     metadata: typing.Dict[str, str]
+    confirmed_by_entity: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="confirmedByEntity")
+    ] = None
     created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
     updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")]
 
@@ -398,6 +422,7 @@ PaymentMethodResponse_BankAccount(
     supported_currencies=["USD"],
     metadata={},
     frozen=False,
+    confirmed_by_entity=True,
     created_at=datetime.datetime.fromisoformat(
         "2021-01-01 00:00:00+00:00",
     ),

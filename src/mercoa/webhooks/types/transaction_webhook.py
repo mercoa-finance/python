@@ -3,10 +3,10 @@
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing_extensions
 from ...core.serialization import FieldMetadata
+import pydantic
 from ...transaction.types.transaction_response import TransactionResponse
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 import typing
-import pydantic
 
 
 class TransactionWebhook(UniversalBaseModel):
@@ -123,6 +123,7 @@ class TransactionWebhook(UniversalBaseModel):
                         supported_currencies=["USD"],
                         metadata={},
                         frozen=False,
+                        confirmed_by_entity=True,
                         created_at=datetime.datetime.fromisoformat(
                             "2021-01-01 00:00:00+00:00",
                         ),
@@ -146,6 +147,7 @@ class TransactionWebhook(UniversalBaseModel):
                 supported_currencies=["USD"],
                 metadata={},
                 frozen=False,
+                confirmed_by_entity=True,
                 created_at=datetime.datetime.fromisoformat(
                     "2021-01-01 00:00:00+00:00",
                 ),
@@ -197,6 +199,7 @@ class TransactionWebhook(UniversalBaseModel):
                         supported_currencies=["USD"],
                         metadata={},
                         frozen=False,
+                        confirmed_by_entity=False,
                         created_at=datetime.datetime.fromisoformat(
                             "2021-01-01 00:00:00+00:00",
                         ),
@@ -220,6 +223,7 @@ class TransactionWebhook(UniversalBaseModel):
                 supported_currencies=["USD"],
                 metadata={},
                 frozen=False,
+                confirmed_by_entity=True,
                 created_at=datetime.datetime.fromisoformat(
                     "2021-01-01 00:00:00+00:00",
                 ),
@@ -321,6 +325,7 @@ class TransactionWebhook(UniversalBaseModel):
                                 supported_currencies=["USD"],
                                 metadata={},
                                 frozen=False,
+                                confirmed_by_entity=True,
                                 created_at=datetime.datetime.fromisoformat(
                                     "2021-01-01 00:00:00+00:00",
                                 ),
@@ -344,6 +349,7 @@ class TransactionWebhook(UniversalBaseModel):
                         supported_currencies=["USD"],
                         metadata={},
                         frozen=False,
+                        confirmed_by_entity=True,
                         created_at=datetime.datetime.fromisoformat(
                             "2021-01-01 00:00:00+00:00",
                         ),
@@ -395,6 +401,7 @@ class TransactionWebhook(UniversalBaseModel):
                                 supported_currencies=["USD"],
                                 metadata={},
                                 frozen=False,
+                                confirmed_by_entity=False,
                                 created_at=datetime.datetime.fromisoformat(
                                     "2021-01-01 00:00:00+00:00",
                                 ),
@@ -419,6 +426,7 @@ class TransactionWebhook(UniversalBaseModel):
                         supported_currencies=["USD"],
                         metadata={},
                         frozen=False,
+                        confirmed_by_entity=True,
                         created_at=datetime.datetime.fromisoformat(
                             "2021-01-01 00:00:00+00:00",
                         ),
@@ -505,6 +513,7 @@ class TransactionWebhook(UniversalBaseModel):
                                         supported_currencies=["USD"],
                                         metadata={},
                                         frozen=False,
+                                        confirmed_by_entity=True,
                                         created_at=datetime.datetime.fromisoformat(
                                             "2021-01-01 00:00:00+00:00",
                                         ),
@@ -528,6 +537,7 @@ class TransactionWebhook(UniversalBaseModel):
                                 supported_currencies=["USD"],
                                 metadata={},
                                 frozen=False,
+                                confirmed_by_entity=True,
                                 created_at=datetime.datetime.fromisoformat(
                                     "2021-01-01 00:00:00+00:00",
                                 ),
@@ -579,6 +589,7 @@ class TransactionWebhook(UniversalBaseModel):
                                         supported_currencies=["USD"],
                                         metadata={},
                                         frozen=False,
+                                        confirmed_by_entity=False,
                                         created_at=datetime.datetime.fromisoformat(
                                             "2021-01-01 00:00:00+00:00",
                                         ),
@@ -602,6 +613,7 @@ class TransactionWebhook(UniversalBaseModel):
                                 supported_currencies=["USD"],
                                 metadata={},
                                 frozen=False,
+                                confirmed_by_entity=True,
                                 created_at=datetime.datetime.fromisoformat(
                                     "2021-01-01 00:00:00+00:00",
                                 ),
@@ -750,8 +762,15 @@ class TransactionWebhook(UniversalBaseModel):
     )
     """
 
-    event_type: typing_extensions.Annotated[str, FieldMetadata(alias="eventType")]
-    transaction: TransactionResponse
+    event_type: typing_extensions.Annotated[str, FieldMetadata(alias="eventType")] = pydantic.Field()
+    """
+    The type of the event.
+    """
+
+    transaction: TransactionResponse = pydantic.Field()
+    """
+    The transaction details.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

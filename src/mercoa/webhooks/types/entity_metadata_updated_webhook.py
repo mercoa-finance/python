@@ -3,10 +3,10 @@
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing_extensions
 from ...core.serialization import FieldMetadata
+import pydantic
 from ...entity_types.types.entity_id import EntityId
 import typing
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
-import pydantic
 
 
 class EntityMetadataUpdatedWebhook(UniversalBaseModel):
@@ -24,11 +24,32 @@ class EntityMetadataUpdatedWebhook(UniversalBaseModel):
     )
     """
 
-    event_type: typing_extensions.Annotated[str, FieldMetadata(alias="eventType")]
-    entity_id: typing_extensions.Annotated[EntityId, FieldMetadata(alias="entityId")]
-    foreign_id: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="foreignId")] = None
-    key: str
-    value: typing.List[str]
+    event_type: typing_extensions.Annotated[str, FieldMetadata(alias="eventType")] = pydantic.Field()
+    """
+    The type of the event.
+    """
+
+    entity_id: typing_extensions.Annotated[EntityId, FieldMetadata(alias="entityId")] = pydantic.Field()
+    """
+    The ID of the entity that was updated.
+    """
+
+    foreign_id: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="foreignId")] = pydantic.Field(
+        default=None
+    )
+    """
+    Foreign ID associated with the entity.
+    """
+
+    key: str = pydantic.Field()
+    """
+    The key of the metadata that was updated.
+    """
+
+    value: typing.List[str] = pydantic.Field()
+    """
+    A list of new values for the metadata.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

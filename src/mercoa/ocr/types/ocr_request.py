@@ -18,7 +18,7 @@ class OcrRequest(UniversalBaseModel):
 
     OcrRequest(
         vendor_network="entity",
-        entity_id="entity_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
+        entity_id="ent_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
         mime_type="image/png",
         image="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII",
     )
