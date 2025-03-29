@@ -5,6 +5,7 @@ from .bulk_invoice_creation_webhook import BulkInvoiceCreationWebhook
 from .counterparty_event_webhook import CounterpartyEventWebhook
 from .counterparty_webhook import CounterpartyWebhook
 from .entity_metadata_updated_webhook import EntityMetadataUpdatedWebhook
+from .entity_status_changed_webhook import EntityStatusChangedWebhook
 from .entity_webhook import EntityWebhook
 from .invoice_collection_event_webhook import InvoiceCollectionEventWebhook
 from .invoice_email_webhook import InvoiceEmailWebhook
@@ -19,6 +20,7 @@ __all__ = [
     "CounterpartyEventWebhook",
     "CounterpartyWebhook",
     "EntityMetadataUpdatedWebhook",
+    "EntityStatusChangedWebhook",
     "EntityWebhook",
     "InvoiceCollectionEventWebhook",
     "InvoiceEmailWebhook",

@@ -1357,6 +1357,7 @@ class EntityClient:
         type: EntityOnboardingLinkType,
         expires_in: typing.Optional[str] = None,
         connected_entity_id: typing.Optional[EntityId] = None,
+        redirect_to_portal: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
@@ -1375,6 +1376,9 @@ class EntityClient:
 
         connected_entity_id : typing.Optional[EntityId]
             The ID of the entity to connect to. If onboarding a payee, this should be the payor entity ID. If onboarding a payor, this should be the payee entity ID. If no connected entity ID is provided, the onboarding link will be for a standalone entity.
+
+        redirect_to_portal : typing.Optional[bool]
+            If true, the onboarding link will redirect to the vendor/customer portal if the entity is already onboarded. If false, the onboarding link will not redirect to the portal. The default is false.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1402,6 +1406,7 @@ class EntityClient:
                 "type": type,
                 "expiresIn": expires_in,
                 "connectedEntityId": connected_entity_id,
+                "redirectToPortal": redirect_to_portal,
             },
             request_options=request_options,
         )
@@ -2996,6 +3001,7 @@ class AsyncEntityClient:
         type: EntityOnboardingLinkType,
         expires_in: typing.Optional[str] = None,
         connected_entity_id: typing.Optional[EntityId] = None,
+        redirect_to_portal: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
@@ -3014,6 +3020,9 @@ class AsyncEntityClient:
 
         connected_entity_id : typing.Optional[EntityId]
             The ID of the entity to connect to. If onboarding a payee, this should be the payor entity ID. If onboarding a payor, this should be the payee entity ID. If no connected entity ID is provided, the onboarding link will be for a standalone entity.
+
+        redirect_to_portal : typing.Optional[bool]
+            If true, the onboarding link will redirect to the vendor/customer portal if the entity is already onboarded. If false, the onboarding link will not redirect to the portal. The default is false.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -3049,6 +3058,7 @@ class AsyncEntityClient:
                 "type": type,
                 "expiresIn": expires_in,
                 "connectedEntityId": connected_entity_id,
+                "redirectToPortal": redirect_to_portal,
             },
             request_options=request_options,
         )

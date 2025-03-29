@@ -14,7 +14,7 @@ class EmailMessageResponse(UniversalBaseModel):
 
     EmailMessageResponse(
         subject="Invoice Past Due - Please Review",
-        text="Your invoice is now 3 days overdue. Please arrange payment as soon as possible to avoid further follow-ups.",
+        body="Your invoice is now 3 days overdue. Please arrange payment as soon as possible to avoid further follow-ups.",
     )
     """
 
@@ -23,7 +23,7 @@ class EmailMessageResponse(UniversalBaseModel):
     The subject of the email
     """
 
-    text: str = pydantic.Field()
+    body: str = pydantic.Field()
     """
     The body of the email in plaintext
     """
