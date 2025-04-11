@@ -1623,7 +1623,7 @@ client.entity_group.user.find(
 <dl>
 <dd>
 
-Create entity user that will be added to all entities in the group.
+Create entity user that will be added to all entities in the group. If a user with the same foreignId already exists, the user will be updated with the new information.
 </dd>
 </dl>
 </dd>
@@ -2861,6 +2861,14 @@ client.entity.get_onboarding_link(
 <dl>
 <dd>
 
+**vendor_portal_options:** `typing.Optional[VendorPortalOptions]` — The options for the vendor portal.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -2957,6 +2965,14 @@ client.entity.send_onboarding_link(
 <dd>
 
 **redirect_to_portal:** `typing.Optional[bool]` — If true, the onboarding link will redirect to the vendor/customer portal if the entity is already onboarded. If false, the onboarding link will not redirect to the portal. The default is false.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**vendor_portal_options:** `typing.Optional[VendorPortalOptions]` — The options for the vendor portal.
     
 </dd>
 </dl>
@@ -9056,6 +9072,7 @@ client.entity.customization.update(
             line_item_gl_account_id=True,
             predict_metadata=True,
             tax_and_shipping_as_line_items=True,
+            split_documents=True,
         ),
         notifications=NotificationCustomizationRequest(
             assume_role="admin",

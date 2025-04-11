@@ -223,6 +223,8 @@ from .entity_types import (
     UserNotificationPolicyRequest,
     UserNotificationPolicyResponse,
     VendorNetwork,
+    VendorPortalOptions,
+    VendorPortalTab,
     VendorTrigger,
 )
 from .environment import MercoaEnvironment
@@ -948,6 +950,8 @@ __all__ = [
     "VendorCreditRequest",
     "VendorCreditResponse",
     "VendorNetwork",
+    "VendorPortalOptions",
+    "VendorPortalTab",
     "VendorTrigger",
     "WorkflowCustomizationRequest",
     "__version__",

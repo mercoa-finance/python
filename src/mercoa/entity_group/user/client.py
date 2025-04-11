@@ -198,7 +198,7 @@ class UserClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityGroupUserResponse:
         """
-        Create entity user that will be added to all entities in the group.
+        Create entity user that will be added to all entities in the group. If a user with the same foreignId already exists, the user will be updated with the new information.
 
         Parameters
         ----------
@@ -1053,7 +1053,7 @@ class AsyncUserClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityGroupUserResponse:
         """
-        Create entity user that will be added to all entities in the group.
+        Create entity user that will be added to all entities in the group. If a user with the same foreignId already exists, the user will be updated with the new information.
 
         Parameters
         ----------

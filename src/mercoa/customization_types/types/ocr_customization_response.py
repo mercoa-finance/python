@@ -22,6 +22,7 @@ class OcrCustomizationResponse(UniversalBaseModel):
         line_item_gl_account_id=True,
         predict_metadata=True,
         tax_and_shipping_as_line_items=True,
+        split_documents=True,
     )
     """
 
@@ -62,6 +63,11 @@ class OcrCustomizationResponse(UniversalBaseModel):
     ] = pydantic.Field()
     """
     Pull tax and shipping information as line items. Defaults to true. If false, tax and shipping will extracted as invoice level fields.
+    """
+
+    split_documents: typing_extensions.Annotated[bool, FieldMetadata(alias="splitDocuments")] = pydantic.Field()
+    """
+    Use AI to intelligently split documents into multiple subdocuments. Defaults to false.
     """
 
     if IS_PYDANTIC_V2:

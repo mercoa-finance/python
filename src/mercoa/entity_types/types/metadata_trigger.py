@@ -2,8 +2,8 @@
 
 from ...core.pydantic_utilities import UniversalBaseModel
 import pydantic
-from ...core.pydantic_utilities import IS_PYDANTIC_V2
 import typing
+from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
 class MetadataTrigger(UniversalBaseModel):
@@ -12,7 +12,7 @@ class MetadataTrigger(UniversalBaseModel):
     The metadata key to match
     """
 
-    value: str = pydantic.Field()
+    value: typing.List[str] = pydantic.Field()
     """
     The metadata value the invoice must have to trigger this policy
     """

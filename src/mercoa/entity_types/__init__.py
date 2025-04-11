@@ -94,6 +94,8 @@ from .types import (
     UserNotificationPolicyRequest,
     UserNotificationPolicyResponse,
     VendorNetwork,
+    VendorPortalOptions,
+    VendorPortalTab,
     VendorTrigger,
 )
 
@@ -191,5 +193,7 @@ __all__ = [
     "UserNotificationPolicyRequest",
     "UserNotificationPolicyResponse",
     "VendorNetwork",
+    "VendorPortalOptions",
+    "VendorPortalTab",
     "VendorTrigger",
 ]

@@ -38,6 +38,7 @@ from ..core.jsonable_encoder import jsonable_encoder
 from ..entity_types.types.entity_update_request import EntityUpdateRequest
 from ..entity_types.types.token_generation_options import TokenGenerationOptions
 from ..entity_types.types.entity_onboarding_link_type import EntityOnboardingLinkType
+from ..entity_types.types.vendor_portal_options import VendorPortalOptions
 import datetime as dt
 from ..entity_types.types.entity_event_id import EntityEventId
 from ..entity_types.types.entity_events_response import EntityEventsResponse
@@ -1212,6 +1213,7 @@ class EntityClient:
         expires_in: typing.Optional[str] = None,
         connected_entity_id: typing.Optional[EntityId] = None,
         redirect_to_portal: typing.Optional[bool] = None,
+        vendor_portal_options: typing.Optional[VendorPortalOptions] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> str:
         """
@@ -1233,6 +1235,9 @@ class EntityClient:
 
         redirect_to_portal : typing.Optional[bool]
             If true, the onboarding link will redirect to the vendor/customer portal if the entity is already onboarded. If false, the onboarding link will not redirect to the portal. The default is false.
+
+        vendor_portal_options : typing.Optional[VendorPortalOptions]
+            The options for the vendor portal.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1262,6 +1267,11 @@ class EntityClient:
                 "expiresIn": expires_in,
                 "connectedEntityId": connected_entity_id,
                 "redirectToPortal": redirect_to_portal,
+                "vendorPortalOptions": convert_and_respect_annotation_metadata(
+                    object_=vendor_portal_options,
+                    annotation=VendorPortalOptions,
+                    direction="write",
+                ),
             },
             request_options=request_options,
         )
@@ -1358,6 +1368,7 @@ class EntityClient:
         expires_in: typing.Optional[str] = None,
         connected_entity_id: typing.Optional[EntityId] = None,
         redirect_to_portal: typing.Optional[bool] = None,
+        vendor_portal_options: typing.Optional[VendorPortalOptions] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
@@ -1379,6 +1390,9 @@ class EntityClient:
 
         redirect_to_portal : typing.Optional[bool]
             If true, the onboarding link will redirect to the vendor/customer portal if the entity is already onboarded. If false, the onboarding link will not redirect to the portal. The default is false.
+
+        vendor_portal_options : typing.Optional[VendorPortalOptions]
+            The options for the vendor portal.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1407,6 +1421,11 @@ class EntityClient:
                 "expiresIn": expires_in,
                 "connectedEntityId": connected_entity_id,
                 "redirectToPortal": redirect_to_portal,
+                "vendorPortalOptions": convert_and_respect_annotation_metadata(
+                    object_=vendor_portal_options,
+                    annotation=VendorPortalOptions,
+                    direction="write",
+                ),
             },
             request_options=request_options,
         )
@@ -2848,6 +2867,7 @@ class AsyncEntityClient:
         expires_in: typing.Optional[str] = None,
         connected_entity_id: typing.Optional[EntityId] = None,
         redirect_to_portal: typing.Optional[bool] = None,
+        vendor_portal_options: typing.Optional[VendorPortalOptions] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> str:
         """
@@ -2869,6 +2889,9 @@ class AsyncEntityClient:
 
         redirect_to_portal : typing.Optional[bool]
             If true, the onboarding link will redirect to the vendor/customer portal if the entity is already onboarded. If false, the onboarding link will not redirect to the portal. The default is false.
+
+        vendor_portal_options : typing.Optional[VendorPortalOptions]
+            The options for the vendor portal.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -2906,6 +2929,11 @@ class AsyncEntityClient:
                 "expiresIn": expires_in,
                 "connectedEntityId": connected_entity_id,
                 "redirectToPortal": redirect_to_portal,
+                "vendorPortalOptions": convert_and_respect_annotation_metadata(
+                    object_=vendor_portal_options,
+                    annotation=VendorPortalOptions,
+                    direction="write",
+                ),
             },
             request_options=request_options,
         )
@@ -3002,6 +3030,7 @@ class AsyncEntityClient:
         expires_in: typing.Optional[str] = None,
         connected_entity_id: typing.Optional[EntityId] = None,
         redirect_to_portal: typing.Optional[bool] = None,
+        vendor_portal_options: typing.Optional[VendorPortalOptions] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
@@ -3023,6 +3052,9 @@ class AsyncEntityClient:
 
         redirect_to_portal : typing.Optional[bool]
             If true, the onboarding link will redirect to the vendor/customer portal if the entity is already onboarded. If false, the onboarding link will not redirect to the portal. The default is false.
+
+        vendor_portal_options : typing.Optional[VendorPortalOptions]
+            The options for the vendor portal.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -3059,6 +3091,11 @@ class AsyncEntityClient:
                 "expiresIn": expires_in,
                 "connectedEntityId": connected_entity_id,
                 "redirectToPortal": redirect_to_portal,
+                "vendorPortalOptions": convert_and_respect_annotation_metadata(
+                    object_=vendor_portal_options,
+                    annotation=VendorPortalOptions,
+                    direction="write",
+                ),
             },
             request_options=request_options,
         )

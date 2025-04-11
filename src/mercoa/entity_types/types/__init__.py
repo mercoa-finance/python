@@ -87,6 +87,8 @@ from .trigger import Trigger, Trigger_Amount, Trigger_Metadata, Trigger_Vendor
 from .user_notification_policy_request import UserNotificationPolicyRequest
 from .user_notification_policy_response import UserNotificationPolicyResponse
 from .vendor_network import VendorNetwork
+from .vendor_portal_options import VendorPortalOptions
+from .vendor_portal_tab import VendorPortalTab
 from .vendor_trigger import VendorTrigger
 
 __all__ = [
@@ -183,5 +185,7 @@ __all__ = [
     "UserNotificationPolicyRequest",
     "UserNotificationPolicyResponse",
     "VendorNetwork",
+    "VendorPortalOptions",
+    "VendorPortalTab",
     "VendorTrigger",
 ]
