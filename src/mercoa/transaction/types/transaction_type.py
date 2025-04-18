@@ -6,6 +6,7 @@ TransactionType = typing.Union[
     typing.Literal[
         "bankAccountToBankAccount",
         "bankAccountToMailedCheck",
+        "bankAccountToPrintedCheck",
         "bankAccountToWallet",
         "cardToWallet",
         "walletToBankAccount",

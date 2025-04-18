@@ -72,6 +72,13 @@ class InvoiceResponseBase(UniversalBaseModel):
     service_end_date: typing_extensions.Annotated[
         typing.Optional[dt.datetime], FieldMetadata(alias="serviceEndDate")
     ] = None
+    net_terms: typing_extensions.Annotated[typing.Optional[int], FieldMetadata(alias="netTerms")] = pydantic.Field(
+        default=None
+    )
+    """
+    Net terms in days. Must be a positive number.
+    """
+
     payer_id: typing_extensions.Annotated[typing.Optional[EntityId], FieldMetadata(alias="payerId")] = None
     payer: typing.Optional[CounterpartyResponse] = None
     payment_source: typing_extensions.Annotated[

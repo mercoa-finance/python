@@ -8,7 +8,7 @@ from ...core.pydantic_utilities import IS_PYDANTIC_V2
 import typing
 
 
-class TransactionResponseMailedCheckBase(TransactionResponseBase):
+class TransactionResponseCheckBase(TransactionResponseBase):
     check_number: typing_extensions.Annotated[int, FieldMetadata(alias="checkNumber")] = pydantic.Field()
     """
     The number of the check
