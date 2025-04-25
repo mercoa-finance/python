@@ -2063,6 +2063,88 @@ client.entity_group.user.get_token(
 </dl>
 </details>
 
+<details><summary><code>client.entity_group.user.<a href="src/mercoa/entity_group/user/client.py">sync</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Sync entity group users. This will add users to entities that do not have them and remove users from entities that have them.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+from mercoa.entity_group_types import EntityGroupUserSyncRequest
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.entity_group.user.sync(
+    entity_group_id="entg_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+    request=EntityGroupUserSyncRequest(
+        filter_roles=["approver", "viewer"],
+    ),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entity_group_id:** `EntityGroupId` — Entity Group ID or Entity Group ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `EntityGroupUserSyncRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Entity
 <details><summary><code>client.entity.<a href="src/mercoa/entity/client.py">find</a>(...)</code></summary>
 <dl>
@@ -11371,7 +11453,8 @@ client.entity.payment_method.bank_account.complete_micro_deposits(
 </dl>
 </details>
 
-<details><summary><code>client.entity.payment_method.bank_account.<a href="src/mercoa/entity/payment_method/bank_account/client.py">get_acceleration_funds</a>(...)</code></summary>
+## Entity PaymentMethod Wallet
+<details><summary><code>client.entity.payment_method.wallet.<a href="src/mercoa/entity/payment_method/wallet/client.py">get_wallet_balance</a>(...)</code></summary>
 <dl>
 <dd>
 
@@ -11383,7 +11466,7 @@ client.entity.payment_method.bank_account.complete_micro_deposits(
 <dl>
 <dd>
 
-Get the available and pending balance of this entity's acceleration funds. The specified payment method must be a bank account.
+Get the available and pending balance of this entity's wallet. The specified payment method ID must refer to the entity's wallet.
 </dd>
 </dl>
 </dd>
@@ -11403,7 +11486,7 @@ from mercoa import Mercoa
 client = Mercoa(
     token="YOUR_TOKEN",
 )
-client.entity.payment_method.bank_account.get_acceleration_funds(
+client.entity.payment_method.wallet.get_wallet_balance(
     entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
     payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
 )
@@ -11450,7 +11533,7 @@ client.entity.payment_method.bank_account.get_acceleration_funds(
 </dl>
 </details>
 
-<details><summary><code>client.entity.payment_method.bank_account.<a href="src/mercoa/entity/payment_method/bank_account/client.py">add_acceleration_funds</a>(...)</code></summary>
+<details><summary><code>client.entity.payment_method.wallet.<a href="src/mercoa/entity/payment_method/wallet/client.py">add_wallet_funds</a>(...)</code></summary>
 <dl>
 <dd>
 
@@ -11462,7 +11545,7 @@ client.entity.payment_method.bank_account.get_acceleration_funds(
 <dl>
 <dd>
 
-Add acceleration funds to this entity from a bank account (this transfer is D+2). The specified payment method must be a bank account.
+Add funds to this wallet from a bank account (this transfer is D+2). The source payment method ID must refer to a bank account.
 </dd>
 </dl>
 </dd>
@@ -11482,11 +11565,12 @@ from mercoa import Mercoa
 client = Mercoa(
     token="YOUR_TOKEN",
 )
-client.entity.payment_method.bank_account.add_acceleration_funds(
+client.entity.payment_method.wallet.add_wallet_funds(
     entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
     payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
     amount=100.0,
     currency="USD",
+    source_payment_method_id="pm_f19d27ad-e493-4bf5-a28b-9cb323de495a",
 )
 
 ```
@@ -11519,7 +11603,7 @@ client.entity.payment_method.bank_account.add_acceleration_funds(
 <dl>
 <dd>
 
-**amount:** `float` — The amount of the acceleration funds to add. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.
+**amount:** `float` — The amount of the funds to add. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.
     
 </dd>
 </dl>
@@ -11527,7 +11611,15 @@ client.entity.payment_method.bank_account.add_acceleration_funds(
 <dl>
 <dd>
 
-**currency:** `CurrencyCode` — The currency of the acceleration funds to add.
+**source_payment_method_id:** `PaymentMethodId` — The ID of the bank account to add funds from. The source payment method ID must refer to a bank account.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**currency:** `typing.Optional[CurrencyCode]` — The currency of the funds to add. (Defaults to USD, currently only USD is supported.)
     
 </dd>
 </dl>
@@ -11547,7 +11639,7 @@ client.entity.payment_method.bank_account.add_acceleration_funds(
 </dl>
 </details>
 
-<details><summary><code>client.entity.payment_method.bank_account.<a href="src/mercoa/entity/payment_method/bank_account/client.py">remove_acceleration_funds</a>(...)</code></summary>
+<details><summary><code>client.entity.payment_method.wallet.<a href="src/mercoa/entity/payment_method/wallet/client.py">withdraw_wallet_funds</a>(...)</code></summary>
 <dl>
 <dd>
 
@@ -11559,7 +11651,7 @@ client.entity.payment_method.bank_account.add_acceleration_funds(
 <dl>
 <dd>
 
-Remove acceleration funds from this entity to a bank account (this transfer is D+0). The specified payment method must be a bank account.
+Withdraw funds from this wallet to a bank account (this transfer is D+0). The destination payment method ID must refer to a bank account.
 </dd>
 </dl>
 </dd>
@@ -11579,11 +11671,12 @@ from mercoa import Mercoa
 client = Mercoa(
     token="YOUR_TOKEN",
 )
-client.entity.payment_method.bank_account.remove_acceleration_funds(
+client.entity.payment_method.wallet.withdraw_wallet_funds(
     entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
     payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
     amount=100.0,
     currency="USD",
+    destination_payment_method_id="pm_f19d27ad-e493-4bf5-a28b-9cb323de495a",
 )
 
 ```
@@ -11616,7 +11709,7 @@ client.entity.payment_method.bank_account.remove_acceleration_funds(
 <dl>
 <dd>
 
-**amount:** `float` — The amount of the acceleration funds to remove. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.
+**amount:** `float` — The amount of the funds to withdraw. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.
     
 </dd>
 </dl>
@@ -11624,7 +11717,15 @@ client.entity.payment_method.bank_account.remove_acceleration_funds(
 <dl>
 <dd>
 
-**currency:** `CurrencyCode` — The currency of the acceleration funds to remove.
+**destination_payment_method_id:** `PaymentMethodId` — The ID of the bank account to withdraw funds to. The destination payment method ID must refer to a bank account.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**currency:** `typing.Optional[CurrencyCode]` — The currency of the funds to withdraw. (Defaults to USD, currently only USD is supported.)
     
 </dd>
 </dl>

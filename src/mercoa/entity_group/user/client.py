@@ -25,6 +25,9 @@ from ...entity_group_types.types.entity_group_user_response import (
 )
 from ...core.serialization import convert_and_respect_annotation_metadata
 from ...entity_types.types.token_generation_options import TokenGenerationOptions
+from ...entity_group_types.types.entity_group_user_sync_request import (
+    EntityGroupUserSyncRequest,
+)
 from ...core.client_wrapper import AsyncClientWrapper
 
 # this is used as the default value for optional parameters
@@ -804,6 +807,135 @@ class UserClient:
                     object_=_response_json,
                 ),
             )
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def sync(
+        self,
+        entity_group_id: EntityGroupId,
+        *,
+        request: EntityGroupUserSyncRequest,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
+        """
+        Sync entity group users. This will add users to entities that do not have them and remove users from entities that have them.
+
+        Parameters
+        ----------
+        entity_group_id : EntityGroupId
+            Entity Group ID or Entity Group ForeignID
+
+        request : EntityGroupUserSyncRequest
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        from mercoa import Mercoa
+        from mercoa.entity_group_types import EntityGroupUserSyncRequest
+
+        client = Mercoa(
+            token="YOUR_TOKEN",
+        )
+        client.entity_group.user.sync(
+            entity_group_id="entg_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            request=EntityGroupUserSyncRequest(
+                filter_roles=["approver", "viewer"],
+            ),
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"entityGroup/{jsonable_encoder(entity_group_id)}/sync-users",
+            method="POST",
+            json=convert_and_respect_annotation_metadata(
+                object_=request,
+                annotation=EntityGroupUserSyncRequest,
+                direction="write",
+            ),
+            request_options=request_options,
+            omit=OMIT,
+        )
+        if 200 <= _response.status_code < 300:
+            return
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
         if "errorName" in _response_json:
             if _response_json["errorName"] == "BadRequest":
                 raise BadRequest(
@@ -1699,6 +1831,143 @@ class AsyncUserClient:
                     object_=_response_json,
                 ),
             )
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def sync(
+        self,
+        entity_group_id: EntityGroupId,
+        *,
+        request: EntityGroupUserSyncRequest,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
+        """
+        Sync entity group users. This will add users to entities that do not have them and remove users from entities that have them.
+
+        Parameters
+        ----------
+        entity_group_id : EntityGroupId
+            Entity Group ID or Entity Group ForeignID
+
+        request : EntityGroupUserSyncRequest
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        import asyncio
+
+        from mercoa import AsyncMercoa
+        from mercoa.entity_group_types import EntityGroupUserSyncRequest
+
+        client = AsyncMercoa(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.entity_group.user.sync(
+                entity_group_id="entg_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                request=EntityGroupUserSyncRequest(
+                    filter_roles=["approver", "viewer"],
+                ),
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"entityGroup/{jsonable_encoder(entity_group_id)}/sync-users",
+            method="POST",
+            json=convert_and_respect_annotation_metadata(
+                object_=request,
+                annotation=EntityGroupUserSyncRequest,
+                direction="write",
+            ),
+            request_options=request_options,
+            omit=OMIT,
+        )
+        if 200 <= _response.status_code < 300:
+            return
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
         if "errorName" in _response_json:
             if _response_json["errorName"] == "BadRequest":
                 raise BadRequest(

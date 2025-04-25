@@ -72,6 +72,7 @@ from .payment_rail_request import (
     PaymentRailRequest_OffPlatform,
     PaymentRailRequest_Utility,
     PaymentRailRequest_VirtualCard,
+    PaymentRailRequest_Wallet,
 )
 from .payment_rail_response import (
     PaymentRailResponse,
@@ -84,6 +85,7 @@ from .payment_rail_response import (
     PaymentRailResponse_OffPlatform,
     PaymentRailResponse_Utility,
     PaymentRailResponse_VirtualCard,
+    PaymentRailResponse_Wallet,
 )
 from .permission import Permission
 from .role_permission_request import RolePermissionRequest
@@ -156,6 +158,7 @@ __all__ = [
     "PaymentRailRequest_OffPlatform",
     "PaymentRailRequest_Utility",
     "PaymentRailRequest_VirtualCard",
+    "PaymentRailRequest_Wallet",
     "PaymentRailResponse",
     "PaymentRailResponse_BankAccount",
     "PaymentRailResponse_Bnpl",
@@ -166,6 +169,7 @@ __all__ = [
     "PaymentRailResponse_OffPlatform",
     "PaymentRailResponse_Utility",
     "PaymentRailResponse_VirtualCard",
+    "PaymentRailResponse_Wallet",
     "Permission",
     "RolePermissionRequest",
     "RolePermissionResponse",

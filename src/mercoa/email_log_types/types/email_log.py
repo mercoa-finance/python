@@ -2,6 +2,8 @@
 
 from ...core.pydantic_utilities import UniversalBaseModel
 from .email_log_id import EmailLogId
+from .incoming_email_log_status import IncomingEmailLogStatus
+import pydantic
 import typing_extensions
 from ...core.serialization import FieldMetadata
 import typing
@@ -9,7 +11,6 @@ from .email_log_attachment import EmailLogAttachment
 import datetime as dt
 from ...invoice_types.types.invoice_id import InvoiceId
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
-import pydantic
 
 
 class EmailLog(UniversalBaseModel):
@@ -22,6 +23,7 @@ class EmailLog(UniversalBaseModel):
 
     EmailLog(
         id="1234",
+        status="PROCESSED",
         subject="Invoice #1234",
         from_="John Doe <john.doe@example.com>",
         to="Jane Doe <jane.doe@example.com>",
@@ -38,6 +40,11 @@ class EmailLog(UniversalBaseModel):
     """
 
     id: EmailLogId
+    status: IncomingEmailLogStatus = pydantic.Field()
+    """
+    The status of the email log. If the status is PENDING, the email has not been processed yet. If the status is PROCESSED, the email has been processed and the invoice has been created. If the status is FAILED, the email was not processed due to an error.
+    """
+
     subject: str
     from_: typing_extensions.Annotated[str, FieldMetadata(alias="from")]
     to: str

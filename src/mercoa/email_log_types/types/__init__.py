@@ -4,5 +4,6 @@ from .email_log import EmailLog
 from .email_log_attachment import EmailLogAttachment
 from .email_log_id import EmailLogId
 from .email_log_response import EmailLogResponse
+from .incoming_email_log_status import IncomingEmailLogStatus
 
-__all__ = ["EmailLog", "EmailLogAttachment", "EmailLogId", "EmailLogResponse"]
+__all__ = ["EmailLog", "EmailLogAttachment", "EmailLogId", "EmailLogResponse", "IncomingEmailLogStatus"]

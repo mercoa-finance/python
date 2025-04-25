@@ -27,6 +27,7 @@ class EmailLogResponse(UniversalBaseModel):
         data=[
             EmailLog(
                 id="1234",
+                status="PROCESSED",
                 subject="Invoice #1234",
                 from_="John Doe <john.doe@example.com>",
                 to="Jane Doe <jane.doe@example.com>",

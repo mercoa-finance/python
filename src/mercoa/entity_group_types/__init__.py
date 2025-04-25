@@ -12,6 +12,7 @@ from .types import (
     EntityGroupUserEntityResponse,
     EntityGroupUserRequest,
     EntityGroupUserResponse,
+    EntityGroupUserSyncRequest,
     EntityIdOrBoolean,
     FindEntityGroupUserResponse,
 )
@@ -28,6 +29,7 @@ __all__ = [
     "EntityGroupUserEntityResponse",
     "EntityGroupUserRequest",
     "EntityGroupUserResponse",
+    "EntityGroupUserSyncRequest",
     "EntityIdOrBoolean",
     "FindEntityGroupUserResponse",
 ]

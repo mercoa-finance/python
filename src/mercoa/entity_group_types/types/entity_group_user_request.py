@@ -42,9 +42,15 @@ class EntityGroupUserRequest(UniversalBaseModel):
 
     email: typing.Optional[str] = None
     name: typing.Optional[str] = None
+    roles: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
+    """
+    List of roles to assign to the user. A role can be any string. For example: "payer", "approver", "viewer"
+    If not provided, the user will have no roles. Per entity roles will override these global roles.
+    """
+
     entities: typing.Optional[typing.List[EntityGroupUserEntityRequest]] = pydantic.Field(default=None)
     """
-    List of roles per entity. By default, the user will have no roles.
+    List of roles per entity. Useful for assigning roles to specific entities.
     """
 
     if IS_PYDANTIC_V2:

@@ -24,6 +24,7 @@ from .payment_method_customization_request import (
     PaymentMethodCustomizationRequest_OffPlatform,
     PaymentMethodCustomizationRequest_Utility,
     PaymentMethodCustomizationRequest_VirtualCard,
+    PaymentMethodCustomizationRequest_Wallet,
 )
 from .payment_method_fee import (
     PaymentMethodFee,
@@ -58,6 +59,7 @@ __all__ = [
     "PaymentMethodCustomizationRequest_OffPlatform",
     "PaymentMethodCustomizationRequest_Utility",
     "PaymentMethodCustomizationRequest_VirtualCard",
+    "PaymentMethodCustomizationRequest_Wallet",
     "PaymentMethodFee",
     "PaymentMethodFee_Default",
     "PaymentMethodFee_Flat",

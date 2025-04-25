@@ -13,6 +13,7 @@ PaymentMethodType = typing.Union[
         "virtualCard",
         "offPlatform",
         "utility",
+        "wallet",
     ],
     typing.Any,
 ]

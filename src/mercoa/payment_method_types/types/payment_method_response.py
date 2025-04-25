@@ -17,6 +17,7 @@ from .card_type import CardType
 from .card_brand import CardBrand
 from .custom_payment_method_schema_id import CustomPaymentMethodSchemaId
 from .custom_payment_method_schema_response import CustomPaymentMethodSchemaResponse
+from .wallet_balance import WalletBalance
 
 
 class PaymentMethodResponse_BankAccount(UniversalBaseModel):
@@ -404,6 +405,67 @@ class PaymentMethodResponse_Utility(UniversalBaseModel):
             extra = pydantic.Extra.allow
 
 
+class PaymentMethodResponse_Wallet(UniversalBaseModel):
+    """
+    Examples
+    --------
+    import datetime
+
+    from mercoa.payment_method_types import PaymentMethodResponse_BankAccount
+
+    PaymentMethodResponse_BankAccount(
+        id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+        account_name="My Checking Account",
+        bank_name="Chase",
+        routing_number="12345678",
+        account_number="99988767623",
+        account_type="CHECKING",
+        status="VERIFIED",
+        is_default_source=True,
+        is_default_destination=True,
+        supported_currencies=["USD"],
+        metadata={},
+        frozen=False,
+        confirmed_by_entity=True,
+        created_at=datetime.datetime.fromisoformat(
+            "2021-01-01 00:00:00+00:00",
+        ),
+        updated_at=datetime.datetime.fromisoformat(
+            "2021-01-01 00:00:00+00:00",
+        ),
+    )
+    """
+
+    type: typing.Literal["wallet"] = "wallet"
+    available_balance: typing_extensions.Annotated[WalletBalance, FieldMetadata(alias="availableBalance")]
+    pending_balance: typing_extensions.Annotated[WalletBalance, FieldMetadata(alias="pendingBalance")]
+    id: PaymentMethodId
+    is_default_source: typing_extensions.Annotated[bool, FieldMetadata(alias="isDefaultSource")]
+    is_default_destination: typing_extensions.Annotated[bool, FieldMetadata(alias="isDefaultDestination")]
+    supported_currencies: typing_extensions.Annotated[
+        typing.List[CurrencyCode], FieldMetadata(alias="supportedCurrencies")
+    ]
+    external_accounting_system_id: typing_extensions.Annotated[
+        typing.Optional[str], FieldMetadata(alias="externalAccountingSystemId")
+    ] = None
+    frozen: bool
+    metadata: typing.Dict[str, str]
+    confirmed_by_entity: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="confirmedByEntity")
+    ] = None
+    created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
+    updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")]
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow
+
+
 """
 import datetime
 
@@ -438,4 +500,5 @@ PaymentMethodResponse = typing.Union[
     PaymentMethodResponse_Custom,
     PaymentMethodResponse_OffPlatform,
     PaymentMethodResponse_Utility,
+    PaymentMethodResponse_Wallet,
 ]

@@ -255,6 +255,44 @@ class PaymentMethodUpdateRequest_Utility(UniversalBaseModel):
             extra = pydantic.Extra.allow
 
 
+class PaymentMethodUpdateRequest_Wallet(UniversalBaseModel):
+    """
+    Update a payment method. for non custom payment methods.
+
+    Examples
+    --------
+    from mercoa.payment_method_types import PaymentMethodUpdateRequest_BankAccount
+
+    PaymentMethodUpdateRequest_BankAccount(
+        default_source=True,
+        default_destination=True,
+    )
+    """
+
+    type: typing.Literal["wallet"] = "wallet"
+    default_source: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="defaultSource")] = None
+    default_destination: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="defaultDestination")
+    ] = None
+    external_accounting_system_id: typing_extensions.Annotated[
+        typing.Optional[str], FieldMetadata(alias="externalAccountingSystemId")
+    ] = None
+    frozen: typing.Optional[bool] = None
+    metadata: typing.Optional[typing.Dict[str, str]] = None
+    confirmed_by_entity: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="confirmedByEntity")
+    ] = None
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow
+
+
 """
 from mercoa.payment_method_types import PaymentMethodUpdateRequest_BankAccount
 
@@ -270,4 +308,5 @@ PaymentMethodUpdateRequest = typing.Union[
     PaymentMethodUpdateRequest_Check,
     PaymentMethodUpdateRequest_OffPlatform,
     PaymentMethodUpdateRequest_Utility,
+    PaymentMethodUpdateRequest_Wallet,
 ]

@@ -5,7 +5,7 @@ from ....core.client_wrapper import SyncClientWrapper
 from ....entity_types.types.entity_id import EntityId
 from ....payment_method_types.types.payment_method_id import PaymentMethodId
 from ....core.request_options import RequestOptions
-from ....payment_method_types.types.payment_method_response import PaymentMethodResponse
+from ....payment_method_types.types.wallet_balance_response import WalletBalanceResponse
 from ....core.jsonable_encoder import jsonable_encoder
 from json.decoder import JSONDecodeError
 from ....core.api_error import ApiError
@@ -17,25 +17,26 @@ from ....commons.errors.not_found import NotFound
 from ....commons.errors.conflict import Conflict
 from ....commons.errors.internal_server_error import InternalServerError
 from ....commons.errors.unimplemented import Unimplemented
+from ....payment_method_types.types.currency_code import CurrencyCode
 from ....core.client_wrapper import AsyncClientWrapper
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
 
 
-class BankAccountClient:
+class WalletClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    def initiate_micro_deposits(
+    def get_wallet_balance(
         self,
         entity_id: EntityId,
         payment_method_id: PaymentMethodId,
         *,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> PaymentMethodResponse:
+    ) -> WalletBalanceResponse:
         """
-        Initiate micro deposits for a bank account
+        Get the available and pending balance of this entity's wallet. The specified payment method ID must refer to the entity's wallet.
 
         Parameters
         ----------
@@ -50,7 +51,7 @@ class BankAccountClient:
 
         Returns
         -------
-        PaymentMethodResponse
+        WalletBalanceResponse
 
         Examples
         --------
@@ -59,14 +60,14 @@ class BankAccountClient:
         client = Mercoa(
             token="YOUR_TOKEN",
         )
-        client.entity.payment_method.bank_account.initiate_micro_deposits(
+        client.entity.payment_method.wallet.get_wallet_balance(
             entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}/micro-deposits",
-            method="POST",
+            f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}/wallet-balance",
+            method="GET",
             request_options=request_options,
         )
         try:
@@ -75,9 +76,9 @@ class BankAccountClient:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
             return typing.cast(
-                PaymentMethodResponse,
+                WalletBalanceResponse,
                 parse_obj_as(
-                    type_=PaymentMethodResponse,  # type: ignore
+                    type_=WalletBalanceResponse,  # type: ignore
                     object_=_response_json,
                 ),
             )
@@ -154,16 +155,18 @@ class BankAccountClient:
                 )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def complete_micro_deposits(
+    def add_wallet_funds(
         self,
         entity_id: EntityId,
         payment_method_id: PaymentMethodId,
         *,
-        amounts: typing.Sequence[int],
+        amount: float,
+        source_payment_method_id: PaymentMethodId,
+        currency: typing.Optional[CurrencyCode] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> PaymentMethodResponse:
+    ) -> None:
         """
-        Complete micro deposit verification
+        Add funds to this wallet from a bank account (this transfer is D+2). The source payment method ID must refer to a bank account.
 
         Parameters
         ----------
@@ -173,15 +176,21 @@ class BankAccountClient:
         payment_method_id : PaymentMethodId
             Payment Method ID or Payment Method ForeignID
 
-        amounts : typing.Sequence[int]
-            The amounts of the micro deposits in cents
+        amount : float
+            The amount of the funds to add. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.
+
+        source_payment_method_id : PaymentMethodId
+            The ID of the bank account to add funds from. The source payment method ID must refer to a bank account.
+
+        currency : typing.Optional[CurrencyCode]
+            The currency of the funds to add. (Defaults to USD, currently only USD is supported.)
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        PaymentMethodResponse
+        None
 
         Examples
         --------
@@ -190,33 +199,173 @@ class BankAccountClient:
         client = Mercoa(
             token="YOUR_TOKEN",
         )
-        client.entity.payment_method.bank_account.complete_micro_deposits(
+        client.entity.payment_method.wallet.add_wallet_funds(
             entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
-            amounts=[40, 2],
+            amount=100.0,
+            currency="USD",
+            source_payment_method_id="pm_f19d27ad-e493-4bf5-a28b-9cb323de495a",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}/micro-deposits",
-            method="PUT",
+            f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}/add-wallet-funds",
+            method="POST",
             json={
-                "amounts": amounts,
+                "amount": amount,
+                "currency": currency,
+                "sourcePaymentMethodId": source_payment_method_id,
             },
             request_options=request_options,
             omit=OMIT,
         )
+        if 200 <= _response.status_code < 300:
+            return
         try:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def withdraw_wallet_funds(
+        self,
+        entity_id: EntityId,
+        payment_method_id: PaymentMethodId,
+        *,
+        amount: float,
+        destination_payment_method_id: PaymentMethodId,
+        currency: typing.Optional[CurrencyCode] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
+        """
+        Withdraw funds from this wallet to a bank account (this transfer is D+0). The destination payment method ID must refer to a bank account.
+
+        Parameters
+        ----------
+        entity_id : EntityId
+            Entity ID or Entity ForeignID
+
+        payment_method_id : PaymentMethodId
+            Payment Method ID or Payment Method ForeignID
+
+        amount : float
+            The amount of the funds to withdraw. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.
+
+        destination_payment_method_id : PaymentMethodId
+            The ID of the bank account to withdraw funds to. The destination payment method ID must refer to a bank account.
+
+        currency : typing.Optional[CurrencyCode]
+            The currency of the funds to withdraw. (Defaults to USD, currently only USD is supported.)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        from mercoa import Mercoa
+
+        client = Mercoa(
+            token="YOUR_TOKEN",
+        )
+        client.entity.payment_method.wallet.withdraw_wallet_funds(
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+            amount=100.0,
+            currency="USD",
+            destination_payment_method_id="pm_f19d27ad-e493-4bf5-a28b-9cb323de495a",
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}/withdraw-wallet-funds",
+            method="POST",
+            json={
+                "amount": amount,
+                "currency": currency,
+                "destinationPaymentMethodId": destination_payment_method_id,
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
         if 200 <= _response.status_code < 300:
-            return typing.cast(
-                PaymentMethodResponse,
-                parse_obj_as(
-                    type_=PaymentMethodResponse,  # type: ignore
-                    object_=_response_json,
-                ),
-            )
+            return
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
         if "errorName" in _response_json:
             if _response_json["errorName"] == "BadRequest":
                 raise BadRequest(
@@ -291,19 +440,19 @@ class BankAccountClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
 
-class AsyncBankAccountClient:
+class AsyncWalletClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    async def initiate_micro_deposits(
+    async def get_wallet_balance(
         self,
         entity_id: EntityId,
         payment_method_id: PaymentMethodId,
         *,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> PaymentMethodResponse:
+    ) -> WalletBalanceResponse:
         """
-        Initiate micro deposits for a bank account
+        Get the available and pending balance of this entity's wallet. The specified payment method ID must refer to the entity's wallet.
 
         Parameters
         ----------
@@ -318,7 +467,7 @@ class AsyncBankAccountClient:
 
         Returns
         -------
-        PaymentMethodResponse
+        WalletBalanceResponse
 
         Examples
         --------
@@ -332,7 +481,7 @@ class AsyncBankAccountClient:
 
 
         async def main() -> None:
-            await client.entity.payment_method.bank_account.initiate_micro_deposits(
+            await client.entity.payment_method.wallet.get_wallet_balance(
                 entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
                 payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
             )
@@ -341,8 +490,8 @@ class AsyncBankAccountClient:
         asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}/micro-deposits",
-            method="POST",
+            f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}/wallet-balance",
+            method="GET",
             request_options=request_options,
         )
         try:
@@ -351,9 +500,9 @@ class AsyncBankAccountClient:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
             return typing.cast(
-                PaymentMethodResponse,
+                WalletBalanceResponse,
                 parse_obj_as(
-                    type_=PaymentMethodResponse,  # type: ignore
+                    type_=WalletBalanceResponse,  # type: ignore
                     object_=_response_json,
                 ),
             )
@@ -430,16 +579,18 @@ class AsyncBankAccountClient:
                 )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def complete_micro_deposits(
+    async def add_wallet_funds(
         self,
         entity_id: EntityId,
         payment_method_id: PaymentMethodId,
         *,
-        amounts: typing.Sequence[int],
+        amount: float,
+        source_payment_method_id: PaymentMethodId,
+        currency: typing.Optional[CurrencyCode] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> PaymentMethodResponse:
+    ) -> None:
         """
-        Complete micro deposit verification
+        Add funds to this wallet from a bank account (this transfer is D+2). The source payment method ID must refer to a bank account.
 
         Parameters
         ----------
@@ -449,15 +600,21 @@ class AsyncBankAccountClient:
         payment_method_id : PaymentMethodId
             Payment Method ID or Payment Method ForeignID
 
-        amounts : typing.Sequence[int]
-            The amounts of the micro deposits in cents
+        amount : float
+            The amount of the funds to add. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.
+
+        source_payment_method_id : PaymentMethodId
+            The ID of the bank account to add funds from. The source payment method ID must refer to a bank account.
+
+        currency : typing.Optional[CurrencyCode]
+            The currency of the funds to add. (Defaults to USD, currently only USD is supported.)
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        PaymentMethodResponse
+        None
 
         Examples
         --------
@@ -471,36 +628,184 @@ class AsyncBankAccountClient:
 
 
         async def main() -> None:
-            await client.entity.payment_method.bank_account.complete_micro_deposits(
+            await client.entity.payment_method.wallet.add_wallet_funds(
                 entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
                 payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
-                amounts=[40, 2],
+                amount=100.0,
+                currency="USD",
+                source_payment_method_id="pm_f19d27ad-e493-4bf5-a28b-9cb323de495a",
             )
 
 
         asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}/micro-deposits",
-            method="PUT",
+            f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}/add-wallet-funds",
+            method="POST",
             json={
-                "amounts": amounts,
+                "amount": amount,
+                "currency": currency,
+                "sourcePaymentMethodId": source_payment_method_id,
             },
             request_options=request_options,
             omit=OMIT,
         )
+        if 200 <= _response.status_code < 300:
+            return
         try:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
-        if 200 <= _response.status_code < 300:
-            return typing.cast(
-                PaymentMethodResponse,
-                parse_obj_as(
-                    type_=PaymentMethodResponse,  # type: ignore
-                    object_=_response_json,
-                ),
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def withdraw_wallet_funds(
+        self,
+        entity_id: EntityId,
+        payment_method_id: PaymentMethodId,
+        *,
+        amount: float,
+        destination_payment_method_id: PaymentMethodId,
+        currency: typing.Optional[CurrencyCode] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
+        """
+        Withdraw funds from this wallet to a bank account (this transfer is D+0). The destination payment method ID must refer to a bank account.
+
+        Parameters
+        ----------
+        entity_id : EntityId
+            Entity ID or Entity ForeignID
+
+        payment_method_id : PaymentMethodId
+            Payment Method ID or Payment Method ForeignID
+
+        amount : float
+            The amount of the funds to withdraw. If the entered amount has more decimal places than the currency supports, trailing decimals will be truncated.
+
+        destination_payment_method_id : PaymentMethodId
+            The ID of the bank account to withdraw funds to. The destination payment method ID must refer to a bank account.
+
+        currency : typing.Optional[CurrencyCode]
+            The currency of the funds to withdraw. (Defaults to USD, currently only USD is supported.)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        import asyncio
+
+        from mercoa import AsyncMercoa
+
+        client = AsyncMercoa(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.entity.payment_method.wallet.withdraw_wallet_funds(
+                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                payment_method_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                amount=100.0,
+                currency="USD",
+                destination_payment_method_id="pm_f19d27ad-e493-4bf5-a28b-9cb323de495a",
             )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"entity/{jsonable_encoder(entity_id)}/paymentMethod/{jsonable_encoder(payment_method_id)}/withdraw-wallet-funds",
+            method="POST",
+            json={
+                "amount": amount,
+                "currency": currency,
+                "destinationPaymentMethodId": destination_payment_method_id,
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        if 200 <= _response.status_code < 300:
+            return
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
         if "errorName" in _response_json:
             if _response_json["errorName"] == "BadRequest":
                 raise BadRequest(

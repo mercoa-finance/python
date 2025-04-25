@@ -35,6 +35,7 @@ from .payment_method_request import (
     PaymentMethodRequest_Custom,
     PaymentMethodRequest_OffPlatform,
     PaymentMethodRequest_Utility,
+    PaymentMethodRequest_Wallet,
 )
 from .payment_method_response import (
     PaymentMethodResponse,
@@ -44,6 +45,7 @@ from .payment_method_response import (
     PaymentMethodResponse_Custom,
     PaymentMethodResponse_OffPlatform,
     PaymentMethodResponse_Utility,
+    PaymentMethodResponse_Wallet,
 )
 from .payment_method_type import PaymentMethodType
 from .payment_method_update_request import (
@@ -54,6 +56,7 @@ from .payment_method_update_request import (
     PaymentMethodUpdateRequest_Custom,
     PaymentMethodUpdateRequest_OffPlatform,
     PaymentMethodUpdateRequest_Utility,
+    PaymentMethodUpdateRequest_Wallet,
 )
 from .payment_method_with_entity_find_response import PaymentMethodWithEntityFindResponse
 from .payment_method_with_entity_response import PaymentMethodWithEntityResponse
@@ -63,6 +66,9 @@ from .plaid_processor_token_request import PlaidProcessorTokenRequest
 from .plaid_public_token_request import PlaidPublicTokenRequest
 from .utility_payment_method_request import UtilityPaymentMethodRequest
 from .utility_payment_method_response import UtilityPaymentMethodResponse
+from .wallet_balance import WalletBalance
+from .wallet_balance_response import WalletBalanceResponse
+from .wallet_response import WalletResponse
 
 __all__ = [
     "BankAccountCheckOptions",
@@ -99,6 +105,7 @@ __all__ = [
     "PaymentMethodRequest_Custom",
     "PaymentMethodRequest_OffPlatform",
     "PaymentMethodRequest_Utility",
+    "PaymentMethodRequest_Wallet",
     "PaymentMethodResponse",
     "PaymentMethodResponse_BankAccount",
     "PaymentMethodResponse_Card",
@@ -106,6 +113,7 @@ __all__ = [
     "PaymentMethodResponse_Custom",
     "PaymentMethodResponse_OffPlatform",
     "PaymentMethodResponse_Utility",
+    "PaymentMethodResponse_Wallet",
     "PaymentMethodType",
     "PaymentMethodUpdateRequest",
     "PaymentMethodUpdateRequest_BankAccount",
@@ -114,6 +122,7 @@ __all__ = [
     "PaymentMethodUpdateRequest_Custom",
     "PaymentMethodUpdateRequest_OffPlatform",
     "PaymentMethodUpdateRequest_Utility",
+    "PaymentMethodUpdateRequest_Wallet",
     "PaymentMethodWithEntityFindResponse",
     "PaymentMethodWithEntityResponse",
     "PlaidAccessTokenRequest",
@@ -122,4 +131,7 @@ __all__ = [
     "PlaidPublicTokenRequest",
     "UtilityPaymentMethodRequest",
     "UtilityPaymentMethodResponse",
+    "WalletBalance",
+    "WalletBalanceResponse",
+    "WalletResponse",
 ]

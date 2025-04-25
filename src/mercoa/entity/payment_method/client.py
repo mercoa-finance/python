@@ -3,6 +3,7 @@
 import typing
 from ...core.client_wrapper import SyncClientWrapper
 from .bank_account.client import BankAccountClient
+from .wallet.client import WalletClient
 from ...entity_types.types.entity_id import EntityId
 from ...payment_method_types.types.payment_method_type import PaymentMethodType
 from ...core.request_options import RequestOptions
@@ -33,6 +34,7 @@ from ...payment_method_types.types.payment_method_events_response import (
 from ...core.datetime_utils import serialize_datetime
 from ...core.client_wrapper import AsyncClientWrapper
 from .bank_account.client import AsyncBankAccountClient
+from .wallet.client import AsyncWalletClient
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -42,6 +44,7 @@ class PaymentMethodClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
         self.bank_account = BankAccountClient(client_wrapper=self._client_wrapper)
+        self.wallet = WalletClient(client_wrapper=self._client_wrapper)
 
     def get_all(
         self,
@@ -1094,6 +1097,7 @@ class AsyncPaymentMethodClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
         self.bank_account = AsyncBankAccountClient(client_wrapper=self._client_wrapper)
+        self.wallet = AsyncWalletClient(client_wrapper=self._client_wrapper)
 
     async def get_all(
         self,

@@ -161,6 +161,21 @@ class PaymentRailResponse_Na(UniversalBaseModel):
             extra = pydantic.Extra.allow
 
 
+class PaymentRailResponse_Wallet(UniversalBaseModel):
+    type: typing.Literal["wallet"] = "wallet"
+    name: str
+    active: bool
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow
+
+
 PaymentRailResponse = typing.Union[
     PaymentRailResponse_BankAccount,
     PaymentRailResponse_Card,
@@ -171,4 +186,5 @@ PaymentRailResponse = typing.Union[
     PaymentRailResponse_OffPlatform,
     PaymentRailResponse_Utility,
     PaymentRailResponse_Na,
+    PaymentRailResponse_Wallet,
 ]

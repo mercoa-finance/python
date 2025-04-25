@@ -266,6 +266,33 @@ class PaymentMethodCustomizationRequest_Na(UniversalBaseModel):
             extra = pydantic.Extra.allow
 
 
+class PaymentMethodCustomizationRequest_Wallet(UniversalBaseModel):
+    """
+    Examples
+    --------
+    from mercoa.customization_types import (
+        PaymentMethodCustomizationRequest_BankAccount,
+    )
+
+    PaymentMethodCustomizationRequest_BankAccount(
+        disabled=True,
+        default_delivery_method="ACH_SAME_DAY",
+    )
+    """
+
+    type: typing.Literal["wallet"] = "wallet"
+    disabled: bool
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow
+
+
 """
 from mercoa.customization_types import (
     PaymentMethodCustomizationRequest_BankAccount,
@@ -286,4 +313,5 @@ PaymentMethodCustomizationRequest = typing.Union[
     PaymentMethodCustomizationRequest_OffPlatform,
     PaymentMethodCustomizationRequest_Utility,
     PaymentMethodCustomizationRequest_Na,
+    PaymentMethodCustomizationRequest_Wallet,
 ]

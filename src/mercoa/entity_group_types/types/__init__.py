@@ -11,6 +11,7 @@ from .entity_group_user_entity_request import EntityGroupUserEntityRequest
 from .entity_group_user_entity_response import EntityGroupUserEntityResponse
 from .entity_group_user_request import EntityGroupUserRequest
 from .entity_group_user_response import EntityGroupUserResponse
+from .entity_group_user_sync_request import EntityGroupUserSyncRequest
 from .entity_id_or_boolean import EntityIdOrBoolean
 from .find_entity_group_user_response import FindEntityGroupUserResponse
 
@@ -26,6 +27,7 @@ __all__ = [
     "EntityGroupUserEntityResponse",
     "EntityGroupUserRequest",
     "EntityGroupUserResponse",
+    "EntityGroupUserSyncRequest",
     "EntityIdOrBoolean",
     "FindEntityGroupUserResponse",
 ]
