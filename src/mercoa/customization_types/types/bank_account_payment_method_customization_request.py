@@ -8,6 +8,7 @@ import typing
 from ...invoice_types.types.bank_delivery_method import BankDeliveryMethod
 from ...core.serialization import FieldMetadata
 import pydantic
+from .originating_company_name_options import OriginatingCompanyNameOptions
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -18,6 +19,22 @@ class BankAccountPaymentMethodCustomizationRequest(GenericPaymentMethodCustomiza
     ] = pydantic.Field(default=None)
     """
     The default delivery method for this payment method.
+    """
+
+    available_delivery_methods: typing_extensions.Annotated[
+        typing.Optional[typing.List[BankDeliveryMethod]],
+        FieldMetadata(alias="availableDeliveryMethods"),
+    ] = pydantic.Field(default=None)
+    """
+    The delivery methods that are available for this payment method.
+    """
+
+    originating_company_name: typing_extensions.Annotated[
+        typing.Optional[OriginatingCompanyNameOptions],
+        FieldMetadata(alias="originatingCompanyName"),
+    ] = pydantic.Field(default=None)
+    """
+    The originating company name for this payment method. If not set, the entity name will be used.
     """
 
     if IS_PYDANTIC_V2:

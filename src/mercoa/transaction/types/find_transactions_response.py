@@ -55,7 +55,7 @@ class FindTransactionsResponse(UniversalBaseModel):
             TransactionResponse_BankAccountToBankAccount(
                 id="trx_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
                 status="COMPLETED",
-                amount=10000,
+                amount=10000.0,
                 currency="USD",
                 payer_id="ent_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
                 payer=CounterpartyResponse(
@@ -445,7 +445,7 @@ class FindTransactionsResponse(UniversalBaseModel):
                             TransactionResponseWithoutInvoices_BankAccountToBankAccount(
                                 id="trx_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
                                 status="COMPLETED",
-                                amount=10000,
+                                amount=10000.0,
                                 currency="USD",
                                 payer_id="ent_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
                                 payer=CounterpartyResponse(
@@ -764,7 +764,7 @@ class FindTransactionsResponse(UniversalBaseModel):
                 id="trx_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
                 check_number=4005,
                 status="COMPLETED",
-                amount=10000,
+                amount=10000.0,
                 currency="USD",
                 payer_id="ent_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
                 payer=CounterpartyResponse(
@@ -1155,7 +1155,7 @@ class FindTransactionsResponse(UniversalBaseModel):
                             TransactionResponseWithoutInvoices_BankAccountToBankAccount(
                                 id="trx_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
                                 status="COMPLETED",
-                                amount=10000,
+                                amount=10000.0,
                                 currency="USD",
                                 payer_id="ent_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
                                 payer=CounterpartyResponse(
@@ -1473,7 +1473,7 @@ class FindTransactionsResponse(UniversalBaseModel):
             TransactionResponse_BankAccountToBankAccount(
                 id="trx_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
                 status="FAILED",
-                amount=10000,
+                amount=10000.0,
                 currency="USD",
                 payer_id="ent_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
                 payer=CounterpartyResponse(
@@ -1854,7 +1854,7 @@ class FindTransactionsResponse(UniversalBaseModel):
                             TransactionResponseWithoutInvoices_BankAccountToBankAccount(
                                 id="trx_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
                                 status="FAILED",
-                                amount=10000,
+                                amount=10000.0,
                                 currency="USD",
                                 payer_id="ent_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
                                 payer=CounterpartyResponse(

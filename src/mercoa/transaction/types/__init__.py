@@ -9,30 +9,36 @@ from .transaction_response import (
     TransactionResponse_BankAccountToMailedCheck,
     TransactionResponse_BankAccountToPrintedCheck,
     TransactionResponse_BankAccountToWallet,
+    TransactionResponse_CardToBankAccount,
     TransactionResponse_CardToWallet,
     TransactionResponse_Custom,
     TransactionResponse_OffPlatform,
     TransactionResponse_WalletToBankAccount,
+    TransactionResponse_WalletToWallet,
 )
 from .transaction_response_ach_base import TransactionResponseAchBase
 from .transaction_response_bank_to_bank_with_invoices import TransactionResponseBankToBankWithInvoices
 from .transaction_response_bank_to_check_with_invoices import TransactionResponseBankToCheckWithInvoices
 from .transaction_response_bank_to_wallet_with_invoices import TransactionResponseBankToWalletWithInvoices
 from .transaction_response_base import TransactionResponseBase
+from .transaction_response_card_to_bank_account_with_invoices import TransactionResponseCardToBankAccountWithInvoices
 from .transaction_response_card_to_wallet_with_invoices import TransactionResponseCardToWalletWithInvoices
 from .transaction_response_check_base import TransactionResponseCheckBase
 from .transaction_response_custom_with_invoices import TransactionResponseCustomWithInvoices
 from .transaction_response_wallet_to_bank_with_invoices import TransactionResponseWalletToBankWithInvoices
+from .transaction_response_wallet_to_wallet_with_invoices import TransactionResponseWalletToWalletWithInvoices
 from .transaction_response_without_invoices import (
     TransactionResponseWithoutInvoices,
     TransactionResponseWithoutInvoices_BankAccountToBankAccount,
     TransactionResponseWithoutInvoices_BankAccountToMailedCheck,
     TransactionResponseWithoutInvoices_BankAccountToPrintedCheck,
     TransactionResponseWithoutInvoices_BankAccountToWallet,
+    TransactionResponseWithoutInvoices_CardToBankAccount,
     TransactionResponseWithoutInvoices_CardToWallet,
     TransactionResponseWithoutInvoices_Custom,
     TransactionResponseWithoutInvoices_OffPlatform,
     TransactionResponseWithoutInvoices_WalletToBankAccount,
+    TransactionResponseWithoutInvoices_WalletToWallet,
 )
 from .transaction_status import TransactionStatus
 from .transaction_type import TransactionType
@@ -47,27 +53,33 @@ __all__ = [
     "TransactionResponseBankToCheckWithInvoices",
     "TransactionResponseBankToWalletWithInvoices",
     "TransactionResponseBase",
+    "TransactionResponseCardToBankAccountWithInvoices",
     "TransactionResponseCardToWalletWithInvoices",
     "TransactionResponseCheckBase",
     "TransactionResponseCustomWithInvoices",
     "TransactionResponseWalletToBankWithInvoices",
+    "TransactionResponseWalletToWalletWithInvoices",
     "TransactionResponseWithoutInvoices",
     "TransactionResponseWithoutInvoices_BankAccountToBankAccount",
     "TransactionResponseWithoutInvoices_BankAccountToMailedCheck",
     "TransactionResponseWithoutInvoices_BankAccountToPrintedCheck",
     "TransactionResponseWithoutInvoices_BankAccountToWallet",
+    "TransactionResponseWithoutInvoices_CardToBankAccount",
     "TransactionResponseWithoutInvoices_CardToWallet",
     "TransactionResponseWithoutInvoices_Custom",
     "TransactionResponseWithoutInvoices_OffPlatform",
     "TransactionResponseWithoutInvoices_WalletToBankAccount",
+    "TransactionResponseWithoutInvoices_WalletToWallet",
     "TransactionResponse_BankAccountToBankAccount",
     "TransactionResponse_BankAccountToMailedCheck",
     "TransactionResponse_BankAccountToPrintedCheck",
     "TransactionResponse_BankAccountToWallet",
+    "TransactionResponse_CardToBankAccount",
     "TransactionResponse_CardToWallet",
     "TransactionResponse_Custom",
     "TransactionResponse_OffPlatform",
     "TransactionResponse_WalletToBankAccount",
+    "TransactionResponse_WalletToWallet",
     "TransactionStatus",
     "TransactionType",
 ]

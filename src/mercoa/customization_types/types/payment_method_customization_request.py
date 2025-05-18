@@ -6,6 +6,7 @@ import typing
 import typing_extensions
 from ...invoice_types.types.bank_delivery_method import BankDeliveryMethod
 from ...core.serialization import FieldMetadata
+from .originating_company_name_options import OriginatingCompanyNameOptions
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 import pydantic
 from ...invoice_types.types.check_delivery_method import CheckDeliveryMethod
@@ -29,6 +30,14 @@ class PaymentMethodCustomizationRequest_BankAccount(UniversalBaseModel):
     default_delivery_method: typing_extensions.Annotated[
         typing.Optional[BankDeliveryMethod],
         FieldMetadata(alias="defaultDeliveryMethod"),
+    ] = None
+    available_delivery_methods: typing_extensions.Annotated[
+        typing.Optional[typing.List[BankDeliveryMethod]],
+        FieldMetadata(alias="availableDeliveryMethods"),
+    ] = None
+    originating_company_name: typing_extensions.Annotated[
+        typing.Optional[OriginatingCompanyNameOptions],
+        FieldMetadata(alias="originatingCompanyName"),
     ] = None
     disabled: bool
 
@@ -114,6 +123,10 @@ class PaymentMethodCustomizationRequest_Check(UniversalBaseModel):
     default_delivery_method: typing_extensions.Annotated[
         typing.Optional[CheckDeliveryMethod],
         FieldMetadata(alias="defaultDeliveryMethod"),
+    ] = None
+    available_delivery_methods: typing_extensions.Annotated[
+        typing.Optional[typing.List[CheckDeliveryMethod]],
+        FieldMetadata(alias="availableDeliveryMethods"),
     ] = None
     print_description: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="printDescription")] = (
         None

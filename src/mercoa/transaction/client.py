@@ -3,6 +3,7 @@
 from ..core.client_wrapper import SyncClientWrapper
 import typing
 from ..entity_types.types.entity_id import EntityId
+from ..entity_group_types.types.entity_group_id import EntityGroupId
 import datetime as dt
 from .types.transaction_id import TransactionId
 from ..invoice_types.types.metadata_filter import MetadataFilter
@@ -37,6 +38,7 @@ class TransactionClient:
         self,
         *,
         entity_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
+        entity_group_id: typing.Optional[EntityGroupId] = None,
         start_date: typing.Optional[dt.datetime] = None,
         end_date: typing.Optional[dt.datetime] = None,
         limit: typing.Optional[int] = None,
@@ -60,7 +62,10 @@ class TransactionClient:
         Parameters
         ----------
         entity_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
-            Filter transactions by the ID or foreign ID of the entity that is the payer or the vendor of the invoice that created the transaction.
+            Filter transactions by the ID or foreign ID of the entity that created the transaction.
+
+        entity_group_id : typing.Optional[EntityGroupId]
+            Filter transactions by the ID or foreign ID of the entity group that the entity belongs to.
 
         start_date : typing.Optional[dt.datetime]
             CREATED_AT Start date filter.
@@ -138,6 +143,7 @@ class TransactionClient:
             method="GET",
             params={
                 "entityId": entity_id,
+                "entityGroupId": entity_group_id,
                 "startDate": serialize_datetime(start_date) if start_date is not None else None,
                 "endDate": serialize_datetime(end_date) if end_date is not None else None,
                 "limit": limit,
@@ -377,6 +383,7 @@ class AsyncTransactionClient:
         self,
         *,
         entity_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
+        entity_group_id: typing.Optional[EntityGroupId] = None,
         start_date: typing.Optional[dt.datetime] = None,
         end_date: typing.Optional[dt.datetime] = None,
         limit: typing.Optional[int] = None,
@@ -400,7 +407,10 @@ class AsyncTransactionClient:
         Parameters
         ----------
         entity_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
-            Filter transactions by the ID or foreign ID of the entity that is the payer or the vendor of the invoice that created the transaction.
+            Filter transactions by the ID or foreign ID of the entity that created the transaction.
+
+        entity_group_id : typing.Optional[EntityGroupId]
+            Filter transactions by the ID or foreign ID of the entity group that the entity belongs to.
 
         start_date : typing.Optional[dt.datetime]
             CREATED_AT Start date filter.
@@ -485,6 +495,7 @@ class AsyncTransactionClient:
             method="GET",
             params={
                 "entityId": entity_id,
+                "entityGroupId": entity_group_id,
                 "startDate": serialize_datetime(start_date) if start_date is not None else None,
                 "endDate": serialize_datetime(end_date) if end_date is not None else None,
                 "limit": limit,

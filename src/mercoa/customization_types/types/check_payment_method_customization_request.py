@@ -20,6 +20,14 @@ class CheckPaymentMethodCustomizationRequest(GenericPaymentMethodCustomizationRe
     The default delivery method for this payment method.
     """
 
+    available_delivery_methods: typing_extensions.Annotated[
+        typing.Optional[typing.List[CheckDeliveryMethod]],
+        FieldMetadata(alias="availableDeliveryMethods"),
+    ] = pydantic.Field(default=None)
+    """
+    The delivery methods that are available for this payment method.
+    """
+
     print_description: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="printDescription")] = (
         pydantic.Field(default=None)
     )

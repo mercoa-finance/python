@@ -13,6 +13,7 @@ from .metadata_customization_request import MetadataCustomizationRequest
 from .notification_customization_request import NotificationCustomizationRequest
 from .ocr_customization_request import OcrCustomizationRequest
 from .ocr_customization_response import OcrCustomizationResponse
+from .originating_company_name_options import OriginatingCompanyNameOptions
 from .payment_method_customization_request import (
     PaymentMethodCustomizationRequest,
     PaymentMethodCustomizationRequest_BankAccount,
@@ -49,6 +50,7 @@ __all__ = [
     "NotificationCustomizationRequest",
     "OcrCustomizationRequest",
     "OcrCustomizationResponse",
+    "OriginatingCompanyNameOptions",
     "PaymentMethodCustomizationRequest",
     "PaymentMethodCustomizationRequest_BankAccount",
     "PaymentMethodCustomizationRequest_Bnpl",

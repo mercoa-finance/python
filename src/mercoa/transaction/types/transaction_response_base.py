@@ -20,7 +20,7 @@ import pydantic
 class TransactionResponseBase(UniversalBaseModel):
     id: TransactionId
     status: TransactionStatus
-    amount: int
+    amount: float
     currency: str
     payer_id: typing_extensions.Annotated[EntityId, FieldMetadata(alias="payerId")]
     payer: CounterpartyResponse

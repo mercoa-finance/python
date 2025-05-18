@@ -961,11 +961,12 @@ client = Mercoa(
 client.entity_group.create(
     request=EntityGroupCreateRequest(
         foreign_id="your-group-id",
-        name="AcmeConglomerate",
-        email_to_name="acmegroup",
+        name="Coastal Corporation",
+        email_to_name="coastalcorp",
         entity_ids=[
-            "ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-            "ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+            "ent_e8c2af94-61cd-4036-a765-80341209167b",
+            "ent_1176dd0c-12e1-41c7-85a5-ae9b4746e64b",
+            "ent_3dbb4ede-2d1d-49be-a996-a5dfad3641be",
         ],
     ),
 )
@@ -1360,7 +1361,7 @@ client.entity_group.add_entities(
             "ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             "ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
         ],
-        copy_users_from="ent_9e02a20e-7749-47de-8d8a-f8ff2859fa90",
+        copy_users_from="ent_1176dd0c-12e1-41c7-85a5-ae9b4746e64b",
     ),
 )
 
@@ -6911,6 +6912,66 @@ client.organization.email_log()
     
 </dd>
 </dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.organization.<a href="src/mercoa/organization/client.py">invalidate_tokens</a>()</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Invalidate all JWT tokens for the current organization. This is considered a break-glass action and should be used only if tokens have been compromised. All tokens will be invalidated, including tokens on links, emails, and currently logged in sessions. API keys are not affected by this action. This action may take 60 seconds to propagate.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.organization.invalidate_tokens()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
 
 <dl>
 <dd>
@@ -15786,7 +15847,15 @@ client.transaction.find(
 <dl>
 <dd>
 
-**entity_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter transactions by the ID or foreign ID of the entity that is the payer or the vendor of the invoice that created the transaction.
+**entity_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter transactions by the ID or foreign ID of the entity that created the transaction.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entity_group_id:** `typing.Optional[EntityGroupId]` — Filter transactions by the ID or foreign ID of the entity group that the entity belongs to.
     
 </dd>
 </dl>
