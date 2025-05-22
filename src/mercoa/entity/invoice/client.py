@@ -71,6 +71,7 @@ class InvoiceClient:
         payment_type: typing.Optional[typing.Sequence[PaymentType]] = None,
         return_payer_metadata: typing.Optional[bool] = None,
         return_vendor_metadata: typing.Optional[bool] = None,
+        return_payment_timing: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> FindInvoiceResponse:
         """
@@ -150,6 +151,9 @@ class InvoiceClient:
         return_vendor_metadata : typing.Optional[bool]
             Whether to return vendor metadata in the response
 
+        return_payment_timing : typing.Optional[bool]
+            Whether to return payment timing in the response
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -205,6 +209,7 @@ class InvoiceClient:
                 "paymentType": payment_type,
                 "returnPayerMetadata": return_payer_metadata,
                 "returnVendorMetadata": return_vendor_metadata,
+                "returnPaymentTiming": return_payment_timing,
             },
             request_options=request_options,
         )
@@ -536,6 +541,7 @@ class AsyncInvoiceClient:
         payment_type: typing.Optional[typing.Sequence[PaymentType]] = None,
         return_payer_metadata: typing.Optional[bool] = None,
         return_vendor_metadata: typing.Optional[bool] = None,
+        return_payment_timing: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> FindInvoiceResponse:
         """
@@ -615,6 +621,9 @@ class AsyncInvoiceClient:
         return_vendor_metadata : typing.Optional[bool]
             Whether to return vendor metadata in the response
 
+        return_payment_timing : typing.Optional[bool]
+            Whether to return payment timing in the response
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -678,6 +687,7 @@ class AsyncInvoiceClient:
                 "paymentType": payment_type,
                 "returnPayerMetadata": return_payer_metadata,
                 "returnVendorMetadata": return_vendor_metadata,
+                "returnPaymentTiming": return_payment_timing,
             },
             request_options=request_options,
         )

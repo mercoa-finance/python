@@ -4124,25 +4124,14 @@ client.entity.payment_method.get_all(
 
 ```python
 from mercoa import Mercoa
-from mercoa.payment_method_types import (
-    PaymentMethodRequest_BankAccount,
-    PlaidAccessTokenRequest,
-)
+from mercoa.payment_method_types import PaymentMethodRequest_Wallet
 
 client = Mercoa(
     token="YOUR_TOKEN",
 )
 client.entity.payment_method.create(
     entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-    request=PaymentMethodRequest_BankAccount(
-        routing_number="",
-        account_number="7623",
-        account_type="CHECKING",
-        plaid=PlaidAccessTokenRequest(
-            access_token="access-sandbox-af1a0311-da53-4636-b754-dd15cc058176",
-            account_id="account-sandbox-af1a0311-da53-4636-b754-dd15cc058176",
-        ),
-    ),
+    request=PaymentMethodRequest_Wallet(),
 )
 
 ```
@@ -6928,7 +6917,7 @@ client.organization.email_log()
 </dl>
 </details>
 
-<details><summary><code>client.organization.<a href="src/mercoa/organization/client.py">invalidate_tokens</a>()</code></summary>
+<details><summary><code>client.organization.<a href="src/mercoa/organization/client.py">invalidate_tokens</a>(...)</code></summary>
 <dl>
 <dd>
 
@@ -6972,6 +6961,14 @@ client.organization.invalidate_tokens()
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**session_id:** `typing.Optional[typing.Sequence[str]]` — Optional list of session IDs to invalidate. If not provided, all sessions will be invalidated.
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -10559,6 +10556,14 @@ client.entity.invoice.find(
 <dd>
 
 **return_vendor_metadata:** `typing.Optional[bool]` — Whether to return vendor metadata in the response
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**return_payment_timing:** `typing.Optional[bool]` — Whether to return payment timing in the response
     
 </dd>
 </dl>

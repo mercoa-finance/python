@@ -13,6 +13,9 @@ from ...entity_types.types.counterparty_response import CounterpartyResponse
 from ...payment_method_types.types.payment_method_response import PaymentMethodResponse
 from ...payment_method_types.types.payment_method_id import PaymentMethodId
 from .payment_destination_options import PaymentDestinationOptions
+from ...calculate.types.calculate_payment_timing_response import (
+    CalculatePaymentTimingResponse,
+)
 from .invoice_line_item_response import InvoiceLineItemResponse
 from .approval_slot import ApprovalSlot
 from ...entity_types.types.approval_policy_response import ApprovalPolicyResponse
@@ -99,6 +102,10 @@ class InvoiceResponseBase(UniversalBaseModel):
     payment_destination_options: typing_extensions.Annotated[
         typing.Optional[PaymentDestinationOptions],
         FieldMetadata(alias="paymentDestinationOptions"),
+    ] = None
+    payment_timing: typing_extensions.Annotated[
+        typing.Optional[CalculatePaymentTimingResponse],
+        FieldMetadata(alias="paymentTiming"),
     ] = None
     payment_destination_confirmed: typing_extensions.Annotated[
         bool, FieldMetadata(alias="paymentDestinationConfirmed")

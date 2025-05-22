@@ -472,12 +472,20 @@ class OrganizationClient:
                 )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def invalidate_tokens(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+    def invalidate_tokens(
+        self,
+        *,
+        session_id: typing.Optional[typing.Sequence[str]] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
         """
         Invalidate all JWT tokens for the current organization. This is considered a break-glass action and should be used only if tokens have been compromised. All tokens will be invalidated, including tokens on links, emails, and currently logged in sessions. API keys are not affected by this action. This action may take 60 seconds to propagate.
 
         Parameters
         ----------
+        session_id : typing.Optional[typing.Sequence[str]]
+            Optional list of session IDs to invalidate. If not provided, all sessions will be invalidated.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -497,7 +505,11 @@ class OrganizationClient:
         _response = self._client_wrapper.httpx_client.request(
             "organization/invalidateTokens",
             method="POST",
+            json={
+                "sessionId": session_id,
+            },
             request_options=request_options,
+            omit=OMIT,
         )
         if 200 <= _response.status_code < 300:
             return
@@ -1048,12 +1060,20 @@ class AsyncOrganizationClient:
                 )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def invalidate_tokens(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+    async def invalidate_tokens(
+        self,
+        *,
+        session_id: typing.Optional[typing.Sequence[str]] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
         """
         Invalidate all JWT tokens for the current organization. This is considered a break-glass action and should be used only if tokens have been compromised. All tokens will be invalidated, including tokens on links, emails, and currently logged in sessions. API keys are not affected by this action. This action may take 60 seconds to propagate.
 
         Parameters
         ----------
+        session_id : typing.Optional[typing.Sequence[str]]
+            Optional list of session IDs to invalidate. If not provided, all sessions will be invalidated.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -1081,7 +1101,11 @@ class AsyncOrganizationClient:
         _response = await self._client_wrapper.httpx_client.request(
             "organization/invalidateTokens",
             method="POST",
+            json={
+                "sessionId": session_id,
+            },
             request_options=request_options,
+            omit=OMIT,
         )
         if 200 <= _response.status_code < 300:
             return

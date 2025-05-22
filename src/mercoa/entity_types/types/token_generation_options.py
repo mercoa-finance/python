@@ -26,6 +26,12 @@ class TokenGenerationOptions(UniversalBaseModel):
     style: typing.Optional[TokenGenerationStyleOptions] = None
     vendors: typing.Optional[TokenGenerationVendorOptions] = None
     entity: typing.Optional[TokenGenerationEntityOptions] = None
+    session_id: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="sessionId")] = pydantic.Field(
+        default=None
+    )
+    """
+    Optional session ID to use for the token. If not provided, this token will not be associated with a session.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
