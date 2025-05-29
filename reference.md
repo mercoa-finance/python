@@ -1276,6 +1276,7 @@ client.entity_group.get_token(
     entity_group_id="entg_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
     request=TokenGenerationOptions(
         expires_in="1h",
+        session_id="session_123",
     ),
 )
 
@@ -2807,6 +2808,7 @@ client.entity.get_token(
     entity_id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
     request=TokenGenerationOptions(
         expires_in="1h",
+        session_id="session_123",
     ),
 )
 
@@ -5139,6 +5141,7 @@ client.entity.user.get_token(
     user_id="user_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
     request=TokenGenerationOptions(
         expires_in="1h",
+        session_id="session_123",
     ),
 )
 
@@ -13811,6 +13814,209 @@ client.invoice.bulk.create(
 <dd>
 
 **emit_webhooks:** `typing.Optional[bool]` — If true, webhooks will be emitted for each invoice that is created. By default, webhooks are not emitted.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.invoice.bulk.<a href="src/mercoa/invoice/bulk/client.py">update</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Update multiple invoices in bulk. This endpoint will process synchronously and return a list of invoices that were updated or failed to update.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+import datetime
+
+from mercoa import Mercoa
+from mercoa.invoice_types import (
+    BulkInvoiceUpdateRequest,
+    InvoiceLineItemUpdateRequest,
+    InvoiceUpdateRequestWithId,
+)
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.invoice.bulk.update(
+    request=BulkInvoiceUpdateRequest(
+        invoices=[
+            InvoiceUpdateRequestWithId(
+                invoice_id="inv_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+                status="NEW",
+                amount=100.0,
+                currency="USD",
+                due_date=datetime.datetime.fromisoformat(
+                    "2024-01-31 00:00:00+00:00",
+                ),
+                invoice_date=datetime.datetime.fromisoformat(
+                    "2024-01-01 00:00:00+00:00",
+                ),
+                invoice_number="INV-001",
+                line_items=[
+                    InvoiceLineItemUpdateRequest(
+                        description="Item 1",
+                        amount=50.0,
+                        quantity=1.0,
+                    ),
+                    InvoiceLineItemUpdateRequest(
+                        description="Item 2",
+                        amount=50.0,
+                        quantity=1.0,
+                    ),
+                ],
+            )
+        ],
+    ),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `BulkInvoiceUpdateRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**emit_webhooks:** `typing.Optional[bool]` — If true, webhooks will be emitted for each invoice that is updated. By default, webhooks are not emitted.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.invoice.bulk.<a href="src/mercoa/invoice/bulk/client.py">approve</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Approve multiple invoices in bulk. This endpoint will process synchronously and return a list of invoices that were approved or failed to approve.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+from mercoa.invoice_types import (
+    ApprovalRequestWithId,
+    BulkInvoiceApprovalRequest,
+)
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.invoice.bulk.approve(
+    request=BulkInvoiceApprovalRequest(
+        invoices=[
+            ApprovalRequestWithId(
+                invoice_id="in_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
+                text="This is a reason for my action",
+                user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+            )
+        ],
+    ),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `BulkInvoiceApprovalRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**emit_webhooks:** `typing.Optional[bool]` — If true, webhooks will be emitted for each invoice that is approved. By default, webhooks are not emitted.
     
 </dd>
 </dl>

@@ -500,7 +500,9 @@ class OrganizationClient:
         client = Mercoa(
             token="YOUR_TOKEN",
         )
-        client.organization.invalidate_tokens()
+        client.organization.invalidate_tokens(
+            session_id=["session_123", "session_456"],
+        )
         """
         _response = self._client_wrapper.httpx_client.request(
             "organization/invalidateTokens",
@@ -1093,7 +1095,9 @@ class AsyncOrganizationClient:
 
 
         async def main() -> None:
-            await client.organization.invalidate_tokens()
+            await client.organization.invalidate_tokens(
+                session_id=["session_123", "session_456"],
+            )
 
 
         asyncio.run(main())

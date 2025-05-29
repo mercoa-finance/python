@@ -2,6 +2,7 @@
 
 from .add_approver_request import AddApproverRequest
 from .approval_request import ApprovalRequest
+from .approval_request_with_id import ApprovalRequestWithId
 from .approval_slot import ApprovalSlot
 from .approval_slot_assignment import ApprovalSlotAssignment
 from .approval_slot_id import ApprovalSlotId
@@ -9,9 +10,15 @@ from .approver_action import ApproverAction
 from .associated_approval_action import AssociatedApprovalAction
 from .bank_account_payment_destination_options import BankAccountPaymentDestinationOptions
 from .bank_delivery_method import BankDeliveryMethod
+from .bulk_invoice_approval_from_object_response import BulkInvoiceApprovalFromObjectResponse
+from .bulk_invoice_approval_request import BulkInvoiceApprovalRequest
+from .bulk_invoice_approval_response import BulkInvoiceApprovalResponse
 from .bulk_invoice_creation_from_object_response import BulkInvoiceCreationFromObjectResponse
 from .bulk_invoice_creation_request import BulkInvoiceCreationRequest
 from .bulk_invoice_creation_response import BulkInvoiceCreationResponse
+from .bulk_invoice_update_from_object_response import BulkInvoiceUpdateFromObjectResponse
+from .bulk_invoice_update_request import BulkInvoiceUpdateRequest
+from .bulk_invoice_update_response import BulkInvoiceUpdateResponse
 from .check_delivery_method import CheckDeliveryMethod
 from .check_payment_destination_options import CheckPaymentDestinationOptions
 from .comment_id import CommentId
@@ -53,6 +60,7 @@ from .invoice_template_request_base import InvoiceTemplateRequestBase
 from .invoice_template_response import InvoiceTemplateResponse
 from .invoice_template_update_request import InvoiceTemplateUpdateRequest
 from .invoice_update_request import InvoiceUpdateRequest
+from .invoice_update_request_with_id import InvoiceUpdateRequestWithId
 from .metadata_filter import MetadataFilter
 from .payment_destination_options import (
     PaymentDestinationOptions,
@@ -79,6 +87,7 @@ from .utility_payment_destination_options import UtilityPaymentDestinationOption
 __all__ = [
     "AddApproverRequest",
     "ApprovalRequest",
+    "ApprovalRequestWithId",
     "ApprovalSlot",
     "ApprovalSlotAssignment",
     "ApprovalSlotId",
@@ -86,9 +95,15 @@ __all__ = [
     "AssociatedApprovalAction",
     "BankAccountPaymentDestinationOptions",
     "BankDeliveryMethod",
+    "BulkInvoiceApprovalFromObjectResponse",
+    "BulkInvoiceApprovalRequest",
+    "BulkInvoiceApprovalResponse",
     "BulkInvoiceCreationFromObjectResponse",
     "BulkInvoiceCreationRequest",
     "BulkInvoiceCreationResponse",
+    "BulkInvoiceUpdateFromObjectResponse",
+    "BulkInvoiceUpdateRequest",
+    "BulkInvoiceUpdateResponse",
     "CheckDeliveryMethod",
     "CheckPaymentDestinationOptions",
     "CommentId",
@@ -130,6 +145,7 @@ __all__ = [
     "InvoiceTemplateResponse",
     "InvoiceTemplateUpdateRequest",
     "InvoiceUpdateRequest",
+    "InvoiceUpdateRequestWithId",
     "MetadataFilter",
     "PaymentDestinationOptions",
     "PaymentDestinationOptions_BankAccount",

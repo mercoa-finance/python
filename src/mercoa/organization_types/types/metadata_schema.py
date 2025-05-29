@@ -8,6 +8,7 @@ import pydantic
 from .metadata_type import MetadataType
 from .metadata_validation_rule import MetadataValidationRule
 from .metadata_show_conditions import MetadataShowConditions
+from .metadata_ocr_rules import MetadataOcrRules
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -42,6 +43,13 @@ class MetadataSchema(UniversalBaseModel):
     ] = pydantic.Field(default=None)
     """
     A list of conditional rules that determine whether or not this field should be shown. The field will only be shown if all of the conditions are met. If no conditions are specified, the field will always be shown.
+    """
+
+    ocr_rules: typing_extensions.Annotated[typing.Optional[MetadataOcrRules], FieldMetadata(alias="ocrRules")] = (
+        pydantic.Field(default=None)
+    )
+    """
+    A collection of rules that determine how this field is populated during OCR.
     """
 
     if IS_PYDANTIC_V2:

@@ -2,7 +2,9 @@
 
 from .types import (
     BulkEntityCreationWebhook,
+    BulkInvoiceApprovalWebhook,
     BulkInvoiceCreationWebhook,
+    BulkInvoiceUpdateWebhook,
     CounterpartyEventWebhook,
     CounterpartyWebhook,
     EntityMetadataUpdatedWebhook,
@@ -18,7 +20,9 @@ from .types import (
 
 __all__ = [
     "BulkEntityCreationWebhook",
+    "BulkInvoiceApprovalWebhook",
     "BulkInvoiceCreationWebhook",
+    "BulkInvoiceUpdateWebhook",
     "CounterpartyEventWebhook",
     "CounterpartyWebhook",
     "EntityMetadataUpdatedWebhook",

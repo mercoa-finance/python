@@ -20,6 +20,16 @@ from ...commons.errors.not_found import NotFound
 from ...commons.errors.conflict import Conflict
 from ...commons.errors.internal_server_error import InternalServerError
 from ...commons.errors.unimplemented import Unimplemented
+from ...invoice_types.types.bulk_invoice_update_request import BulkInvoiceUpdateRequest
+from ...invoice_types.types.bulk_invoice_update_response import (
+    BulkInvoiceUpdateResponse,
+)
+from ...invoice_types.types.bulk_invoice_approval_request import (
+    BulkInvoiceApprovalRequest,
+)
+from ...invoice_types.types.bulk_invoice_approval_response import (
+    BulkInvoiceApprovalResponse,
+)
 from ...core.client_wrapper import AsyncClientWrapper
 
 # this is used as the default value for optional parameters
@@ -141,6 +151,319 @@ class BulkClient:
                 BulkInvoiceCreationResponse,
                 parse_obj_as(
                     type_=BulkInvoiceCreationResponse,  # type: ignore
+                    object_=_response_json,
+                ),
+            )
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def update(
+        self,
+        *,
+        request: BulkInvoiceUpdateRequest,
+        emit_webhooks: typing.Optional[bool] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> BulkInvoiceUpdateResponse:
+        """
+        Update multiple invoices in bulk. This endpoint will process synchronously and return a list of invoices that were updated or failed to update.
+
+        Parameters
+        ----------
+        request : BulkInvoiceUpdateRequest
+
+        emit_webhooks : typing.Optional[bool]
+            If true, webhooks will be emitted for each invoice that is updated. By default, webhooks are not emitted.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        BulkInvoiceUpdateResponse
+
+        Examples
+        --------
+        import datetime
+
+        from mercoa import Mercoa
+        from mercoa.invoice_types import (
+            BulkInvoiceUpdateRequest,
+            InvoiceLineItemUpdateRequest,
+            InvoiceUpdateRequestWithId,
+        )
+
+        client = Mercoa(
+            token="YOUR_TOKEN",
+        )
+        client.invoice.bulk.update(
+            request=BulkInvoiceUpdateRequest(
+                invoices=[
+                    InvoiceUpdateRequestWithId(
+                        invoice_id="inv_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+                        status="NEW",
+                        amount=100.0,
+                        currency="USD",
+                        due_date=datetime.datetime.fromisoformat(
+                            "2024-01-31 00:00:00+00:00",
+                        ),
+                        invoice_date=datetime.datetime.fromisoformat(
+                            "2024-01-01 00:00:00+00:00",
+                        ),
+                        invoice_number="INV-001",
+                        line_items=[
+                            InvoiceLineItemUpdateRequest(
+                                description="Item 1",
+                                amount=50.0,
+                                quantity=1.0,
+                            ),
+                            InvoiceLineItemUpdateRequest(
+                                description="Item 2",
+                                amount=50.0,
+                                quantity=1.0,
+                            ),
+                        ],
+                    )
+                ],
+            ),
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "invoices",
+            method="PUT",
+            params={
+                "emitWebhooks": emit_webhooks,
+            },
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=BulkInvoiceUpdateRequest, direction="write"
+            ),
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return typing.cast(
+                BulkInvoiceUpdateResponse,
+                parse_obj_as(
+                    type_=BulkInvoiceUpdateResponse,  # type: ignore
+                    object_=_response_json,
+                ),
+            )
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def approve(
+        self,
+        *,
+        request: BulkInvoiceApprovalRequest,
+        emit_webhooks: typing.Optional[bool] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> BulkInvoiceApprovalResponse:
+        """
+        Approve multiple invoices in bulk. This endpoint will process synchronously and return a list of invoices that were approved or failed to approve.
+
+        Parameters
+        ----------
+        request : BulkInvoiceApprovalRequest
+
+        emit_webhooks : typing.Optional[bool]
+            If true, webhooks will be emitted for each invoice that is approved. By default, webhooks are not emitted.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        BulkInvoiceApprovalResponse
+
+        Examples
+        --------
+        from mercoa import Mercoa
+        from mercoa.invoice_types import (
+            ApprovalRequestWithId,
+            BulkInvoiceApprovalRequest,
+        )
+
+        client = Mercoa(
+            token="YOUR_TOKEN",
+        )
+        client.invoice.bulk.approve(
+            request=BulkInvoiceApprovalRequest(
+                invoices=[
+                    ApprovalRequestWithId(
+                        invoice_id="in_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
+                        text="This is a reason for my action",
+                        user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+                    )
+                ],
+            ),
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "invoices/approve",
+            method="POST",
+            params={
+                "emitWebhooks": emit_webhooks,
+            },
+            json=convert_and_respect_annotation_metadata(
+                object_=request,
+                annotation=BulkInvoiceApprovalRequest,
+                direction="write",
+            ),
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return typing.cast(
+                BulkInvoiceApprovalResponse,
+                parse_obj_as(
+                    type_=BulkInvoiceApprovalResponse,  # type: ignore
                     object_=_response_json,
                 ),
             )
@@ -340,6 +663,334 @@ class AsyncBulkClient:
                 BulkInvoiceCreationResponse,
                 parse_obj_as(
                     type_=BulkInvoiceCreationResponse,  # type: ignore
+                    object_=_response_json,
+                ),
+            )
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def update(
+        self,
+        *,
+        request: BulkInvoiceUpdateRequest,
+        emit_webhooks: typing.Optional[bool] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> BulkInvoiceUpdateResponse:
+        """
+        Update multiple invoices in bulk. This endpoint will process synchronously and return a list of invoices that were updated or failed to update.
+
+        Parameters
+        ----------
+        request : BulkInvoiceUpdateRequest
+
+        emit_webhooks : typing.Optional[bool]
+            If true, webhooks will be emitted for each invoice that is updated. By default, webhooks are not emitted.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        BulkInvoiceUpdateResponse
+
+        Examples
+        --------
+        import asyncio
+        import datetime
+
+        from mercoa import AsyncMercoa
+        from mercoa.invoice_types import (
+            BulkInvoiceUpdateRequest,
+            InvoiceLineItemUpdateRequest,
+            InvoiceUpdateRequestWithId,
+        )
+
+        client = AsyncMercoa(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.invoice.bulk.update(
+                request=BulkInvoiceUpdateRequest(
+                    invoices=[
+                        InvoiceUpdateRequestWithId(
+                            invoice_id="inv_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+                            status="NEW",
+                            amount=100.0,
+                            currency="USD",
+                            due_date=datetime.datetime.fromisoformat(
+                                "2024-01-31 00:00:00+00:00",
+                            ),
+                            invoice_date=datetime.datetime.fromisoformat(
+                                "2024-01-01 00:00:00+00:00",
+                            ),
+                            invoice_number="INV-001",
+                            line_items=[
+                                InvoiceLineItemUpdateRequest(
+                                    description="Item 1",
+                                    amount=50.0,
+                                    quantity=1.0,
+                                ),
+                                InvoiceLineItemUpdateRequest(
+                                    description="Item 2",
+                                    amount=50.0,
+                                    quantity=1.0,
+                                ),
+                            ],
+                        )
+                    ],
+                ),
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "invoices",
+            method="PUT",
+            params={
+                "emitWebhooks": emit_webhooks,
+            },
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=BulkInvoiceUpdateRequest, direction="write"
+            ),
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return typing.cast(
+                BulkInvoiceUpdateResponse,
+                parse_obj_as(
+                    type_=BulkInvoiceUpdateResponse,  # type: ignore
+                    object_=_response_json,
+                ),
+            )
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def approve(
+        self,
+        *,
+        request: BulkInvoiceApprovalRequest,
+        emit_webhooks: typing.Optional[bool] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> BulkInvoiceApprovalResponse:
+        """
+        Approve multiple invoices in bulk. This endpoint will process synchronously and return a list of invoices that were approved or failed to approve.
+
+        Parameters
+        ----------
+        request : BulkInvoiceApprovalRequest
+
+        emit_webhooks : typing.Optional[bool]
+            If true, webhooks will be emitted for each invoice that is approved. By default, webhooks are not emitted.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        BulkInvoiceApprovalResponse
+
+        Examples
+        --------
+        import asyncio
+
+        from mercoa import AsyncMercoa
+        from mercoa.invoice_types import (
+            ApprovalRequestWithId,
+            BulkInvoiceApprovalRequest,
+        )
+
+        client = AsyncMercoa(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.invoice.bulk.approve(
+                request=BulkInvoiceApprovalRequest(
+                    invoices=[
+                        ApprovalRequestWithId(
+                            invoice_id="in_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
+                            text="This is a reason for my action",
+                            user_id="user_e24fc81c-c5ee-47e8-af42-4fe29d895506",
+                        )
+                    ],
+                ),
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "invoices/approve",
+            method="POST",
+            params={
+                "emitWebhooks": emit_webhooks,
+            },
+            json=convert_and_respect_annotation_metadata(
+                object_=request,
+                annotation=BulkInvoiceApprovalRequest,
+                direction="write",
+            ),
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return typing.cast(
+                BulkInvoiceApprovalResponse,
+                parse_obj_as(
+                    type_=BulkInvoiceApprovalResponse,  # type: ignore
                     object_=_response_json,
                 ),
             )

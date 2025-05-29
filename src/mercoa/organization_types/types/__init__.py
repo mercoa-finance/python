@@ -37,6 +37,7 @@ from .individual_onboarding_options_request import IndividualOnboardingOptionsRe
 from .individual_onboarding_options_response import IndividualOnboardingOptionsResponse
 from .invoice_notification_configuration_request import InvoiceNotificationConfigurationRequest
 from .invoice_notification_configuration_response import InvoiceNotificationConfigurationResponse
+from .metadata_ocr_rules import MetadataOcrRules
 from .metadata_regex_validation_rule import MetadataRegexValidationRule
 from .metadata_schema import MetadataSchema
 from .metadata_show_conditions import MetadataShowConditions
@@ -127,6 +128,7 @@ __all__ = [
     "IndividualOnboardingOptionsResponse",
     "InvoiceNotificationConfigurationRequest",
     "InvoiceNotificationConfigurationResponse",
+    "MetadataOcrRules",
     "MetadataRegexValidationRule",
     "MetadataSchema",
     "MetadataShowConditions",
