@@ -6112,6 +6112,14 @@ client.invoice.find(
 <dl>
 <dd>
 
+**return_payment_timing:** `typing.Optional[bool]` — Whether to return payment timing in the response
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -7867,6 +7875,14 @@ client.entity_group.invoice.find(
 <dl>
 <dd>
 
+**return_payment_timing:** `typing.Optional[bool]` — Whether to return payment timing in the response
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -8184,8 +8200,12 @@ Create an invoice approval policy associated with an entity
 from mercoa import Mercoa
 from mercoa.entity_types import (
     ApprovalPolicyRequest,
-    IdentifierList_UserList,
+    IdentifierList_RolesList,
     Rule_Approver,
+    Trigger_Amount,
+    Trigger_Catchall,
+    Trigger_Metadata,
+    Trigger_Vendor,
 )
 
 client = Mercoa(
@@ -8194,14 +8214,24 @@ client = Mercoa(
 client.entity.approval_policy.create(
     entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
     request=ApprovalPolicyRequest(
-        trigger=[],
+        trigger=[
+            Trigger_Amount(
+                amount=100.0,
+                currency="USD",
+            ),
+            Trigger_Vendor(
+                vendor_ids=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
+            ),
+            Trigger_Metadata(
+                key="property_id",
+                value=["123456", "789012"],
+            ),
+            Trigger_Catchall(),
+        ],
         rule=Rule_Approver(
             num_approvers=2,
-            identifier_list=IdentifierList_UserList(
-                value=[
-                    "usr_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-                    "usr_21661ac1-a2a8-4465-a6c0-64474ba8181d",
-                ]
+            identifier_list=IdentifierList_RolesList(
+                value=["Admin", "Controller"]
             ),
         ),
         upstream_policy_id="root",
@@ -8359,8 +8389,12 @@ Update an invoice approval policy associated with an entity
 from mercoa import Mercoa
 from mercoa.entity_types import (
     ApprovalPolicyUpdateRequest,
-    IdentifierList_UserList,
+    IdentifierList_RolesList,
     Rule_Approver,
+    Trigger_Amount,
+    Trigger_Catchall,
+    Trigger_Metadata,
+    Trigger_Vendor,
 )
 
 client = Mercoa(
@@ -8370,14 +8404,24 @@ client.entity.approval_policy.update(
     entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
     policy_id="apvl_5ce50275-1789-42ea-bc60-bb7e6d03635c",
     request=ApprovalPolicyUpdateRequest(
-        trigger=[],
+        trigger=[
+            Trigger_Amount(
+                amount=100.0,
+                currency="USD",
+            ),
+            Trigger_Vendor(
+                vendor_ids=["ent_21661ac1-a2a8-4465-a6c0-64474ba8181d"],
+            ),
+            Trigger_Metadata(
+                key="property_id",
+                value=["123456", "789012"],
+            ),
+            Trigger_Catchall(),
+        ],
         rule=Rule_Approver(
             num_approvers=2,
-            identifier_list=IdentifierList_UserList(
-                value=[
-                    "usr_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-                    "usr_21661ac1-a2a8-4465-a6c0-64474ba8181d",
-                ]
+            identifier_list=IdentifierList_RolesList(
+                value=["Admin", "Controller"]
             ),
         ),
         upstream_policy_id="root",

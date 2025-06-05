@@ -183,9 +183,8 @@ class ApprovalPolicyClient:
         from mercoa import Mercoa
         from mercoa.entity_types import (
             ApprovalPolicyRequest,
-            IdentifierList_RolesList,
+            IdentifierList_UserList,
             Rule_Approver,
-            Trigger_Amount,
         )
 
         client = Mercoa(
@@ -194,16 +193,14 @@ class ApprovalPolicyClient:
         client.entity.approval_policy.create(
             entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             request=ApprovalPolicyRequest(
-                trigger=[
-                    Trigger_Amount(
-                        amount=100.0,
-                        currency="USD",
-                    )
-                ],
+                trigger=[],
                 rule=Rule_Approver(
                     num_approvers=2,
-                    identifier_list=IdentifierList_RolesList(
-                        value=["Admin", "Controller"]
+                    identifier_list=IdentifierList_UserList(
+                        value=[
+                            "usr_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                            "usr_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+                        ]
                     ),
                 ),
                 upstream_policy_id="root",
@@ -462,9 +459,8 @@ class ApprovalPolicyClient:
         from mercoa import Mercoa
         from mercoa.entity_types import (
             ApprovalPolicyUpdateRequest,
-            IdentifierList_RolesList,
+            IdentifierList_UserList,
             Rule_Approver,
-            Trigger_Amount,
         )
 
         client = Mercoa(
@@ -474,16 +470,14 @@ class ApprovalPolicyClient:
             entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
             policy_id="apvl_5ce50275-1789-42ea-bc60-bb7e6d03635c",
             request=ApprovalPolicyUpdateRequest(
-                trigger=[
-                    Trigger_Amount(
-                        amount=100.0,
-                        currency="USD",
-                    )
-                ],
+                trigger=[],
                 rule=Rule_Approver(
                     num_approvers=2,
-                    identifier_list=IdentifierList_RolesList(
-                        value=["Admin", "Controller"]
+                    identifier_list=IdentifierList_UserList(
+                        value=[
+                            "usr_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                            "usr_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+                        ]
                     ),
                 ),
                 upstream_policy_id="root",
@@ -872,9 +866,8 @@ class AsyncApprovalPolicyClient:
         from mercoa import AsyncMercoa
         from mercoa.entity_types import (
             ApprovalPolicyRequest,
-            IdentifierList_RolesList,
+            IdentifierList_UserList,
             Rule_Approver,
-            Trigger_Amount,
         )
 
         client = AsyncMercoa(
@@ -886,16 +879,14 @@ class AsyncApprovalPolicyClient:
             await client.entity.approval_policy.create(
                 entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
                 request=ApprovalPolicyRequest(
-                    trigger=[
-                        Trigger_Amount(
-                            amount=100.0,
-                            currency="USD",
-                        )
-                    ],
+                    trigger=[],
                     rule=Rule_Approver(
                         num_approvers=2,
-                        identifier_list=IdentifierList_RolesList(
-                            value=["Admin", "Controller"]
+                        identifier_list=IdentifierList_UserList(
+                            value=[
+                                "usr_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                                "usr_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+                            ]
                         ),
                     ),
                     upstream_policy_id="root",
@@ -1167,9 +1158,8 @@ class AsyncApprovalPolicyClient:
         from mercoa import AsyncMercoa
         from mercoa.entity_types import (
             ApprovalPolicyUpdateRequest,
-            IdentifierList_RolesList,
+            IdentifierList_UserList,
             Rule_Approver,
-            Trigger_Amount,
         )
 
         client = AsyncMercoa(
@@ -1182,16 +1172,14 @@ class AsyncApprovalPolicyClient:
                 entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
                 policy_id="apvl_5ce50275-1789-42ea-bc60-bb7e6d03635c",
                 request=ApprovalPolicyUpdateRequest(
-                    trigger=[
-                        Trigger_Amount(
-                            amount=100.0,
-                            currency="USD",
-                        )
-                    ],
+                    trigger=[],
                     rule=Rule_Approver(
                         num_approvers=2,
-                        identifier_list=IdentifierList_RolesList(
-                            value=["Admin", "Controller"]
+                        identifier_list=IdentifierList_UserList(
+                            value=[
+                                "usr_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                                "usr_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+                            ]
                         ),
                     ),
                     upstream_policy_id="root",

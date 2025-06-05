@@ -88,6 +88,30 @@ class Trigger_Metadata(UniversalBaseModel):
             extra = pydantic.Extra.allow
 
 
+class Trigger_Catchall(UniversalBaseModel):
+    """
+    Examples
+    --------
+    from mercoa.entity_types import Trigger_Amount
+
+    Trigger_Amount(
+        amount=100.0,
+        currency="USD",
+    )
+    """
+
+    type: typing.Literal["catchall"] = "catchall"
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow
+
+
 """
 from mercoa.entity_types import Trigger_Amount
 
@@ -96,4 +120,4 @@ Trigger_Amount(
     currency="USD",
 )
 """
-Trigger = typing.Union[Trigger_Amount, Trigger_Vendor, Trigger_Metadata]
+Trigger = typing.Union[Trigger_Amount, Trigger_Vendor, Trigger_Metadata, Trigger_Catchall]

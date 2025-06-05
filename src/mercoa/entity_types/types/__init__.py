@@ -16,6 +16,7 @@ from .business_profile_request import BusinessProfileRequest
 from .business_profile_response import BusinessProfileResponse
 from .business_type import BusinessType
 from .card_link_token_response import CardLinkTokenResponse
+from .catchall_trigger import CatchallTrigger
 from .counterparty_customization_account import CounterpartyCustomizationAccount
 from .counterparty_customization_request import CounterpartyCustomizationRequest
 from .counterparty_invoice_metrics_response import CounterpartyInvoiceMetricsResponse
@@ -81,7 +82,7 @@ from .token_generation_options import TokenGenerationOptions
 from .token_generation_pages_options import TokenGenerationPagesOptions
 from .token_generation_style_options import TokenGenerationStyleOptions
 from .token_generation_vendor_options import TokenGenerationVendorOptions
-from .trigger import Trigger, Trigger_Amount, Trigger_Metadata, Trigger_Vendor
+from .trigger import Trigger, Trigger_Amount, Trigger_Catchall, Trigger_Metadata, Trigger_Vendor
 from .user_notification_policy_request import UserNotificationPolicyRequest
 from .user_notification_policy_response import UserNotificationPolicyResponse
 from .vendor_network import VendorNetwork
@@ -106,6 +107,7 @@ __all__ = [
     "BusinessProfileResponse",
     "BusinessType",
     "CardLinkTokenResponse",
+    "CatchallTrigger",
     "CounterpartyCustomizationAccount",
     "CounterpartyCustomizationRequest",
     "CounterpartyInvoiceMetricsResponse",
@@ -176,6 +178,7 @@ __all__ = [
     "TokenGenerationVendorOptions",
     "Trigger",
     "Trigger_Amount",
+    "Trigger_Catchall",
     "Trigger_Metadata",
     "Trigger_Vendor",
     "UserNotificationPolicyRequest",

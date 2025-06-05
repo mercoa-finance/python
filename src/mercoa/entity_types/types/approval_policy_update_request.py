@@ -17,21 +17,20 @@ class ApprovalPolicyUpdateRequest(UniversalBaseModel):
     --------
     from mercoa.entity_types import (
         ApprovalPolicyUpdateRequest,
-        IdentifierList_RolesList,
+        IdentifierList_UserList,
         Rule_Approver,
-        Trigger_Amount,
     )
 
     ApprovalPolicyUpdateRequest(
-        trigger=[
-            Trigger_Amount(
-                amount=100.0,
-                currency="USD",
-            )
-        ],
+        trigger=[],
         rule=Rule_Approver(
             num_approvers=2,
-            identifier_list=IdentifierList_RolesList(value=["Admin", "Controller"]),
+            identifier_list=IdentifierList_UserList(
+                value=[
+                    "usr_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                    "usr_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+                ]
+            ),
         ),
         upstream_policy_id="root",
     )

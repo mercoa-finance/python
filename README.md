@@ -13,7 +13,7 @@ pip install mercoa
 
 ## Reference
 
-A full reference for this library is available [here](./reference.md).
+A full reference for this library is available [here](https://github.com/mercoa-finance/python/blob/HEAD/./reference.md).
 
 ## Usage
 
