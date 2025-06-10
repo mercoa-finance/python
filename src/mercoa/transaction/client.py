@@ -7,7 +7,6 @@ from ..entity_group_types.types.entity_group_id import EntityGroupId
 import datetime as dt
 from .types.transaction_id import TransactionId
 from ..invoice_types.types.metadata_filter import MetadataFilter
-from ..entity_types.types.entity_user_id import EntityUserId
 from ..invoice_types.types.invoice_id import InvoiceId
 from .types.transaction_status import TransactionStatus
 from .types.transaction_type import TransactionType
@@ -49,11 +48,11 @@ class TransactionClient:
         line_item_gl_account_id: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
-        creator_user_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]] = None,
         invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]] = None,
         transaction_id: typing.Optional[typing.Union[TransactionId, typing.Sequence[TransactionId]]] = None,
         status: typing.Optional[typing.Union[TransactionStatus, typing.Sequence[TransactionStatus]]] = None,
         transaction_type: typing.Optional[typing.Union[TransactionType, typing.Sequence[TransactionType]]] = None,
+        creator_user_id: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> FindTransactionsResponse:
         """
@@ -97,11 +96,8 @@ class TransactionClient:
         vendor_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
             Filter transactions by vendor ID or vendor foreign ID.
 
-        creator_user_id : typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]
-            Filter transactions by the ID or foreign ID of the user that created the invoice that created the transaction.
-
         invoice_id : typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]
-            Filter transactions by invoice ID. Does not support foreign ID.
+            Filter transactions by invoice ID or invoice foreign ID.
 
         transaction_id : typing.Optional[typing.Union[TransactionId, typing.Sequence[TransactionId]]]
             Filter transactions by transaction ID.
@@ -111,6 +107,9 @@ class TransactionClient:
 
         transaction_type : typing.Optional[typing.Union[TransactionType, typing.Sequence[TransactionType]]]
             Filter transactions by transaction type
+
+        creator_user_id : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter transactions by creator user ID. Does not work, do not use.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -160,11 +159,11 @@ class TransactionClient:
                 "lineItemGlAccountId": line_item_gl_account_id,
                 "payerId": payer_id,
                 "vendorId": vendor_id,
-                "creatorUserId": creator_user_id,
                 "invoiceId": invoice_id,
                 "transactionId": transaction_id,
                 "status": status,
                 "transactionType": transaction_type,
+                "creatorUserId": creator_user_id,
             },
             request_options=request_options,
         )
@@ -394,11 +393,11 @@ class AsyncTransactionClient:
         line_item_gl_account_id: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
-        creator_user_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]] = None,
         invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]] = None,
         transaction_id: typing.Optional[typing.Union[TransactionId, typing.Sequence[TransactionId]]] = None,
         status: typing.Optional[typing.Union[TransactionStatus, typing.Sequence[TransactionStatus]]] = None,
         transaction_type: typing.Optional[typing.Union[TransactionType, typing.Sequence[TransactionType]]] = None,
+        creator_user_id: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> FindTransactionsResponse:
         """
@@ -442,11 +441,8 @@ class AsyncTransactionClient:
         vendor_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
             Filter transactions by vendor ID or vendor foreign ID.
 
-        creator_user_id : typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]
-            Filter transactions by the ID or foreign ID of the user that created the invoice that created the transaction.
-
         invoice_id : typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]
-            Filter transactions by invoice ID. Does not support foreign ID.
+            Filter transactions by invoice ID or invoice foreign ID.
 
         transaction_id : typing.Optional[typing.Union[TransactionId, typing.Sequence[TransactionId]]]
             Filter transactions by transaction ID.
@@ -456,6 +452,9 @@ class AsyncTransactionClient:
 
         transaction_type : typing.Optional[typing.Union[TransactionType, typing.Sequence[TransactionType]]]
             Filter transactions by transaction type
+
+        creator_user_id : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter transactions by creator user ID. Does not work, do not use.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -512,11 +511,11 @@ class AsyncTransactionClient:
                 "lineItemGlAccountId": line_item_gl_account_id,
                 "payerId": payer_id,
                 "vendorId": vendor_id,
-                "creatorUserId": creator_user_id,
                 "invoiceId": invoice_id,
                 "transactionId": transaction_id,
                 "status": status,
                 "transactionType": transaction_type,
+                "creatorUserId": creator_user_id,
             },
             request_options=request_options,
         )

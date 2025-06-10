@@ -10,6 +10,7 @@ from .comment.client import CommentClient
 from .document.client import DocumentClient
 from .payment_links.client import PaymentLinksClient
 from ..entity_types.types.entity_id import EntityId
+from ..entity_group_types.types.entity_group_id import EntityGroupId
 import datetime as dt
 from ..invoice_types.types.invoice_date_filter import InvoiceDateFilter
 from ..invoice_types.types.invoice_order_by_field import InvoiceOrderByField
@@ -69,6 +70,7 @@ class InvoiceClient:
         self,
         *,
         entity_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
+        entity_group_id: typing.Optional[EntityGroupId] = None,
         start_date: typing.Optional[dt.datetime] = None,
         end_date: typing.Optional[dt.datetime] = None,
         date_type: typing.Optional[InvoiceDateFilter] = None,
@@ -103,6 +105,9 @@ class InvoiceClient:
         ----------
         entity_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
             Filter invoices by the ID or foreign ID of the entity that is the payer or the vendor of the invoice.
+
+        entity_group_id : typing.Optional[EntityGroupId]
+            Filter invoices by the ID or foreign ID of the entity group that the entity belongs to.
 
         start_date : typing.Optional[dt.datetime]
             Start date filter. Defaults to CREATED_AT unless specified the dateType is specified
@@ -196,6 +201,7 @@ class InvoiceClient:
             method="GET",
             params={
                 "entityId": entity_id,
+                "entityGroupId": entity_group_id,
                 "startDate": serialize_datetime(start_date) if start_date is not None else None,
                 "endDate": serialize_datetime(end_date) if end_date is not None else None,
                 "dateType": date_type,
@@ -1057,6 +1063,7 @@ class AsyncInvoiceClient:
         self,
         *,
         entity_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
+        entity_group_id: typing.Optional[EntityGroupId] = None,
         start_date: typing.Optional[dt.datetime] = None,
         end_date: typing.Optional[dt.datetime] = None,
         date_type: typing.Optional[InvoiceDateFilter] = None,
@@ -1091,6 +1098,9 @@ class AsyncInvoiceClient:
         ----------
         entity_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
             Filter invoices by the ID or foreign ID of the entity that is the payer or the vendor of the invoice.
+
+        entity_group_id : typing.Optional[EntityGroupId]
+            Filter invoices by the ID or foreign ID of the entity group that the entity belongs to.
 
         start_date : typing.Optional[dt.datetime]
             Start date filter. Defaults to CREATED_AT unless specified the dateType is specified
@@ -1192,6 +1202,7 @@ class AsyncInvoiceClient:
             method="GET",
             params={
                 "entityId": entity_id,
+                "entityGroupId": entity_group_id,
                 "startDate": serialize_datetime(start_date) if start_date is not None else None,
                 "endDate": serialize_datetime(end_date) if end_date is not None else None,
                 "dateType": date_type,

@@ -2,6 +2,7 @@
 
 from .account_type import AccountType
 from .amount_trigger import AmountTrigger
+from .approval_policy_history_response import ApprovalPolicyHistoryResponse
 from .approval_policy_id import ApprovalPolicyId
 from .approval_policy_request import ApprovalPolicyRequest
 from .approval_policy_response import ApprovalPolicyResponse
@@ -93,6 +94,7 @@ from .vendor_trigger import VendorTrigger
 __all__ = [
     "AccountType",
     "AmountTrigger",
+    "ApprovalPolicyHistoryResponse",
     "ApprovalPolicyId",
     "ApprovalPolicyRequest",
     "ApprovalPolicyResponse",

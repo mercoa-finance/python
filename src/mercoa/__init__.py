@@ -135,6 +135,7 @@ from .entity_group_types import (
 from .entity_types import (
     AccountType,
     AmountTrigger,
+    ApprovalPolicyHistoryResponse,
     ApprovalPolicyId,
     ApprovalPolicyRequest,
     ApprovalPolicyResponse,
@@ -538,6 +539,7 @@ __all__ = [
     "AddApproverRequest",
     "Address",
     "AmountTrigger",
+    "ApprovalPolicyHistoryResponse",
     "ApprovalPolicyId",
     "ApprovalPolicyRequest",
     "ApprovalPolicyResponse",

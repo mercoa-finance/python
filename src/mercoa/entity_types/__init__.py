@@ -3,6 +3,7 @@
 from .types import (
     AccountType,
     AmountTrigger,
+    ApprovalPolicyHistoryResponse,
     ApprovalPolicyId,
     ApprovalPolicyRequest,
     ApprovalPolicyResponse,
@@ -102,6 +103,7 @@ from .types import (
 __all__ = [
     "AccountType",
     "AmountTrigger",
+    "ApprovalPolicyHistoryResponse",
     "ApprovalPolicyId",
     "ApprovalPolicyRequest",
     "ApprovalPolicyResponse",

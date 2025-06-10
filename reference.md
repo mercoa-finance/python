@@ -5934,6 +5934,14 @@ client.invoice.find(
 <dl>
 <dd>
 
+**entity_group_id:** `typing.Optional[EntityGroupId]` — Filter invoices by the ID or foreign ID of the entity group that the entity belongs to.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **start_date:** `typing.Optional[dt.datetime]` — Start date filter. Defaults to CREATED_AT unless specified the dateType is specified
     
 </dd>
@@ -8538,6 +8546,155 @@ client.entity.approval_policy.delete(
 <dd>
 
 **policy_id:** `ApprovalPolicyId` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.entity.approval_policy.<a href="src/mercoa/entity/approval_policy/client.py">history</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve the history of approval policy changes for an entity
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.entity.approval_policy.history(
+    entity_id="entityId",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entity_id:** `EntityId` — Entity ID or Entity ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.entity.approval_policy.<a href="src/mercoa/entity/approval_policy/client.py">restore</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Restore approval policies from a history entry.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.entity.approval_policy.restore(
+    entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+    approval_policy_history_id="hist_21661ac1-a2a8-4465-a6c0-64474ba8181d",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entity_id:** `EntityId` — Entity ID or Entity ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**approval_policy_history_id:** `str` 
     
 </dd>
 </dl>
@@ -16198,15 +16355,7 @@ client.transaction.find(
 <dl>
 <dd>
 
-**creator_user_id:** `typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]` — Filter transactions by the ID or foreign ID of the user that created the invoice that created the transaction.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**invoice_id:** `typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]` — Filter transactions by invoice ID. Does not support foreign ID.
+**invoice_id:** `typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]` — Filter transactions by invoice ID or invoice foreign ID.
     
 </dd>
 </dl>
@@ -16233,6 +16382,14 @@ client.transaction.find(
 <dd>
 
 **transaction_type:** `typing.Optional[typing.Union[TransactionType, typing.Sequence[TransactionType]]]` — Filter transactions by transaction type
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**creator_user_id:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter transactions by creator user ID. Does not work, do not use.
     
 </dd>
 </dl>
