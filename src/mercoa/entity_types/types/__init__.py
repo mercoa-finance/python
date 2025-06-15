@@ -8,6 +8,7 @@ from .approval_policy_request import ApprovalPolicyRequest
 from .approval_policy_response import ApprovalPolicyResponse
 from .approval_policy_update_request import ApprovalPolicyUpdateRequest
 from .approver_rule import ApproverRule
+from .automatic_rule import AutomaticRule
 from .bulk_connected_entity import BulkConnectedEntity
 from .bulk_entity_creation_from_object import BulkEntityCreationFromObject
 from .bulk_entity_creation_from_object_response import BulkEntityCreationFromObjectResponse
@@ -75,7 +76,7 @@ from .representative_request import RepresentativeRequest
 from .representative_response import RepresentativeResponse
 from .representative_update_request import RepresentativeUpdateRequest
 from .responsibilities import Responsibilities
-from .rule import Rule, Rule_Approver
+from .rule import Rule, Rule_Approver, Rule_Automatic
 from .tax_id import TaxId
 from .token_generation_entity_options import TokenGenerationEntityOptions
 from .token_generation_invoice_options import TokenGenerationInvoiceOptions
@@ -100,6 +101,7 @@ __all__ = [
     "ApprovalPolicyResponse",
     "ApprovalPolicyUpdateRequest",
     "ApproverRule",
+    "AutomaticRule",
     "BulkConnectedEntity",
     "BulkEntityCreationFromObject",
     "BulkEntityCreationFromObjectResponse",
@@ -171,6 +173,7 @@ __all__ = [
     "Responsibilities",
     "Rule",
     "Rule_Approver",
+    "Rule_Automatic",
     "TaxId",
     "TokenGenerationEntityOptions",
     "TokenGenerationInvoiceOptions",

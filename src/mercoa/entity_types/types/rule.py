@@ -37,6 +37,30 @@ class Rule_Approver(UniversalBaseModel):
             extra = pydantic.Extra.allow
 
 
+class Rule_Automatic(UniversalBaseModel):
+    """
+    Examples
+    --------
+    from mercoa.entity_types import IdentifierList_RolesList, Rule_Approver
+
+    Rule_Approver(
+        num_approvers=2,
+        identifier_list=IdentifierList_RolesList(value=["Admin", "Controller"]),
+    )
+    """
+
+    type: typing.Literal["automatic"] = "automatic"
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow
+
+
 """
 from mercoa.entity_types import IdentifierList_RolesList, Rule_Approver
 
@@ -45,4 +69,4 @@ Rule_Approver(
     identifier_list=IdentifierList_RolesList(value=["Admin", "Controller"]),
 )
 """
-Rule = Rule_Approver
+Rule = typing.Union[Rule_Approver, Rule_Automatic]
