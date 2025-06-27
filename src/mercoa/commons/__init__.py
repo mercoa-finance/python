@@ -3,6 +3,7 @@
 from .types import (
     Address,
     BirthDate,
+    CountryCode,
     DocumentResponse,
     DocumentType,
     FullName,
@@ -18,6 +19,7 @@ __all__ = [
     "BadRequest",
     "BirthDate",
     "Conflict",
+    "CountryCode",
     "DocumentResponse",
     "DocumentType",
     "Forbidden",

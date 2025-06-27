@@ -2,6 +2,7 @@
 
 from .address import Address
 from .birth_date import BirthDate
+from .country_code import CountryCode
 from .document_response import DocumentResponse
 from .document_type import DocumentType
 from .full_name import FullName
@@ -13,6 +14,7 @@ from .string_or_string_array import StringOrStringArray
 __all__ = [
     "Address",
     "BirthDate",
+    "CountryCode",
     "DocumentResponse",
     "DocumentType",
     "FullName",

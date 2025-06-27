@@ -45,7 +45,14 @@ class OcrRequest(UniversalBaseModel):
         default=None
     )
     """
-    When using the Entity vendor network, specify the entity to use if. EntityId on an auth token will take precedence over this parameter.
+    When using the Entity vendor network, specify the entity to use. EntityId on an auth token will take precedence over this parameter.
+    """
+
+    split_document: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="splitDocument")] = (
+        pydantic.Field(default=None)
+    )
+    """
+    If true, attempt to split the document into subdocuments before processing. Default is false. If a document is split into subdocuments, the linked OCR jobs will be accessible via the linkedJobIds field on each OCR job response.
     """
 
     if IS_PYDANTIC_V2:

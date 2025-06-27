@@ -21,15 +21,21 @@ Instantiate and use the client with the following:
 
 ```python
 from mercoa import Mercoa
-from mercoa.contract_types import GenerateContractRequest
+from mercoa.entity_group_types import EntityGroupCreateRequest
 
 client = Mercoa(
     token="YOUR_TOKEN",
 )
-client.contract.generate_contract(
-    request=GenerateContractRequest(
-        document="data:application/pdf;base64,JVBERi0xLjEKJcKlwrHDqwoKMSAwIG9iagogIDw8IC9UeXBlIC9DYXRhbG9nCiAgICAgL1BhZ2VzIDIgMCBSCiAgPj4KZW5kb2JqCgoyIDAgb2JqCiAgPDwgL1R5cGUgL1BhZ2VzCiAgICAgL0tpZHMgWzMgMCBSXQogICAgIC9Db3VudCAxCiAgICAgL01lZGlhQm94IFswIDAgMzAwIDE0NF0KICA+PgplbmRvYmoKCjMgMCBvYmoKICA8PCAgL1R5cGUgL1BhZ2UKICAgICAgL1BhcmVudCAyIDAgUgogICAgICAvUmVzb3VyY2VzCiAgICAgICA8PCAvRm9udAogICAgICAgICAgIDw8IC9GMQogICAgICAgICAgICAgICA8PCAvVHlwZSAvRm9udAogICAgICAgICAgICAgICAgICAvU3VidHlwZSAvVHlwZTEKICAgICAgICAgICAgICAgICAgL0Jhc2VGb250IC9UaW1lcy1Sb21hbgogICAgICAgICAgICAgICA+PgogICAgICAgICAgID4+CiAgICAgICA+PgogICAgICAvQ29udGVudHMgNCAwIFIKICA+PgplbmRvYmoKCjQgMCBvYmoKICA8PCAvTGVuZ3RoIDU1ID4+CnN0cmVhbQogIEJUCiAgICAvRjEgMTggVGYKICAgIDAgMCBUZAogICAgKEhlbGxvIFdvcmxkKSBUagogIEVUCmVuZHN0cmVhbQplbmRvYmoKCnhyZWYKMCA1CjAwMDAwMDAwMDAgNjU1MzUgZiAKMDAwMDAwMDAxOCAwMDAwMCBuIAowMDAwMDAwMDc3IDAwMDAwIG4gCjAwMDAwMDAxNzggMDAwMDAgbiAKMDAwMDAwMDQ1NyAwMDAwMCBuIAp0cmFpbGVyCiAgPDwgIC9Sb290IDEgMCBSCiAgICAgIC9TaXplIDUKICA+PgpzdGFydHhyZWYKNTY1CiUlRU9GCg==",
-        creator_entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+client.entity_group.create(
+    request=EntityGroupCreateRequest(
+        foreign_id="your-group-id",
+        name="Coastal Corporation",
+        email_to_name="coastalcorp",
+        entity_ids=[
+            "ent_e8c2af94-61cd-4036-a765-80341209167b",
+            "ent_1176dd0c-12e1-41c7-85a5-ae9b4746e64b",
+            "ent_3dbb4ede-2d1d-49be-a996-a5dfad3641be",
+        ],
     ),
 )
 ```
@@ -42,7 +48,7 @@ The SDK also exports an `async` client so that you can make non-blocking calls t
 import asyncio
 
 from mercoa import AsyncMercoa
-from mercoa.contract_types import GenerateContractRequest
+from mercoa.entity_group_types import EntityGroupCreateRequest
 
 client = AsyncMercoa(
     token="YOUR_TOKEN",
@@ -50,10 +56,16 @@ client = AsyncMercoa(
 
 
 async def main() -> None:
-    await client.contract.generate_contract(
-        request=GenerateContractRequest(
-            document="data:application/pdf;base64,JVBERi0xLjEKJcKlwrHDqwoKMSAwIG9iagogIDw8IC9UeXBlIC9DYXRhbG9nCiAgICAgL1BhZ2VzIDIgMCBSCiAgPj4KZW5kb2JqCgoyIDAgb2JqCiAgPDwgL1R5cGUgL1BhZ2VzCiAgICAgL0tpZHMgWzMgMCBSXQogICAgIC9Db3VudCAxCiAgICAgL01lZGlhQm94IFswIDAgMzAwIDE0NF0KICA+PgplbmRvYmoKCjMgMCBvYmoKICA8PCAgL1R5cGUgL1BhZ2UKICAgICAgL1BhcmVudCAyIDAgUgogICAgICAvUmVzb3VyY2VzCiAgICAgICA8PCAvRm9udAogICAgICAgICAgIDw8IC9GMQogICAgICAgICAgICAgICA8PCAvVHlwZSAvRm9udAogICAgICAgICAgICAgICAgICAvU3VidHlwZSAvVHlwZTEKICAgICAgICAgICAgICAgICAgL0Jhc2VGb250IC9UaW1lcy1Sb21hbgogICAgICAgICAgICAgICA+PgogICAgICAgICAgID4+CiAgICAgICA+PgogICAgICAvQ29udGVudHMgNCAwIFIKICA+PgplbmRvYmoKCjQgMCBvYmoKICA8PCAvTGVuZ3RoIDU1ID4+CnN0cmVhbQogIEJUCiAgICAvRjEgMTggVGYKICAgIDAgMCBUZAogICAgKEhlbGxvIFdvcmxkKSBUagogIEVUCmVuZHN0cmVhbQplbmRvYmoKCnhyZWYKMCA1CjAwMDAwMDAwMDAgNjU1MzUgZiAKMDAwMDAwMDAxOCAwMDAwMCBuIAowMDAwMDAwMDc3IDAwMDAwIG4gCjAwMDAwMDAxNzggMDAwMDAgbiAKMDAwMDAwMDQ1NyAwMDAwMCBuIAp0cmFpbGVyCiAgPDwgIC9Sb290IDEgMCBSCiAgICAgIC9TaXplIDUKICA+PgpzdGFydHhyZWYKNTY1CiUlRU9GCg==",
-            creator_entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+    await client.entity_group.create(
+        request=EntityGroupCreateRequest(
+            foreign_id="your-group-id",
+            name="Coastal Corporation",
+            email_to_name="coastalcorp",
+            entity_ids=[
+                "ent_e8c2af94-61cd-4036-a765-80341209167b",
+                "ent_1176dd0c-12e1-41c7-85a5-ae9b4746e64b",
+                "ent_3dbb4ede-2d1d-49be-a996-a5dfad3641be",
+            ],
         ),
     )
 
@@ -70,7 +82,7 @@ will be thrown.
 from mercoa.core.api_error import ApiError
 
 try:
-    client.contract.generate_contract(...)
+    client.entity_group.create(...)
 except ApiError as e:
     print(e.status_code)
     print(e.body)
@@ -93,7 +105,7 @@ A request is deemed retryable when any of the following HTTP status codes is ret
 Use the `max_retries` request option to configure this behavior.
 
 ```python
-client.contract.generate_contract(..., request_options={
+client.entity_group.create(..., request_options={
     "max_retries": 1
 })
 ```
@@ -113,7 +125,7 @@ client = Mercoa(
 
 
 # Override timeout for a specific method
-client.contract.generate_contract(..., request_options={
+client.entity_group.create(..., request_options={
     "timeout_in_seconds": 1
 })
 ```

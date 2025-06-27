@@ -25,6 +25,7 @@ class OrganizationResponse(UniversalBaseModel):
     sandbox: bool
     name: str
     logo_url: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="logoUrl")] = None
+    favicon_url: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="faviconUrl")] = None
     website_url: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="websiteUrl")] = None
     support_email: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="supportEmail")] = None
     payment_methods: typing_extensions.Annotated[

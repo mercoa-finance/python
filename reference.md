@@ -1,853 +1,4 @@
 # Reference
-## Contract
-<details><summary><code>client.contract.<a href="src/mercoa/contract/client.py">generate_contract</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Generate a new contract object from a Base64 encoded PDF of a contract. This endpoint will block until the contract is generated.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mercoa import Mercoa
-from mercoa.contract_types import GenerateContractRequest
-
-client = Mercoa(
-    token="YOUR_TOKEN",
-)
-client.contract.generate_contract(
-    request=GenerateContractRequest(
-        document="data:application/pdf;base64,JVBERi0xLjEKJcKlwrHDqwoKMSAwIG9iagogIDw8IC9UeXBlIC9DYXRhbG9nCiAgICAgL1BhZ2VzIDIgMCBSCiAgPj4KZW5kb2JqCgoyIDAgb2JqCiAgPDwgL1R5cGUgL1BhZ2VzCiAgICAgL0tpZHMgWzMgMCBSXQogICAgIC9Db3VudCAxCiAgICAgL01lZGlhQm94IFswIDAgMzAwIDE0NF0KICA+PgplbmRvYmoKCjMgMCBvYmoKICA8PCAgL1R5cGUgL1BhZ2UKICAgICAgL1BhcmVudCAyIDAgUgogICAgICAvUmVzb3VyY2VzCiAgICAgICA8PCAvRm9udAogICAgICAgICAgIDw8IC9GMQogICAgICAgICAgICAgICA8PCAvVHlwZSAvRm9udAogICAgICAgICAgICAgICAgICAvU3VidHlwZSAvVHlwZTEKICAgICAgICAgICAgICAgICAgL0Jhc2VGb250IC9UaW1lcy1Sb21hbgogICAgICAgICAgICAgICA+PgogICAgICAgICAgID4+CiAgICAgICA+PgogICAgICAvQ29udGVudHMgNCAwIFIKICA+PgplbmRvYmoKCjQgMCBvYmoKICA8PCAvTGVuZ3RoIDU1ID4+CnN0cmVhbQogIEJUCiAgICAvRjEgMTggVGYKICAgIDAgMCBUZAogICAgKEhlbGxvIFdvcmxkKSBUagogIEVUCmVuZHN0cmVhbQplbmRvYmoKCnhyZWYKMCA1CjAwMDAwMDAwMDAgNjU1MzUgZiAKMDAwMDAwMDAxOCAwMDAwMCBuIAowMDAwMDAwMDc3IDAwMDAwIG4gCjAwMDAwMDAxNzggMDAwMDAgbiAKMDAwMDAwMDQ1NyAwMDAwMCBuIAp0cmFpbGVyCiAgPDwgIC9Sb290IDEgMCBSCiAgICAgIC9TaXplIDUKICA+PgpzdGFydHhyZWYKNTY1CiUlRU9GCg==",
-        creator_entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-    ),
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `GenerateContractRequest` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.contract.<a href="src/mercoa/contract/client.py">generate_contract_run_async</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Generate a new contract object from a Base64 encoded PDF of a contract. This endpoint will return immediately and the contract will be generated asynchronously.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mercoa import Mercoa
-from mercoa.contract_types import GenerateContractRequest
-
-client = Mercoa(
-    token="YOUR_TOKEN",
-)
-client.contract.generate_contract_run_async(
-    request=GenerateContractRequest(
-        document="data:application/pdf;base64,JVBERi0xLjEKJcKlwrHDqwoKMSAwIG9iagogIDw8IC9UeXBlIC9DYXRhbG9nCiAgICAgL1BhZ2VzIDIgMCBSCiAgPj4KZW5kb2JqCgoyIDAgb2JqCiAgPDwgL1R5cGUgL1BhZ2VzCiAgICAgL0tpZHMgWzMgMCBSXQogICAgIC9Db3VudCAxCiAgICAgL01lZGlhQm94IFswIDAgMzAwIDE0NF0KICA+PgplbmRvYmoKCjMgMCBvYmoKICA8PCAgL1R5cGUgL1BhZ2UKICAgICAgL1BhcmVudCAyIDAgUgogICAgICAvUmVzb3VyY2VzCiAgICAgICA8PCAvRm9udAogICAgICAgICAgIDw8IC9GMQogICAgICAgICAgICAgICA8PCAvVHlwZSAvRm9udAogICAgICAgICAgICAgICAgICAvU3VidHlwZSAvVHlwZTEKICAgICAgICAgICAgICAgICAgL0Jhc2VGb250IC9UaW1lcy1Sb21hbgogICAgICAgICAgICAgICA+PgogICAgICAgICAgID4+CiAgICAgICA+PgogICAgICAvQ29udGVudHMgNCAwIFIKICA+PgplbmRvYmoKCjQgMCBvYmoKICA8PCAvTGVuZ3RoIDU1ID4+CnN0cmVhbQogIEJUCiAgICAvRjEgMTggVGYKICAgIDAgMCBUZAogICAgKEhlbGxvIFdvcmxkKSBUagogIEVUCmVuZHN0cmVhbQplbmRvYmoKCnhyZWYKMCA1CjAwMDAwMDAwMDAgNjU1MzUgZiAKMDAwMDAwMDAxOCAwMDAwMCBuIAowMDAwMDAwMDc3IDAwMDAwIG4gCjAwMDAwMDAxNzggMDAwMDAgbiAKMDAwMDAwMDQ1NyAwMDAwMCBuIAp0cmFpbGVyCiAgPDwgIC9Sb290IDEgMCBSCiAgICAgIC9TaXplIDUKICA+PgpzdGFydHhyZWYKNTY1CiUlRU9GCg==",
-        creator_entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-    ),
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `GenerateContractRequest` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.contract.<a href="src/mercoa/contract/client.py">generate_contract_get_async</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Get the status and results of an asynchronous contract generation job.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mercoa import Mercoa
-
-client = Mercoa(
-    token="YOUR_TOKEN",
-)
-client.contract.generate_contract_get_async(
-    job_id="cntgen_d6734204-ae46-4fe9-a0c5-bd2763d40c9b",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**job_id:** `ContractJobId` — Job ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.contract.<a href="src/mercoa/contract/client.py">preview_invoices</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Generate previews of the invoices that will be created from the provided contract.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mercoa import Mercoa
-from mercoa.contract_types import (
-    ContractCreateRequest,
-    ContractInvoiceLineItemSchema,
-    ContractInvoiceSchema,
-    ContractRecurrenceCreateRequest,
-)
-
-client = Mercoa(
-    token="YOUR_TOKEN",
-)
-client.contract.preview_invoices(
-    contract=ContractCreateRequest(
-        summary="Contract Start Date: January 29, 2025\nParties to the Agreement:\n- Provider (Vendor): [Vendor Name] - Client (Payer): [Client Name]\nFees and Payment Terms:\n- Monthly Recurring Fee: \\$20.00 - Payment Schedule: Fees are payable in advance on the 1st day of each month. - First Payment Date: February 1, 2025 - Payment Method: Via credit card to the account designated by Provider. - Payment Due Date: Payment is due 5 days after the invoice date.\n",
-        recurrences=[
-            ContractRecurrenceCreateRequest(
-                rrule="DTSTART:20250201T000000ZRRULE:FREQ=MONTHLY;INTERVAL=1;BYMONTHDAY=1",
-                justification="Monthly recurring fee billed in advance on the 1st of each month",
-                filtered_contract_summary="Contract Start Date: January 29, 2025\nParties to the Agreement:\n- Provider (Vendor): [Vendor Name] - Client (Payer): [Client Name]\nFees and Payment Terms:\n- Monthly Recurring Fee: \\$20.00 - Payment Schedule: Fees are payable in advance on the 1st day of each month. - First Payment Date: February 1, 2025 - Payment Method: Via credit card to the account designated by Provider. - Payment Due Date: Payment is due 5 days after the invoice date.\n",
-                invoice_schema=ContractInvoiceSchema(
-                    line_items=[
-                        ContractInvoiceLineItemSchema(
-                            name="Monthly Subscription Service Fee",
-                            unit_price=20.0,
-                            currency="USD",
-                            quantity=1.0,
-                        )
-                    ],
-                ),
-            )
-        ],
-        creator_entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-        payer_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-        vendor_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
-    ),
-    invoice_indexes=[0],
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**contract:** `ContractCreateRequest` — Contract to preview invoice creation for
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**invoice_indexes:** `typing.Sequence[int]` — Indexes of the invoices to generate from each recurrence (e.g. [0, 1, 2] for the first three invoices).  Note that contracts with multiple recurrences will generate more preview invoices, and invalid invoice indexes will be ignored silently. For example, [0, 1, 2] on a contract with 2 recurrences will generate at most 6 invoices, and potentially fewer if some of indexes are out of bounds for a recurrence.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.contract.<a href="src/mercoa/contract/client.py">apply_contract_feedback</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Apply feedback to a contract, generating an updated contract object.  NOTE: This works by re-extracting the contract details with the provided feedback in mind.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mercoa import Mercoa
-
-client = Mercoa(
-    token="YOUR_TOKEN",
-)
-client.contract.apply_contract_feedback(
-    contract_id="cnt_3bd62b69-3835-433e-829f-4388a2e46c41",
-    feedback="Change the monthly fee to $20.00",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**contract_id:** `ContractId` — Contract ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**feedback:** `str` — Natural language feedback to apply to the contract
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.contract.<a href="src/mercoa/contract/client.py">apply_invoice_feedback</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Apply feedback to an invoice, generating an updated invoice object.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mercoa import Mercoa
-
-client = Mercoa(
-    token="YOUR_TOKEN",
-)
-client.contract.apply_invoice_feedback(
-    contract_id="cnt_3bd62b69-3835-433e-829f-4388a2e46c41",
-    feedback="There were 2 subscriptions this month",
-    invoice_id="in_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**contract_id:** `ContractId` — Contract ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**feedback:** `str` — Natural language feedback to apply to the invoice
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**invoice_id:** `InvoiceId` — ID of the invoice to apply feedback to
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.contract.<a href="src/mercoa/contract/client.py">find</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Search contracts for all entities in the organization
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mercoa import Mercoa
-
-client = Mercoa(
-    token="YOUR_TOKEN",
-)
-client.contract.find(
-    creator_entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**creator_entity_id:** `typing.Optional[EntityId]` — ID of the entity that created the contracts
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.contract.<a href="src/mercoa/contract/client.py">create</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mercoa import Mercoa
-from mercoa.contract_types import (
-    ContractCreateRequest,
-    ContractInvoiceLineItemSchema,
-    ContractInvoiceSchema,
-    ContractRecurrenceCreateRequest,
-)
-
-client = Mercoa(
-    token="YOUR_TOKEN",
-)
-client.contract.create(
-    request=ContractCreateRequest(
-        summary="Contract Start Date: January 29, 2025\nParties to the Agreement:\n- Provider (Vendor): [Vendor Name] - Client (Payer): [Client Name]\nFees and Payment Terms:\n- Monthly Recurring Fee: \\$20.00 - Payment Schedule: Fees are payable in advance on the 1st day of each month. - First Payment Date: February 1, 2025 - Payment Method: Via credit card to the account designated by Provider. - Payment Due Date: Payment is due 5 days after the invoice date.\n",
-        recurrences=[
-            ContractRecurrenceCreateRequest(
-                rrule="DTSTART:20250201T000000ZRRULE:FREQ=MONTHLY;INTERVAL=1;BYMONTHDAY=1",
-                justification="Monthly recurring fee billed in advance on the 1st of each month",
-                filtered_contract_summary="Contract Start Date: January 29, 2025\nParties to the Agreement:\n- Provider (Vendor): [Vendor Name] - Client (Payer): [Client Name]\nFees and Payment Terms:\n- Monthly Recurring Fee: \\$20.00 - Payment Schedule: Fees are payable in advance on the 1st day of each month. - First Payment Date: February 1, 2025 - Payment Method: Via credit card to the account designated by Provider. - Payment Due Date: Payment is due 5 days after the invoice date.\n",
-                invoice_schema=ContractInvoiceSchema(
-                    line_items=[
-                        ContractInvoiceLineItemSchema(
-                            name="Monthly Subscription Service Fee",
-                            unit_price=20.0,
-                            currency="USD",
-                            quantity=1.0,
-                        )
-                    ],
-                ),
-            )
-        ],
-        creator_entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-        payer_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
-        vendor_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
-    ),
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `ContractCreateRequest` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.contract.<a href="src/mercoa/contract/client.py">get</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mercoa import Mercoa
-
-client = Mercoa(
-    token="YOUR_TOKEN",
-)
-client.contract.get(
-    contract_id="cnt_3bd62b69-3835-433e-829f-4388a2e46c41",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**contract_id:** `ContractId` — Contract ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.contract.<a href="src/mercoa/contract/client.py">update</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mercoa import Mercoa
-from mercoa.contract_types import (
-    ContractInvoiceLineItemSchema,
-    ContractInvoiceSchema,
-    ContractRecurrenceCreateRequest,
-    ContractUpdateRequest,
-)
-
-client = Mercoa(
-    token="YOUR_TOKEN",
-)
-client.contract.update(
-    contract_id="cnt_3bd62b69-3835-433e-829f-4388a2e46c41",
-    request=ContractUpdateRequest(
-        summary="Contract Start Date: January 29, 2025\nParties to the Agreement:\n- Provider (Vendor): [Vendor Name] - Client (Payer): [Client Name]\nFees and Payment Terms:\n- Monthly Recurring Fee: \\$20.00 - Payment Schedule: Fees are payable in advance on the 1st day of each month. - First Payment Date: February 1, 2025 - Payment Method: Via credit card to the account designated by Provider. - Payment Due Date: Payment is due 5 days after the invoice date.\n",
-        recurrences=[
-            ContractRecurrenceCreateRequest(
-                rrule="DTSTART:20250201T000000ZRRULE:FREQ=MONTHLY;INTERVAL=1;BYMONTHDAY=1",
-                justification="Monthly recurring fee billed in advance on the 1st of each month",
-                filtered_contract_summary="Contract Start Date: January 29, 2025\nParties to the Agreement:\n- Provider (Vendor): [Vendor Name] - Client (Payer): [Client Name]\nFees and Payment Terms:\n- Monthly Recurring Fee: \\$20.00 - Payment Schedule: Fees are payable in advance on the 1st day of each month. - First Payment Date: February 1, 2025 - Payment Method: Via credit card to the account designated by Provider. - Payment Due Date: Payment is due 5 days after the invoice date.\n",
-                invoice_schema=ContractInvoiceSchema(
-                    line_items=[
-                        ContractInvoiceLineItemSchema(
-                            name="Monthly Subscription Service Fee",
-                            unit_price=20.0,
-                            currency="USD",
-                            quantity=1.0,
-                        )
-                    ],
-                ),
-            )
-        ],
-    ),
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**contract_id:** `ContractId` — Contract ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `ContractUpdateRequest` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.contract.<a href="src/mercoa/contract/client.py">delete</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mercoa import Mercoa
-
-client = Mercoa(
-    token="YOUR_TOKEN",
-)
-client.contract.delete(
-    contract_id="cnt_3bd62b69-3835-433e-829f-4388a2e46c41",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**contract_id:** `ContractId` — Contract ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 ## EntityGroup
 <details><summary><code>client.entity_group.<a href="src/mercoa/entity_group/client.py">get_all</a>(...)</code></summary>
 <dl>
@@ -6985,6 +6136,299 @@ client.organization.invalidate_tokens()
 <dd>
 
 **session_id:** `typing.Optional[typing.Sequence[str]]` — Optional list of session IDs to invalidate. If not provided, all sessions will be invalidated.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## PaymentGateway
+<details><summary><code>client.payment_gateway.<a href="src/mercoa/payment_gateway/client.py">create_validation_job</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Create a job to validate a payment gateway
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+from mercoa.payment_gateway_types import ValidatePaymentGatewayRequest_Html
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.payment_gateway.create_validation_job(
+    request=ValidatePaymentGatewayRequest_Html(
+        html="ValidatePaymentGatewayRequestHTML.Default",
+    ),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `ValidatePaymentGatewayRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.payment_gateway.<a href="src/mercoa/payment_gateway/client.py">get_validation_job</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Get the status of a payment gateway validation job
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.payment_gateway.get_validation_job(
+    job_id="job_1a92b5f7-f522-435e-a953-fd649363730a",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**job_id:** `str` — The ID of the payment gateway validation job
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.payment_gateway.<a href="src/mercoa/payment_gateway/client.py">create_process_job</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Create a job to process a payment through a payment gateway
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+from mercoa.payment_gateway_types import (
+    ProcessPaymentGatewayCardDetails_Iframe,
+    ProcessPaymentGatewayRequest_Html,
+)
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.payment_gateway.create_process_job(
+    request=ProcessPaymentGatewayRequest_Html(
+        html='<html><body><h1>Invoice Details</h1><a href="https://www.payment-gateway.com/invoice/123123">Pay Invoice</a></body></html>',
+        card_details=ProcessPaymentGatewayCardDetails_Iframe(
+            iframe_url="https://www.myvirtualcard.com/iframe/543543",
+        ),
+    ),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `ProcessPaymentGatewayRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.payment_gateway.<a href="src/mercoa/payment_gateway/client.py">get_process_job</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Get the status of a payment gateway processing job
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.payment_gateway.get_process_job(
+    job_id="job_1a92b5f7-f522-435e-a953-fd649363730a",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**job_id:** `str` — The ID of the payment gateway processing job
     
 </dd>
 </dl>

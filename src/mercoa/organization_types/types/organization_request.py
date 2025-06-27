@@ -2,6 +2,7 @@
 
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing
+import pydantic
 import typing_extensions
 from ...core.serialization import FieldMetadata
 from .payment_methods_request import PaymentMethodsRequest
@@ -15,12 +16,20 @@ from .metadata_schema import MetadataSchema
 from .notification_email_template_request import NotificationEmailTemplateRequest
 from .role_permission_request import RolePermissionRequest
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
-import pydantic
 
 
 class OrganizationRequest(UniversalBaseModel):
     name: typing.Optional[str] = None
-    logo: typing.Optional[str] = None
+    logo: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Base64 encoded logo image.
+    """
+
+    favicon: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Base64 encoded favicon image.
+    """
+
     website_url: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="websiteUrl")] = None
     support_email: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="supportEmail")] = None
     payment_methods: typing_extensions.Annotated[

@@ -19,6 +19,7 @@ from .business_profile_response import BusinessProfileResponse
 from .business_type import BusinessType
 from .card_link_token_response import CardLinkTokenResponse
 from .catchall_trigger import CatchallTrigger
+from .comparison import Comparison
 from .counterparty_customization_account import CounterpartyCustomizationAccount
 from .counterparty_customization_request import CounterpartyCustomizationRequest
 from .counterparty_invoice_metrics_response import CounterpartyInvoiceMetricsResponse
@@ -112,6 +113,7 @@ __all__ = [
     "BusinessType",
     "CardLinkTokenResponse",
     "CatchallTrigger",
+    "Comparison",
     "CounterpartyCustomizationAccount",
     "CounterpartyCustomizationRequest",
     "CounterpartyInvoiceMetricsResponse",

@@ -4,12 +4,12 @@ import typing
 from .environment import MercoaEnvironment
 import httpx
 from .core.client_wrapper import SyncClientWrapper
-from .contract.client import ContractClient
 from .entity_group.client import EntityGroupClient
 from .entity.client import EntityClient
 from .invoice_template.client import InvoiceTemplateClient
 from .invoice.client import InvoiceClient
 from .organization.client import OrganizationClient
+from .payment_gateway.client import PaymentGatewayClient
 from .bank_lookup.client import BankLookupClient
 from .calculate.client import CalculateClient
 from .custom_payment_method_schema.client import CustomPaymentMethodSchemaClient
@@ -17,12 +17,12 @@ from .ocr.client import OcrClient
 from .payment_methods.client import PaymentMethodsClient
 from .transaction.client import TransactionClient
 from .core.client_wrapper import AsyncClientWrapper
-from .contract.client import AsyncContractClient
 from .entity_group.client import AsyncEntityGroupClient
 from .entity.client import AsyncEntityClient
 from .invoice_template.client import AsyncInvoiceTemplateClient
 from .invoice.client import AsyncInvoiceClient
 from .organization.client import AsyncOrganizationClient
+from .payment_gateway.client import AsyncPaymentGatewayClient
 from .bank_lookup.client import AsyncBankLookupClient
 from .calculate.client import AsyncCalculateClient
 from .custom_payment_method_schema.client import AsyncCustomPaymentMethodSchemaClient
@@ -91,12 +91,12 @@ class Mercoa:
             else httpx.Client(timeout=_defaulted_timeout),
             timeout=_defaulted_timeout,
         )
-        self.contract = ContractClient(client_wrapper=self._client_wrapper)
         self.entity_group = EntityGroupClient(client_wrapper=self._client_wrapper)
         self.entity = EntityClient(client_wrapper=self._client_wrapper)
         self.invoice_template = InvoiceTemplateClient(client_wrapper=self._client_wrapper)
         self.invoice = InvoiceClient(client_wrapper=self._client_wrapper)
         self.organization = OrganizationClient(client_wrapper=self._client_wrapper)
+        self.payment_gateway = PaymentGatewayClient(client_wrapper=self._client_wrapper)
         self.bank_lookup = BankLookupClient(client_wrapper=self._client_wrapper)
         self.calculate = CalculateClient(client_wrapper=self._client_wrapper)
         self.custom_payment_method_schema = CustomPaymentMethodSchemaClient(client_wrapper=self._client_wrapper)
@@ -165,12 +165,12 @@ class AsyncMercoa:
             else httpx.AsyncClient(timeout=_defaulted_timeout),
             timeout=_defaulted_timeout,
         )
-        self.contract = AsyncContractClient(client_wrapper=self._client_wrapper)
         self.entity_group = AsyncEntityGroupClient(client_wrapper=self._client_wrapper)
         self.entity = AsyncEntityClient(client_wrapper=self._client_wrapper)
         self.invoice_template = AsyncInvoiceTemplateClient(client_wrapper=self._client_wrapper)
         self.invoice = AsyncInvoiceClient(client_wrapper=self._client_wrapper)
         self.organization = AsyncOrganizationClient(client_wrapper=self._client_wrapper)
+        self.payment_gateway = AsyncPaymentGatewayClient(client_wrapper=self._client_wrapper)
         self.bank_lookup = AsyncBankLookupClient(client_wrapper=self._client_wrapper)
         self.calculate = AsyncCalculateClient(client_wrapper=self._client_wrapper)
         self.custom_payment_method_schema = AsyncCustomPaymentMethodSchemaClient(client_wrapper=self._client_wrapper)

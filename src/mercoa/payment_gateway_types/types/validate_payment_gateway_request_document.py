@@ -2,33 +2,24 @@
 
 from ...core.pydantic_utilities import UniversalBaseModel
 import pydantic
-import typing_extensions
-from ...entity_types.types.entity_id import EntityId
-from ...core.serialization import FieldMetadata
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 import typing
 
 
-class GenerateContractRequest(UniversalBaseModel):
+class ValidatePaymentGatewayRequestDocument(UniversalBaseModel):
     """
     Examples
     --------
-    from mercoa.contract_types import GenerateContractRequest
+    from mercoa.payment_gateway_types import ValidatePaymentGatewayRequestDocument
 
-    GenerateContractRequest(
+    ValidatePaymentGatewayRequestDocument(
         document="data:application/pdf;base64,JVBERi0xLjEKJcKlwrHDqwoKMSAwIG9iagogIDw8IC9UeXBlIC9DYXRhbG9nCiAgICAgL1BhZ2VzIDIgMCBSCiAgPj4KZW5kb2JqCgoyIDAgb2JqCiAgPDwgL1R5cGUgL1BhZ2VzCiAgICAgL0tpZHMgWzMgMCBSXQogICAgIC9Db3VudCAxCiAgICAgL01lZGlhQm94IFswIDAgMzAwIDE0NF0KICA+PgplbmRvYmoKCjMgMCBvYmoKICA8PCAgL1R5cGUgL1BhZ2UKICAgICAgL1BhcmVudCAyIDAgUgogICAgICAvUmVzb3VyY2VzCiAgICAgICA8PCAvRm9udAogICAgICAgICAgIDw8IC9GMQogICAgICAgICAgICAgICA8PCAvVHlwZSAvRm9udAogICAgICAgICAgICAgICAgICAvU3VidHlwZSAvVHlwZTEKICAgICAgICAgICAgICAgICAgL0Jhc2VGb250IC9UaW1lcy1Sb21hbgogICAgICAgICAgICAgICA+PgogICAgICAgICAgID4+CiAgICAgICA+PgogICAgICAvQ29udGVudHMgNCAwIFIKICA+PgplbmRvYmoKCjQgMCBvYmoKICA8PCAvTGVuZ3RoIDU1ID4+CnN0cmVhbQogIEJUCiAgICAvRjEgMTggVGYKICAgIDAgMCBUZAogICAgKEhlbGxvIFdvcmxkKSBUagogIEVUCmVuZHN0cmVhbQplbmRvYmoKCnhyZWYKMCA1CjAwMDAwMDAwMDAgNjU1MzUgZiAKMDAwMDAwMDAxOCAwMDAwMCBuIAowMDAwMDAwMDc3IDAwMDAwIG4gCjAwMDAwMDAxNzggMDAwMDAgbiAKMDAwMDAwMDQ1NyAwMDAwMCBuIAp0cmFpbGVyCiAgPDwgIC9Sb290IDEgMCBSCiAgICAgIC9TaXplIDUKICA+PgpzdGFydHhyZWYKNTY1CiUlRU9GCg==",
-        creator_entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
     )
     """
 
     document: str = pydantic.Field()
     """
-    Base64 encoded PDF of contract document.
-    """
-
-    creator_entity_id: typing_extensions.Annotated[EntityId, FieldMetadata(alias="creatorEntityId")] = pydantic.Field()
-    """
-    ID of the entity that created the contract
+    The invoice document to extract the payment gateway from in base64 format
     """
 
     if IS_PYDANTIC_V2:

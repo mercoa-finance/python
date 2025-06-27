@@ -2,27 +2,26 @@
 
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing_extensions
-from .contract_job_id import ContractJobId
 from ...core.serialization import FieldMetadata
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 import typing
 
 
-class GenerateContractAsyncResponse(UniversalBaseModel):
+class ProcessPaymentGatewayCardDetailsIframe(UniversalBaseModel):
     """
     Examples
     --------
-    from mercoa.contract_types import GenerateContractAsyncResponse
+    from mercoa.payment_gateway_types import ProcessPaymentGatewayCardDetailsIframe
 
-    GenerateContractAsyncResponse(
-        job_id="cntgen_d6734204-ae46-4fe9-a0c5-bd2763d40c9b",
+    ProcessPaymentGatewayCardDetailsIframe(
+        iframe_url="https://www.myvirtualcard.com/iframe/345345",
     )
     """
 
-    job_id: typing_extensions.Annotated[ContractJobId, FieldMetadata(alias="jobId")] = pydantic.Field()
+    iframe_url: typing_extensions.Annotated[str, FieldMetadata(alias="iframeUrl")] = pydantic.Field()
     """
-    Job ID
+    The URL of the iframe that render the virtual card details
     """
 
     if IS_PYDANTIC_V2:
