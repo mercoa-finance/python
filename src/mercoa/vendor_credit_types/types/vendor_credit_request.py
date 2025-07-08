@@ -2,10 +2,10 @@
 
 from ...core.pydantic_utilities import UniversalBaseModel
 import typing_extensions
+import typing
 from ...core.serialization import FieldMetadata
 import pydantic
 from ...payment_method_types.types.currency_code import CurrencyCode
-import typing
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -20,6 +20,13 @@ class VendorCreditRequest(UniversalBaseModel):
         currency="USD",
         note="This is a note",
     )
+    """
+
+    memo_number: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="memoNumber")] = pydantic.Field(
+        default=None
+    )
+    """
+    Memo number for the vendor credit
     """
 
     total_amount: typing_extensions.Annotated[float, FieldMetadata(alias="totalAmount")] = pydantic.Field()

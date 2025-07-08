@@ -2,6 +2,7 @@
 
 import typing
 from ...core.client_wrapper import SyncClientWrapper
+from .bulk.client import BulkClient
 from .vendor_credit.client import VendorCreditClient
 from ...entity_types.types.entity_id import EntityId
 from ...entity_types.types.counterparty_network_type import CounterpartyNetworkType
@@ -27,6 +28,7 @@ from ...entity_types.types.entity_hide_payees_request import EntityHidePayeesReq
 from ...entity_types.types.entity_add_payors_request import EntityAddPayorsRequest
 from ...entity_types.types.entity_hide_payors_request import EntityHidePayorsRequest
 from ...core.client_wrapper import AsyncClientWrapper
+from .bulk.client import AsyncBulkClient
 from .vendor_credit.client import AsyncVendorCreditClient
 
 # this is used as the default value for optional parameters
@@ -36,6 +38,7 @@ OMIT = typing.cast(typing.Any, ...)
 class CounterpartyClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
+        self.bulk = BulkClient(client_wrapper=self._client_wrapper)
         self.vendor_credit = VendorCreditClient(client_wrapper=self._client_wrapper)
 
     def find_payees(
@@ -944,6 +947,7 @@ class CounterpartyClient:
 class AsyncCounterpartyClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
+        self.bulk = AsyncBulkClient(client_wrapper=self._client_wrapper)
         self.vendor_credit = AsyncVendorCreditClient(client_wrapper=self._client_wrapper)
 
     async def find_payees(

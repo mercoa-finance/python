@@ -23,6 +23,7 @@ class VendorCreditResponse(UniversalBaseModel):
 
     VendorCreditResponse(
         id="vcr_c3f4c87d-794d-4543-9562-575cdddfc0d7",
+        memo_number="123456",
         total_amount=100.0,
         remaining_amount=100.0,
         currency="USD",
@@ -41,6 +42,13 @@ class VendorCreditResponse(UniversalBaseModel):
     """
 
     id: VendorCreditId
+    memo_number: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="memoNumber")] = pydantic.Field(
+        default=None
+    )
+    """
+    Memo number for the vendor credit
+    """
+
     total_amount: typing_extensions.Annotated[typing.Optional[float], FieldMetadata(alias="totalAmount")] = (
         pydantic.Field(default=None)
     )

@@ -27,6 +27,7 @@ class CalculateVendorCreditUsageResponse(UniversalBaseModel):
         vendor_credits=[
             VendorCreditResponse(
                 id="vcr_c3f4c87d-794d-4543-9562-575cdddfc0d7",
+                memo_number="123456",
                 total_amount=100.0,
                 remaining_amount=0.0,
                 currency="USD",
