@@ -67,6 +67,12 @@ class OrganizationRequest(UniversalBaseModel):
     role_permissions: typing_extensions.Annotated[
         typing.Optional[RolePermissionRequest], FieldMetadata(alias="rolePermissions")
     ] = None
+    notifications_disabled: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="notificationsDisabled")
+    ] = pydantic.Field(default=None)
+    """
+    If true, all notifications for this organization will be disabled.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

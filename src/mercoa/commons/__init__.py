@@ -3,6 +3,8 @@
 from .types import (
     Address,
     BirthDate,
+    BulkDownloadFormat,
+    BulkDownloadResponse,
     CountryCode,
     DocumentResponse,
     DocumentType,
@@ -18,6 +20,8 @@ __all__ = [
     "Address",
     "BadRequest",
     "BirthDate",
+    "BulkDownloadFormat",
+    "BulkDownloadResponse",
     "Conflict",
     "CountryCode",
     "DocumentResponse",

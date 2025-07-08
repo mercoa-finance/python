@@ -2,6 +2,8 @@
 
 from .address import Address
 from .birth_date import BirthDate
+from .bulk_download_format import BulkDownloadFormat
+from .bulk_download_response import BulkDownloadResponse
 from .country_code import CountryCode
 from .document_response import DocumentResponse
 from .document_type import DocumentType
@@ -14,6 +16,8 @@ from .string_or_string_array import StringOrStringArray
 __all__ = [
     "Address",
     "BirthDate",
+    "BulkDownloadFormat",
+    "BulkDownloadResponse",
     "CountryCode",
     "DocumentResponse",
     "DocumentType",

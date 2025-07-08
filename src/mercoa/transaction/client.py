@@ -26,6 +26,8 @@ from ..commons.errors.internal_server_error import InternalServerError
 from ..commons.errors.unimplemented import Unimplemented
 from .types.transaction_response import TransactionResponse
 from ..core.jsonable_encoder import jsonable_encoder
+from ..commons.types.bulk_download_format import BulkDownloadFormat
+from ..commons.types.bulk_download_response import BulkDownloadResponse
 from ..core.client_wrapper import AsyncClientWrapper
 
 
@@ -297,6 +299,222 @@ class TransactionClient:
                 TransactionResponse,
                 parse_obj_as(
                     type_=TransactionResponse,  # type: ignore
+                    object_=_response_json,
+                ),
+            )
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def download(
+        self,
+        *,
+        format: typing.Optional[BulkDownloadFormat] = None,
+        entity_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
+        entity_group_id: typing.Optional[EntityGroupId] = None,
+        start_date: typing.Optional[dt.datetime] = None,
+        end_date: typing.Optional[dt.datetime] = None,
+        limit: typing.Optional[int] = None,
+        starting_after: typing.Optional[TransactionId] = None,
+        search: typing.Optional[str] = None,
+        metadata: typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]] = None,
+        line_item_metadata: typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]] = None,
+        line_item_gl_account_id: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
+        vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
+        invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]] = None,
+        transaction_id: typing.Optional[typing.Union[TransactionId, typing.Sequence[TransactionId]]] = None,
+        status: typing.Optional[typing.Union[TransactionStatus, typing.Sequence[TransactionStatus]]] = None,
+        transaction_type: typing.Optional[typing.Union[TransactionType, typing.Sequence[TransactionType]]] = None,
+        creator_user_id: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> BulkDownloadResponse:
+        """
+        Get a URL to download transactions as a CSV/JSON file.
+
+        Parameters
+        ----------
+        format : typing.Optional[BulkDownloadFormat]
+            Format of the file to download. Defaults to CSV.
+
+        entity_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
+            Filter transactions by the ID or foreign ID of the entity that created the transaction.
+
+        entity_group_id : typing.Optional[EntityGroupId]
+            Filter transactions by the ID or foreign ID of the entity group that the entity belongs to.
+
+        start_date : typing.Optional[dt.datetime]
+            CREATED_AT Start date filter.
+
+        end_date : typing.Optional[dt.datetime]
+            CREATED_AT End date filter.
+
+        limit : typing.Optional[int]
+            Number of transactions to return. Limit can range between 1 and 100, and the default is 10.
+
+        starting_after : typing.Optional[TransactionId]
+            The ID of the transactions to start after. If not provided, the first page of transactions will be returned.
+
+        search : typing.Optional[str]
+            Find transactions by vendor name, invoice number, check number, or amount. Partial matches are supported.
+
+        metadata : typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]
+            Filter transactions by invoice metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+
+        line_item_metadata : typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]
+            Filter transactions by invoice line item metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+
+        line_item_gl_account_id : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter transactions by invoice line item GL account ID. Each filter will be applied as an OR condition. Duplicate keys will be ignored.
+
+        payer_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
+            Filter transactions by payer ID or payer foreign ID.
+
+        vendor_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
+            Filter transactions by vendor ID or vendor foreign ID.
+
+        invoice_id : typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]
+            Filter transactions by invoice ID or invoice foreign ID.
+
+        transaction_id : typing.Optional[typing.Union[TransactionId, typing.Sequence[TransactionId]]]
+            Filter transactions by transaction ID.
+
+        status : typing.Optional[typing.Union[TransactionStatus, typing.Sequence[TransactionStatus]]]
+            Transaction status to filter on
+
+        transaction_type : typing.Optional[typing.Union[TransactionType, typing.Sequence[TransactionType]]]
+            Filter transactions by transaction type
+
+        creator_user_id : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter transactions by creator user ID. Does not work, do not use.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        BulkDownloadResponse
+
+        Examples
+        --------
+        from mercoa import Mercoa
+
+        client = Mercoa(
+            token="YOUR_TOKEN",
+        )
+        client.transaction.download(
+            format="CSV",
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "transactions/download",
+            method="GET",
+            params={
+                "format": format,
+                "entityId": entity_id,
+                "entityGroupId": entity_group_id,
+                "startDate": serialize_datetime(start_date) if start_date is not None else None,
+                "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                "limit": limit,
+                "startingAfter": starting_after,
+                "search": search,
+                "metadata": convert_and_respect_annotation_metadata(
+                    object_=metadata, annotation=MetadataFilter, direction="write"
+                ),
+                "lineItemMetadata": convert_and_respect_annotation_metadata(
+                    object_=line_item_metadata,
+                    annotation=MetadataFilter,
+                    direction="write",
+                ),
+                "lineItemGlAccountId": line_item_gl_account_id,
+                "payerId": payer_id,
+                "vendorId": vendor_id,
+                "invoiceId": invoice_id,
+                "transactionId": transaction_id,
+                "status": status,
+                "transactionType": transaction_type,
+                "creatorUserId": creator_user_id,
+            },
+            request_options=request_options,
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return typing.cast(
+                BulkDownloadResponse,
+                parse_obj_as(
+                    type_=BulkDownloadResponse,  # type: ignore
                     object_=_response_json,
                 ),
             )
@@ -657,6 +875,230 @@ class AsyncTransactionClient:
                 TransactionResponse,
                 parse_obj_as(
                     type_=TransactionResponse,  # type: ignore
+                    object_=_response_json,
+                ),
+            )
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def download(
+        self,
+        *,
+        format: typing.Optional[BulkDownloadFormat] = None,
+        entity_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
+        entity_group_id: typing.Optional[EntityGroupId] = None,
+        start_date: typing.Optional[dt.datetime] = None,
+        end_date: typing.Optional[dt.datetime] = None,
+        limit: typing.Optional[int] = None,
+        starting_after: typing.Optional[TransactionId] = None,
+        search: typing.Optional[str] = None,
+        metadata: typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]] = None,
+        line_item_metadata: typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]] = None,
+        line_item_gl_account_id: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
+        vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
+        invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]] = None,
+        transaction_id: typing.Optional[typing.Union[TransactionId, typing.Sequence[TransactionId]]] = None,
+        status: typing.Optional[typing.Union[TransactionStatus, typing.Sequence[TransactionStatus]]] = None,
+        transaction_type: typing.Optional[typing.Union[TransactionType, typing.Sequence[TransactionType]]] = None,
+        creator_user_id: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> BulkDownloadResponse:
+        """
+        Get a URL to download transactions as a CSV/JSON file.
+
+        Parameters
+        ----------
+        format : typing.Optional[BulkDownloadFormat]
+            Format of the file to download. Defaults to CSV.
+
+        entity_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
+            Filter transactions by the ID or foreign ID of the entity that created the transaction.
+
+        entity_group_id : typing.Optional[EntityGroupId]
+            Filter transactions by the ID or foreign ID of the entity group that the entity belongs to.
+
+        start_date : typing.Optional[dt.datetime]
+            CREATED_AT Start date filter.
+
+        end_date : typing.Optional[dt.datetime]
+            CREATED_AT End date filter.
+
+        limit : typing.Optional[int]
+            Number of transactions to return. Limit can range between 1 and 100, and the default is 10.
+
+        starting_after : typing.Optional[TransactionId]
+            The ID of the transactions to start after. If not provided, the first page of transactions will be returned.
+
+        search : typing.Optional[str]
+            Find transactions by vendor name, invoice number, check number, or amount. Partial matches are supported.
+
+        metadata : typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]
+            Filter transactions by invoice metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+
+        line_item_metadata : typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]
+            Filter transactions by invoice line item metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+
+        line_item_gl_account_id : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter transactions by invoice line item GL account ID. Each filter will be applied as an OR condition. Duplicate keys will be ignored.
+
+        payer_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
+            Filter transactions by payer ID or payer foreign ID.
+
+        vendor_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
+            Filter transactions by vendor ID or vendor foreign ID.
+
+        invoice_id : typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]
+            Filter transactions by invoice ID or invoice foreign ID.
+
+        transaction_id : typing.Optional[typing.Union[TransactionId, typing.Sequence[TransactionId]]]
+            Filter transactions by transaction ID.
+
+        status : typing.Optional[typing.Union[TransactionStatus, typing.Sequence[TransactionStatus]]]
+            Transaction status to filter on
+
+        transaction_type : typing.Optional[typing.Union[TransactionType, typing.Sequence[TransactionType]]]
+            Filter transactions by transaction type
+
+        creator_user_id : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter transactions by creator user ID. Does not work, do not use.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        BulkDownloadResponse
+
+        Examples
+        --------
+        import asyncio
+
+        from mercoa import AsyncMercoa
+
+        client = AsyncMercoa(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.transaction.download(
+                format="CSV",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "transactions/download",
+            method="GET",
+            params={
+                "format": format,
+                "entityId": entity_id,
+                "entityGroupId": entity_group_id,
+                "startDate": serialize_datetime(start_date) if start_date is not None else None,
+                "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                "limit": limit,
+                "startingAfter": starting_after,
+                "search": search,
+                "metadata": convert_and_respect_annotation_metadata(
+                    object_=metadata, annotation=MetadataFilter, direction="write"
+                ),
+                "lineItemMetadata": convert_and_respect_annotation_metadata(
+                    object_=line_item_metadata,
+                    annotation=MetadataFilter,
+                    direction="write",
+                ),
+                "lineItemGlAccountId": line_item_gl_account_id,
+                "payerId": payer_id,
+                "vendorId": vendor_id,
+                "invoiceId": invoice_id,
+                "transactionId": transaction_id,
+                "status": status,
+                "transactionType": transaction_type,
+                "creatorUserId": creator_user_id,
+            },
+            request_options=request_options,
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return typing.cast(
+                BulkDownloadResponse,
+                parse_obj_as(
+                    type_=BulkDownloadResponse,  # type: ignore
                     object_=_response_json,
                 ),
             )

@@ -12,6 +12,7 @@ from ...entity_types.types.entity_id import EntityId
 from ...entity_types.types.counterparty_response import CounterpartyResponse
 from ...payment_method_types.types.payment_method_response import PaymentMethodResponse
 from ...payment_method_types.types.payment_method_id import PaymentMethodId
+from .payment_source_options import PaymentSourceOptions
 from .payment_destination_options import PaymentDestinationOptions
 from ...calculate.types.calculate_payment_timing_response import (
     CalculatePaymentTimingResponse,
@@ -89,6 +90,10 @@ class InvoiceResponseBase(UniversalBaseModel):
     ] = None
     payment_source_id: typing_extensions.Annotated[
         typing.Optional[PaymentMethodId], FieldMetadata(alias="paymentSourceId")
+    ] = None
+    payment_source_options: typing_extensions.Annotated[
+        typing.Optional[PaymentSourceOptions],
+        FieldMetadata(alias="paymentSourceOptions"),
     ] = None
     vendor_id: typing_extensions.Annotated[typing.Optional[EntityId], FieldMetadata(alias="vendorId")] = None
     vendor: typing.Optional[CounterpartyResponse] = None

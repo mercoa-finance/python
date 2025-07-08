@@ -37,6 +37,7 @@ class InvoiceCollectionEventWebhook(UniversalBaseModel):
         InvoiceLineItemResponse,
         InvoiceResponse,
         PaymentDestinationOptions_Check,
+        PaymentSourceOptions_Bnpl,
     )
     from mercoa.payment_method_types import (
         PaymentMethodResponse_BankAccount,
@@ -174,6 +175,11 @@ class InvoiceCollectionEventWebhook(UniversalBaseModel):
                 ),
             ),
             payment_source_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+            payment_source_options=PaymentSourceOptions_Bnpl(
+                installments_start_date="2025-06-18",
+                deferment_weeks=8,
+                accepted_terms=True,
+            ),
             vendor_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
             vendor=CounterpartyResponse(
                 id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",

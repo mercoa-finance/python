@@ -113,6 +113,21 @@ class EntityResponse(UniversalBaseModel):
     """
 
     status: EntityStatus
+    oatfi_status: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="oatfiStatus")] = (
+        pydantic.Field(default=None)
+    )
+    """
+    The OatFi status of this entity
+    """
+
+    oatfi_underwriting_response: typing_extensions.Annotated[
+        typing.Optional[typing.Dict[str, str]],
+        FieldMetadata(alias="oatfiUnderwritingResponse"),
+    ] = pydantic.Field(default=None)
+    """
+    The OatFi underwriting response of this entity
+    """
+
     accepted_tos: typing_extensions.Annotated[bool, FieldMetadata(alias="acceptedTos")] = pydantic.Field()
     """
     True if this entity has accepted the terms of service.

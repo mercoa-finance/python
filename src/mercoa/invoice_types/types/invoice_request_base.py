@@ -10,6 +10,7 @@ import datetime as dt
 from ...core.serialization import FieldMetadata
 from ...entity_types.types.entity_id import EntityId
 from ...payment_method_types.types.payment_method_id import PaymentMethodId
+from .payment_source_options import PaymentSourceOptions
 from .payment_destination_options import PaymentDestinationOptions
 from .approval_slot_assignment import ApprovalSlotAssignment
 from ...entity_types.types.entity_user_id import EntityUserId
@@ -94,6 +95,14 @@ class InvoiceRequestBase(UniversalBaseModel):
     ] = pydantic.Field(default=None)
     """
     ID of payment source for this invoice. If not provided, will attempt to use the default payment source for the payer when creating an invoice if a default payment source exists for the payer.
+    """
+
+    payment_source_options: typing_extensions.Annotated[
+        typing.Optional[PaymentSourceOptions],
+        FieldMetadata(alias="paymentSourceOptions"),
+    ] = pydantic.Field(default=None)
+    """
+    Options for the payment source. Depending on the payment source, this may include things such as BNPL configuration.
     """
 
     vendor_id: typing_extensions.Annotated[typing.Optional[EntityId], FieldMetadata(alias="vendorId")] = pydantic.Field(
@@ -207,6 +216,13 @@ class InvoiceRequestBase(UniversalBaseModel):
     )
     """
     ID of the OCR job that processed this invoice.
+    """
+
+    payment_destination_confirmed: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="paymentDestinationConfirmed")
+    ] = pydantic.Field(default=None)
+    """
+    Set to true if the payment destination has been confirmed by the vendor or if the payment destination should default to the selected payment destination on the vendor portal.
     """
 
     if IS_PYDANTIC_V2:

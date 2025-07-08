@@ -90,6 +90,33 @@ class PaymentDestinationOptions_Utility(UniversalBaseModel):
             extra = pydantic.Extra.allow
 
 
+class PaymentDestinationOptions_Custom(UniversalBaseModel):
+    """
+    Examples
+    --------
+    from mercoa.invoice_types import PaymentDestinationOptions_Check
+
+    PaymentDestinationOptions_Check(
+        delivery="MAIL",
+        print_description=True,
+    )
+    """
+
+    type: typing.Literal["custom"] = "custom"
+    dynamic_urls: typing_extensions.Annotated[
+        typing.Optional[typing.Dict[str, str]], FieldMetadata(alias="dynamicUrls")
+    ] = None
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow
+
+
 """
 from mercoa.invoice_types import PaymentDestinationOptions_Check
 
@@ -102,4 +129,5 @@ PaymentDestinationOptions = typing.Union[
     PaymentDestinationOptions_Check,
     PaymentDestinationOptions_BankAccount,
     PaymentDestinationOptions_Utility,
+    PaymentDestinationOptions_Custom,
 ]

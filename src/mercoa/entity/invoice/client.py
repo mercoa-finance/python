@@ -37,6 +37,8 @@ from ...invoice_types.types.invoice_metrics_per_date_frequency import (
 from ...invoice_types.types.invoice_metrics_group_by import InvoiceMetricsGroupBy
 from ...payment_method_types.types.currency_code import CurrencyCode
 from ...invoice_types.types.invoice_metrics_response import InvoiceMetricsResponse
+from ...commons.types.bulk_download_format import BulkDownloadFormat
+from ...commons.types.bulk_download_response import BulkDownloadResponse
 from ...core.client_wrapper import AsyncClientWrapper
 
 
@@ -433,6 +435,247 @@ class InvoiceClient:
                 typing.List[InvoiceMetricsResponse],
                 parse_obj_as(
                     type_=typing.List[InvoiceMetricsResponse],  # type: ignore
+                    object_=_response_json,
+                ),
+            )
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def download(
+        self,
+        entity_id: EntityId,
+        *,
+        format: typing.Optional[BulkDownloadFormat] = None,
+        exclude_payables: typing.Optional[bool] = None,
+        exclude_receivables: typing.Optional[bool] = None,
+        start_date: typing.Optional[dt.datetime] = None,
+        end_date: typing.Optional[dt.datetime] = None,
+        date_type: typing.Optional[InvoiceDateFilter] = None,
+        order_by: typing.Optional[InvoiceOrderByField] = None,
+        order_direction: typing.Optional[OrderDirection] = None,
+        search: typing.Optional[str] = None,
+        metadata: typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]] = None,
+        line_item_metadata: typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]] = None,
+        line_item_gl_account_id: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
+        vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
+        creator_user_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]] = None,
+        approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]] = None,
+        approver_action: typing.Optional[typing.Union[ApproverAction, typing.Sequence[ApproverAction]]] = None,
+        invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]] = None,
+        status: typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]] = None,
+        payment_type: typing.Optional[typing.Sequence[PaymentType]] = None,
+        return_payer_metadata: typing.Optional[bool] = None,
+        return_vendor_metadata: typing.Optional[bool] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> BulkDownloadResponse:
+        """
+        Get a URL to download invoices for an entity as a CSV/JSON file.
+
+        Parameters
+        ----------
+        entity_id : EntityId
+            Entity ID or Entity ForeignID
+
+        format : typing.Optional[BulkDownloadFormat]
+            Format of the file to download. Defaults to CSV.
+
+        exclude_payables : typing.Optional[bool]
+            Return only invoices that are receivable by the entity.
+
+        exclude_receivables : typing.Optional[bool]
+            Return only invoices that are payable by the entity.
+
+        start_date : typing.Optional[dt.datetime]
+            Start date filter. Defaults to CREATED_AT unless specified the dateType is specified
+
+        end_date : typing.Optional[dt.datetime]
+            End date filter. Defaults to CREATED_AT unless specified the dateType is specified
+
+        date_type : typing.Optional[InvoiceDateFilter]
+            Type of date to filter by if startDate and endDate filters are provided. Defaults to CREATED_AT.
+
+        order_by : typing.Optional[InvoiceOrderByField]
+            Field to order invoices by. Defaults to CREATED_AT.
+
+        order_direction : typing.Optional[OrderDirection]
+            Direction to order invoices by. Defaults to asc.
+
+        search : typing.Optional[str]
+            Find invoices by vendor name, invoice number, check number, or amount. Partial matches are supported.
+
+        metadata : typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]
+            Filter invoices by metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+
+        line_item_metadata : typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]
+            Filter invoices by line item metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+
+        line_item_gl_account_id : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter invoices by line item GL account ID. Each filter will be applied as an OR condition. Duplicate keys will be ignored.
+
+        payer_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
+            Filter invoices by payer ID or payer foreign ID.
+
+        vendor_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
+            Filter invoices by vendor ID or vendor foreign ID.
+
+        creator_user_id : typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]
+            Filter invoices by the ID or foreign ID of the user that created the invoice.
+
+        approver_id : typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]
+            Filter invoices by assigned approver user ID.
+
+        approver_action : typing.Optional[typing.Union[ApproverAction, typing.Sequence[ApproverAction]]]
+            Filter invoices by approver action. Needs to be used with approverId. For example, if you want to find all invoices that have been approved by a specific user, you would use approverId and approverAction=APPROVE.
+
+        invoice_id : typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]
+            Filter invoices by invoice ID or invoice foreign ID.
+
+        status : typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]]
+            Invoice status to filter on.
+
+        payment_type : typing.Optional[typing.Sequence[PaymentType]]
+            Filter invoices by payment type.
+
+        return_payer_metadata : typing.Optional[bool]
+            Whether to return payer metadata in the response
+
+        return_vendor_metadata : typing.Optional[bool]
+            Whether to return vendor metadata in the response
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        BulkDownloadResponse
+
+        Examples
+        --------
+        from mercoa import Mercoa
+
+        client = Mercoa(
+            token="YOUR_TOKEN",
+        )
+        client.entity.invoice.download(
+            entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+            format="CSV",
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"entity/{jsonable_encoder(entity_id)}/invoices/download",
+            method="GET",
+            params={
+                "format": format,
+                "excludePayables": exclude_payables,
+                "excludeReceivables": exclude_receivables,
+                "startDate": serialize_datetime(start_date) if start_date is not None else None,
+                "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                "dateType": date_type,
+                "orderBy": order_by,
+                "orderDirection": order_direction,
+                "search": search,
+                "metadata": convert_and_respect_annotation_metadata(
+                    object_=metadata, annotation=MetadataFilter, direction="write"
+                ),
+                "lineItemMetadata": convert_and_respect_annotation_metadata(
+                    object_=line_item_metadata,
+                    annotation=MetadataFilter,
+                    direction="write",
+                ),
+                "lineItemGlAccountId": line_item_gl_account_id,
+                "payerId": payer_id,
+                "vendorId": vendor_id,
+                "creatorUserId": creator_user_id,
+                "approverId": approver_id,
+                "approverAction": approver_action,
+                "invoiceId": invoice_id,
+                "status": status,
+                "paymentType": payment_type,
+                "returnPayerMetadata": return_payer_metadata,
+                "returnVendorMetadata": return_vendor_metadata,
+            },
+            request_options=request_options,
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return typing.cast(
+                BulkDownloadResponse,
+                parse_obj_as(
+                    type_=BulkDownloadResponse,  # type: ignore
                     object_=_response_json,
                 ),
             )
@@ -918,6 +1161,255 @@ class AsyncInvoiceClient:
                 typing.List[InvoiceMetricsResponse],
                 parse_obj_as(
                     type_=typing.List[InvoiceMetricsResponse],  # type: ignore
+                    object_=_response_json,
+                ),
+            )
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def download(
+        self,
+        entity_id: EntityId,
+        *,
+        format: typing.Optional[BulkDownloadFormat] = None,
+        exclude_payables: typing.Optional[bool] = None,
+        exclude_receivables: typing.Optional[bool] = None,
+        start_date: typing.Optional[dt.datetime] = None,
+        end_date: typing.Optional[dt.datetime] = None,
+        date_type: typing.Optional[InvoiceDateFilter] = None,
+        order_by: typing.Optional[InvoiceOrderByField] = None,
+        order_direction: typing.Optional[OrderDirection] = None,
+        search: typing.Optional[str] = None,
+        metadata: typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]] = None,
+        line_item_metadata: typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]] = None,
+        line_item_gl_account_id: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
+        vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
+        creator_user_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]] = None,
+        approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]] = None,
+        approver_action: typing.Optional[typing.Union[ApproverAction, typing.Sequence[ApproverAction]]] = None,
+        invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]] = None,
+        status: typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]] = None,
+        payment_type: typing.Optional[typing.Sequence[PaymentType]] = None,
+        return_payer_metadata: typing.Optional[bool] = None,
+        return_vendor_metadata: typing.Optional[bool] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> BulkDownloadResponse:
+        """
+        Get a URL to download invoices for an entity as a CSV/JSON file.
+
+        Parameters
+        ----------
+        entity_id : EntityId
+            Entity ID or Entity ForeignID
+
+        format : typing.Optional[BulkDownloadFormat]
+            Format of the file to download. Defaults to CSV.
+
+        exclude_payables : typing.Optional[bool]
+            Return only invoices that are receivable by the entity.
+
+        exclude_receivables : typing.Optional[bool]
+            Return only invoices that are payable by the entity.
+
+        start_date : typing.Optional[dt.datetime]
+            Start date filter. Defaults to CREATED_AT unless specified the dateType is specified
+
+        end_date : typing.Optional[dt.datetime]
+            End date filter. Defaults to CREATED_AT unless specified the dateType is specified
+
+        date_type : typing.Optional[InvoiceDateFilter]
+            Type of date to filter by if startDate and endDate filters are provided. Defaults to CREATED_AT.
+
+        order_by : typing.Optional[InvoiceOrderByField]
+            Field to order invoices by. Defaults to CREATED_AT.
+
+        order_direction : typing.Optional[OrderDirection]
+            Direction to order invoices by. Defaults to asc.
+
+        search : typing.Optional[str]
+            Find invoices by vendor name, invoice number, check number, or amount. Partial matches are supported.
+
+        metadata : typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]
+            Filter invoices by metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+
+        line_item_metadata : typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]
+            Filter invoices by line item metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+
+        line_item_gl_account_id : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Filter invoices by line item GL account ID. Each filter will be applied as an OR condition. Duplicate keys will be ignored.
+
+        payer_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
+            Filter invoices by payer ID or payer foreign ID.
+
+        vendor_id : typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]
+            Filter invoices by vendor ID or vendor foreign ID.
+
+        creator_user_id : typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]
+            Filter invoices by the ID or foreign ID of the user that created the invoice.
+
+        approver_id : typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]
+            Filter invoices by assigned approver user ID.
+
+        approver_action : typing.Optional[typing.Union[ApproverAction, typing.Sequence[ApproverAction]]]
+            Filter invoices by approver action. Needs to be used with approverId. For example, if you want to find all invoices that have been approved by a specific user, you would use approverId and approverAction=APPROVE.
+
+        invoice_id : typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]
+            Filter invoices by invoice ID or invoice foreign ID.
+
+        status : typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]]
+            Invoice status to filter on.
+
+        payment_type : typing.Optional[typing.Sequence[PaymentType]]
+            Filter invoices by payment type.
+
+        return_payer_metadata : typing.Optional[bool]
+            Whether to return payer metadata in the response
+
+        return_vendor_metadata : typing.Optional[bool]
+            Whether to return vendor metadata in the response
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        BulkDownloadResponse
+
+        Examples
+        --------
+        import asyncio
+
+        from mercoa import AsyncMercoa
+
+        client = AsyncMercoa(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.entity.invoice.download(
+                entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+                format="CSV",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"entity/{jsonable_encoder(entity_id)}/invoices/download",
+            method="GET",
+            params={
+                "format": format,
+                "excludePayables": exclude_payables,
+                "excludeReceivables": exclude_receivables,
+                "startDate": serialize_datetime(start_date) if start_date is not None else None,
+                "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                "dateType": date_type,
+                "orderBy": order_by,
+                "orderDirection": order_direction,
+                "search": search,
+                "metadata": convert_and_respect_annotation_metadata(
+                    object_=metadata, annotation=MetadataFilter, direction="write"
+                ),
+                "lineItemMetadata": convert_and_respect_annotation_metadata(
+                    object_=line_item_metadata,
+                    annotation=MetadataFilter,
+                    direction="write",
+                ),
+                "lineItemGlAccountId": line_item_gl_account_id,
+                "payerId": payer_id,
+                "vendorId": vendor_id,
+                "creatorUserId": creator_user_id,
+                "approverId": approver_id,
+                "approverAction": approver_action,
+                "invoiceId": invoice_id,
+                "status": status,
+                "paymentType": payment_type,
+                "returnPayerMetadata": return_payer_metadata,
+                "returnVendorMetadata": return_vendor_metadata,
+            },
+            request_options=request_options,
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return typing.cast(
+                BulkDownloadResponse,
+                parse_obj_as(
+                    type_=BulkDownloadResponse,  # type: ignore
                     object_=_response_json,
                 ),
             )

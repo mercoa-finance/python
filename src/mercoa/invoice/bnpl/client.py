@@ -2,11 +2,11 @@
 
 import typing
 from ...core.client_wrapper import SyncClientWrapper
-from ...entity_types.types.bulk_entity_creation_request import BulkEntityCreationRequest
+from ...invoice_types.types.invoice_id import InvoiceId
+from ...invoice_types.types.bnpl_offer_request import BnplOfferRequest
 from ...core.request_options import RequestOptions
-from ...entity_types.types.bulk_entity_creation_response import (
-    BulkEntityCreationResponse,
-)
+from ...invoice_types.types.bnpl_offer_response import BnplOfferResponse
+from ...core.jsonable_encoder import jsonable_encoder
 from ...core.serialization import convert_and_respect_annotation_metadata
 from json.decoder import JSONDecodeError
 from ...core.api_error import ApiError
@@ -18,114 +18,65 @@ from ...commons.errors.not_found import NotFound
 from ...commons.errors.conflict import Conflict
 from ...commons.errors.internal_server_error import InternalServerError
 from ...commons.errors.unimplemented import Unimplemented
-from ...commons.types.bulk_download_format import BulkDownloadFormat
-from ...entity_types.types.entity_status import EntityStatus
-from ...invoice_types.types.metadata_filter import MetadataFilter
-from ...entity_types.types.entity_id import EntityId
-from ...commons.types.bulk_download_response import BulkDownloadResponse
+from ...invoice_types.types.bnpl_loan_response import BnplLoanResponse
 from ...core.client_wrapper import AsyncClientWrapper
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
 
 
-class BulkClient:
+class BnplClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    def create(
+    def offer(
         self,
+        invoice_id: InvoiceId,
         *,
-        request: BulkEntityCreationRequest,
-        emit_webhooks: typing.Optional[bool] = None,
+        request: BnplOfferRequest,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> BulkEntityCreationResponse:
+    ) -> BnplOfferResponse:
         """
-        Create multiple entities in bulk. This endpoint will process synchronously and return a list of entities that were created or failed to create.
+        Get a BNPL offer for an invoice
 
         Parameters
         ----------
-        request : BulkEntityCreationRequest
+        invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
-        emit_webhooks : typing.Optional[bool]
-            If true, webhooks will be emitted for each entity that is created. By default, webhooks are not emitted.
+        request : BnplOfferRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        BulkEntityCreationResponse
+        BnplOfferResponse
 
         Examples
         --------
         from mercoa import Mercoa
-        from mercoa.commons import Address, PhoneNumber
-        from mercoa.entity_types import (
-            BulkConnectedEntity,
-            BulkEntityCreationFromObject,
-            BusinessProfileRequest,
-            Ein,
-            EntityCreationRequest,
-            ProfileRequest,
-            TaxId,
-        )
+        from mercoa.invoice_types import BnplOfferRequest
 
         client = Mercoa(
             token="YOUR_TOKEN",
         )
-        client.entity.bulk.create(
-            request=BulkEntityCreationFromObject(
-                connected_entity=BulkConnectedEntity(
-                    id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-                    link_created_as_payor=False,
-                    link_created_as_payee=True,
-                ),
-                entities=[
-                    EntityCreationRequest(
-                        is_customer=True,
-                        is_payor=True,
-                        is_payee=False,
-                        account_type="business",
-                        foreign_id="MY-DB-ID-12345",
-                        profile=ProfileRequest(
-                            business=BusinessProfileRequest(
-                                email="customer@acme.com",
-                                legal_business_name="Acme Inc.",
-                                website="http://www.acme.com",
-                                business_type="llc",
-                                phone=PhoneNumber(
-                                    country_code="1",
-                                    number="4155551234",
-                                ),
-                                address=Address(
-                                    address_line_1="123 Main St",
-                                    address_line_2="Unit 1",
-                                    city="San Francisco",
-                                    state_or_province="CA",
-                                    postal_code="94105",
-                                    country="US",
-                                ),
-                                tax_id=TaxId(
-                                    ein=Ein(
-                                        number="12-3456789",
-                                    ),
-                                ),
-                            ),
-                        ),
-                    )
-                ],
+        client.invoice.bnpl.offer(
+            invoice_id="in_286a1849-2e3c-48a4-ab5a-8b7940cc3a5b",
+            request=BnplOfferRequest(
+                cadence="WEEKLY",
+                installments_start_date="2025-06-18",
+                number_of_installments=4,
+                payment_day_of_week="WEDNESDAY",
+                down_payment_due_date="2025-06-11",
             ),
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "entities",
+            f"invoice/{jsonable_encoder(invoice_id)}/bnpl/offer",
             method="POST",
-            params={
-                "emitWebhooks": emit_webhooks,
-            },
             json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=BulkEntityCreationRequest, direction="write"
+                object_=request, annotation=BnplOfferRequest, direction="write"
             ),
             request_options=request_options,
             omit=OMIT,
@@ -136,9 +87,9 @@ class BulkClient:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
             return typing.cast(
-                BulkEntityCreationResponse,
+                BnplOfferResponse,
                 parse_obj_as(
-                    type_=BulkEntityCreationResponse,  # type: ignore
+                    type_=BnplOfferResponse,  # type: ignore
                     object_=_response_json,
                 ),
             )
@@ -215,75 +166,21 @@ class BulkClient:
                 )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    def download(
-        self,
-        *,
-        format: typing.Optional[BulkDownloadFormat] = None,
-        payment_methods: typing.Optional[bool] = None,
-        is_customer: typing.Optional[bool] = None,
-        foreign_id: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        status: typing.Optional[typing.Union[EntityStatus, typing.Sequence[EntityStatus]]] = None,
-        is_payee: typing.Optional[bool] = None,
-        is_payor: typing.Optional[bool] = None,
-        name: typing.Optional[str] = None,
-        search: typing.Optional[str] = None,
-        metadata: typing.Optional[MetadataFilter] = None,
-        return_metadata: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        limit: typing.Optional[int] = None,
-        starting_after: typing.Optional[EntityId] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> BulkDownloadResponse:
+    def loan(self, loan_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> BnplLoanResponse:
         """
-        Get a URL to download a bulk entity as a CSV/JSON file.
+        Get information about a specific BNPL loan by loan ID
 
         Parameters
         ----------
-        format : typing.Optional[BulkDownloadFormat]
-            Format of the file to download. Defaults to CSV.
-
-        payment_methods : typing.Optional[bool]
-            If true, will include entity payment methods as part of the response
-
-        is_customer : typing.Optional[bool]
-            If true, only entities with a direct relationship to the requesting organization will be returned. If false or not provided, all entities will be returned.
-
-        foreign_id : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            ID used to identify this entity in your system
-
-        status : typing.Optional[typing.Union[EntityStatus, typing.Sequence[EntityStatus]]]
-
-        is_payee : typing.Optional[bool]
-            If true, entities that are marked as payees will be returned.
-            If false or not provided, entities that are marked as payees will not be returned.
-
-        is_payor : typing.Optional[bool]
-            If true or not provided, entities that are marked as payors will be returned.
-            If false, entities that are marked as payors will not be returned.
-
-        name : typing.Optional[str]
-            Use search instead. Deprecated. Filter entities by name. Partial matches are supported.
-
-        search : typing.Optional[str]
-            Find entities by name, email, or emailTo. Partial matches are supported.
-
-        metadata : typing.Optional[MetadataFilter]
-            Filter entities by simple key/value metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
-
-        return_metadata : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Return simple key/value metadata for the specified keys for the entities. For more complex metadata, use the Metadata API.
-
-        limit : typing.Optional[int]
-            Number of entities to return. Limit can range between 1 and 100, and the default is 10.
-
-        starting_after : typing.Optional[EntityId]
-            The ID of the entity to start after. If not provided, the first page of entities will be returned.
+        loan_id : str
+            The ID of the loan to retrieve
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        BulkDownloadResponse
+        BnplLoanResponse
 
         Examples
         --------
@@ -292,30 +189,13 @@ class BulkClient:
         client = Mercoa(
             token="YOUR_TOKEN",
         )
-        client.entity.bulk.download(
-            format="CSV",
+        client.invoice.bnpl.loan(
+            loan_id="684adb5d70a01b00596a3106",
         )
         """
         _response = self._client_wrapper.httpx_client.request(
-            "entities/download",
+            f"bnpl/loan/{jsonable_encoder(loan_id)}",
             method="GET",
-            params={
-                "format": format,
-                "paymentMethods": payment_methods,
-                "isCustomer": is_customer,
-                "foreignId": foreign_id,
-                "status": status,
-                "isPayee": is_payee,
-                "isPayor": is_payor,
-                "name": name,
-                "search": search,
-                "metadata": convert_and_respect_annotation_metadata(
-                    object_=metadata, annotation=MetadataFilter, direction="write"
-                ),
-                "returnMetadata": return_metadata,
-                "limit": limit,
-                "startingAfter": starting_after,
-            },
             request_options=request_options,
         )
         try:
@@ -324,9 +204,9 @@ class BulkClient:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
             return typing.cast(
-                BulkDownloadResponse,
+                BnplLoanResponse,
                 parse_obj_as(
-                    type_=BulkDownloadResponse,  # type: ignore
+                    type_=BnplLoanResponse,  # type: ignore
                     object_=_response_json,
                 ),
             )
@@ -404,49 +284,40 @@ class BulkClient:
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
 
-class AsyncBulkClient:
+class AsyncBnplClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    async def create(
+    async def offer(
         self,
+        invoice_id: InvoiceId,
         *,
-        request: BulkEntityCreationRequest,
-        emit_webhooks: typing.Optional[bool] = None,
+        request: BnplOfferRequest,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> BulkEntityCreationResponse:
+    ) -> BnplOfferResponse:
         """
-        Create multiple entities in bulk. This endpoint will process synchronously and return a list of entities that were created or failed to create.
+        Get a BNPL offer for an invoice
 
         Parameters
         ----------
-        request : BulkEntityCreationRequest
+        invoice_id : InvoiceId
+            Invoice ID or Invoice ForeignID
 
-        emit_webhooks : typing.Optional[bool]
-            If true, webhooks will be emitted for each entity that is created. By default, webhooks are not emitted.
+        request : BnplOfferRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        BulkEntityCreationResponse
+        BnplOfferResponse
 
         Examples
         --------
         import asyncio
 
         from mercoa import AsyncMercoa
-        from mercoa.commons import Address, PhoneNumber
-        from mercoa.entity_types import (
-            BulkConnectedEntity,
-            BulkEntityCreationFromObject,
-            BusinessProfileRequest,
-            Ein,
-            EntityCreationRequest,
-            ProfileRequest,
-            TaxId,
-        )
+        from mercoa.invoice_types import BnplOfferRequest
 
         client = AsyncMercoa(
             token="YOUR_TOKEN",
@@ -454,47 +325,14 @@ class AsyncBulkClient:
 
 
         async def main() -> None:
-            await client.entity.bulk.create(
-                request=BulkEntityCreationFromObject(
-                    connected_entity=BulkConnectedEntity(
-                        id="ent_a0f6ea94-0761-4a5e-a416-3c453cb7eced",
-                        link_created_as_payor=False,
-                        link_created_as_payee=True,
-                    ),
-                    entities=[
-                        EntityCreationRequest(
-                            is_customer=True,
-                            is_payor=True,
-                            is_payee=False,
-                            account_type="business",
-                            foreign_id="MY-DB-ID-12345",
-                            profile=ProfileRequest(
-                                business=BusinessProfileRequest(
-                                    email="customer@acme.com",
-                                    legal_business_name="Acme Inc.",
-                                    website="http://www.acme.com",
-                                    business_type="llc",
-                                    phone=PhoneNumber(
-                                        country_code="1",
-                                        number="4155551234",
-                                    ),
-                                    address=Address(
-                                        address_line_1="123 Main St",
-                                        address_line_2="Unit 1",
-                                        city="San Francisco",
-                                        state_or_province="CA",
-                                        postal_code="94105",
-                                        country="US",
-                                    ),
-                                    tax_id=TaxId(
-                                        ein=Ein(
-                                            number="12-3456789",
-                                        ),
-                                    ),
-                                ),
-                            ),
-                        )
-                    ],
+            await client.invoice.bnpl.offer(
+                invoice_id="in_286a1849-2e3c-48a4-ab5a-8b7940cc3a5b",
+                request=BnplOfferRequest(
+                    cadence="WEEKLY",
+                    installments_start_date="2025-06-18",
+                    number_of_installments=4,
+                    payment_day_of_week="WEDNESDAY",
+                    down_payment_due_date="2025-06-11",
                 ),
             )
 
@@ -502,13 +340,10 @@ class AsyncBulkClient:
         asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "entities",
+            f"invoice/{jsonable_encoder(invoice_id)}/bnpl/offer",
             method="POST",
-            params={
-                "emitWebhooks": emit_webhooks,
-            },
             json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=BulkEntityCreationRequest, direction="write"
+                object_=request, annotation=BnplOfferRequest, direction="write"
             ),
             request_options=request_options,
             omit=OMIT,
@@ -519,9 +354,9 @@ class AsyncBulkClient:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
             return typing.cast(
-                BulkEntityCreationResponse,
+                BnplOfferResponse,
                 parse_obj_as(
-                    type_=BulkEntityCreationResponse,  # type: ignore
+                    type_=BnplOfferResponse,  # type: ignore
                     object_=_response_json,
                 ),
             )
@@ -598,75 +433,21 @@ class AsyncBulkClient:
                 )
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
-    async def download(
-        self,
-        *,
-        format: typing.Optional[BulkDownloadFormat] = None,
-        payment_methods: typing.Optional[bool] = None,
-        is_customer: typing.Optional[bool] = None,
-        foreign_id: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        status: typing.Optional[typing.Union[EntityStatus, typing.Sequence[EntityStatus]]] = None,
-        is_payee: typing.Optional[bool] = None,
-        is_payor: typing.Optional[bool] = None,
-        name: typing.Optional[str] = None,
-        search: typing.Optional[str] = None,
-        metadata: typing.Optional[MetadataFilter] = None,
-        return_metadata: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
-        limit: typing.Optional[int] = None,
-        starting_after: typing.Optional[EntityId] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> BulkDownloadResponse:
+    async def loan(self, loan_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> BnplLoanResponse:
         """
-        Get a URL to download a bulk entity as a CSV/JSON file.
+        Get information about a specific BNPL loan by loan ID
 
         Parameters
         ----------
-        format : typing.Optional[BulkDownloadFormat]
-            Format of the file to download. Defaults to CSV.
-
-        payment_methods : typing.Optional[bool]
-            If true, will include entity payment methods as part of the response
-
-        is_customer : typing.Optional[bool]
-            If true, only entities with a direct relationship to the requesting organization will be returned. If false or not provided, all entities will be returned.
-
-        foreign_id : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            ID used to identify this entity in your system
-
-        status : typing.Optional[typing.Union[EntityStatus, typing.Sequence[EntityStatus]]]
-
-        is_payee : typing.Optional[bool]
-            If true, entities that are marked as payees will be returned.
-            If false or not provided, entities that are marked as payees will not be returned.
-
-        is_payor : typing.Optional[bool]
-            If true or not provided, entities that are marked as payors will be returned.
-            If false, entities that are marked as payors will not be returned.
-
-        name : typing.Optional[str]
-            Use search instead. Deprecated. Filter entities by name. Partial matches are supported.
-
-        search : typing.Optional[str]
-            Find entities by name, email, or emailTo. Partial matches are supported.
-
-        metadata : typing.Optional[MetadataFilter]
-            Filter entities by simple key/value metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
-
-        return_metadata : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Return simple key/value metadata for the specified keys for the entities. For more complex metadata, use the Metadata API.
-
-        limit : typing.Optional[int]
-            Number of entities to return. Limit can range between 1 and 100, and the default is 10.
-
-        starting_after : typing.Optional[EntityId]
-            The ID of the entity to start after. If not provided, the first page of entities will be returned.
+        loan_id : str
+            The ID of the loan to retrieve
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        BulkDownloadResponse
+        BnplLoanResponse
 
         Examples
         --------
@@ -680,33 +461,16 @@ class AsyncBulkClient:
 
 
         async def main() -> None:
-            await client.entity.bulk.download(
-                format="CSV",
+            await client.invoice.bnpl.loan(
+                loan_id="684adb5d70a01b00596a3106",
             )
 
 
         asyncio.run(main())
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "entities/download",
+            f"bnpl/loan/{jsonable_encoder(loan_id)}",
             method="GET",
-            params={
-                "format": format,
-                "paymentMethods": payment_methods,
-                "isCustomer": is_customer,
-                "foreignId": foreign_id,
-                "status": status,
-                "isPayee": is_payee,
-                "isPayor": is_payor,
-                "name": name,
-                "search": search,
-                "metadata": convert_and_respect_annotation_metadata(
-                    object_=metadata, annotation=MetadataFilter, direction="write"
-                ),
-                "returnMetadata": return_metadata,
-                "limit": limit,
-                "startingAfter": starting_after,
-            },
             request_options=request_options,
         )
         try:
@@ -715,9 +479,9 @@ class AsyncBulkClient:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
             return typing.cast(
-                BulkDownloadResponse,
+                BnplLoanResponse,
                 parse_obj_as(
-                    type_=BulkDownloadResponse,  # type: ignore
+                    type_=BnplLoanResponse,  # type: ignore
                     object_=_response_json,
                 ),
             )

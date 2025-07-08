@@ -4,6 +4,7 @@ import typing
 from ..core.client_wrapper import SyncClientWrapper
 from .line_item.client import LineItemClient
 from .approval.client import ApprovalClient
+from .bnpl.client import BnplClient
 from .bulk.client import BulkClient
 from .collection.client import CollectionClient
 from .comment.client import CommentClient
@@ -45,6 +46,7 @@ from ..invoice_types.types.invoice_events_response import InvoiceEventsResponse
 from ..core.client_wrapper import AsyncClientWrapper
 from .line_item.client import AsyncLineItemClient
 from .approval.client import AsyncApprovalClient
+from .bnpl.client import AsyncBnplClient
 from .bulk.client import AsyncBulkClient
 from .collection.client import AsyncCollectionClient
 from .comment.client import AsyncCommentClient
@@ -60,6 +62,7 @@ class InvoiceClient:
         self._client_wrapper = client_wrapper
         self.line_item = LineItemClient(client_wrapper=self._client_wrapper)
         self.approval = ApprovalClient(client_wrapper=self._client_wrapper)
+        self.bnpl = BnplClient(client_wrapper=self._client_wrapper)
         self.bulk = BulkClient(client_wrapper=self._client_wrapper)
         self.collection = CollectionClient(client_wrapper=self._client_wrapper)
         self.comment = CommentClient(client_wrapper=self._client_wrapper)
@@ -1053,6 +1056,7 @@ class AsyncInvoiceClient:
         self._client_wrapper = client_wrapper
         self.line_item = AsyncLineItemClient(client_wrapper=self._client_wrapper)
         self.approval = AsyncApprovalClient(client_wrapper=self._client_wrapper)
+        self.bnpl = AsyncBnplClient(client_wrapper=self._client_wrapper)
         self.bulk = AsyncBulkClient(client_wrapper=self._client_wrapper)
         self.collection = AsyncCollectionClient(client_wrapper=self._client_wrapper)
         self.comment = AsyncCommentClient(client_wrapper=self._client_wrapper)

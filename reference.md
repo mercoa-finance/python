@@ -6191,7 +6191,7 @@ client = Mercoa(
 )
 client.payment_gateway.create_validation_job(
     request=ValidatePaymentGatewayRequest_Html(
-        html="ValidatePaymentGatewayRequestHTML.Default",
+        html='<html><body><h1>Invoice Details</h1><a href="https://www.payment-gateway.com/invoice/job_1a92b5f7-f522-435e-a953-fd649363730a4567890">Pay Invoice</a></body></html>',
     ),
 )
 
@@ -7347,6 +7347,264 @@ client.entity_group.invoice.find(
 </dl>
 </details>
 
+<details><summary><code>client.entity_group.invoice.<a href="src/mercoa/entity_group/invoice/client.py">download</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Get a URL to download invoices for an entity group as a CSV/JSON file.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.entity_group.invoice.download(
+    entity_group_id="entg_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+    format="CSV",
+    exclude_receivables=True,
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entity_group_id:** `EntityGroupId` — Entity Group ID or Entity Group ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**format:** `typing.Optional[BulkDownloadFormat]` — Format of the file to download. Defaults to CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_date:** `typing.Optional[dt.datetime]` — Start date filter. Defaults to CREATED_AT unless specified the dateType is specified
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_date:** `typing.Optional[dt.datetime]` — End date filter. Defaults to CREATED_AT unless specified the dateType is specified
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**date_type:** `typing.Optional[InvoiceDateFilter]` — Type of date to filter by if startDate and endDate filters are provided. Defaults to CREATED_AT.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**order_by:** `typing.Optional[InvoiceOrderByField]` — Field to order invoices by. Defaults to CREATED_AT.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**order_direction:** `typing.Optional[OrderDirection]` — Direction to order invoices by. Defaults to asc.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**search:** `typing.Optional[str]` — Find invoices by vendor name, invoice number, check number, or amount. Partial matches are supported.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**metadata:** `typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]` — Filter invoices by metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**line_item_metadata:** `typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]` — Filter invoices by line item metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**line_item_gl_account_id:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter invoices by line item GL account ID. Each filter will be applied as an OR condition. Duplicate keys will be ignored.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payer_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter invoices by payer ID or payer foreign ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**vendor_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter invoices by vendor ID or vendor foreign ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**creator_user_id:** `typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]` — Filter invoices by the ID or foreign ID of the user that created the invoice.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**approver_id:** `typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]` — Filter invoices by assigned approver user ID. Only invoices with all upstream policies approved will be returned.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**approver_action:** `typing.Optional[typing.Union[ApproverAction, typing.Sequence[ApproverAction]]]` — Filter invoices by approver action. Needs to be used with approverId. For example, if you want to find all invoices that have been approved by a specific user, you would use approverId and approverAction=APPROVE.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**invoice_id:** `typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]` — Filter invoices by invoice ID or invoice foreign ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]]` — Invoice status to filter on
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payment_type:** `typing.Optional[typing.Sequence[PaymentType]]` — Filter invoices by recurring status
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**invoice_template_id:** `typing.Optional[
+    typing.Union[InvoiceTemplateId, typing.Sequence[InvoiceTemplateId]]
+]` — Filter invoice by invoice template ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**exclude_payables:** `typing.Optional[bool]` — Return only invoices that are receivable by the entity.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**exclude_receivables:** `typing.Optional[bool]` — Return only invoices that are payable by the entity.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**return_payer_metadata:** `typing.Optional[bool]` — Whether to return payer metadata in the response
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**return_vendor_metadata:** `typing.Optional[bool]` — Whether to return vendor metadata in the response
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.entity_group.invoice.<a href="src/mercoa/entity_group/invoice/client.py">metrics</a>(...)</code></summary>
 <dl>
 <dd>
@@ -8158,6 +8416,77 @@ client.entity.approval_policy.restore(
 </dl>
 </details>
 
+## Entity Bnpl
+<details><summary><code>client.entity.bnpl.<a href="src/mercoa/entity/bnpl/client.py">get_loans</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Get all BNPL loans associated with an entity
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.entity.bnpl.get_loans(
+    entity_id="ent_123",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entity_id:** `str` — The ID of the entity to get loans for
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Entity Bulk
 <details><summary><code>client.entity.bulk.<a href="src/mercoa/entity/bulk/client.py">create</a>(...)</code></summary>
 <dl>
@@ -8268,6 +8597,178 @@ client.entity.bulk.create(
 <dd>
 
 **emit_webhooks:** `typing.Optional[bool]` — If true, webhooks will be emitted for each entity that is created. By default, webhooks are not emitted.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.entity.bulk.<a href="src/mercoa/entity/bulk/client.py">download</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Get a URL to download a bulk entity as a CSV/JSON file.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.entity.bulk.download(
+    format="CSV",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `typing.Optional[BulkDownloadFormat]` — Format of the file to download. Defaults to CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payment_methods:** `typing.Optional[bool]` — If true, will include entity payment methods as part of the response
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**is_customer:** `typing.Optional[bool]` — If true, only entities with a direct relationship to the requesting organization will be returned. If false or not provided, all entities will be returned.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**foreign_id:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — ID used to identify this entity in your system
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `typing.Optional[typing.Union[EntityStatus, typing.Sequence[EntityStatus]]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**is_payee:** `typing.Optional[bool]` 
+
+If true, entities that are marked as payees will be returned.
+If false or not provided, entities that are marked as payees will not be returned.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**is_payor:** `typing.Optional[bool]` 
+
+If true or not provided, entities that are marked as payors will be returned.
+If false, entities that are marked as payors will not be returned.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `typing.Optional[str]` — Use search instead. Deprecated. Filter entities by name. Partial matches are supported.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**search:** `typing.Optional[str]` — Find entities by name, email, or emailTo. Partial matches are supported.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**metadata:** `typing.Optional[MetadataFilter]` — Filter entities by simple key/value metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**return_metadata:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Return simple key/value metadata for the specified keys for the entities. For more complex metadata, use the Metadata API.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Number of entities to return. Limit can range between 1 and 100, and the default is 10.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**starting_after:** `typing.Optional[EntityId]` — The ID of the entity to start after. If not provided, the first page of entities will be returned.
     
 </dd>
 </dl>
@@ -10416,6 +10917,253 @@ client.entity.invoice.metrics(
 <dd>
 
 **currency:** `typing.Optional[typing.Union[CurrencyCode, typing.Sequence[CurrencyCode]]]` — Currency to filter on
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.entity.invoice.<a href="src/mercoa/entity/invoice/client.py">download</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Get a URL to download invoices for an entity as a CSV/JSON file.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.entity.invoice.download(
+    entity_id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",
+    format="CSV",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entity_id:** `EntityId` — Entity ID or Entity ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**format:** `typing.Optional[BulkDownloadFormat]` — Format of the file to download. Defaults to CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**exclude_payables:** `typing.Optional[bool]` — Return only invoices that are receivable by the entity.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**exclude_receivables:** `typing.Optional[bool]` — Return only invoices that are payable by the entity.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_date:** `typing.Optional[dt.datetime]` — Start date filter. Defaults to CREATED_AT unless specified the dateType is specified
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_date:** `typing.Optional[dt.datetime]` — End date filter. Defaults to CREATED_AT unless specified the dateType is specified
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**date_type:** `typing.Optional[InvoiceDateFilter]` — Type of date to filter by if startDate and endDate filters are provided. Defaults to CREATED_AT.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**order_by:** `typing.Optional[InvoiceOrderByField]` — Field to order invoices by. Defaults to CREATED_AT.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**order_direction:** `typing.Optional[OrderDirection]` — Direction to order invoices by. Defaults to asc.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**search:** `typing.Optional[str]` — Find invoices by vendor name, invoice number, check number, or amount. Partial matches are supported.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**metadata:** `typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]` — Filter invoices by metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**line_item_metadata:** `typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]` — Filter invoices by line item metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**line_item_gl_account_id:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter invoices by line item GL account ID. Each filter will be applied as an OR condition. Duplicate keys will be ignored.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payer_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter invoices by payer ID or payer foreign ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**vendor_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter invoices by vendor ID or vendor foreign ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**creator_user_id:** `typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]` — Filter invoices by the ID or foreign ID of the user that created the invoice.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**approver_id:** `typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]` — Filter invoices by assigned approver user ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**approver_action:** `typing.Optional[typing.Union[ApproverAction, typing.Sequence[ApproverAction]]]` — Filter invoices by approver action. Needs to be used with approverId. For example, if you want to find all invoices that have been approved by a specific user, you would use approverId and approverAction=APPROVE.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**invoice_id:** `typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]` — Filter invoices by invoice ID or invoice foreign ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]]` — Invoice status to filter on.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payment_type:** `typing.Optional[typing.Sequence[PaymentType]]` — Filter invoices by payment type.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**return_payer_metadata:** `typing.Optional[bool]` — Whether to return payer metadata in the response
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**return_vendor_metadata:** `typing.Optional[bool]` — Whether to return vendor metadata in the response
     
 </dd>
 </dl>
@@ -13346,6 +14094,163 @@ client.invoice.approval.reject(
 </dl>
 </details>
 
+## Invoice Bnpl
+<details><summary><code>client.invoice.bnpl.<a href="src/mercoa/invoice/bnpl/client.py">offer</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Get a BNPL offer for an invoice
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+from mercoa.invoice_types import BnplOfferRequest
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.invoice.bnpl.offer(
+    invoice_id="in_286a1849-2e3c-48a4-ab5a-8b7940cc3a5b",
+    request=BnplOfferRequest(
+        cadence="WEEKLY",
+        installments_start_date="2025-06-18",
+        number_of_installments=4,
+        payment_day_of_week="WEDNESDAY",
+        down_payment_due_date="2025-06-11",
+    ),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**invoice_id:** `InvoiceId` — Invoice ID or Invoice ForeignID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `BnplOfferRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.invoice.bnpl.<a href="src/mercoa/invoice/bnpl/client.py">loan</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Get information about a specific BNPL loan by loan ID
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.invoice.bnpl.loan(
+    loan_id="684adb5d70a01b00596a3106",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**loan_id:** `str` — The ID of the loan to retrieve
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Invoice Bulk
 <details><summary><code>client.invoice.bulk.<a href="src/mercoa/invoice/bulk/client.py">create</a>(...)</code></summary>
 <dl>
@@ -13662,6 +14567,262 @@ client.invoice.bulk.approve(
 <dd>
 
 **emit_webhooks:** `typing.Optional[bool]` — If true, webhooks will be emitted for each invoice that is approved. By default, webhooks are not emitted.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.invoice.bulk.<a href="src/mercoa/invoice/bulk/client.py">download</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Get a URL to download a bulk invoice as a CSV/JSON file.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.invoice.bulk.download(
+    format="CSV",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `typing.Optional[BulkDownloadFormat]` — Format of the file to download. Defaults to CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entity_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter invoices by the ID or foreign ID of the entity that is the payer or the vendor of the invoice.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entity_group_id:** `typing.Optional[EntityGroupId]` — Filter invoices by the ID or foreign ID of the entity group that the entity belongs to.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_date:** `typing.Optional[dt.datetime]` — Start date filter. Defaults to CREATED_AT unless specified the dateType is specified
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_date:** `typing.Optional[dt.datetime]` — End date filter. Defaults to CREATED_AT unless specified the dateType is specified
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**date_type:** `typing.Optional[InvoiceDateFilter]` — Type of date to filter by if startDate and endDate filters are provided. Defaults to CREATED_AT.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**order_by:** `typing.Optional[InvoiceOrderByField]` — Field to order invoices by. Defaults to CREATED_AT.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**order_direction:** `typing.Optional[OrderDirection]` — Direction to order invoices by. Defaults to asc.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**starting_after:** `typing.Optional[InvoiceId]` — The ID of the invoice to start after. If not provided, the first page of invoices will be returned.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**search:** `typing.Optional[str]` — Find invoices by vendor name, invoice number, check number, or amount. Partial matches are supported.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**metadata:** `typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]` — Filter invoices by metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**line_item_metadata:** `typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]` — Filter invoices by line item metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**line_item_gl_account_id:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter invoices by line item GL account ID. Each filter will be applied as an OR condition. Duplicate keys will be ignored.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payer_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter invoices by payer ID or payer foreign ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**vendor_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter invoices by vendor ID or vendor foreign ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**creator_user_id:** `typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]` — Filter invoices by the ID or foreign ID of the user that created the invoice.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**approver_id:** `typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]` — Filter invoices by assigned approver user ID. Only invoices with all upstream policies approved will be returned.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**approver_action:** `typing.Optional[typing.Union[ApproverAction, typing.Sequence[ApproverAction]]]` — Filter invoices by approver action. Needs to be used with approverId. For example, if you want to find all invoices that have been approved by a specific user, you would use approverId and approverAction=APPROVE.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**invoice_id:** `typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]` — Filter invoices by invoice ID or invoice foreign ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]]` — Invoice status to filter on
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payment_type:** `typing.Optional[typing.Sequence[PaymentType]]` — Filter invoices by recurring status
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**invoice_template_id:** `typing.Optional[
+    typing.Union[InvoiceTemplateId, typing.Sequence[InvoiceTemplateId]]
+]` — Filter invoice by invoice template ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**return_payer_metadata:** `typing.Optional[bool]` — Whether to return payer metadata in the response
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**return_vendor_metadata:** `typing.Optional[bool]` — Whether to return vendor metadata in the response
     
 </dd>
 </dl>
@@ -15904,6 +17065,214 @@ client.transaction.get(
 <dd>
 
 **transaction_id:** `TransactionId` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.transaction.<a href="src/mercoa/transaction/client.py">download</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Get a URL to download transactions as a CSV/JSON file.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.transaction.download(
+    format="CSV",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `typing.Optional[BulkDownloadFormat]` — Format of the file to download. Defaults to CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entity_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter transactions by the ID or foreign ID of the entity that created the transaction.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entity_group_id:** `typing.Optional[EntityGroupId]` — Filter transactions by the ID or foreign ID of the entity group that the entity belongs to.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_date:** `typing.Optional[dt.datetime]` — CREATED_AT Start date filter.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_date:** `typing.Optional[dt.datetime]` — CREATED_AT End date filter.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Number of transactions to return. Limit can range between 1 and 100, and the default is 10.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**starting_after:** `typing.Optional[TransactionId]` — The ID of the transactions to start after. If not provided, the first page of transactions will be returned.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**search:** `typing.Optional[str]` — Find transactions by vendor name, invoice number, check number, or amount. Partial matches are supported.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**metadata:** `typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]` — Filter transactions by invoice metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**line_item_metadata:** `typing.Optional[typing.Union[MetadataFilter, typing.Sequence[MetadataFilter]]]` — Filter transactions by invoice line item metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**line_item_gl_account_id:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter transactions by invoice line item GL account ID. Each filter will be applied as an OR condition. Duplicate keys will be ignored.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payer_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter transactions by payer ID or payer foreign ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**vendor_id:** `typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]]` — Filter transactions by vendor ID or vendor foreign ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**invoice_id:** `typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]` — Filter transactions by invoice ID or invoice foreign ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**transaction_id:** `typing.Optional[typing.Union[TransactionId, typing.Sequence[TransactionId]]]` — Filter transactions by transaction ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `typing.Optional[
+    typing.Union[TransactionStatus, typing.Sequence[TransactionStatus]]
+]` — Transaction status to filter on
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**transaction_type:** `typing.Optional[typing.Union[TransactionType, typing.Sequence[TransactionType]]]` — Filter transactions by transaction type
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**creator_user_id:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Filter transactions by creator user ID. Does not work, do not use.
     
 </dd>
 </dl>

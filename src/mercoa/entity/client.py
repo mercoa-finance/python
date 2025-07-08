@@ -7,6 +7,7 @@ from .email_log.client import EmailLogClient
 from .payment_method.client import PaymentMethodClient
 from .user.client import UserClient
 from .approval_policy.client import ApprovalPolicyClient
+from .bnpl.client import BnplClient
 from .bulk.client import BulkClient
 from .customization.client import CustomizationClient
 from .document.client import DocumentClient
@@ -49,6 +50,7 @@ from .email_log.client import AsyncEmailLogClient
 from .payment_method.client import AsyncPaymentMethodClient
 from .user.client import AsyncUserClient
 from .approval_policy.client import AsyncApprovalPolicyClient
+from .bnpl.client import AsyncBnplClient
 from .bulk.client import AsyncBulkClient
 from .customization.client import AsyncCustomizationClient
 from .document.client import AsyncDocumentClient
@@ -71,6 +73,7 @@ class EntityClient:
         self.payment_method = PaymentMethodClient(client_wrapper=self._client_wrapper)
         self.user = UserClient(client_wrapper=self._client_wrapper)
         self.approval_policy = ApprovalPolicyClient(client_wrapper=self._client_wrapper)
+        self.bnpl = BnplClient(client_wrapper=self._client_wrapper)
         self.bulk = BulkClient(client_wrapper=self._client_wrapper)
         self.customization = CustomizationClient(client_wrapper=self._client_wrapper)
         self.document = DocumentClient(client_wrapper=self._client_wrapper)
@@ -1661,6 +1664,7 @@ class AsyncEntityClient:
         self.payment_method = AsyncPaymentMethodClient(client_wrapper=self._client_wrapper)
         self.user = AsyncUserClient(client_wrapper=self._client_wrapper)
         self.approval_policy = AsyncApprovalPolicyClient(client_wrapper=self._client_wrapper)
+        self.bnpl = AsyncBnplClient(client_wrapper=self._client_wrapper)
         self.bulk = AsyncBulkClient(client_wrapper=self._client_wrapper)
         self.customization = AsyncCustomizationClient(client_wrapper=self._client_wrapper)
         self.document = AsyncDocumentClient(client_wrapper=self._client_wrapper)

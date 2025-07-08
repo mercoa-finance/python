@@ -10,6 +10,19 @@ from .approver_action import ApproverAction
 from .associated_approval_action import AssociatedApprovalAction
 from .bank_account_payment_destination_options import BankAccountPaymentDestinationOptions
 from .bank_delivery_method import BankDeliveryMethod
+from .bnpl_cadence import BnplCadence
+from .bnpl_day_of_week import BnplDayOfWeek
+from .bnpl_fees import BnplFees
+from .bnpl_installment import BnplInstallment
+from .bnpl_installment_total_paid import BnplInstallmentTotalPaid
+from .bnpl_installment_type import BnplInstallmentType
+from .bnpl_loan_installment import BnplLoanInstallment
+from .bnpl_loan_response import BnplLoanResponse
+from .bnpl_loan_status import BnplLoanStatus
+from .bnpl_offer_request import BnplOfferRequest
+from .bnpl_offer_response import BnplOfferResponse
+from .bnpl_outstanding_balance import BnplOutstandingBalance
+from .bnpl_payment_source_options import BnplPaymentSourceOptions
 from .bulk_invoice_approval_from_object_response import BulkInvoiceApprovalFromObjectResponse
 from .bulk_invoice_approval_request import BulkInvoiceApprovalRequest
 from .bulk_invoice_approval_response import BulkInvoiceApprovalResponse
@@ -24,6 +37,7 @@ from .check_payment_destination_options import CheckPaymentDestinationOptions
 from .comment_id import CommentId
 from .comment_request import CommentRequest
 from .comment_response import CommentResponse
+from .custom_payment_destination_options import CustomPaymentDestinationOptions
 from .day_of_week import DayOfWeek
 from .find_invoice_response import FindInvoiceResponse
 from .find_invoice_template_response import FindInvoiceTemplateResponse
@@ -66,6 +80,7 @@ from .payment_destination_options import (
     PaymentDestinationOptions,
     PaymentDestinationOptions_BankAccount,
     PaymentDestinationOptions_Check,
+    PaymentDestinationOptions_Custom,
     PaymentDestinationOptions_Utility,
 )
 from .payment_month_schedule import PaymentMonthSchedule
@@ -79,6 +94,7 @@ from .payment_schedule import (
 )
 from .payment_schedule_base import PaymentScheduleBase
 from .payment_schedule_end_condition import PaymentScheduleEndCondition
+from .payment_source_options import PaymentSourceOptions, PaymentSourceOptions_Bnpl
 from .payment_type import PaymentType
 from .payment_week_schedule import PaymentWeekSchedule
 from .payment_year_schedule import PaymentYearSchedule
@@ -95,6 +111,19 @@ __all__ = [
     "AssociatedApprovalAction",
     "BankAccountPaymentDestinationOptions",
     "BankDeliveryMethod",
+    "BnplCadence",
+    "BnplDayOfWeek",
+    "BnplFees",
+    "BnplInstallment",
+    "BnplInstallmentTotalPaid",
+    "BnplInstallmentType",
+    "BnplLoanInstallment",
+    "BnplLoanResponse",
+    "BnplLoanStatus",
+    "BnplOfferRequest",
+    "BnplOfferResponse",
+    "BnplOutstandingBalance",
+    "BnplPaymentSourceOptions",
     "BulkInvoiceApprovalFromObjectResponse",
     "BulkInvoiceApprovalRequest",
     "BulkInvoiceApprovalResponse",
@@ -109,6 +138,7 @@ __all__ = [
     "CommentId",
     "CommentRequest",
     "CommentResponse",
+    "CustomPaymentDestinationOptions",
     "DayOfWeek",
     "FindInvoiceResponse",
     "FindInvoiceTemplateResponse",
@@ -150,6 +180,7 @@ __all__ = [
     "PaymentDestinationOptions",
     "PaymentDestinationOptions_BankAccount",
     "PaymentDestinationOptions_Check",
+    "PaymentDestinationOptions_Custom",
     "PaymentDestinationOptions_Utility",
     "PaymentMonthSchedule",
     "PaymentSchedule",
@@ -160,6 +191,8 @@ __all__ = [
     "PaymentSchedule_OneTime",
     "PaymentSchedule_Weekly",
     "PaymentSchedule_Yearly",
+    "PaymentSourceOptions",
+    "PaymentSourceOptions_Bnpl",
     "PaymentType",
     "PaymentWeekSchedule",
     "PaymentYearSchedule",

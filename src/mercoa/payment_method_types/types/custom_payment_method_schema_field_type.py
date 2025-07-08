@@ -11,6 +11,8 @@ CustomPaymentMethodSchemaFieldType = typing.Union[
         "phone",
         "email",
         "url",
+        "dynamicUrl",
+        "embeddedUrl",
         "address",
         "usBankRoutingNumber",
         "usBankAccountNumber",

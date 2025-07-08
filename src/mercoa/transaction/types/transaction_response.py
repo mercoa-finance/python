@@ -47,6 +47,7 @@ class TransactionResponse_BankAccountToBankAccount(UniversalBaseModel):
         InvoiceLineItemResponse,
         InvoiceResponse,
         PaymentDestinationOptions_Check,
+        PaymentSourceOptions_Bnpl,
     )
     from mercoa.payment_method_types import (
         PaymentMethodResponse_BankAccount,
@@ -364,6 +365,11 @@ class TransactionResponse_BankAccountToBankAccount(UniversalBaseModel):
                     ),
                 ),
                 payment_source_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                payment_source_options=PaymentSourceOptions_Bnpl(
+                    installments_start_date="2025-06-18",
+                    deferment_weeks=8,
+                    accepted_terms=True,
+                ),
                 vendor_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
                 vendor=CounterpartyResponse(
                     id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
@@ -829,6 +835,7 @@ class TransactionResponse_BankAccountToMailedCheck(UniversalBaseModel):
         InvoiceLineItemResponse,
         InvoiceResponse,
         PaymentDestinationOptions_Check,
+        PaymentSourceOptions_Bnpl,
     )
     from mercoa.payment_method_types import (
         PaymentMethodResponse_BankAccount,
@@ -1146,6 +1153,11 @@ class TransactionResponse_BankAccountToMailedCheck(UniversalBaseModel):
                     ),
                 ),
                 payment_source_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                payment_source_options=PaymentSourceOptions_Bnpl(
+                    installments_start_date="2025-06-18",
+                    deferment_weeks=8,
+                    accepted_terms=True,
+                ),
                 vendor_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
                 vendor=CounterpartyResponse(
                     id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
@@ -1609,6 +1621,7 @@ class TransactionResponse_BankAccountToPrintedCheck(UniversalBaseModel):
         InvoiceLineItemResponse,
         InvoiceResponse,
         PaymentDestinationOptions_Check,
+        PaymentSourceOptions_Bnpl,
     )
     from mercoa.payment_method_types import (
         PaymentMethodResponse_BankAccount,
@@ -1926,6 +1939,11 @@ class TransactionResponse_BankAccountToPrintedCheck(UniversalBaseModel):
                     ),
                 ),
                 payment_source_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                payment_source_options=PaymentSourceOptions_Bnpl(
+                    installments_start_date="2025-06-18",
+                    deferment_weeks=8,
+                    accepted_terms=True,
+                ),
                 vendor_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
                 vendor=CounterpartyResponse(
                     id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
@@ -2389,6 +2407,7 @@ class TransactionResponse_BankAccountToWallet(UniversalBaseModel):
         InvoiceLineItemResponse,
         InvoiceResponse,
         PaymentDestinationOptions_Check,
+        PaymentSourceOptions_Bnpl,
     )
     from mercoa.payment_method_types import (
         PaymentMethodResponse_BankAccount,
@@ -2706,6 +2725,11 @@ class TransactionResponse_BankAccountToWallet(UniversalBaseModel):
                     ),
                 ),
                 payment_source_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                payment_source_options=PaymentSourceOptions_Bnpl(
+                    installments_start_date="2025-06-18",
+                    deferment_weeks=8,
+                    accepted_terms=True,
+                ),
                 vendor_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
                 vendor=CounterpartyResponse(
                     id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
@@ -3171,6 +3195,7 @@ class TransactionResponse_CardToBankAccount(UniversalBaseModel):
         InvoiceLineItemResponse,
         InvoiceResponse,
         PaymentDestinationOptions_Check,
+        PaymentSourceOptions_Bnpl,
     )
     from mercoa.payment_method_types import (
         PaymentMethodResponse_BankAccount,
@@ -3488,6 +3513,11 @@ class TransactionResponse_CardToBankAccount(UniversalBaseModel):
                     ),
                 ),
                 payment_source_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                payment_source_options=PaymentSourceOptions_Bnpl(
+                    installments_start_date="2025-06-18",
+                    deferment_weeks=8,
+                    accepted_terms=True,
+                ),
                 vendor_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
                 vendor=CounterpartyResponse(
                     id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
@@ -3953,6 +3983,7 @@ class TransactionResponse_CardToWallet(UniversalBaseModel):
         InvoiceLineItemResponse,
         InvoiceResponse,
         PaymentDestinationOptions_Check,
+        PaymentSourceOptions_Bnpl,
     )
     from mercoa.payment_method_types import (
         PaymentMethodResponse_BankAccount,
@@ -4270,6 +4301,11 @@ class TransactionResponse_CardToWallet(UniversalBaseModel):
                     ),
                 ),
                 payment_source_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                payment_source_options=PaymentSourceOptions_Bnpl(
+                    installments_start_date="2025-06-18",
+                    deferment_weeks=8,
+                    accepted_terms=True,
+                ),
                 vendor_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
                 vendor=CounterpartyResponse(
                     id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
@@ -4732,6 +4768,7 @@ class TransactionResponse_WalletToBankAccount(UniversalBaseModel):
         InvoiceLineItemResponse,
         InvoiceResponse,
         PaymentDestinationOptions_Check,
+        PaymentSourceOptions_Bnpl,
     )
     from mercoa.payment_method_types import (
         PaymentMethodResponse_BankAccount,
@@ -5049,6 +5086,11 @@ class TransactionResponse_WalletToBankAccount(UniversalBaseModel):
                     ),
                 ),
                 payment_source_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                payment_source_options=PaymentSourceOptions_Bnpl(
+                    installments_start_date="2025-06-18",
+                    deferment_weeks=8,
+                    accepted_terms=True,
+                ),
                 vendor_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
                 vendor=CounterpartyResponse(
                     id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
@@ -5514,6 +5556,7 @@ class TransactionResponse_WalletToWallet(UniversalBaseModel):
         InvoiceLineItemResponse,
         InvoiceResponse,
         PaymentDestinationOptions_Check,
+        PaymentSourceOptions_Bnpl,
     )
     from mercoa.payment_method_types import (
         PaymentMethodResponse_BankAccount,
@@ -5831,6 +5874,11 @@ class TransactionResponse_WalletToWallet(UniversalBaseModel):
                     ),
                 ),
                 payment_source_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                payment_source_options=PaymentSourceOptions_Bnpl(
+                    installments_start_date="2025-06-18",
+                    deferment_weeks=8,
+                    accepted_terms=True,
+                ),
                 vendor_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
                 vendor=CounterpartyResponse(
                     id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
@@ -6293,6 +6341,7 @@ class TransactionResponse_Custom(UniversalBaseModel):
         InvoiceLineItemResponse,
         InvoiceResponse,
         PaymentDestinationOptions_Check,
+        PaymentSourceOptions_Bnpl,
     )
     from mercoa.payment_method_types import (
         PaymentMethodResponse_BankAccount,
@@ -6610,6 +6659,11 @@ class TransactionResponse_Custom(UniversalBaseModel):
                     ),
                 ),
                 payment_source_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                payment_source_options=PaymentSourceOptions_Bnpl(
+                    installments_start_date="2025-06-18",
+                    deferment_weeks=8,
+                    accepted_terms=True,
+                ),
                 vendor_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
                 vendor=CounterpartyResponse(
                     id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
@@ -7072,6 +7126,7 @@ class TransactionResponse_OffPlatform(UniversalBaseModel):
         InvoiceLineItemResponse,
         InvoiceResponse,
         PaymentDestinationOptions_Check,
+        PaymentSourceOptions_Bnpl,
     )
     from mercoa.payment_method_types import (
         PaymentMethodResponse_BankAccount,
@@ -7389,6 +7444,11 @@ class TransactionResponse_OffPlatform(UniversalBaseModel):
                     ),
                 ),
                 payment_source_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+                payment_source_options=PaymentSourceOptions_Bnpl(
+                    installments_start_date="2025-06-18",
+                    deferment_weeks=8,
+                    accepted_terms=True,
+                ),
                 vendor_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
                 vendor=CounterpartyResponse(
                     id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
@@ -7848,6 +7908,7 @@ from mercoa.invoice_types import (
     InvoiceLineItemResponse,
     InvoiceResponse,
     PaymentDestinationOptions_Check,
+    PaymentSourceOptions_Bnpl,
 )
 from mercoa.payment_method_types import (
     PaymentMethodResponse_BankAccount,
@@ -8165,6 +8226,11 @@ TransactionResponse_BankAccountToBankAccount(
                 ),
             ),
             payment_source_id="pm_4794d597-70dc-4fec-b6ec-c5988e759769",
+            payment_source_options=PaymentSourceOptions_Bnpl(
+                installments_start_date="2025-06-18",
+                deferment_weeks=8,
+                accepted_terms=True,
+            ),
             vendor_id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
             vendor=CounterpartyResponse(
                 id="ent_21661ac1-a2a8-4465-a6c0-64474ba8181d",
