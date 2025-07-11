@@ -14,6 +14,8 @@ from .invoice_email_webhook import InvoiceEmailWebhook
 from .invoice_status_changed_webhook import InvoiceStatusChangedWebhook
 from .invoice_webhook import InvoiceWebhook
 from .ocr_job_completed_webhook import OcrJobCompletedWebhook
+from .payment_gateway_process_job_completed_webhook import PaymentGatewayProcessJobCompletedWebhook
+from .payment_gateway_validation_job_completed_webhook import PaymentGatewayValidationJobCompletedWebhook
 from .payment_method_webhook import PaymentMethodWebhook
 from .transaction_webhook import TransactionWebhook
 
@@ -32,6 +34,8 @@ __all__ = [
     "InvoiceStatusChangedWebhook",
     "InvoiceWebhook",
     "OcrJobCompletedWebhook",
+    "PaymentGatewayProcessJobCompletedWebhook",
+    "PaymentGatewayValidationJobCompletedWebhook",
     "PaymentMethodWebhook",
     "TransactionWebhook",
 ]

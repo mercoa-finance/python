@@ -6,9 +6,9 @@ from .process_payment_gateway_card_details import (
     ProcessPaymentGatewayCardDetails_Direct,
     ProcessPaymentGatewayCardDetails_Iframe,
 )
+from .process_payment_gateway_card_details_base import ProcessPaymentGatewayCardDetailsBase
 from .process_payment_gateway_card_details_direct import ProcessPaymentGatewayCardDetailsDirect
 from .process_payment_gateway_card_details_iframe import ProcessPaymentGatewayCardDetailsIframe
-from .process_payment_gateway_completed_response import ProcessPaymentGatewayCompletedResponse
 from .process_payment_gateway_failed_response import ProcessPaymentGatewayFailedResponse
 from .process_payment_gateway_pending_response import ProcessPaymentGatewayPendingResponse
 from .process_payment_gateway_request import (
@@ -20,10 +20,11 @@ from .process_payment_gateway_request_document import ProcessPaymentGatewayReque
 from .process_payment_gateway_request_html import ProcessPaymentGatewayRequestHtml
 from .process_payment_gateway_response import (
     ProcessPaymentGatewayResponse,
-    ProcessPaymentGatewayResponse_Completed,
     ProcessPaymentGatewayResponse_Failed,
     ProcessPaymentGatewayResponse_Pending,
+    ProcessPaymentGatewayResponse_Success,
 )
+from .process_payment_gateway_success_response import ProcessPaymentGatewaySuccessResponse
 from .validate_payment_gateway_card_acceptance import ValidatePaymentGatewayCardAcceptance
 from .validate_payment_gateway_card_fee import (
     ValidatePaymentGatewayCardFee,
@@ -35,7 +36,6 @@ from .validate_payment_gateway_card_fee_flat import ValidatePaymentGatewayCardFe
 from .validate_payment_gateway_card_fee_none import ValidatePaymentGatewayCardFeeNone
 from .validate_payment_gateway_card_fee_percentage import ValidatePaymentGatewayCardFeePercentage
 from .validate_payment_gateway_card_response import ValidatePaymentGatewayCardResponse
-from .validate_payment_gateway_completed_response import ValidatePaymentGatewayCompletedResponse
 from .validate_payment_gateway_failed_response import ValidatePaymentGatewayFailedResponse
 from .validate_payment_gateway_pending_response import ValidatePaymentGatewayPendingResponse
 from .validate_payment_gateway_request import (
@@ -47,19 +47,20 @@ from .validate_payment_gateway_request_document import ValidatePaymentGatewayReq
 from .validate_payment_gateway_request_html import ValidatePaymentGatewayRequestHtml
 from .validate_payment_gateway_response import (
     ValidatePaymentGatewayResponse,
-    ValidatePaymentGatewayResponse_Completed,
     ValidatePaymentGatewayResponse_Failed,
     ValidatePaymentGatewayResponse_Pending,
+    ValidatePaymentGatewayResponse_Success,
 )
+from .validate_payment_gateway_success_response import ValidatePaymentGatewaySuccessResponse
 
 __all__ = [
     "PaymentGatewayError",
     "ProcessPaymentGatewayCardDetails",
+    "ProcessPaymentGatewayCardDetailsBase",
     "ProcessPaymentGatewayCardDetailsDirect",
     "ProcessPaymentGatewayCardDetailsIframe",
     "ProcessPaymentGatewayCardDetails_Direct",
     "ProcessPaymentGatewayCardDetails_Iframe",
-    "ProcessPaymentGatewayCompletedResponse",
     "ProcessPaymentGatewayFailedResponse",
     "ProcessPaymentGatewayPendingResponse",
     "ProcessPaymentGatewayRequest",
@@ -68,9 +69,10 @@ __all__ = [
     "ProcessPaymentGatewayRequest_Document",
     "ProcessPaymentGatewayRequest_Html",
     "ProcessPaymentGatewayResponse",
-    "ProcessPaymentGatewayResponse_Completed",
     "ProcessPaymentGatewayResponse_Failed",
     "ProcessPaymentGatewayResponse_Pending",
+    "ProcessPaymentGatewayResponse_Success",
+    "ProcessPaymentGatewaySuccessResponse",
     "ValidatePaymentGatewayCardAcceptance",
     "ValidatePaymentGatewayCardFee",
     "ValidatePaymentGatewayCardFeeFlat",
@@ -80,7 +82,6 @@ __all__ = [
     "ValidatePaymentGatewayCardFee_None",
     "ValidatePaymentGatewayCardFee_Percentage",
     "ValidatePaymentGatewayCardResponse",
-    "ValidatePaymentGatewayCompletedResponse",
     "ValidatePaymentGatewayFailedResponse",
     "ValidatePaymentGatewayPendingResponse",
     "ValidatePaymentGatewayRequest",
@@ -89,7 +90,8 @@ __all__ = [
     "ValidatePaymentGatewayRequest_Document",
     "ValidatePaymentGatewayRequest_Html",
     "ValidatePaymentGatewayResponse",
-    "ValidatePaymentGatewayResponse_Completed",
     "ValidatePaymentGatewayResponse_Failed",
     "ValidatePaymentGatewayResponse_Pending",
+    "ValidatePaymentGatewayResponse_Success",
+    "ValidatePaymentGatewaySuccessResponse",
 ]

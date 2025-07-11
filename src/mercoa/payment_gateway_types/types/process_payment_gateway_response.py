@@ -34,7 +34,7 @@ class ProcessPaymentGatewayResponse_Pending(UniversalBaseModel):
             extra = pydantic.Extra.allow
 
 
-class ProcessPaymentGatewayResponse_Completed(UniversalBaseModel):
+class ProcessPaymentGatewayResponse_Success(UniversalBaseModel):
     """
     Examples
     --------
@@ -45,7 +45,7 @@ class ProcessPaymentGatewayResponse_Completed(UniversalBaseModel):
     )
     """
 
-    job_status: typing_extensions.Annotated[typing.Literal["completed"], FieldMetadata(alias="jobStatus")] = "completed"
+    job_status: typing_extensions.Annotated[typing.Literal["success"], FieldMetadata(alias="jobStatus")] = "success"
     job_id: typing_extensions.Annotated[str, FieldMetadata(alias="jobId")]
     receipt_url: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="receiptUrl")] = None
     session_url: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="sessionUrl")] = None
@@ -95,6 +95,6 @@ ProcessPaymentGatewayResponse_Pending(
 """
 ProcessPaymentGatewayResponse = typing.Union[
     ProcessPaymentGatewayResponse_Pending,
-    ProcessPaymentGatewayResponse_Completed,
+    ProcessPaymentGatewayResponse_Success,
     ProcessPaymentGatewayResponse_Failed,
 ]

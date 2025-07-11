@@ -19,7 +19,7 @@ class ValidatePaymentGatewayRequestDocument(UniversalBaseModel):
 
     document: str = pydantic.Field()
     """
-    The invoice document to extract the payment gateway from in base64 format
+    The invoice document PDF to extract the payment gateway from. Must be in base64 format or a publicly accessible URL.
     """
 
     if IS_PYDANTIC_V2:

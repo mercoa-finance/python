@@ -35,7 +35,7 @@ class ValidatePaymentGatewayResponse_Pending(UniversalBaseModel):
             extra = pydantic.Extra.allow
 
 
-class ValidatePaymentGatewayResponse_Completed(UniversalBaseModel):
+class ValidatePaymentGatewayResponse_Success(UniversalBaseModel):
     """
     Examples
     --------
@@ -46,7 +46,7 @@ class ValidatePaymentGatewayResponse_Completed(UniversalBaseModel):
     )
     """
 
-    job_status: typing_extensions.Annotated[typing.Literal["completed"], FieldMetadata(alias="jobStatus")] = "completed"
+    job_status: typing_extensions.Annotated[typing.Literal["success"], FieldMetadata(alias="jobStatus")] = "success"
     job_id: typing_extensions.Annotated[str, FieldMetadata(alias="jobId")]
     payment_gateway_url: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="paymentGatewayUrl")] = (
         None
@@ -99,6 +99,6 @@ ValidatePaymentGatewayResponse_Pending(
 """
 ValidatePaymentGatewayResponse = typing.Union[
     ValidatePaymentGatewayResponse_Pending,
-    ValidatePaymentGatewayResponse_Completed,
+    ValidatePaymentGatewayResponse_Success,
     ValidatePaymentGatewayResponse_Failed,
 ]

@@ -9,7 +9,7 @@ from .validate_payment_gateway_card_response import ValidatePaymentGatewayCardRe
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
-class ValidatePaymentGatewayCompletedResponse(UniversalBaseModel):
+class ValidatePaymentGatewaySuccessResponse(UniversalBaseModel):
     job_id: typing_extensions.Annotated[str, FieldMetadata(alias="jobId")] = pydantic.Field()
     """
     The job ID of the payment gateway validation job

@@ -8,7 +8,7 @@ import typing
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
-class ProcessPaymentGatewayCompletedResponse(UniversalBaseModel):
+class ProcessPaymentGatewaySuccessResponse(UniversalBaseModel):
     job_id: typing_extensions.Annotated[str, FieldMetadata(alias="jobId")] = pydantic.Field()
     """
     The job ID of the payment gateway processing job

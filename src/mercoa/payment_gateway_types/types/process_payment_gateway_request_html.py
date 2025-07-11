@@ -21,7 +21,8 @@ class ProcessPaymentGatewayRequestHtml(UniversalBaseModel):
     ProcessPaymentGatewayRequestHtml(
         html='<html><body><h1>Invoice Details</h1><a href="https://www.payment-gateway.com/invoice/123123">Pay Invoice</a></body></html>',
         card_details=ProcessPaymentGatewayCardDetails_Direct(
-            name_on_card="John Doe",
+            first_name="John",
+            last_name="Doe",
             card_number="4242424242424242",
             expiration_month=10,
             expiration_year=2025,

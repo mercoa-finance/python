@@ -12,13 +12,17 @@ import pydantic
 
 class ProcessPaymentGatewayCardDetails_Direct(UniversalBaseModel):
     type: typing.Literal["direct"] = "direct"
-    name_on_card: typing_extensions.Annotated[str, FieldMetadata(alias="nameOnCard")]
     card_number: typing_extensions.Annotated[str, FieldMetadata(alias="cardNumber")]
     expiration_month: typing_extensions.Annotated[int, FieldMetadata(alias="expirationMonth")]
     expiration_year: typing_extensions.Annotated[int, FieldMetadata(alias="expirationYear")]
     cvv: str
+    first_name: typing_extensions.Annotated[str, FieldMetadata(alias="firstName")]
+    last_name: typing_extensions.Annotated[str, FieldMetadata(alias="lastName")]
     postal_code: typing_extensions.Annotated[str, FieldMetadata(alias="postalCode")]
     country: CountryCode
+    phone_number: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="phoneNumber")] = None
+    email: typing.Optional[str] = None
+    full_address: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="fullAddress")] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -33,6 +37,13 @@ class ProcessPaymentGatewayCardDetails_Direct(UniversalBaseModel):
 class ProcessPaymentGatewayCardDetails_Iframe(UniversalBaseModel):
     type: typing.Literal["iframe"] = "iframe"
     iframe_url: typing_extensions.Annotated[str, FieldMetadata(alias="iframeUrl")]
+    first_name: typing_extensions.Annotated[str, FieldMetadata(alias="firstName")]
+    last_name: typing_extensions.Annotated[str, FieldMetadata(alias="lastName")]
+    postal_code: typing_extensions.Annotated[str, FieldMetadata(alias="postalCode")]
+    country: CountryCode
+    phone_number: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="phoneNumber")] = None
+    email: typing.Optional[str] = None
+    full_address: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="fullAddress")] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

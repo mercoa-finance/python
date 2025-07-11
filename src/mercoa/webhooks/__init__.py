@@ -15,6 +15,8 @@ from .types import (
     InvoiceStatusChangedWebhook,
     InvoiceWebhook,
     OcrJobCompletedWebhook,
+    PaymentGatewayProcessJobCompletedWebhook,
+    PaymentGatewayValidationJobCompletedWebhook,
     PaymentMethodWebhook,
     TransactionWebhook,
 )
@@ -34,6 +36,8 @@ __all__ = [
     "InvoiceStatusChangedWebhook",
     "InvoiceWebhook",
     "OcrJobCompletedWebhook",
+    "PaymentGatewayProcessJobCompletedWebhook",
+    "PaymentGatewayValidationJobCompletedWebhook",
     "PaymentMethodWebhook",
     "TransactionWebhook",
 ]
