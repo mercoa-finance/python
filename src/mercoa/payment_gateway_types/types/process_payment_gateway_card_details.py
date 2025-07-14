@@ -8,6 +8,7 @@ from ...core.serialization import FieldMetadata
 from ...commons.types.country_code import CountryCode
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 import pydantic
+from .ephemeral_key_endpoint import EphemeralKeyEndpoint
 
 
 class ProcessPaymentGatewayCardDetails_Direct(UniversalBaseModel):
@@ -55,6 +56,34 @@ class ProcessPaymentGatewayCardDetails_Iframe(UniversalBaseModel):
             extra = pydantic.Extra.allow
 
 
+class ProcessPaymentGatewayCardDetails_StripeIssuing(UniversalBaseModel):
+    type: typing.Literal["stripeIssuing"] = "stripeIssuing"
+    stripe_card_id: typing_extensions.Annotated[str, FieldMetadata(alias="stripeCardId")]
+    stripe_publishable_key: typing_extensions.Annotated[str, FieldMetadata(alias="stripePublishableKey")]
+    stripe_account_id: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="stripeAccountId")] = None
+    ephemeral_key_endpoint: typing_extensions.Annotated[
+        EphemeralKeyEndpoint, FieldMetadata(alias="ephemeralKeyEndpoint")
+    ]
+    first_name: typing_extensions.Annotated[str, FieldMetadata(alias="firstName")]
+    last_name: typing_extensions.Annotated[str, FieldMetadata(alias="lastName")]
+    postal_code: typing_extensions.Annotated[str, FieldMetadata(alias="postalCode")]
+    country: CountryCode
+    phone_number: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="phoneNumber")] = None
+    email: typing.Optional[str] = None
+    full_address: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="fullAddress")] = None
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow
+
+
 ProcessPaymentGatewayCardDetails = typing.Union[
-    ProcessPaymentGatewayCardDetails_Direct, ProcessPaymentGatewayCardDetails_Iframe
+    ProcessPaymentGatewayCardDetails_Direct,
+    ProcessPaymentGatewayCardDetails_Iframe,
+    ProcessPaymentGatewayCardDetails_StripeIssuing,
 ]

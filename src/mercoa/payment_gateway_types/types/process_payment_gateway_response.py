@@ -17,7 +17,7 @@ class ProcessPaymentGatewayResponse_Pending(UniversalBaseModel):
     from mercoa.payment_gateway_types import ProcessPaymentGatewayResponse_Pending
 
     ProcessPaymentGatewayResponse_Pending(
-        job_id="job_1a92b5f7-f522-435e-a953-fd649363730a",
+        job_id="pgp_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
     )
     """
 
@@ -41,7 +41,7 @@ class ProcessPaymentGatewayResponse_Success(UniversalBaseModel):
     from mercoa.payment_gateway_types import ProcessPaymentGatewayResponse_Pending
 
     ProcessPaymentGatewayResponse_Pending(
-        job_id="job_1a92b5f7-f522-435e-a953-fd649363730a",
+        job_id="pgp_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
     )
     """
 
@@ -67,7 +67,7 @@ class ProcessPaymentGatewayResponse_Failed(UniversalBaseModel):
     from mercoa.payment_gateway_types import ProcessPaymentGatewayResponse_Pending
 
     ProcessPaymentGatewayResponse_Pending(
-        job_id="job_1a92b5f7-f522-435e-a953-fd649363730a",
+        job_id="pgp_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
     )
     """
 
@@ -90,7 +90,7 @@ class ProcessPaymentGatewayResponse_Failed(UniversalBaseModel):
 from mercoa.payment_gateway_types import ProcessPaymentGatewayResponse_Pending
 
 ProcessPaymentGatewayResponse_Pending(
-    job_id="job_1a92b5f7-f522-435e-a953-fd649363730a",
+    job_id="pgp_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
 )
 """
 ProcessPaymentGatewayResponse = typing.Union[

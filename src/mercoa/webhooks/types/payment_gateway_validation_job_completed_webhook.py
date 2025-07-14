@@ -26,9 +26,9 @@ class PaymentGatewayValidationJobCompletedWebhook(UniversalBaseModel):
         event_type="paymentGateway.validation.completed",
         job_id="pgv_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
         data=ValidatePaymentGatewayResponse_Success(
-            job_id="job_1a92b5f7-f522-435e-a953-fd649363730a",
-            payment_gateway_url="https://www.payment-gateway.com/invoice/job_1a92b5f7-f522-435e-a953-fd649363730a",
-            session_url="https://www.payment-gateway.com/session/job_1a92b5f7-f522-435e-a953-fd649363730a",
+            job_id="pgv_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
+            payment_gateway_url="https://www.payment-gateway.com/invoice/pgv_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
+            session_url="https://www.payment-gateway.com/session/pgv_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
             card=ValidatePaymentGatewayCardResponse(
                 eligibility="ACCEPTED",
                 fee=ValidatePaymentGatewayCardFee_Percentage(

@@ -22,7 +22,7 @@ class PaymentGatewayProcessJobCompletedWebhook(UniversalBaseModel):
         event_type="paymentGateway.process.completed",
         job_id="pgp_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
         data=ProcessPaymentGatewayResponse_Success(
-            job_id="job_1a92b5f7-f522-435e-a953-fd649363730a",
+            job_id="pgp_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
             receipt_url="https://www.payment-gateway.com/receipt/123123",
         ),
     )
