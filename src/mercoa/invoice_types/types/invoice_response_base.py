@@ -25,6 +25,7 @@ from .comment_response import CommentResponse
 from .invoice_fees_response import InvoiceFeesResponse
 from .payment_schedule import PaymentSchedule
 from ...ocr.types.ocr_job_id import OcrJobId
+from .invoice_template_id import InvoiceTemplateId
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -197,6 +198,13 @@ class InvoiceResponseBase(UniversalBaseModel):
     )
     """
     ID of the OCR job that processed this invoice.
+    """
+
+    recurring_template_id: typing_extensions.Annotated[
+        typing.Optional[InvoiceTemplateId], FieldMetadata(alias="recurringTemplateId")
+    ] = pydantic.Field(default=None)
+    """
+    ID of the invoice template that created this recurring invoice. Only present if the invoice was created from a recurring template.
     """
 
     if IS_PYDANTIC_V2:
