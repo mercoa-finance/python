@@ -2,6 +2,7 @@
 
 import typing
 from ..core.client_wrapper import SyncClientWrapper
+from .counterparty.client import CounterpartyClient
 from .user.client import UserClient
 from .invoice.client import InvoiceClient
 from ..entity_group_types.types.entity_group_id import EntityGroupId
@@ -36,6 +37,7 @@ from ..entity_group_types.types.entity_group_remove_entities_request import (
     EntityGroupRemoveEntitiesRequest,
 )
 from ..core.client_wrapper import AsyncClientWrapper
+from .counterparty.client import AsyncCounterpartyClient
 from .user.client import AsyncUserClient
 from .invoice.client import AsyncInvoiceClient
 
@@ -46,6 +48,7 @@ OMIT = typing.cast(typing.Any, ...)
 class EntityGroupClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
+        self.counterparty = CounterpartyClient(client_wrapper=self._client_wrapper)
         self.user = UserClient(client_wrapper=self._client_wrapper)
         self.invoice = InvoiceClient(client_wrapper=self._client_wrapper)
 
@@ -1105,6 +1108,7 @@ class EntityGroupClient:
 class AsyncEntityGroupClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
+        self.counterparty = AsyncCounterpartyClient(client_wrapper=self._client_wrapper)
         self.user = AsyncUserClient(client_wrapper=self._client_wrapper)
         self.invoice = AsyncInvoiceClient(client_wrapper=self._client_wrapper)
 

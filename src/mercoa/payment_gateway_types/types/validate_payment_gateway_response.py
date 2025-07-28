@@ -5,6 +5,7 @@ from ...core.pydantic_utilities import UniversalBaseModel
 import typing_extensions
 import typing
 from ...core.serialization import FieldMetadata
+import datetime as dt
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 import pydantic
 from .validate_payment_gateway_card_response import ValidatePaymentGatewayCardResponse
@@ -15,15 +16,25 @@ class ValidatePaymentGatewayResponse_Pending(UniversalBaseModel):
     """
     Examples
     --------
+    import datetime
+
     from mercoa.payment_gateway_types import ValidatePaymentGatewayResponse_Pending
 
     ValidatePaymentGatewayResponse_Pending(
         job_id="pgv_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
+        created_at=datetime.datetime.fromisoformat(
+            "2024-01-01 00:00:00+00:00",
+        ),
+        updated_at=datetime.datetime.fromisoformat(
+            "2024-01-01 00:00:00+00:00",
+        ),
     )
     """
 
     job_status: typing_extensions.Annotated[typing.Literal["pending"], FieldMetadata(alias="jobStatus")] = "pending"
     job_id: typing_extensions.Annotated[str, FieldMetadata(alias="jobId")]
+    created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
+    updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -39,10 +50,18 @@ class ValidatePaymentGatewayResponse_Success(UniversalBaseModel):
     """
     Examples
     --------
+    import datetime
+
     from mercoa.payment_gateway_types import ValidatePaymentGatewayResponse_Pending
 
     ValidatePaymentGatewayResponse_Pending(
         job_id="pgv_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
+        created_at=datetime.datetime.fromisoformat(
+            "2024-01-01 00:00:00+00:00",
+        ),
+        updated_at=datetime.datetime.fromisoformat(
+            "2024-01-01 00:00:00+00:00",
+        ),
     )
     """
 
@@ -53,6 +72,8 @@ class ValidatePaymentGatewayResponse_Success(UniversalBaseModel):
     )
     session_url: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="sessionUrl")] = None
     card: typing.Optional[ValidatePaymentGatewayCardResponse] = None
+    created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
+    updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -68,10 +89,18 @@ class ValidatePaymentGatewayResponse_Failed(UniversalBaseModel):
     """
     Examples
     --------
+    import datetime
+
     from mercoa.payment_gateway_types import ValidatePaymentGatewayResponse_Pending
 
     ValidatePaymentGatewayResponse_Pending(
         job_id="pgv_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
+        created_at=datetime.datetime.fromisoformat(
+            "2024-01-01 00:00:00+00:00",
+        ),
+        updated_at=datetime.datetime.fromisoformat(
+            "2024-01-01 00:00:00+00:00",
+        ),
     )
     """
 
@@ -79,6 +108,8 @@ class ValidatePaymentGatewayResponse_Failed(UniversalBaseModel):
     job_id: typing_extensions.Annotated[str, FieldMetadata(alias="jobId")]
     error_type: typing_extensions.Annotated[PaymentGatewayError, FieldMetadata(alias="errorType")]
     error_message: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="errorMessage")] = None
+    created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
+    updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -91,10 +122,18 @@ class ValidatePaymentGatewayResponse_Failed(UniversalBaseModel):
 
 
 """
+import datetime
+
 from mercoa.payment_gateway_types import ValidatePaymentGatewayResponse_Pending
 
 ValidatePaymentGatewayResponse_Pending(
     job_id="pgv_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
+    created_at=datetime.datetime.fromisoformat(
+        "2024-01-01 00:00:00+00:00",
+    ),
+    updated_at=datetime.datetime.fromisoformat(
+        "2024-01-01 00:00:00+00:00",
+    ),
 )
 """
 ValidatePaymentGatewayResponse = typing.Union[

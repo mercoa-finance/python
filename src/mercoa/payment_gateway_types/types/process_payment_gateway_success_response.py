@@ -5,6 +5,7 @@ import typing_extensions
 from ...core.serialization import FieldMetadata
 import pydantic
 import typing
+import datetime as dt
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -26,6 +27,16 @@ class ProcessPaymentGatewaySuccessResponse(UniversalBaseModel):
     )
     """
     The URL of the playback session for the agent that processed the payment
+    """
+
+    created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")] = pydantic.Field()
+    """
+    The timestamp when the job was created
+    """
+
+    updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")] = pydantic.Field()
+    """
+    The timestamp when the job was last updated
     """
 
     if IS_PYDANTIC_V2:

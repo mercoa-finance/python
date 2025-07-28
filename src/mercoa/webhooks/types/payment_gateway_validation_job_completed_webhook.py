@@ -15,6 +15,8 @@ class PaymentGatewayValidationJobCompletedWebhook(UniversalBaseModel):
     """
     Examples
     --------
+    import datetime
+
     from mercoa.payment_gateway_types import (
         ValidatePaymentGatewayCardFee_Percentage,
         ValidatePaymentGatewayCardResponse,
@@ -34,6 +36,12 @@ class PaymentGatewayValidationJobCompletedWebhook(UniversalBaseModel):
                 fee=ValidatePaymentGatewayCardFee_Percentage(
                     value=2.5,
                 ),
+            ),
+            created_at=datetime.datetime.fromisoformat(
+                "2024-01-01 00:00:00+00:00",
+            ),
+            updated_at=datetime.datetime.fromisoformat(
+                "2024-01-01 00:00:00+00:00",
             ),
         ),
     )

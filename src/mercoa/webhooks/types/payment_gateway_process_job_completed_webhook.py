@@ -15,6 +15,8 @@ class PaymentGatewayProcessJobCompletedWebhook(UniversalBaseModel):
     """
     Examples
     --------
+    import datetime
+
     from mercoa.payment_gateway_types import ProcessPaymentGatewayResponse_Success
     from mercoa.webhooks import PaymentGatewayProcessJobCompletedWebhook
 
@@ -24,6 +26,12 @@ class PaymentGatewayProcessJobCompletedWebhook(UniversalBaseModel):
         data=ProcessPaymentGatewayResponse_Success(
             job_id="pgp_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
             receipt_url="https://www.payment-gateway.com/receipt/123123",
+            created_at=datetime.datetime.fromisoformat(
+                "2024-01-01 00:00:00+00:00",
+            ),
+            updated_at=datetime.datetime.fromisoformat(
+                "2024-01-01 00:00:00+00:00",
+            ),
         ),
     )
     """

@@ -5,6 +5,7 @@ from ...core.pydantic_utilities import UniversalBaseModel
 import typing_extensions
 import typing
 from ...core.serialization import FieldMetadata
+import datetime as dt
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 import pydantic
 from .payment_gateway_error import PaymentGatewayError
@@ -14,15 +15,25 @@ class ProcessPaymentGatewayResponse_Pending(UniversalBaseModel):
     """
     Examples
     --------
+    import datetime
+
     from mercoa.payment_gateway_types import ProcessPaymentGatewayResponse_Pending
 
     ProcessPaymentGatewayResponse_Pending(
         job_id="pgp_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
+        created_at=datetime.datetime.fromisoformat(
+            "2024-01-01 00:00:00+00:00",
+        ),
+        updated_at=datetime.datetime.fromisoformat(
+            "2024-01-01 00:00:00+00:00",
+        ),
     )
     """
 
     job_status: typing_extensions.Annotated[typing.Literal["pending"], FieldMetadata(alias="jobStatus")] = "pending"
     job_id: typing_extensions.Annotated[str, FieldMetadata(alias="jobId")]
+    created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
+    updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -38,10 +49,18 @@ class ProcessPaymentGatewayResponse_Success(UniversalBaseModel):
     """
     Examples
     --------
+    import datetime
+
     from mercoa.payment_gateway_types import ProcessPaymentGatewayResponse_Pending
 
     ProcessPaymentGatewayResponse_Pending(
         job_id="pgp_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
+        created_at=datetime.datetime.fromisoformat(
+            "2024-01-01 00:00:00+00:00",
+        ),
+        updated_at=datetime.datetime.fromisoformat(
+            "2024-01-01 00:00:00+00:00",
+        ),
     )
     """
 
@@ -49,6 +68,8 @@ class ProcessPaymentGatewayResponse_Success(UniversalBaseModel):
     job_id: typing_extensions.Annotated[str, FieldMetadata(alias="jobId")]
     receipt_url: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="receiptUrl")] = None
     session_url: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="sessionUrl")] = None
+    created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
+    updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -64,10 +85,18 @@ class ProcessPaymentGatewayResponse_Failed(UniversalBaseModel):
     """
     Examples
     --------
+    import datetime
+
     from mercoa.payment_gateway_types import ProcessPaymentGatewayResponse_Pending
 
     ProcessPaymentGatewayResponse_Pending(
         job_id="pgp_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
+        created_at=datetime.datetime.fromisoformat(
+            "2024-01-01 00:00:00+00:00",
+        ),
+        updated_at=datetime.datetime.fromisoformat(
+            "2024-01-01 00:00:00+00:00",
+        ),
     )
     """
 
@@ -75,6 +104,8 @@ class ProcessPaymentGatewayResponse_Failed(UniversalBaseModel):
     job_id: typing_extensions.Annotated[str, FieldMetadata(alias="jobId")]
     error_type: typing_extensions.Annotated[PaymentGatewayError, FieldMetadata(alias="errorType")]
     error_message: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="errorMessage")] = None
+    created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
+    updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -87,10 +118,18 @@ class ProcessPaymentGatewayResponse_Failed(UniversalBaseModel):
 
 
 """
+import datetime
+
 from mercoa.payment_gateway_types import ProcessPaymentGatewayResponse_Pending
 
 ProcessPaymentGatewayResponse_Pending(
     job_id="pgp_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
+    created_at=datetime.datetime.fromisoformat(
+        "2024-01-01 00:00:00+00:00",
+    ),
+    updated_at=datetime.datetime.fromisoformat(
+        "2024-01-01 00:00:00+00:00",
+    ),
 )
 """
 ProcessPaymentGatewayResponse = typing.Union[

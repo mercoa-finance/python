@@ -6,6 +6,7 @@ from ...core.serialization import FieldMetadata
 import pydantic
 from .payment_gateway_error import PaymentGatewayError
 import typing
+import datetime as dt
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -25,6 +26,16 @@ class ValidatePaymentGatewayFailedResponse(UniversalBaseModel):
     )
     """
     The error message that occurred during the payment gateway validation job
+    """
+
+    created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")] = pydantic.Field()
+    """
+    The timestamp when the job was created
+    """
+
+    updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")] = pydantic.Field()
+    """
+    The timestamp when the job was last updated
     """
 
     if IS_PYDANTIC_V2:

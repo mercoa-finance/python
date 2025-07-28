@@ -2,6 +2,8 @@
 
 from .ephemeral_key_endpoint import EphemeralKeyEndpoint
 from .payment_gateway_error import PaymentGatewayError
+from .payment_gateway_job_order_by_field import PaymentGatewayJobOrderByField
+from .payment_gateway_job_status import PaymentGatewayJobStatus
 from .process_payment_gateway_card_details import (
     ProcessPaymentGatewayCardDetails,
     ProcessPaymentGatewayCardDetails_Direct,
@@ -28,6 +30,8 @@ from .process_payment_gateway_response import (
     ProcessPaymentGatewayResponse_Success,
 )
 from .process_payment_gateway_success_response import ProcessPaymentGatewaySuccessResponse
+from .search_payment_gateway_process_jobs_response import SearchPaymentGatewayProcessJobsResponse
+from .search_payment_gateway_validation_jobs_response import SearchPaymentGatewayValidationJobsResponse
 from .validate_payment_gateway_card_acceptance import ValidatePaymentGatewayCardAcceptance
 from .validate_payment_gateway_card_fee import (
     ValidatePaymentGatewayCardFee,
@@ -59,6 +63,8 @@ from .validate_payment_gateway_success_response import ValidatePaymentGatewaySuc
 __all__ = [
     "EphemeralKeyEndpoint",
     "PaymentGatewayError",
+    "PaymentGatewayJobOrderByField",
+    "PaymentGatewayJobStatus",
     "ProcessPaymentGatewayCardDetails",
     "ProcessPaymentGatewayCardDetailsBase",
     "ProcessPaymentGatewayCardDetailsDirect",
@@ -79,6 +85,8 @@ __all__ = [
     "ProcessPaymentGatewayResponse_Pending",
     "ProcessPaymentGatewayResponse_Success",
     "ProcessPaymentGatewaySuccessResponse",
+    "SearchPaymentGatewayProcessJobsResponse",
+    "SearchPaymentGatewayValidationJobsResponse",
     "ValidatePaymentGatewayCardAcceptance",
     "ValidatePaymentGatewayCardFee",
     "ValidatePaymentGatewayCardFeeFlat",

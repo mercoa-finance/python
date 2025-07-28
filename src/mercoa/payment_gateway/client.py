@@ -2,14 +2,19 @@
 
 import typing
 from ..core.client_wrapper import SyncClientWrapper
-from ..payment_gateway_types.types.validate_payment_gateway_request import (
-    ValidatePaymentGatewayRequest,
+from ..payment_gateway_types.types.payment_gateway_job_status import (
+    PaymentGatewayJobStatus,
 )
+import datetime as dt
+from ..payment_gateway_types.types.payment_gateway_job_order_by_field import (
+    PaymentGatewayJobOrderByField,
+)
+from ..commons.types.order_direction import OrderDirection
 from ..core.request_options import RequestOptions
-from ..payment_gateway_types.types.validate_payment_gateway_response import (
-    ValidatePaymentGatewayResponse,
+from ..payment_gateway_types.types.search_payment_gateway_validation_jobs_response import (
+    SearchPaymentGatewayValidationJobsResponse,
 )
-from ..core.serialization import convert_and_respect_annotation_metadata
+from ..core.datetime_utils import serialize_datetime
 from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
 from ..core.pydantic_utilities import parse_obj_as
@@ -20,6 +25,16 @@ from ..commons.errors.not_found import NotFound
 from ..commons.errors.conflict import Conflict
 from ..commons.errors.internal_server_error import InternalServerError
 from ..commons.errors.unimplemented import Unimplemented
+from ..payment_gateway_types.types.search_payment_gateway_process_jobs_response import (
+    SearchPaymentGatewayProcessJobsResponse,
+)
+from ..payment_gateway_types.types.validate_payment_gateway_request import (
+    ValidatePaymentGatewayRequest,
+)
+from ..payment_gateway_types.types.validate_payment_gateway_response import (
+    ValidatePaymentGatewayResponse,
+)
+from ..core.serialization import convert_and_respect_annotation_metadata
 from ..core.jsonable_encoder import jsonable_encoder
 from ..payment_gateway_types.types.process_payment_gateway_request import (
     ProcessPaymentGatewayRequest,
@@ -36,6 +51,332 @@ OMIT = typing.cast(typing.Any, ...)
 class PaymentGatewayClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
+
+    def find_validation_jobs(
+        self,
+        *,
+        status: typing.Optional[PaymentGatewayJobStatus] = None,
+        start_date: typing.Optional[dt.datetime] = None,
+        end_date: typing.Optional[dt.datetime] = None,
+        order_by: typing.Optional[PaymentGatewayJobOrderByField] = None,
+        order_direction: typing.Optional[OrderDirection] = None,
+        limit: typing.Optional[int] = None,
+        starting_after: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> SearchPaymentGatewayValidationJobsResponse:
+        """
+        Search payment gateway validation jobs for the organization
+
+        Parameters
+        ----------
+        status : typing.Optional[PaymentGatewayJobStatus]
+            Filter jobs by status
+
+        start_date : typing.Optional[dt.datetime]
+            Start date filter for job creation time
+
+        end_date : typing.Optional[dt.datetime]
+            End date filter for job creation time
+
+        order_by : typing.Optional[PaymentGatewayJobOrderByField]
+            Field to order jobs by. Defaults to CREATED_AT.
+
+        order_direction : typing.Optional[OrderDirection]
+            Direction to order jobs by. Defaults to desc.
+
+        limit : typing.Optional[int]
+            Number of jobs to return. Limit can range between 1 and 100, and the default is 10.
+
+        starting_after : typing.Optional[str]
+            The ID of the job to start after. If not provided, the first page of jobs will be returned.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        SearchPaymentGatewayValidationJobsResponse
+
+        Examples
+        --------
+        import datetime
+
+        from mercoa import Mercoa
+
+        client = Mercoa(
+            token="YOUR_TOKEN",
+        )
+        client.payment_gateway.find_validation_jobs(
+            status="FAILED",
+            start_date=datetime.datetime.fromisoformat(
+                "2024-01-01 00:00:00+00:00",
+            ),
+            end_date=datetime.datetime.fromisoformat(
+                "2024-12-31 23:59:59+00:00",
+            ),
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "payment-gateway/validation-jobs",
+            method="GET",
+            params={
+                "status": status,
+                "startDate": serialize_datetime(start_date) if start_date is not None else None,
+                "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                "orderBy": order_by,
+                "orderDirection": order_direction,
+                "limit": limit,
+                "startingAfter": starting_after,
+            },
+            request_options=request_options,
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return typing.cast(
+                SearchPaymentGatewayValidationJobsResponse,
+                parse_obj_as(
+                    type_=SearchPaymentGatewayValidationJobsResponse,  # type: ignore
+                    object_=_response_json,
+                ),
+            )
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    def find_process_jobs(
+        self,
+        *,
+        status: typing.Optional[PaymentGatewayJobStatus] = None,
+        start_date: typing.Optional[dt.datetime] = None,
+        end_date: typing.Optional[dt.datetime] = None,
+        order_by: typing.Optional[PaymentGatewayJobOrderByField] = None,
+        order_direction: typing.Optional[OrderDirection] = None,
+        limit: typing.Optional[int] = None,
+        starting_after: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> SearchPaymentGatewayProcessJobsResponse:
+        """
+        Search payment gateway process jobs for the organization
+
+        Parameters
+        ----------
+        status : typing.Optional[PaymentGatewayJobStatus]
+            Filter jobs by status
+
+        start_date : typing.Optional[dt.datetime]
+            Start date filter for job creation time
+
+        end_date : typing.Optional[dt.datetime]
+            End date filter for job creation time
+
+        order_by : typing.Optional[PaymentGatewayJobOrderByField]
+            Field to order jobs by. Defaults to CREATED_AT.
+
+        order_direction : typing.Optional[OrderDirection]
+            Direction to order jobs by. Defaults to desc.
+
+        limit : typing.Optional[int]
+            Number of jobs to return. Limit can range between 1 and 100, and the default is 10.
+
+        starting_after : typing.Optional[str]
+            The ID of the job to start after. If not provided, the first page of jobs will be returned.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        SearchPaymentGatewayProcessJobsResponse
+
+        Examples
+        --------
+        import datetime
+
+        from mercoa import Mercoa
+
+        client = Mercoa(
+            token="YOUR_TOKEN",
+        )
+        client.payment_gateway.find_process_jobs(
+            status="FAILED",
+            start_date=datetime.datetime.fromisoformat(
+                "2024-01-01 00:00:00+00:00",
+            ),
+            end_date=datetime.datetime.fromisoformat(
+                "2024-12-31 23:59:59+00:00",
+            ),
+        )
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "payment-gateway/process-jobs",
+            method="GET",
+            params={
+                "status": status,
+                "startDate": serialize_datetime(start_date) if start_date is not None else None,
+                "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                "orderBy": order_by,
+                "orderDirection": order_direction,
+                "limit": limit,
+                "startingAfter": starting_after,
+            },
+            request_options=request_options,
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return typing.cast(
+                SearchPaymentGatewayProcessJobsResponse,
+                parse_obj_as(
+                    type_=SearchPaymentGatewayProcessJobsResponse,  # type: ignore
+                    object_=_response_json,
+                ),
+            )
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+        raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def create_validation_job(
         self,
@@ -552,6 +893,346 @@ class PaymentGatewayClient:
 class AsyncPaymentGatewayClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
+
+    async def find_validation_jobs(
+        self,
+        *,
+        status: typing.Optional[PaymentGatewayJobStatus] = None,
+        start_date: typing.Optional[dt.datetime] = None,
+        end_date: typing.Optional[dt.datetime] = None,
+        order_by: typing.Optional[PaymentGatewayJobOrderByField] = None,
+        order_direction: typing.Optional[OrderDirection] = None,
+        limit: typing.Optional[int] = None,
+        starting_after: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> SearchPaymentGatewayValidationJobsResponse:
+        """
+        Search payment gateway validation jobs for the organization
+
+        Parameters
+        ----------
+        status : typing.Optional[PaymentGatewayJobStatus]
+            Filter jobs by status
+
+        start_date : typing.Optional[dt.datetime]
+            Start date filter for job creation time
+
+        end_date : typing.Optional[dt.datetime]
+            End date filter for job creation time
+
+        order_by : typing.Optional[PaymentGatewayJobOrderByField]
+            Field to order jobs by. Defaults to CREATED_AT.
+
+        order_direction : typing.Optional[OrderDirection]
+            Direction to order jobs by. Defaults to desc.
+
+        limit : typing.Optional[int]
+            Number of jobs to return. Limit can range between 1 and 100, and the default is 10.
+
+        starting_after : typing.Optional[str]
+            The ID of the job to start after. If not provided, the first page of jobs will be returned.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        SearchPaymentGatewayValidationJobsResponse
+
+        Examples
+        --------
+        import asyncio
+        import datetime
+
+        from mercoa import AsyncMercoa
+
+        client = AsyncMercoa(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.payment_gateway.find_validation_jobs(
+                status="FAILED",
+                start_date=datetime.datetime.fromisoformat(
+                    "2024-01-01 00:00:00+00:00",
+                ),
+                end_date=datetime.datetime.fromisoformat(
+                    "2024-12-31 23:59:59+00:00",
+                ),
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "payment-gateway/validation-jobs",
+            method="GET",
+            params={
+                "status": status,
+                "startDate": serialize_datetime(start_date) if start_date is not None else None,
+                "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                "orderBy": order_by,
+                "orderDirection": order_direction,
+                "limit": limit,
+                "startingAfter": starting_after,
+            },
+            request_options=request_options,
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return typing.cast(
+                SearchPaymentGatewayValidationJobsResponse,
+                parse_obj_as(
+                    type_=SearchPaymentGatewayValidationJobsResponse,  # type: ignore
+                    object_=_response_json,
+                ),
+            )
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+        raise ApiError(status_code=_response.status_code, body=_response_json)
+
+    async def find_process_jobs(
+        self,
+        *,
+        status: typing.Optional[PaymentGatewayJobStatus] = None,
+        start_date: typing.Optional[dt.datetime] = None,
+        end_date: typing.Optional[dt.datetime] = None,
+        order_by: typing.Optional[PaymentGatewayJobOrderByField] = None,
+        order_direction: typing.Optional[OrderDirection] = None,
+        limit: typing.Optional[int] = None,
+        starting_after: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> SearchPaymentGatewayProcessJobsResponse:
+        """
+        Search payment gateway process jobs for the organization
+
+        Parameters
+        ----------
+        status : typing.Optional[PaymentGatewayJobStatus]
+            Filter jobs by status
+
+        start_date : typing.Optional[dt.datetime]
+            Start date filter for job creation time
+
+        end_date : typing.Optional[dt.datetime]
+            End date filter for job creation time
+
+        order_by : typing.Optional[PaymentGatewayJobOrderByField]
+            Field to order jobs by. Defaults to CREATED_AT.
+
+        order_direction : typing.Optional[OrderDirection]
+            Direction to order jobs by. Defaults to desc.
+
+        limit : typing.Optional[int]
+            Number of jobs to return. Limit can range between 1 and 100, and the default is 10.
+
+        starting_after : typing.Optional[str]
+            The ID of the job to start after. If not provided, the first page of jobs will be returned.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        SearchPaymentGatewayProcessJobsResponse
+
+        Examples
+        --------
+        import asyncio
+        import datetime
+
+        from mercoa import AsyncMercoa
+
+        client = AsyncMercoa(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.payment_gateway.find_process_jobs(
+                status="FAILED",
+                start_date=datetime.datetime.fromisoformat(
+                    "2024-01-01 00:00:00+00:00",
+                ),
+                end_date=datetime.datetime.fromisoformat(
+                    "2024-12-31 23:59:59+00:00",
+                ),
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "payment-gateway/process-jobs",
+            method="GET",
+            params={
+                "status": status,
+                "startDate": serialize_datetime(start_date) if start_date is not None else None,
+                "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                "orderBy": order_by,
+                "orderDirection": order_direction,
+                "limit": limit,
+                "startingAfter": starting_after,
+            },
+            request_options=request_options,
+        )
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
+        if 200 <= _response.status_code < 300:
+            return typing.cast(
+                SearchPaymentGatewayProcessJobsResponse,
+                parse_obj_as(
+                    type_=SearchPaymentGatewayProcessJobsResponse,  # type: ignore
+                    object_=_response_json,
+                ),
+            )
+        if "errorName" in _response_json:
+            if _response_json["errorName"] == "BadRequest":
+                raise BadRequest(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unauthorized":
+                raise Unauthorized(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Forbidden":
+                raise Forbidden(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "NotFound":
+                raise NotFound(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Conflict":
+                raise Conflict(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "InternalServerError":
+                raise InternalServerError(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+            if _response_json["errorName"] == "Unimplemented":
+                raise Unimplemented(
+                    typing.cast(
+                        str,
+                        parse_obj_as(
+                            type_=str,  # type: ignore
+                            object_=_response_json["content"],
+                        ),
+                    )
+                )
+        raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def create_validation_job(
         self,

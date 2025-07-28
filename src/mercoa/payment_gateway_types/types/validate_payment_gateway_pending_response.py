@@ -4,6 +4,7 @@ from ...core.pydantic_utilities import UniversalBaseModel
 import typing_extensions
 from ...core.serialization import FieldMetadata
 import pydantic
+import datetime as dt
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 import typing
 
@@ -12,6 +13,16 @@ class ValidatePaymentGatewayPendingResponse(UniversalBaseModel):
     job_id: typing_extensions.Annotated[str, FieldMetadata(alias="jobId")] = pydantic.Field()
     """
     The job ID of the payment gateway validation job
+    """
+
+    created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")] = pydantic.Field()
+    """
+    The timestamp when the job was created
+    """
+
+    updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")] = pydantic.Field()
+    """
+    The timestamp when the job was last updated
     """
 
     if IS_PYDANTIC_V2:

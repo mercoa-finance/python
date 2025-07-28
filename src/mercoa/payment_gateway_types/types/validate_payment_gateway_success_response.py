@@ -6,6 +6,7 @@ from ...core.serialization import FieldMetadata
 import pydantic
 import typing
 from .validate_payment_gateway_card_response import ValidatePaymentGatewayCardResponse
+import datetime as dt
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -32,6 +33,16 @@ class ValidatePaymentGatewaySuccessResponse(UniversalBaseModel):
     card: typing.Optional[ValidatePaymentGatewayCardResponse] = pydantic.Field(default=None)
     """
     Data on the card payments that were extracted from the gateway
+    """
+
+    created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")] = pydantic.Field()
+    """
+    The timestamp when the job was created
+    """
+
+    updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")] = pydantic.Field()
+    """
+    The timestamp when the job was last updated
     """
 
     if IS_PYDANTIC_V2:
