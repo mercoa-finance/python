@@ -6,6 +6,7 @@ from ...core.serialization import FieldMetadata
 import pydantic
 from ...commons.types.country_code import CountryCode
 import typing
+from .process_payment_gateway_card_type import ProcessPaymentGatewayCardType
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -28,6 +29,13 @@ class ProcessPaymentGatewayCardDetailsBase(UniversalBaseModel):
     country: CountryCode = pydantic.Field()
     """
     The country of the address of the card
+    """
+
+    card_type: typing_extensions.Annotated[
+        typing.Optional[ProcessPaymentGatewayCardType], FieldMetadata(alias="cardType")
+    ] = pydantic.Field(default=None)
+    """
+    The type of card (credit or debit). Defaults to debit.
     """
 
     phone_number: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="phoneNumber")] = (

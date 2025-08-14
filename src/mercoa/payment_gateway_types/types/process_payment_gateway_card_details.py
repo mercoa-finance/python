@@ -6,6 +6,7 @@ import typing
 import typing_extensions
 from ...core.serialization import FieldMetadata
 from ...commons.types.country_code import CountryCode
+from .process_payment_gateway_card_type import ProcessPaymentGatewayCardType
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 import pydantic
 from .ephemeral_key_endpoint import EphemeralKeyEndpoint
@@ -21,6 +22,9 @@ class ProcessPaymentGatewayCardDetails_Direct(UniversalBaseModel):
     last_name: typing_extensions.Annotated[str, FieldMetadata(alias="lastName")]
     postal_code: typing_extensions.Annotated[str, FieldMetadata(alias="postalCode")]
     country: CountryCode
+    card_type: typing_extensions.Annotated[
+        typing.Optional[ProcessPaymentGatewayCardType], FieldMetadata(alias="cardType")
+    ] = None
     phone_number: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="phoneNumber")] = None
     email: typing.Optional[str] = None
     full_address: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="fullAddress")] = None
@@ -42,6 +46,9 @@ class ProcessPaymentGatewayCardDetails_Iframe(UniversalBaseModel):
     last_name: typing_extensions.Annotated[str, FieldMetadata(alias="lastName")]
     postal_code: typing_extensions.Annotated[str, FieldMetadata(alias="postalCode")]
     country: CountryCode
+    card_type: typing_extensions.Annotated[
+        typing.Optional[ProcessPaymentGatewayCardType], FieldMetadata(alias="cardType")
+    ] = None
     phone_number: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="phoneNumber")] = None
     email: typing.Optional[str] = None
     full_address: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="fullAddress")] = None
@@ -68,6 +75,34 @@ class ProcessPaymentGatewayCardDetails_StripeIssuing(UniversalBaseModel):
     last_name: typing_extensions.Annotated[str, FieldMetadata(alias="lastName")]
     postal_code: typing_extensions.Annotated[str, FieldMetadata(alias="postalCode")]
     country: CountryCode
+    card_type: typing_extensions.Annotated[
+        typing.Optional[ProcessPaymentGatewayCardType], FieldMetadata(alias="cardType")
+    ] = None
+    phone_number: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="phoneNumber")] = None
+    email: typing.Optional[str] = None
+    full_address: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="fullAddress")] = None
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow
+
+
+class ProcessPaymentGatewayCardDetails_Lithic(UniversalBaseModel):
+    type: typing.Literal["lithic"] = "lithic"
+    embed_request: typing_extensions.Annotated[str, FieldMetadata(alias="embedRequest")]
+    hmac: str
+    first_name: typing_extensions.Annotated[str, FieldMetadata(alias="firstName")]
+    last_name: typing_extensions.Annotated[str, FieldMetadata(alias="lastName")]
+    postal_code: typing_extensions.Annotated[str, FieldMetadata(alias="postalCode")]
+    country: CountryCode
+    card_type: typing_extensions.Annotated[
+        typing.Optional[ProcessPaymentGatewayCardType], FieldMetadata(alias="cardType")
+    ] = None
     phone_number: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="phoneNumber")] = None
     email: typing.Optional[str] = None
     full_address: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="fullAddress")] = None
@@ -86,4 +121,5 @@ ProcessPaymentGatewayCardDetails = typing.Union[
     ProcessPaymentGatewayCardDetails_Direct,
     ProcessPaymentGatewayCardDetails_Iframe,
     ProcessPaymentGatewayCardDetails_StripeIssuing,
+    ProcessPaymentGatewayCardDetails_Lithic,
 ]

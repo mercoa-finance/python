@@ -25,8 +25,10 @@ class ProcessPaymentGatewayCardDetailsStripeIssuing(ProcessPaymentGatewayCardDet
         last_name="Doe",
         postal_code="12345",
         country="US",
+        card_type="credit",
         stripe_card_id="ic_1234567890abcdef",
         stripe_publishable_key="pk_test_1234567890abcdef",
+        stripe_account_id="acct_1234567890abcdef",
         ephemeral_key_endpoint=EphemeralKeyEndpoint(
             url="https://api.example.com/ephemeral-keys",
             method="POST",

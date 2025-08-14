@@ -70,8 +70,10 @@ class ValidatePaymentGatewayResponse_Success(UniversalBaseModel):
     payment_gateway_url: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="paymentGatewayUrl")] = (
         None
     )
-    session_url: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="sessionUrl")] = None
     card: typing.Optional[ValidatePaymentGatewayCardResponse] = None
+    invoice_amount: typing_extensions.Annotated[typing.Optional[float], FieldMetadata(alias="invoiceAmount")] = None
+    gateway_amount: typing_extensions.Annotated[typing.Optional[float], FieldMetadata(alias="gatewayAmount")] = None
+    vendor_name: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="vendorName")] = None
     created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
     updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")]
 

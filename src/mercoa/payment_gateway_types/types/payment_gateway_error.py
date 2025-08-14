@@ -7,6 +7,8 @@ PaymentGatewayError = typing.Union[
         "NO_VALID_PAYMENT_GATEWAY_FOUND",
         "PAYMENT_GATEWAY_UNSUPPORTED",
         "CARD_DETAILS_INVALID",
+        "CARD_DECLINED",
+        "INVOICE_AMOUNT_MISMATCH",
     ],
     typing.Any,
 ]

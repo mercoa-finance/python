@@ -772,6 +772,9 @@ class FindTransactionsResponse(UniversalBaseModel):
                 status="COMPLETED",
                 amount=10000.0,
                 currency="USD",
+                mailed_on_date=datetime.datetime.fromisoformat(
+                    "2024-01-01 00:00:00+00:00",
+                ),
                 payer_id="ent_bb08e72f-19f8-45f3-bcf9-46fdc46cb2f4",
                 payer=CounterpartyResponse(
                     id="ent_8545a84e-a45f-41bf-bdf1-33b42a55812c",

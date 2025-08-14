@@ -38,13 +38,15 @@ class SearchPaymentGatewayValidationJobsResponse(UniversalBaseModel):
             ValidatePaymentGatewayResponse_Success(
                 job_id="pgv_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
                 payment_gateway_url="https://www.payment-gateway.com/invoice/pgv_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
-                session_url="https://www.payment-gateway.com/session/pgv_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
                 card=ValidatePaymentGatewayCardResponse(
                     eligibility="ACCEPTED",
                     fee=ValidatePaymentGatewayCardFee_Percentage(
                         value=2.5,
                     ),
                 ),
+                invoice_amount=150.75,
+                gateway_amount=155.5,
+                vendor_name="Acme Corporation",
                 created_at=datetime.datetime.fromisoformat(
                     "2024-01-01 00:00:00+00:00",
                 ),

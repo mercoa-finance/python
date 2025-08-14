@@ -9,11 +9,11 @@ from .entity.client import EntityClient
 from .invoice_template.client import InvoiceTemplateClient
 from .invoice.client import InvoiceClient
 from .organization.client import OrganizationClient
-from .payment_gateway.client import PaymentGatewayClient
 from .bank_lookup.client import BankLookupClient
 from .calculate.client import CalculateClient
 from .custom_payment_method_schema.client import CustomPaymentMethodSchemaClient
 from .ocr.client import OcrClient
+from .payment_gateway.client import PaymentGatewayClient
 from .payment_methods.client import PaymentMethodsClient
 from .transaction.client import TransactionClient
 from .core.client_wrapper import AsyncClientWrapper
@@ -22,11 +22,11 @@ from .entity.client import AsyncEntityClient
 from .invoice_template.client import AsyncInvoiceTemplateClient
 from .invoice.client import AsyncInvoiceClient
 from .organization.client import AsyncOrganizationClient
-from .payment_gateway.client import AsyncPaymentGatewayClient
 from .bank_lookup.client import AsyncBankLookupClient
 from .calculate.client import AsyncCalculateClient
 from .custom_payment_method_schema.client import AsyncCustomPaymentMethodSchemaClient
 from .ocr.client import AsyncOcrClient
+from .payment_gateway.client import AsyncPaymentGatewayClient
 from .payment_methods.client import AsyncPaymentMethodsClient
 from .transaction.client import AsyncTransactionClient
 
@@ -96,11 +96,11 @@ class Mercoa:
         self.invoice_template = InvoiceTemplateClient(client_wrapper=self._client_wrapper)
         self.invoice = InvoiceClient(client_wrapper=self._client_wrapper)
         self.organization = OrganizationClient(client_wrapper=self._client_wrapper)
-        self.payment_gateway = PaymentGatewayClient(client_wrapper=self._client_wrapper)
         self.bank_lookup = BankLookupClient(client_wrapper=self._client_wrapper)
         self.calculate = CalculateClient(client_wrapper=self._client_wrapper)
         self.custom_payment_method_schema = CustomPaymentMethodSchemaClient(client_wrapper=self._client_wrapper)
         self.ocr = OcrClient(client_wrapper=self._client_wrapper)
+        self.payment_gateway = PaymentGatewayClient(client_wrapper=self._client_wrapper)
         self.payment_methods = PaymentMethodsClient(client_wrapper=self._client_wrapper)
         self.transaction = TransactionClient(client_wrapper=self._client_wrapper)
 
@@ -170,11 +170,11 @@ class AsyncMercoa:
         self.invoice_template = AsyncInvoiceTemplateClient(client_wrapper=self._client_wrapper)
         self.invoice = AsyncInvoiceClient(client_wrapper=self._client_wrapper)
         self.organization = AsyncOrganizationClient(client_wrapper=self._client_wrapper)
-        self.payment_gateway = AsyncPaymentGatewayClient(client_wrapper=self._client_wrapper)
         self.bank_lookup = AsyncBankLookupClient(client_wrapper=self._client_wrapper)
         self.calculate = AsyncCalculateClient(client_wrapper=self._client_wrapper)
         self.custom_payment_method_schema = AsyncCustomPaymentMethodSchemaClient(client_wrapper=self._client_wrapper)
         self.ocr = AsyncOcrClient(client_wrapper=self._client_wrapper)
+        self.payment_gateway = AsyncPaymentGatewayClient(client_wrapper=self._client_wrapper)
         self.payment_methods = AsyncPaymentMethodsClient(client_wrapper=self._client_wrapper)
         self.transaction = AsyncTransactionClient(client_wrapper=self._client_wrapper)
 

@@ -29,6 +29,7 @@ class ProcessPaymentGatewayRequestDocument(UniversalBaseModel):
             cvv="123",
             postal_code="12345",
             country="US",
+            card_type="credit",
         ),
     )
     """

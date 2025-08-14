@@ -10,25 +10,31 @@ from ...core.pydantic_utilities import IS_PYDANTIC_V2
 import typing
 
 
-class ProcessPaymentGatewayCardDetailsIframe(ProcessPaymentGatewayCardDetailsBase):
+class ProcessPaymentGatewayCardDetailsLithic(ProcessPaymentGatewayCardDetailsBase):
     """
     Examples
     --------
-    from mercoa.payment_gateway_types import ProcessPaymentGatewayCardDetailsIframe
+    from mercoa.payment_gateway_types import ProcessPaymentGatewayCardDetailsLithic
 
-    ProcessPaymentGatewayCardDetailsIframe(
+    ProcessPaymentGatewayCardDetailsLithic(
         first_name="John",
         last_name="Doe",
         postal_code="12345",
         country="US",
-        card_type="debit",
-        iframe_url="https://www.myvirtualcard.com/iframe/345345",
+        card_type="credit",
+        embed_request="eyJ0b2tlbiI6InNhbXBsZV90b2tlbiIsImNzcyI6Imh0dHBzOi8vc3RvcmFnZS5nb29nbGVhcGlzLmNvbS9tZXJjb2EtcGFydG5lci1sb2dvcy9saXRoaWMuY3NzIn0=",
+        hmac="abc123def456ghi789",
     )
     """
 
-    iframe_url: typing_extensions.Annotated[str, FieldMetadata(alias="iframeUrl")] = pydantic.Field()
+    embed_request: typing_extensions.Annotated[str, FieldMetadata(alias="embedRequest")] = pydantic.Field()
     """
-    The URL of the iframe that render the virtual card details
+    The base64-encoded embed request for the Lithic virtual card
+    """
+
+    hmac: str = pydantic.Field()
+    """
+    The HMAC signature for the embed request
     """
 
     if IS_PYDANTIC_V2:

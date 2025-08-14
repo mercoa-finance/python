@@ -18,12 +18,14 @@ from .transaction_response import (
 )
 from .transaction_response_ach_base import TransactionResponseAchBase
 from .transaction_response_bank_to_bank_with_invoices import TransactionResponseBankToBankWithInvoices
-from .transaction_response_bank_to_check_with_invoices import TransactionResponseBankToCheckWithInvoices
+from .transaction_response_bank_to_mailed_check_with_invoices import TransactionResponseBankToMailedCheckWithInvoices
+from .transaction_response_bank_to_printed_check_with_invoices import TransactionResponseBankToPrintedCheckWithInvoices
 from .transaction_response_bank_to_wallet_with_invoices import TransactionResponseBankToWalletWithInvoices
 from .transaction_response_base import TransactionResponseBase
 from .transaction_response_card_to_bank_account_with_invoices import TransactionResponseCardToBankAccountWithInvoices
 from .transaction_response_card_to_wallet_with_invoices import TransactionResponseCardToWalletWithInvoices
 from .transaction_response_check_base import TransactionResponseCheckBase
+from .transaction_response_check_base_mailed import TransactionResponseCheckBaseMailed
 from .transaction_response_custom_with_invoices import TransactionResponseCustomWithInvoices
 from .transaction_response_wallet_to_bank_with_invoices import TransactionResponseWalletToBankWithInvoices
 from .transaction_response_wallet_to_wallet_with_invoices import TransactionResponseWalletToWalletWithInvoices
@@ -50,12 +52,14 @@ __all__ = [
     "TransactionResponse",
     "TransactionResponseAchBase",
     "TransactionResponseBankToBankWithInvoices",
-    "TransactionResponseBankToCheckWithInvoices",
+    "TransactionResponseBankToMailedCheckWithInvoices",
+    "TransactionResponseBankToPrintedCheckWithInvoices",
     "TransactionResponseBankToWalletWithInvoices",
     "TransactionResponseBase",
     "TransactionResponseCardToBankAccountWithInvoices",
     "TransactionResponseCardToWalletWithInvoices",
     "TransactionResponseCheckBase",
+    "TransactionResponseCheckBaseMailed",
     "TransactionResponseCustomWithInvoices",
     "TransactionResponseWalletToBankWithInvoices",
     "TransactionResponseWalletToWalletWithInvoices",

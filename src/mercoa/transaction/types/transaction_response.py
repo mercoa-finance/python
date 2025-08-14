@@ -1563,6 +1563,9 @@ class TransactionResponse_BankAccountToMailedCheck(UniversalBaseModel):
 
     type: typing.Literal["bankAccountToMailedCheck"] = "bankAccountToMailedCheck"
     invoices: typing.List[InvoiceResponse]
+    mailed_on_date: typing_extensions.Annotated[typing.Optional[dt.datetime], FieldMetadata(alias="mailedOnDate")] = (
+        None
+    )
     check_number: typing_extensions.Annotated[int, FieldMetadata(alias="checkNumber")]
     id: TransactionId
     status: TransactionStatus

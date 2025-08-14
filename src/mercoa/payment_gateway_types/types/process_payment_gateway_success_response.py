@@ -22,11 +22,25 @@ class ProcessPaymentGatewaySuccessResponse(UniversalBaseModel):
     The URL of the receipt that was downloaded from the payment gateway
     """
 
-    session_url: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="sessionUrl")] = pydantic.Field(
+    invoice_amount: typing_extensions.Annotated[typing.Optional[float], FieldMetadata(alias="invoiceAmount")] = (
+        pydantic.Field(default=None)
+    )
+    """
+    The invoice amount detected from the payment gateway
+    """
+
+    gateway_amount: typing_extensions.Annotated[typing.Optional[float], FieldMetadata(alias="gatewayAmount")] = (
+        pydantic.Field(default=None)
+    )
+    """
+    The amount displayed on the payment gateway (may include fees)
+    """
+
+    vendor_name: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="vendorName")] = pydantic.Field(
         default=None
     )
     """
-    The URL of the playback session for the agent that processed the payment
+    The vendor name detected from the payment gateway
     """
 
     created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")] = pydantic.Field()

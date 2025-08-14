@@ -36,6 +36,9 @@ class SearchPaymentGatewayProcessJobsResponse(UniversalBaseModel):
             ProcessPaymentGatewayResponse_Success(
                 job_id="pgp_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
                 receipt_url="https://www.payment-gateway.com/receipt/123123",
+                invoice_amount=150.75,
+                gateway_amount=155.5,
+                vendor_name="Acme Corporation",
                 created_at=datetime.datetime.fromisoformat(
                     "2024-01-01 00:00:00+00:00",
                 ),

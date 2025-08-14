@@ -5807,7 +5807,7 @@ client = Mercoa(
 client.invoice.update(
     invoice_id="in_26e7b5d3-a739-4b23-9ad9-6aaa085f47a9",
     request=InvoiceUpdateRequest(
-        vendor_credit_ids=["vcr_c3f4c87d-794d-4543-9562-575cdddfc0d7"],
+        status="FAILED",
     ),
 )
 
@@ -6497,555 +6497,6 @@ client.organization.invalidate_tokens()
 <dd>
 
 **session_id:** `typing.Optional[typing.Sequence[str]]` — Optional list of session IDs to invalidate. If not provided, all sessions will be invalidated.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## PaymentGateway
-<details><summary><code>client.payment_gateway.<a href="src/mercoa/payment_gateway/client.py">find_validation_jobs</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Search payment gateway validation jobs for the organization
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-import datetime
-
-from mercoa import Mercoa
-
-client = Mercoa(
-    token="YOUR_TOKEN",
-)
-client.payment_gateway.find_validation_jobs(
-    status="FAILED",
-    start_date=datetime.datetime.fromisoformat(
-        "2024-01-01 00:00:00+00:00",
-    ),
-    end_date=datetime.datetime.fromisoformat(
-        "2024-12-31 23:59:59+00:00",
-    ),
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**status:** `typing.Optional[PaymentGatewayJobStatus]` — Filter jobs by status
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**start_date:** `typing.Optional[dt.datetime]` — Start date filter for job creation time
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**end_date:** `typing.Optional[dt.datetime]` — End date filter for job creation time
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**order_by:** `typing.Optional[PaymentGatewayJobOrderByField]` — Field to order jobs by. Defaults to CREATED_AT.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**order_direction:** `typing.Optional[OrderDirection]` — Direction to order jobs by. Defaults to desc.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limit:** `typing.Optional[int]` — Number of jobs to return. Limit can range between 1 and 100, and the default is 10.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**starting_after:** `typing.Optional[str]` — The ID of the job to start after. If not provided, the first page of jobs will be returned.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.payment_gateway.<a href="src/mercoa/payment_gateway/client.py">find_process_jobs</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Search payment gateway process jobs for the organization
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-import datetime
-
-from mercoa import Mercoa
-
-client = Mercoa(
-    token="YOUR_TOKEN",
-)
-client.payment_gateway.find_process_jobs(
-    status="FAILED",
-    start_date=datetime.datetime.fromisoformat(
-        "2024-01-01 00:00:00+00:00",
-    ),
-    end_date=datetime.datetime.fromisoformat(
-        "2024-12-31 23:59:59+00:00",
-    ),
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**status:** `typing.Optional[PaymentGatewayJobStatus]` — Filter jobs by status
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**start_date:** `typing.Optional[dt.datetime]` — Start date filter for job creation time
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**end_date:** `typing.Optional[dt.datetime]` — End date filter for job creation time
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**order_by:** `typing.Optional[PaymentGatewayJobOrderByField]` — Field to order jobs by. Defaults to CREATED_AT.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**order_direction:** `typing.Optional[OrderDirection]` — Direction to order jobs by. Defaults to desc.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limit:** `typing.Optional[int]` — Number of jobs to return. Limit can range between 1 and 100, and the default is 10.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**starting_after:** `typing.Optional[str]` — The ID of the job to start after. If not provided, the first page of jobs will be returned.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.payment_gateway.<a href="src/mercoa/payment_gateway/client.py">create_validation_job</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Create a job to validate a payment gateway
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mercoa import Mercoa
-from mercoa.payment_gateway_types import ValidatePaymentGatewayRequest_Html
-
-client = Mercoa(
-    token="YOUR_TOKEN",
-)
-client.payment_gateway.create_validation_job(
-    request=ValidatePaymentGatewayRequest_Html(
-        html='<html><body><h1>Invoice Details</h1><a href="https://www.payment-gateway.com/invoice/job_1a92b5f7-f522-435e-a953-fd649363730a4567890">Pay Invoice</a></body></html>',
-    ),
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `ValidatePaymentGatewayRequest` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.payment_gateway.<a href="src/mercoa/payment_gateway/client.py">get_validation_job</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Get the status of a payment gateway validation job
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mercoa import Mercoa
-
-client = Mercoa(
-    token="YOUR_TOKEN",
-)
-client.payment_gateway.get_validation_job(
-    job_id="job_1a92b5f7-f522-435e-a953-fd649363730a",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**job_id:** `str` — The ID of the payment gateway validation job
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.payment_gateway.<a href="src/mercoa/payment_gateway/client.py">create_process_job</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Create a job to process a payment through a payment gateway
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mercoa import Mercoa
-from mercoa.payment_gateway_types import (
-    ProcessPaymentGatewayCardDetails_Iframe,
-    ProcessPaymentGatewayRequest_Html,
-)
-
-client = Mercoa(
-    token="YOUR_TOKEN",
-)
-client.payment_gateway.create_process_job(
-    request=ProcessPaymentGatewayRequest_Html(
-        html='<html><body><h1>Invoice Details</h1><a href="https://www.payment-gateway.com/invoice/123123">Pay Invoice</a></body></html>',
-        card_details=ProcessPaymentGatewayCardDetails_Iframe(
-            first_name="John",
-            last_name="Doe",
-            postal_code="12345",
-            country="US",
-            iframe_url="https://www.myvirtualcard.com/iframe/543543",
-        ),
-    ),
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `ProcessPaymentGatewayRequest` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.payment_gateway.<a href="src/mercoa/payment_gateway/client.py">get_process_job</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Get the status of a payment gateway processing job
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mercoa import Mercoa
-
-client = Mercoa(
-    token="YOUR_TOKEN",
-)
-client.payment_gateway.get_process_job(
-    job_id="job_1a92b5f7-f522-435e-a953-fd649363730a",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**job_id:** `str` — The ID of the payment gateway processing job
     
 </dd>
 </dl>
@@ -17673,6 +17124,557 @@ client.organization.notification_configuration.reset(
 <dd>
 
 **notification_type:** `NotificationType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## PaymentGateway Process
+<details><summary><code>client.payment_gateway.process.<a href="src/mercoa/payment_gateway/process/client.py">find</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Search payment gateway process jobs
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+import datetime
+
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.payment_gateway.process.find(
+    status="FAILED",
+    start_date=datetime.datetime.fromisoformat(
+        "2024-01-01 00:00:00+00:00",
+    ),
+    end_date=datetime.datetime.fromisoformat(
+        "2024-12-31 23:59:59+00:00",
+    ),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**status:** `typing.Optional[PaymentGatewayJobStatus]` — Filter jobs by status
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_date:** `typing.Optional[dt.datetime]` — Start date filter for job creation time
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_date:** `typing.Optional[dt.datetime]` — End date filter for job creation time
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**order_by:** `typing.Optional[PaymentGatewayJobOrderByField]` — Field to order jobs by. Defaults to CREATED_AT.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**order_direction:** `typing.Optional[OrderDirection]` — Direction to order jobs by. Defaults to desc.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Number of jobs to return. Limit can range between 1 and 100, and the default is 10.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**starting_after:** `typing.Optional[str]` — The ID of the job to start after. If not provided, the first page of jobs will be returned.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.payment_gateway.process.<a href="src/mercoa/payment_gateway/process/client.py">create</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Create a job to process a payment through a payment gateway
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+from mercoa.payment_gateway_types import (
+    ProcessPaymentGatewayCardDetails_Iframe,
+    ProcessPaymentGatewayRequest_Html,
+)
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.payment_gateway.process.create(
+    request=ProcessPaymentGatewayRequest_Html(
+        html='<html><body><h1>Invoice Details</h1><a href="https://www.payment-gateway.com/invoice/123123">Pay Invoice</a></body></html>',
+        card_details=ProcessPaymentGatewayCardDetails_Iframe(
+            first_name="John",
+            last_name="Doe",
+            postal_code="12345",
+            country="US",
+            card_type="debit",
+            iframe_url="https://www.myvirtualcard.com/iframe/543543",
+        ),
+    ),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `ProcessPaymentGatewayRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.payment_gateway.process.<a href="src/mercoa/payment_gateway/process/client.py">get</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Get the status of a payment gateway processing job
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.payment_gateway.process.get(
+    job_id="job_1a92b5f7-f522-435e-a953-fd649363730a",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**job_id:** `str` — The ID of the payment gateway processing job
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## PaymentGateway Validate
+<details><summary><code>client.payment_gateway.validate.<a href="src/mercoa/payment_gateway/validate/client.py">find</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Search payment gateway validation jobs
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+import datetime
+
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.payment_gateway.validate.find(
+    status="FAILED",
+    start_date=datetime.datetime.fromisoformat(
+        "2024-01-01 00:00:00+00:00",
+    ),
+    end_date=datetime.datetime.fromisoformat(
+        "2024-12-31 23:59:59+00:00",
+    ),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**status:** `typing.Optional[PaymentGatewayJobStatus]` — Filter jobs by status
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_date:** `typing.Optional[dt.datetime]` — Start date filter for job creation time
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_date:** `typing.Optional[dt.datetime]` — End date filter for job creation time
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**order_by:** `typing.Optional[PaymentGatewayJobOrderByField]` — Field to order jobs by. Defaults to CREATED_AT.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**order_direction:** `typing.Optional[OrderDirection]` — Direction to order jobs by. Defaults to desc.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Number of jobs to return. Limit can range between 1 and 100, and the default is 10.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**starting_after:** `typing.Optional[str]` — The ID of the job to start after. If not provided, the first page of jobs will be returned.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.payment_gateway.validate.<a href="src/mercoa/payment_gateway/validate/client.py">create</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Create a job to validate a payment gateway
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+from mercoa.payment_gateway_types import ValidatePaymentGatewayRequest_Html
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.payment_gateway.validate.create(
+    request=ValidatePaymentGatewayRequest_Html(
+        html='<html><body><h1>Invoice Details</h1><a href="https://www.payment-gateway.com/invoice/job_1a92b5f7-f522-435e-a953-fd649363730a4567890">Pay Invoice</a></body></html>',
+    ),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `ValidatePaymentGatewayRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.payment_gateway.validate.<a href="src/mercoa/payment_gateway/validate/client.py">get</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Get the status of a payment gateway validation job
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mercoa import Mercoa
+
+client = Mercoa(
+    token="YOUR_TOKEN",
+)
+client.payment_gateway.validate.get(
+    job_id="job_1a92b5f7-f522-435e-a953-fd649363730a",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**job_id:** `str` — The ID of the payment gateway validation job
     
 </dd>
 </dl>

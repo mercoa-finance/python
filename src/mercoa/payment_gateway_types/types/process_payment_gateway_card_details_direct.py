@@ -21,6 +21,7 @@ class ProcessPaymentGatewayCardDetailsDirect(ProcessPaymentGatewayCardDetailsBas
         last_name="Doe",
         postal_code="12345",
         country="US",
+        card_type="credit",
         card_number="4242424242424242",
         expiration_month=10,
         expiration_year=2025,
