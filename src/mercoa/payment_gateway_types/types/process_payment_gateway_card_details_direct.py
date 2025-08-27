@@ -14,7 +14,10 @@ class ProcessPaymentGatewayCardDetailsDirect(ProcessPaymentGatewayCardDetailsBas
     """
     Examples
     --------
-    from mercoa.payment_gateway_types import ProcessPaymentGatewayCardDetailsDirect
+    from mercoa.payment_gateway_types import (
+        ProcessPaymentGatewayAchDetails,
+        ProcessPaymentGatewayCardDetailsDirect,
+    )
 
     ProcessPaymentGatewayCardDetailsDirect(
         first_name="John",
@@ -26,6 +29,11 @@ class ProcessPaymentGatewayCardDetailsDirect(ProcessPaymentGatewayCardDetailsBas
         expiration_month=10,
         expiration_year=2025,
         cvv="123",
+        ach_details=ProcessPaymentGatewayAchDetails(
+            routing_number="123456789",
+            account_number="987654321",
+            account_name="John Doe",
+        ),
     )
     """
 

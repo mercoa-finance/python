@@ -9,6 +9,8 @@ from .fee_customization_rail_request import FeeCustomizationRailRequest
 from .fee_customization_request import FeeCustomizationRequest
 from .flat_fee import FlatFee
 from .generic_payment_method_customization_request import GenericPaymentMethodCustomizationRequest
+from .invoice_customization_request import InvoiceCustomizationRequest
+from .invoice_customization_response import InvoiceCustomizationResponse
 from .metadata_customization_request import MetadataCustomizationRequest
 from .notification_customization_request import NotificationCustomizationRequest
 from .ocr_customization_request import OcrCustomizationRequest
@@ -46,6 +48,8 @@ __all__ = [
     "FeeCustomizationRequest",
     "FlatFee",
     "GenericPaymentMethodCustomizationRequest",
+    "InvoiceCustomizationRequest",
+    "InvoiceCustomizationResponse",
     "MetadataCustomizationRequest",
     "NotificationCustomizationRequest",
     "OcrCustomizationRequest",

@@ -16,6 +16,7 @@ class SearchPaymentGatewayProcessJobsResponse(UniversalBaseModel):
     import datetime
 
     from mercoa.payment_gateway_types import (
+        PaymentGatewayAttempt,
         ProcessPaymentGatewayResponse_Failed,
         ProcessPaymentGatewayResponse_Pending,
         ProcessPaymentGatewayResponse_Success,
@@ -39,6 +40,17 @@ class SearchPaymentGatewayProcessJobsResponse(UniversalBaseModel):
                 invoice_amount=150.75,
                 gateway_amount=155.5,
                 vendor_name="Acme Corporation",
+                attempts=[
+                    PaymentGatewayAttempt(
+                        id="pgpa_8f86116b-3b4d-4ded-99ef-3bc929d8c33c",
+                        status="COMPLETED",
+                        amount=150.75,
+                        receipt_url="https://www.payment-gateway.com/receipt/123123",
+                        created_at=datetime.datetime.fromisoformat(
+                            "2024-01-01 00:00:00+00:00",
+                        ),
+                    )
+                ],
                 created_at=datetime.datetime.fromisoformat(
                     "2024-01-01 00:00:00+00:00",
                 ),

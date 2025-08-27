@@ -2,9 +2,11 @@
 
 from .types import (
     EphemeralKeyEndpoint,
+    PaymentGatewayAttempt,
     PaymentGatewayError,
     PaymentGatewayJobOrderByField,
     PaymentGatewayJobStatus,
+    ProcessPaymentGatewayAchDetails,
     ProcessPaymentGatewayCardDetails,
     ProcessPaymentGatewayCardDetailsBase,
     ProcessPaymentGatewayCardDetailsDirect,
@@ -55,9 +57,11 @@ from .types import (
 
 __all__ = [
     "EphemeralKeyEndpoint",
+    "PaymentGatewayAttempt",
     "PaymentGatewayError",
     "PaymentGatewayJobOrderByField",
     "PaymentGatewayJobStatus",
+    "ProcessPaymentGatewayAchDetails",
     "ProcessPaymentGatewayCardDetails",
     "ProcessPaymentGatewayCardDetailsBase",
     "ProcessPaymentGatewayCardDetailsDirect",

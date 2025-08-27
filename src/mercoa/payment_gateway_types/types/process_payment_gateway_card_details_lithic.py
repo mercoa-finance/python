@@ -14,7 +14,10 @@ class ProcessPaymentGatewayCardDetailsLithic(ProcessPaymentGatewayCardDetailsBas
     """
     Examples
     --------
-    from mercoa.payment_gateway_types import ProcessPaymentGatewayCardDetailsLithic
+    from mercoa.payment_gateway_types import (
+        ProcessPaymentGatewayAchDetails,
+        ProcessPaymentGatewayCardDetailsLithic,
+    )
 
     ProcessPaymentGatewayCardDetailsLithic(
         first_name="John",
@@ -24,6 +27,11 @@ class ProcessPaymentGatewayCardDetailsLithic(ProcessPaymentGatewayCardDetailsBas
         card_type="credit",
         embed_request="eyJ0b2tlbiI6InNhbXBsZV90b2tlbiIsImNzcyI6Imh0dHBzOi8vc3RvcmFnZS5nb29nbGVhcGlzLmNvbS9tZXJjb2EtcGFydG5lci1sb2dvcy9saXRoaWMuY3NzIn0=",
         hmac="abc123def456ghi789",
+        ach_details=ProcessPaymentGatewayAchDetails(
+            routing_number="123456789",
+            account_number="987654321",
+            account_name="John Doe",
+        ),
     )
     """
 

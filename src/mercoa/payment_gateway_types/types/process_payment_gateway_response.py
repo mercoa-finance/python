@@ -8,6 +8,7 @@ from ...core.serialization import FieldMetadata
 import datetime as dt
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 import pydantic
+from .payment_gateway_attempt import PaymentGatewayAttempt
 from .payment_gateway_error import PaymentGatewayError
 
 
@@ -70,6 +71,7 @@ class ProcessPaymentGatewayResponse_Success(UniversalBaseModel):
     invoice_amount: typing_extensions.Annotated[typing.Optional[float], FieldMetadata(alias="invoiceAmount")] = None
     gateway_amount: typing_extensions.Annotated[typing.Optional[float], FieldMetadata(alias="gatewayAmount")] = None
     vendor_name: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="vendorName")] = None
+    attempts: typing.List[PaymentGatewayAttempt]
     created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
     updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")]
 

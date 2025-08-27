@@ -68,6 +68,7 @@ class InvoiceClient:
         creator_user_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]] = None,
         approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]] = None,
         approver_action: typing.Optional[typing.Union[ApproverAction, typing.Sequence[ApproverAction]]] = None,
+        approver_count: typing.Optional[str] = None,
         invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]] = None,
         status: typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]] = None,
         payment_type: typing.Optional[typing.Sequence[PaymentType]] = None,
@@ -138,6 +139,9 @@ class InvoiceClient:
         approver_action : typing.Optional[typing.Union[ApproverAction, typing.Sequence[ApproverAction]]]
             Filter invoices by approver action. Needs to be used with approverId. For example, if you want to find all invoices that have been approved by a specific user, you would use approverId and approverAction=APPROVE.
 
+        approver_count : typing.Optional[str]
+            Filter invoices by the number of approvers. Use exact number (e.g., 3) or range (e.g., ">3", "<5", ">=2", "<=4").
+
         invoice_id : typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]
             Filter invoices by invoice ID or invoice foreign ID.
 
@@ -206,6 +210,7 @@ class InvoiceClient:
                 "creatorUserId": creator_user_id,
                 "approverId": approver_id,
                 "approverAction": approver_action,
+                "approverCount": approver_count,
                 "invoiceId": invoice_id,
                 "status": status,
                 "paymentType": payment_type,
@@ -313,6 +318,7 @@ class InvoiceClient:
         payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]] = None,
+        approver_count: typing.Optional[str] = None,
         invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]] = None,
         status: typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]] = None,
         start_date: typing.Optional[dt.datetime] = None,
@@ -355,6 +361,9 @@ class InvoiceClient:
 
         approver_id : typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]
             Filter invoices by assigned approver user ID.
+
+        approver_count : typing.Optional[str]
+            Filter invoices by the number of approvers. Use exact number (e.g., 3) or range (e.g., ">3", "<5", ">=2", "<=4").
 
         invoice_id : typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]
             Filter invoices by invoice ID or invoice foreign ID.
@@ -417,6 +426,7 @@ class InvoiceClient:
                 "payerId": payer_id,
                 "vendorId": vendor_id,
                 "approverId": approver_id,
+                "approverCount": approver_count,
                 "invoiceId": invoice_id,
                 "status": status,
                 "startDate": serialize_datetime(start_date) if start_date is not None else None,
@@ -779,6 +789,7 @@ class AsyncInvoiceClient:
         creator_user_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]] = None,
         approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]] = None,
         approver_action: typing.Optional[typing.Union[ApproverAction, typing.Sequence[ApproverAction]]] = None,
+        approver_count: typing.Optional[str] = None,
         invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]] = None,
         status: typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]] = None,
         payment_type: typing.Optional[typing.Sequence[PaymentType]] = None,
@@ -848,6 +859,9 @@ class AsyncInvoiceClient:
 
         approver_action : typing.Optional[typing.Union[ApproverAction, typing.Sequence[ApproverAction]]]
             Filter invoices by approver action. Needs to be used with approverId. For example, if you want to find all invoices that have been approved by a specific user, you would use approverId and approverAction=APPROVE.
+
+        approver_count : typing.Optional[str]
+            Filter invoices by the number of approvers. Use exact number (e.g., 3) or range (e.g., ">3", "<5", ">=2", "<=4").
 
         invoice_id : typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]
             Filter invoices by invoice ID or invoice foreign ID.
@@ -925,6 +939,7 @@ class AsyncInvoiceClient:
                 "creatorUserId": creator_user_id,
                 "approverId": approver_id,
                 "approverAction": approver_action,
+                "approverCount": approver_count,
                 "invoiceId": invoice_id,
                 "status": status,
                 "paymentType": payment_type,
@@ -1032,6 +1047,7 @@ class AsyncInvoiceClient:
         payer_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         vendor_id: typing.Optional[typing.Union[EntityId, typing.Sequence[EntityId]]] = None,
         approver_id: typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]] = None,
+        approver_count: typing.Optional[str] = None,
         invoice_id: typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]] = None,
         status: typing.Optional[typing.Union[InvoiceStatus, typing.Sequence[InvoiceStatus]]] = None,
         start_date: typing.Optional[dt.datetime] = None,
@@ -1074,6 +1090,9 @@ class AsyncInvoiceClient:
 
         approver_id : typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]
             Filter invoices by assigned approver user ID.
+
+        approver_count : typing.Optional[str]
+            Filter invoices by the number of approvers. Use exact number (e.g., 3) or range (e.g., ">3", "<5", ">=2", "<=4").
 
         invoice_id : typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]
             Filter invoices by invoice ID or invoice foreign ID.
@@ -1143,6 +1162,7 @@ class AsyncInvoiceClient:
                 "payerId": payer_id,
                 "vendorId": vendor_id,
                 "approverId": approver_id,
+                "approverCount": approver_count,
                 "invoiceId": invoice_id,
                 "status": status,
                 "startDate": serialize_datetime(start_date) if start_date is not None else None,

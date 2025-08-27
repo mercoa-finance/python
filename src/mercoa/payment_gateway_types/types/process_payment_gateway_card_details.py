@@ -7,6 +7,7 @@ import typing_extensions
 from ...core.serialization import FieldMetadata
 from ...commons.types.country_code import CountryCode
 from .process_payment_gateway_card_type import ProcessPaymentGatewayCardType
+from .process_payment_gateway_ach_details import ProcessPaymentGatewayAchDetails
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 import pydantic
 from .ephemeral_key_endpoint import EphemeralKeyEndpoint
@@ -28,6 +29,10 @@ class ProcessPaymentGatewayCardDetails_Direct(UniversalBaseModel):
     phone_number: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="phoneNumber")] = None
     email: typing.Optional[str] = None
     full_address: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="fullAddress")] = None
+    ach_details: typing_extensions.Annotated[
+        typing.Optional[ProcessPaymentGatewayAchDetails],
+        FieldMetadata(alias="achDetails"),
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -52,6 +57,10 @@ class ProcessPaymentGatewayCardDetails_Iframe(UniversalBaseModel):
     phone_number: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="phoneNumber")] = None
     email: typing.Optional[str] = None
     full_address: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="fullAddress")] = None
+    ach_details: typing_extensions.Annotated[
+        typing.Optional[ProcessPaymentGatewayAchDetails],
+        FieldMetadata(alias="achDetails"),
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -81,6 +90,10 @@ class ProcessPaymentGatewayCardDetails_StripeIssuing(UniversalBaseModel):
     phone_number: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="phoneNumber")] = None
     email: typing.Optional[str] = None
     full_address: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="fullAddress")] = None
+    ach_details: typing_extensions.Annotated[
+        typing.Optional[ProcessPaymentGatewayAchDetails],
+        FieldMetadata(alias="achDetails"),
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -106,6 +119,10 @@ class ProcessPaymentGatewayCardDetails_Lithic(UniversalBaseModel):
     phone_number: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="phoneNumber")] = None
     email: typing.Optional[str] = None
     full_address: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="fullAddress")] = None
+    ach_details: typing_extensions.Annotated[
+        typing.Optional[ProcessPaymentGatewayAchDetails],
+        FieldMetadata(alias="achDetails"),
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

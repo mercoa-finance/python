@@ -185,6 +185,7 @@ class CustomizationClient:
             FeeCustomizationDetailRequest,
             FeeCustomizationRailRequest,
             FeeCustomizationRequest,
+            InvoiceCustomizationRequest,
             MetadataCustomizationRequest,
             NotificationCustomizationRequest,
             OcrCustomizationRequest,
@@ -256,6 +257,12 @@ class CustomizationClient:
                 ),
                 workflow=WorkflowCustomizationRequest(
                     auto_advance_invoice_status=True,
+                ),
+                invoice=InvoiceCustomizationRequest(
+                    hide_address=False,
+                    hide_qr_code=False,
+                    hide_bank_details=False,
+                    hide_payment_link=False,
                 ),
                 role_permissions={"admin": ["invoice.all", "paymentMethod.all"]},
                 fees=FeeCustomizationRequest(
@@ -611,6 +618,7 @@ class AsyncCustomizationClient:
             FeeCustomizationDetailRequest,
             FeeCustomizationRailRequest,
             FeeCustomizationRequest,
+            InvoiceCustomizationRequest,
             MetadataCustomizationRequest,
             NotificationCustomizationRequest,
             OcrCustomizationRequest,
@@ -685,6 +693,12 @@ class AsyncCustomizationClient:
                     ),
                     workflow=WorkflowCustomizationRequest(
                         auto_advance_invoice_status=True,
+                    ),
+                    invoice=InvoiceCustomizationRequest(
+                        hide_address=False,
+                        hide_qr_code=False,
+                        hide_bank_details=False,
+                        hide_payment_link=False,
                     ),
                     role_permissions={"admin": ["invoice.all", "paymentMethod.all"]},
                     fees=FeeCustomizationRequest(

@@ -14,7 +14,10 @@ class ProcessPaymentGatewayCardDetailsIframe(ProcessPaymentGatewayCardDetailsBas
     """
     Examples
     --------
-    from mercoa.payment_gateway_types import ProcessPaymentGatewayCardDetailsIframe
+    from mercoa.payment_gateway_types import (
+        ProcessPaymentGatewayAchDetails,
+        ProcessPaymentGatewayCardDetailsIframe,
+    )
 
     ProcessPaymentGatewayCardDetailsIframe(
         first_name="John",
@@ -23,6 +26,11 @@ class ProcessPaymentGatewayCardDetailsIframe(ProcessPaymentGatewayCardDetailsBas
         country="US",
         card_type="debit",
         iframe_url="https://www.myvirtualcard.com/iframe/345345",
+        ach_details=ProcessPaymentGatewayAchDetails(
+            routing_number="123456789",
+            account_number="987654321",
+            account_name="John Doe",
+        ),
     )
     """
 

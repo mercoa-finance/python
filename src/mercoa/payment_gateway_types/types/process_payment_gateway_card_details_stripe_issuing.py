@@ -17,6 +17,7 @@ class ProcessPaymentGatewayCardDetailsStripeIssuing(ProcessPaymentGatewayCardDet
     --------
     from mercoa.payment_gateway_types import (
         EphemeralKeyEndpoint,
+        ProcessPaymentGatewayAchDetails,
         ProcessPaymentGatewayCardDetailsStripeIssuing,
     )
 
@@ -37,6 +38,11 @@ class ProcessPaymentGatewayCardDetailsStripeIssuing(ProcessPaymentGatewayCardDet
                 "Content-Type": "application/json",
             },
             post_body='{"card_id": "{{cardId}}", "nonce": "{{nonce}}", "account_id": "{{accountId}}"}',
+        ),
+        ach_details=ProcessPaymentGatewayAchDetails(
+            routing_number="123456789",
+            account_number="987654321",
+            account_name="John Doe",
         ),
     )
     """

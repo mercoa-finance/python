@@ -14,6 +14,7 @@ class ProcessPaymentGatewayRequestHtml(UniversalBaseModel):
     Examples
     --------
     from mercoa.payment_gateway_types import (
+        ProcessPaymentGatewayAchDetails,
         ProcessPaymentGatewayCardDetails_Direct,
         ProcessPaymentGatewayRequestHtml,
     )
@@ -30,6 +31,11 @@ class ProcessPaymentGatewayRequestHtml(UniversalBaseModel):
             postal_code="12345",
             country="US",
             card_type="debit",
+            ach_details=ProcessPaymentGatewayAchDetails(
+                routing_number="123456789",
+                account_number="987654321",
+                account_name="John Doe",
+            ),
         ),
     )
     """

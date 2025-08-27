@@ -15,6 +15,7 @@ class ProcessPaymentGatewayRequest_Document(UniversalBaseModel):
     Examples
     --------
     from mercoa.payment_gateway_types import (
+        ProcessPaymentGatewayAchDetails,
         ProcessPaymentGatewayCardDetails_Direct,
         ProcessPaymentGatewayRequest_Document,
     )
@@ -30,6 +31,11 @@ class ProcessPaymentGatewayRequest_Document(UniversalBaseModel):
             cvv="123",
             postal_code="12345",
             country="US",
+            ach_details=ProcessPaymentGatewayAchDetails(
+                routing_number="123456789",
+                account_number="987654321",
+                account_name="John Doe",
+            ),
         ),
     )
     """
@@ -53,6 +59,7 @@ class ProcessPaymentGatewayRequest_Html(UniversalBaseModel):
     Examples
     --------
     from mercoa.payment_gateway_types import (
+        ProcessPaymentGatewayAchDetails,
         ProcessPaymentGatewayCardDetails_Direct,
         ProcessPaymentGatewayRequest_Document,
     )
@@ -68,6 +75,11 @@ class ProcessPaymentGatewayRequest_Html(UniversalBaseModel):
             cvv="123",
             postal_code="12345",
             country="US",
+            ach_details=ProcessPaymentGatewayAchDetails(
+                routing_number="123456789",
+                account_number="987654321",
+                account_name="John Doe",
+            ),
         ),
     )
     """
@@ -88,6 +100,7 @@ class ProcessPaymentGatewayRequest_Html(UniversalBaseModel):
 
 """
 from mercoa.payment_gateway_types import (
+    ProcessPaymentGatewayAchDetails,
     ProcessPaymentGatewayCardDetails_Direct,
     ProcessPaymentGatewayRequest_Document,
 )
@@ -103,6 +116,11 @@ ProcessPaymentGatewayRequest_Document(
         cvv="123",
         postal_code="12345",
         country="US",
+        ach_details=ProcessPaymentGatewayAchDetails(
+            routing_number="123456789",
+            account_number="987654321",
+            account_name="John Doe",
+        ),
     ),
 )
 """

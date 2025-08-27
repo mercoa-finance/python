@@ -5582,6 +5582,14 @@ client.invoice.find(
 <dl>
 <dd>
 
+**approver_count:** `typing.Optional[str]` — Filter invoices by the number of approvers. Use exact number (e.g., 3) or range (e.g., ">3", "<5", ">=2", "<=4").
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **invoice_id:** `typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]` — Filter invoices by invoice ID or invoice foreign ID.
     
 </dd>
@@ -7355,6 +7363,14 @@ client.entity_group.invoice.find(
 <dl>
 <dd>
 
+**approver_count:** `typing.Optional[str]` — Filter invoices by the number of approvers. Use exact number (e.g., 3) or range (e.g., ">3", "<5", ">=2", "<=4").
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **invoice_id:** `typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]` — Filter invoices by invoice ID or invoice foreign ID.
     
 </dd>
@@ -7810,6 +7826,14 @@ client.entity_group.invoice.metrics(
 <dd>
 
 **approver_id:** `typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]` — Filter invoices by assigned approver user ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**approver_count:** `typing.Optional[str]` — Filter invoices by the number of approvers. Use exact number (e.g., 3) or range (e.g., ">3", "<5", ">=2", "<=4").
     
 </dd>
 </dl>
@@ -9648,6 +9672,7 @@ from mercoa.customization_types import (
     FeeCustomizationDetailRequest,
     FeeCustomizationRailRequest,
     FeeCustomizationRequest,
+    InvoiceCustomizationRequest,
     MetadataCustomizationRequest,
     NotificationCustomizationRequest,
     OcrCustomizationRequest,
@@ -9719,6 +9744,12 @@ client.entity.customization.update(
         ),
         workflow=WorkflowCustomizationRequest(
             auto_advance_invoice_status=True,
+        ),
+        invoice=InvoiceCustomizationRequest(
+            hide_address=False,
+            hide_qr_code=False,
+            hide_bank_details=False,
+            hide_payment_link=False,
         ),
         role_permissions={"admin": ["invoice.all", "paymentMethod.all"]},
         fees=FeeCustomizationRequest(
@@ -11023,6 +11054,14 @@ client.entity.invoice.find(
 <dl>
 <dd>
 
+**approver_count:** `typing.Optional[str]` — Filter invoices by the number of approvers. Use exact number (e.g., 3) or range (e.g., ">3", "<5", ">=2", "<=4").
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **invoice_id:** `typing.Optional[typing.Union[InvoiceId, typing.Sequence[InvoiceId]]]` — Filter invoices by invoice ID or invoice foreign ID.
     
 </dd>
@@ -11220,6 +11259,14 @@ client.entity.invoice.metrics(
 <dd>
 
 **approver_id:** `typing.Optional[typing.Union[EntityUserId, typing.Sequence[EntityUserId]]]` — Filter invoices by assigned approver user ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**approver_count:** `typing.Optional[str]` — Filter invoices by the number of approvers. Use exact number (e.g., 3) or range (e.g., ">3", "<5", ">=2", "<=4").
     
 </dd>
 </dl>
@@ -17299,6 +17346,7 @@ Create a job to process a payment through a payment gateway
 ```python
 from mercoa import Mercoa
 from mercoa.payment_gateway_types import (
+    ProcessPaymentGatewayAchDetails,
     ProcessPaymentGatewayCardDetails_Iframe,
     ProcessPaymentGatewayRequest_Html,
 )
@@ -17316,6 +17364,11 @@ client.payment_gateway.process.create(
             country="US",
             card_type="debit",
             iframe_url="https://www.myvirtualcard.com/iframe/543543",
+            ach_details=ProcessPaymentGatewayAchDetails(
+                routing_number="123456789",
+                account_number="987654321",
+                account_name="John Doe",
+            ),
         ),
     ),
 )

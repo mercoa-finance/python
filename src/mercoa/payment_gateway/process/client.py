@@ -230,6 +230,7 @@ class ProcessClient:
         --------
         from mercoa import Mercoa
         from mercoa.payment_gateway_types import (
+            ProcessPaymentGatewayAchDetails,
             ProcessPaymentGatewayCardDetails_Direct,
             ProcessPaymentGatewayRequest_Document,
         )
@@ -249,6 +250,11 @@ class ProcessClient:
                     cvv="123",
                     postal_code="12345",
                     country="US",
+                    ach_details=ProcessPaymentGatewayAchDetails(
+                        routing_number="123456789",
+                        account_number="987654321",
+                        account_name="John Doe",
+                    ),
                 ),
             ),
         )
@@ -669,6 +675,7 @@ class AsyncProcessClient:
 
         from mercoa import AsyncMercoa
         from mercoa.payment_gateway_types import (
+            ProcessPaymentGatewayAchDetails,
             ProcessPaymentGatewayCardDetails_Direct,
             ProcessPaymentGatewayRequest_Document,
         )
@@ -691,6 +698,11 @@ class AsyncProcessClient:
                         cvv="123",
                         postal_code="12345",
                         country="US",
+                        ach_details=ProcessPaymentGatewayAchDetails(
+                            routing_number="123456789",
+                            account_number="987654321",
+                            account_name="John Doe",
+                        ),
                     ),
                 ),
             )

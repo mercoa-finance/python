@@ -7,6 +7,7 @@ import pydantic
 from ...commons.types.country_code import CountryCode
 import typing
 from .process_payment_gateway_card_type import ProcessPaymentGatewayCardType
+from .process_payment_gateway_ach_details import ProcessPaymentGatewayAchDetails
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
 
@@ -55,6 +56,14 @@ class ProcessPaymentGatewayCardDetailsBase(UniversalBaseModel):
     )
     """
     The full address of the card user
+    """
+
+    ach_details: typing_extensions.Annotated[
+        typing.Optional[ProcessPaymentGatewayAchDetails],
+        FieldMetadata(alias="achDetails"),
+    ] = pydantic.Field(default=None)
+    """
+    The details of the fallback ACH account to use for the payment. This will be used if a fee is charged for card processing.
     """
 
     if IS_PYDANTIC_V2:

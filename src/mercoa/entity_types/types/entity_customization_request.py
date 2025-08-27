@@ -19,6 +19,9 @@ from ...customization_types.types.notification_customization_request import (
 from ...customization_types.types.workflow_customization_request import (
     WorkflowCustomizationRequest,
 )
+from ...customization_types.types.invoice_customization_request import (
+    InvoiceCustomizationRequest,
+)
 from ...customization_types.types.fee_customization_request import (
     FeeCustomizationRequest,
 )
@@ -35,6 +38,7 @@ class EntityCustomizationRequest(UniversalBaseModel):
         FeeCustomizationDetailRequest,
         FeeCustomizationRailRequest,
         FeeCustomizationRequest,
+        InvoiceCustomizationRequest,
         MetadataCustomizationRequest,
         NotificationCustomizationRequest,
         OcrCustomizationRequest,
@@ -101,6 +105,12 @@ class EntityCustomizationRequest(UniversalBaseModel):
         ),
         workflow=WorkflowCustomizationRequest(
             auto_advance_invoice_status=True,
+        ),
+        invoice=InvoiceCustomizationRequest(
+            hide_address=False,
+            hide_qr_code=False,
+            hide_bank_details=False,
+            hide_payment_link=False,
         ),
         role_permissions={"admin": ["invoice.all", "paymentMethod.all"]},
         fees=FeeCustomizationRequest(
@@ -208,6 +218,7 @@ class EntityCustomizationRequest(UniversalBaseModel):
     ocr: typing.Optional[OcrCustomizationRequest] = None
     notifications: typing.Optional[NotificationCustomizationRequest] = None
     workflow: typing.Optional[WorkflowCustomizationRequest] = None
+    invoice: typing.Optional[InvoiceCustomizationRequest] = None
     fees: typing.Optional[FeeCustomizationRequest] = None
     role_permissions: typing_extensions.Annotated[
         typing.Optional[RolePermissionRequest], FieldMetadata(alias="rolePermissions")

@@ -5,6 +5,7 @@ import typing_extensions
 from ...core.serialization import FieldMetadata
 import pydantic
 import typing
+from .payment_gateway_attempt import PaymentGatewayAttempt
 import datetime as dt
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 
@@ -41,6 +42,11 @@ class ProcessPaymentGatewaySuccessResponse(UniversalBaseModel):
     )
     """
     The vendor name detected from the payment gateway
+    """
+
+    attempts: typing.List[PaymentGatewayAttempt] = pydantic.Field()
+    """
+    List of payment gateway attempts for this job
     """
 
     created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")] = pydantic.Field()

@@ -3,7 +3,7 @@
 [![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-Built%20with%20Fern-brightgreen)](https://buildwithfern.com?utm_source=github&utm_medium=github&utm_campaign=readme&utm_source=https%3A%2F%2Fgithub.com%2Fmercoa-finance%2Fpython)
 [![pypi](https://img.shields.io/pypi/v/mercoa)](https://pypi.python.org/pypi/mercoa)
 
-The Mercoa Python library provides convenient access to the Mercoa API from Python.
+The Mercoa Python library provides convenient access to the Mercoa APIs from Python.
 
 ## Installation
 
