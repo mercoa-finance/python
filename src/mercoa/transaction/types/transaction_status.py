@@ -3,15 +3,6 @@
 import typing
 
 TransactionStatus = typing.Union[
-    typing.Literal[
-        "CREATED",
-        "PENDING",
-        "COMPLETED",
-        "FAILED",
-        "REVERSED",
-        "QUEUED",
-        "CANCELED",
-        "RETURNED",
-    ],
+    typing.Literal["CREATED", "PENDING", "COMPLETED", "FAILED", "REVERSED", "QUEUED", "CANCELED", "RETURNED"],
     typing.Any,
 ]

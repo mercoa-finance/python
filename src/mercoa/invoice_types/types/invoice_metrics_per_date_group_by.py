@@ -3,6 +3,5 @@
 import typing
 
 InvoiceMetricsPerDateGroupBy = typing.Union[
-    typing.Literal["CREATION_DATE", "DUE_DATE", "INVOICE_DATE", "DEDUCTION_DATE"],
-    typing.Any,
+    typing.Literal["CREATION_DATE", "DUE_DATE", "INVOICE_DATE", "DEDUCTION_DATE"], typing.Any
 ]

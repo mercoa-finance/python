@@ -2,7 +2,4 @@
 
 import typing
 
-BankStatus = typing.Union[
-    typing.Literal["NEW", "VERIFIED", "VERIFICATION_FAILED", "PENDING", "ERRORED"],
-    typing.Any,
-]
+BankStatus = typing.Union[typing.Literal["NEW", "VERIFIED", "VERIFICATION_FAILED", "PENDING", "ERRORED"], typing.Any]

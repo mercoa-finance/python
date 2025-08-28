@@ -3,6 +3,5 @@
 import typing
 
 BnplDayOfWeek = typing.Union[
-    typing.Literal["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"],
-    typing.Any,
+    typing.Literal["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"], typing.Any
 ]
