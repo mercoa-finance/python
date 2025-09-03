@@ -4,6 +4,7 @@ import typing
 
 import pydantic
 import typing_extensions
+from ...commons.types.address import Address
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ...core.serialization import FieldMetadata
 
@@ -33,6 +34,20 @@ class BankAccountCheckOptions(UniversalBaseModel):
     ] = pydantic.Field(default=None)
     """
     If provided, will print a check with the provided account number instead of the one from the bank account
+    """
+
+    account_holder_name_override: typing_extensions.Annotated[
+        typing.Optional[str], FieldMetadata(alias="accountHolderNameOverride")
+    ] = pydantic.Field(default=None)
+    """
+    If provided, will print a check with the provided account holder name instead of the payer name from the invoice
+    """
+
+    account_holder_address_override: typing_extensions.Annotated[
+        typing.Optional[Address], FieldMetadata(alias="accountHolderAddressOverride")
+    ] = pydantic.Field(default=None)
+    """
+    If provided, will print a check with the provided account holder address instead of the payer address from the invoice
     """
 
     signatory_name: typing_extensions.Annotated[str, FieldMetadata(alias="signatoryName")] = pydantic.Field()

@@ -48,7 +48,7 @@ client.entity_group.get_all()
 <dl>
 <dd>
 
-**limit:** `typing.Optional[int]` — The maximum number of results to return. Defaults to 1. Max is 10.
+**limit:** `typing.Optional[int]` — The maximum number of results to return. Defaults to 1. Max is 20.
     
 </dd>
 </dl>
@@ -57,6 +57,14 @@ client.entity_group.get_all()
 <dd>
 
 **starting_after:** `typing.Optional[EntityGroupId]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**search:** `typing.Optional[str]` — Search entity groups by name. This will perform a case-insensitive search on the group name.
     
 </dd>
 </dl>

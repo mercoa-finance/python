@@ -39,6 +39,7 @@ class RawEntityGroupClient:
         *,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityGroupId] = None,
+        search: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[EntityGroupFindResponse]:
         """
@@ -47,9 +48,12 @@ class RawEntityGroupClient:
         Parameters
         ----------
         limit : typing.Optional[int]
-            The maximum number of results to return. Defaults to 1. Max is 10.
+            The maximum number of results to return. Defaults to 1. Max is 20.
 
         starting_after : typing.Optional[EntityGroupId]
+
+        search : typing.Optional[str]
+            Search entity groups by name. This will perform a case-insensitive search on the group name.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -64,6 +68,7 @@ class RawEntityGroupClient:
             params={
                 "limit": limit,
                 "startingAfter": starting_after,
+                "search": search,
             },
             request_options=request_options,
         )
@@ -1030,6 +1035,7 @@ class AsyncRawEntityGroupClient:
         *,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityGroupId] = None,
+        search: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[EntityGroupFindResponse]:
         """
@@ -1038,9 +1044,12 @@ class AsyncRawEntityGroupClient:
         Parameters
         ----------
         limit : typing.Optional[int]
-            The maximum number of results to return. Defaults to 1. Max is 10.
+            The maximum number of results to return. Defaults to 1. Max is 20.
 
         starting_after : typing.Optional[EntityGroupId]
+
+        search : typing.Optional[str]
+            Search entity groups by name. This will perform a case-insensitive search on the group name.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1055,6 +1064,7 @@ class AsyncRawEntityGroupClient:
             params={
                 "limit": limit,
                 "startingAfter": starting_after,
+                "search": search,
             },
             request_options=request_options,
         )

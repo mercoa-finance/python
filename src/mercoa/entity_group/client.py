@@ -46,6 +46,7 @@ class EntityGroupClient:
         *,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityGroupId] = None,
+        search: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityGroupFindResponse:
         """
@@ -54,9 +55,12 @@ class EntityGroupClient:
         Parameters
         ----------
         limit : typing.Optional[int]
-            The maximum number of results to return. Defaults to 1. Max is 10.
+            The maximum number of results to return. Defaults to 1. Max is 20.
 
         starting_after : typing.Optional[EntityGroupId]
+
+        search : typing.Optional[str]
+            Search entity groups by name. This will perform a case-insensitive search on the group name.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -75,7 +79,7 @@ class EntityGroupClient:
         client.entity_group.get_all()
         """
         _response = self._raw_client.get_all(
-            limit=limit, starting_after=starting_after, request_options=request_options
+            limit=limit, starting_after=starting_after, search=search, request_options=request_options
         )
         return _response.data
 
@@ -396,6 +400,7 @@ class AsyncEntityGroupClient:
         *,
         limit: typing.Optional[int] = None,
         starting_after: typing.Optional[EntityGroupId] = None,
+        search: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> EntityGroupFindResponse:
         """
@@ -404,9 +409,12 @@ class AsyncEntityGroupClient:
         Parameters
         ----------
         limit : typing.Optional[int]
-            The maximum number of results to return. Defaults to 1. Max is 10.
+            The maximum number of results to return. Defaults to 1. Max is 20.
 
         starting_after : typing.Optional[EntityGroupId]
+
+        search : typing.Optional[str]
+            Search entity groups by name. This will perform a case-insensitive search on the group name.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -433,7 +441,7 @@ class AsyncEntityGroupClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.get_all(
-            limit=limit, starting_after=starting_after, request_options=request_options
+            limit=limit, starting_after=starting_after, search=search, request_options=request_options
         )
         return _response.data
 
