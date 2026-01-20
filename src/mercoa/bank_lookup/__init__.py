@@ -2,6 +2,3 @@
 
 # isort: skip_file
 
-from .types import BankAddress, BankLookupResponse
-
-__all__ = ["BankAddress", "BankLookupResponse"]

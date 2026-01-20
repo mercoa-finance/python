@@ -127,7 +127,7 @@ class EntityClient:
             Use search instead. Deprecated. Filter entities by name. Partial matches are supported.
 
         search : typing.Optional[str]
-            Find entities by name, email, or emailTo. Partial matches are supported.
+            Find entities by name, email, emailTo, entity ID, or foreign ID. Partial matches are supported for name, email, and emailTo. Exact matches are used for entity ID and foreign ID.
 
         metadata : typing.Optional[MetadataFilter]
             Filter entities by simple key/value metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.
@@ -774,7 +774,7 @@ class AsyncEntityClient:
             Use search instead. Deprecated. Filter entities by name. Partial matches are supported.
 
         search : typing.Optional[str]
-            Find entities by name, email, or emailTo. Partial matches are supported.
+            Find entities by name, email, emailTo, entity ID, or foreign ID. Partial matches are supported for name, email, and emailTo. Exact matches are used for entity ID and foreign ID.
 
         metadata : typing.Optional[MetadataFilter]
             Filter entities by simple key/value metadata. Each filter will be applied as an AND condition. Duplicate keys will be ignored.

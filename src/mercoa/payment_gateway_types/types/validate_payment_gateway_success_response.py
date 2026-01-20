@@ -8,6 +8,7 @@ import typing_extensions
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ...core.serialization import FieldMetadata
 from .validate_payment_gateway_card_response import ValidatePaymentGatewayCardResponse
+from .validate_payment_gateway_required_data import ValidatePaymentGatewayRequiredData
 
 
 class ValidatePaymentGatewaySuccessResponse(UniversalBaseModel):
@@ -32,7 +33,7 @@ class ValidatePaymentGatewaySuccessResponse(UniversalBaseModel):
         pydantic.Field(default=None)
     )
     """
-    The invoice amount detected from the payment gateway
+    The invoice amount detected from the invoice
     """
 
     gateway_amount: typing_extensions.Annotated[typing.Optional[float], FieldMetadata(alias="gatewayAmount")] = (
@@ -46,7 +47,14 @@ class ValidatePaymentGatewaySuccessResponse(UniversalBaseModel):
         default=None
     )
     """
-    The vendor name detected from the payment gateway
+    The vendor name
+    """
+
+    required_data: typing_extensions.Annotated[
+        typing.Optional[ValidatePaymentGatewayRequiredData], FieldMetadata(alias="requiredData")
+    ] = pydantic.Field(default=None)
+    """
+    Information about what data is required to proceed with payment
     """
 
     created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")] = pydantic.Field()

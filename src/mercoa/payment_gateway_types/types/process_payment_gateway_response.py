@@ -11,6 +11,7 @@ from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ...core.serialization import FieldMetadata
 from .payment_gateway_attempt import PaymentGatewayAttempt
 from .payment_gateway_error import PaymentGatewayError
+from .validate_payment_gateway_required_data import ValidatePaymentGatewayRequiredData
 
 
 class ProcessPaymentGatewayResponse_Pending(UniversalBaseModel):
@@ -72,6 +73,9 @@ class ProcessPaymentGatewayResponse_Success(UniversalBaseModel):
     invoice_amount: typing_extensions.Annotated[typing.Optional[float], FieldMetadata(alias="invoiceAmount")] = None
     gateway_amount: typing_extensions.Annotated[typing.Optional[float], FieldMetadata(alias="gatewayAmount")] = None
     vendor_name: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="vendorName")] = None
+    required_data: typing_extensions.Annotated[
+        typing.Optional[ValidatePaymentGatewayRequiredData], FieldMetadata(alias="requiredData")
+    ] = None
     attempts: typing.List[PaymentGatewayAttempt]
     created_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="createdAt")]
     updated_at: typing_extensions.Annotated[dt.datetime, FieldMetadata(alias="updatedAt")]

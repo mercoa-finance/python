@@ -131,9 +131,38 @@ class ProcessPaymentGatewayCardDetails_Lithic(UniversalBaseModel):
             extra = pydantic.Extra.allow
 
 
+class ProcessPaymentGatewayCardDetails_MarqetaJs(UniversalBaseModel):
+    type: typing.Literal["marqetaJs"] = "marqetaJs"
+    card_token: typing_extensions.Annotated[str, FieldMetadata(alias="cardToken")]
+    client_access_token: typing_extensions.Annotated[str, FieldMetadata(alias="clientAccessToken")]
+    first_name: typing_extensions.Annotated[str, FieldMetadata(alias="firstName")]
+    last_name: typing_extensions.Annotated[str, FieldMetadata(alias="lastName")]
+    postal_code: typing_extensions.Annotated[str, FieldMetadata(alias="postalCode")]
+    country: CountryCode
+    card_type: typing_extensions.Annotated[
+        typing.Optional[ProcessPaymentGatewayCardType], FieldMetadata(alias="cardType")
+    ] = None
+    phone_number: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="phoneNumber")] = None
+    email: typing.Optional[str] = None
+    full_address: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="fullAddress")] = None
+    ach_details: typing_extensions.Annotated[
+        typing.Optional[ProcessPaymentGatewayAchDetails], FieldMetadata(alias="achDetails")
+    ] = None
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow
+
+
 ProcessPaymentGatewayCardDetails = typing.Union[
     ProcessPaymentGatewayCardDetails_Direct,
     ProcessPaymentGatewayCardDetails_Iframe,
     ProcessPaymentGatewayCardDetails_StripeIssuing,
     ProcessPaymentGatewayCardDetails_Lithic,
+    ProcessPaymentGatewayCardDetails_MarqetaJs,
 ]

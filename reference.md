@@ -1782,7 +1782,7 @@ If false, entities that are marked as payors will not be returned.
 <dl>
 <dd>
 
-**search:** `typing.Optional[str]` — Find entities by name, email, or emailTo. Partial matches are supported.
+**search:** `typing.Optional[str]` — Find entities by name, email, emailTo, entity ID, or foreign ID. Partial matches are supported for name, email, and emailTo. Exact matches are used for entity ID and foreign ID.
     
 </dd>
 </dl>
@@ -8836,7 +8836,7 @@ If false, entities that are marked as payors will not be returned.
 <dl>
 <dd>
 
-**search:** `typing.Optional[str]` — Find entities by name, email, or emailTo. Partial matches are supported.
+**search:** `typing.Optional[str]` — Find entities by name, email, emailTo, entity ID, or foreign ID. Partial matches are supported for name, email, and emailTo. Exact matches are used for entity ID and foreign ID.
     
 </dd>
 </dl>

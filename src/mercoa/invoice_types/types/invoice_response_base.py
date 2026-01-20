@@ -8,6 +8,7 @@ import typing_extensions
 from ...calculate.types.calculate_payment_timing_response import CalculatePaymentTimingResponse
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ...core.serialization import FieldMetadata
+from ...entity_group_types.types.entity_group_id import EntityGroupId
 from ...entity_types.types.approval_policy_response import ApprovalPolicyResponse
 from ...entity_types.types.counterparty_response import CounterpartyResponse
 from ...entity_types.types.entity_id import EntityId
@@ -162,6 +163,20 @@ class InvoiceResponseBase(UniversalBaseModel):
     ] = pydantic.Field(default=None)
     """
     The ID of the entity who created this invoice.
+    """
+
+    entity_group_id: typing_extensions.Annotated[
+        typing.Optional[EntityGroupId], FieldMetadata(alias="entityGroupId")
+    ] = pydantic.Field(default=None)
+    """
+    The ID of the entity group that created this invoice.
+    """
+
+    entity_group_foreign_id: typing_extensions.Annotated[
+        typing.Optional[str], FieldMetadata(alias="entityGroupForeignId")
+    ] = pydantic.Field(default=None)
+    """
+    The foreign ID of the entity group that created this invoice.
     """
 
     creator_user: typing_extensions.Annotated[

@@ -8,6 +8,7 @@ import typing_extensions
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ...core.serialization import FieldMetadata
 from .payment_gateway_attempt import PaymentGatewayAttempt
+from .validate_payment_gateway_required_data import ValidatePaymentGatewayRequiredData
 
 
 class ProcessPaymentGatewaySuccessResponse(UniversalBaseModel):
@@ -42,6 +43,13 @@ class ProcessPaymentGatewaySuccessResponse(UniversalBaseModel):
     )
     """
     The vendor name detected from the payment gateway
+    """
+
+    required_data: typing_extensions.Annotated[
+        typing.Optional[ValidatePaymentGatewayRequiredData], FieldMetadata(alias="requiredData")
+    ] = pydantic.Field(default=None)
+    """
+    Information about what data is required to proceed with payment
     """
 
     attempts: typing.List[PaymentGatewayAttempt] = pydantic.Field()
