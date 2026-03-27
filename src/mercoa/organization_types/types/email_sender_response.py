@@ -14,6 +14,9 @@ class EmailSenderResponse(UniversalBaseModel):
     from_email: typing_extensions.Annotated[str, FieldMetadata(alias="fromEmail")]
     from_name: typing_extensions.Annotated[str, FieldMetadata(alias="fromName")]
     has_api_key: typing_extensions.Annotated[bool, FieldMetadata(alias="hasApiKey")]
+    use_smart_reply_to: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useSmartReplyTo")] = (
+        None
+    )
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

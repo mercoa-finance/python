@@ -9,6 +9,7 @@ InvoiceStatus = typing.Union[
         "NEW",
         "APPROVED",
         "SCHEDULED",
+        "PROCESSING",
         "PENDING",
         "PAID",
         "ARCHIVED",
